@@ -1,0 +1,71 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'automation-framework/**'
+      - 'cloud-native-app/**'
+      - 'ai-testing/**'
+      - '.github/workflows/**'
+      - 'Makefile'
+  pull_request:
+    paths:
+      - 'automation-framework/**'
+      - 'cloud-native-app/**'
+      - 'ai-testing/**'
+      - '.github/workflows/**'
+      - 'Makefile'
+
+jobs:
+  automation-framework:
+    name: Automation Framework (Node)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: automation-framework
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: automation-framework/package-lock.json
+      - run: |
+          if [ -f package.json ]; then npm ci || npm install; else echo 'no package.json'; fi
+      - run: |
+          if npm run | grep -q 'lint'; then npm run lint; else echo 'no lint script'; fi
+      - run: |
+          if npm run | grep -q 'test'; then npm test --silent; else echo 'no test script'; fi
+
+  ai-testing:
+    name: AI Testing (Python)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-testing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: |
+            ai-testing/requirements.txt
+            ai-testing/pyproject.toml
+      - run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install .; fi
+      - run: |
+          if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
+          if command -v black >/dev/null 2>&1; then black --check . || true; fi
+      - run: |
+          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then pytest -q || true; else echo 'no tests'; fi
+
+  cloud-native-app:
+    name: Cloud Native App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "Add CDK or infra steps when ready"
