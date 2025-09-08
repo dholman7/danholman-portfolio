@@ -57,3 +57,41 @@ Technical writeups and lessons learned:
 
 - 💼 [LinkedIn](https://linkedin.com/in/danxholman)  
 - 📧 [danxholman@gmail.com](mailto:danxholman@gmail.com)
+
+---
+
+## AI Testing: Concepts and How-To
+
+### What are agent rules?
+Agent rules constrain and guide model behavior (tone, safety, allowed tools).
+- Public rules live in `ai-testing/agents/*.public.yaml`.
+- Private rules (full SOPs, tools) live in `ai-private/agents/*.private.yaml`.
+
+### Using code and docs as context
+- Put code/docs in the prompt or reference files that your runner loads.
+- Example: `evals/cases/summarize.jsonl` points to `evals/example-cf.yaml` as context.
+- Your real runner would read the context file and include it in the model input.
+
+### Public vs private content
+- Public: sanitized prompts, agent configs, eval harness.
+- Private: original prompts/agents/datasets in `ai-private/` (private submodule).
+- Generate redacted artifacts: `make redacted` inside `ai-testing/`.
+
+### Running the demo flow
+1. `cd ai-testing`
+2. `make install`
+3. `make eval-run` (simulates a model call and scores output)
+4. Inspect `evals/reports/scores.jsonl`
+
+### Env and secrets
+- Copy `.env.example` to `.env` and set keys locally.
+- Never commit real secrets. Pre-commit hooks help prevent this.
+
+
+## Working in Cursor
+- See `docs/cursor-demo.md` for a guided demo using repo-wide context.
+- Keep changes mock-only; no API calls are required.
+
+
+> Cursor is an AI code editor with repo-wide code awareness, natural language editing, and fast autocomplete. See the official site: https://cursor.com/.
+

@@ -1,0 +1,11 @@
+# Minimal gitleaks configuration
+[allowlist]
+  description = "Allow local-only files"
+  files = [
+    "CONTEXT.md",
+    "docs/",
+    "ai-private/",
+  ]
+
+[rules]
+# Use default built-in rules; this file mainly sets allowlist.

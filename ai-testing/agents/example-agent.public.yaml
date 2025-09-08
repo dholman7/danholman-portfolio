@@ -1,0 +1,8 @@
+name: example-public-agent
+model: gpt-4o-mini
+rules:
+  - Be concise and safe.
+  - Do not reveal internal tools or credentials.
+capabilities:
+  - web-browsing: false
+  - code-exec: false

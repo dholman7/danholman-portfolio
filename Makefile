@@ -1,3 +1,4 @@
+# pre-commit helper targets
 .PHONY: install test lint fmt ci
 
 install:
@@ -21,3 +22,9 @@ test:
 	$(MAKE) -C ai-testing test || true
 
 ci: install lint test
+
+pre-commit-install:
+	pre-commit install || true
+
+pre-commit-run:
+	pre-commit run --all-files || true

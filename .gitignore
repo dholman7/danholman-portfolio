@@ -27,3 +27,13 @@ cdk.out/
 # IDE
 .vscode/
 .idea/
+
+# Local context docs (not committed)
+/docs/
+
+# Private AI submodule mount and sensitive dirs
+ai-private/
+**/.env
+**/.secrets/
+**/datasets/
+**/private/
