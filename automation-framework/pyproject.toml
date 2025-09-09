@@ -1,0 +1,267 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytest-automation-framework"
+version = "1.0.0"
+description = "A scalable, production-ready test automation framework built with pytest"
+authors = [
+    {name = "Dan Holman", email = "danxholman@gmail.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Quality Assurance",
+]
+keywords = ["pytest", "testing", "automation", "selenium", "api", "scalable"]
+
+dependencies = [
+    "pytest>=7.4.0",
+    "selenium>=4.15.0",
+    "requests>=2.31.0",
+    "faker>=19.6.0",
+    "pydantic>=2.4.0",
+    "python-dotenv>=1.0.0",
+    "structlog>=23.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.9.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.6.0",
+    "ruff>=0.0.292",
+    "pre-commit>=3.4.0",
+]
+test = [
+    "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.3.0",
+    "pytest-mock>=3.11.1",
+    "pytest-html>=3.2.0",
+    "pytest-timeout>=2.1.0",
+    "pytest-rerunfailures>=12.0",
+    "responses>=0.23.0",
+    "factory-boy>=3.3.0",
+]
+api = [
+    "httpx>=0.25.0",
+    "gql>=3.4.0",
+    "pact-python>=2.0.0",
+]
+web = [
+    "webdriver-manager>=4.0.1",
+    "pytest-playwright>=0.4.0",
+    "pytest-splinter>=4.0.0",
+    "pytest-axe>=1.0.0",
+]
+mobile = [
+    "appium-python-client>=3.1.0",
+]
+performance = [
+    "locust>=2.17.0",
+    "pytest-benchmark>=4.0.0",
+]
+database = [
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
+    "psycopg2-binary>=2.9.7",
+    "pymongo>=4.5.0",
+]
+cloud = [
+    "boto3>=1.28.0",
+    "moto>=4.2.0",
+]
+all = [
+    "pytest-automation-framework[dev,test,api,web,mobile,performance,database,cloud]"
+]
+
+[project.urls]
+Homepage = "https://github.com/danholman/pytest-automation-framework"
+Documentation = "https://pytest-automation-framework.readthedocs.io"
+Repository = "https://github.com/danholman/pytest-automation-framework.git"
+Issues = "https://github.com/danholman/pytest-automation-framework/issues"
+
+[project.scripts]
+pytest-framework = "src.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml", "*.json", "*.txt", "*.md"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["src"]
+known_third_party = ["pytest", "selenium", "requests", "faker"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "selenium.*",
+    "faker.*",
+    "requests.*",
+    "pytest.*",
+]
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py38"
+line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*.py" = ["B011"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=src",
+    "--cov-report=html:htmlcov",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    "--junitxml=reports/junit.xml",
+    "--html=reports/report.html",
+    "--self-contained-html",
+    "--maxfail=5",
+    "--durations=10",
+    "--cache-clear",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "smoke: Quick smoke tests for basic functionality",
+    "regression: Full regression test suite",
+    "api: API testing",
+    "ui: UI testing",
+    "integration: Integration tests",
+    "performance: Performance tests",
+    "slow: Tests that take longer than 30 seconds",
+    "flaky: Tests that may occasionally fail",
+    "skip_ci: Skip in CI environment",
+    "skip_local: Skip in local environment",
+    "windows: Windows-specific tests",
+    "linux: Linux-specific tests",
+    "macos: macOS-specific tests",
+    "chrome: Chrome browser tests",
+    "firefox: Firefox browser tests",
+    "safari: Safari browser tests",
+    "edge: Edge browser tests",
+    "mobile: Mobile device tests",
+    "tablet: Tablet device tests",
+    "desktop: Desktop device tests",
+    "contract: Contract testing",
+    "e2e: End-to-end tests",
+    "unit: Unit tests",
+    "functional: Functional tests",
+    "accessibility: Accessibility tests",
+    "visual: Visual regression tests",
+    "security: Security tests",
+    "data_driven: Data-driven tests",
+    "parallel: Tests that can run in parallel",
+    "sequential: Tests that must run sequentially",
+    "critical: Critical business functionality",
+    "high: High priority tests",
+    "medium: Medium priority tests",
+    "low: Low priority tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::UserWarning:selenium",
+    "ignore::UserWarning:urllib3",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "venv", "env"]
+skips = ["B101", "B601"]

@@ -1,0 +1,94 @@
+[
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/graphql",
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "query": "query { users { id firstName lastName email } }"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": {
+          "users": [
+            {
+              "id": "1",
+              "firstName": "John",
+              "lastName": "Doe",
+              "email": "john.doe@example.com"
+            },
+            {
+              "id": "2",
+              "firstName": "Jane",
+              "lastName": "Smith",
+              "email": "jane.smith@example.com"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/graphql",
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "query": "mutation CreateUser($input: UserInput!) { createUser(input: $input) { id firstName lastName email } }"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": {
+          "createUser": {
+            "id": "999",
+            "firstName": "{{jsonPath request.body '$.variables.input.firstName'}}",
+            "lastName": "{{jsonPath request.body '$.variables.input.lastName'}}",
+            "email": "{{jsonPath request.body '$.variables.input.email'}}"
+          }
+        }
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/graphql",
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "query": "query GetUser($id: ID!) { user(id: $id) { id firstName lastName email } }"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": {
+          "user": {
+            "id": "{{jsonPath request.body '$.variables.id'}}",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@example.com"
+          }
+        }
+      }
+    }
+  }
+]

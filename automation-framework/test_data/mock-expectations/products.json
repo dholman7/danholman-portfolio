@@ -1,0 +1,112 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/products"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "products": [
+          {
+            "id": 1,
+            "name": "Test Product 1",
+            "description": "A test product for integration testing",
+            "price": 29.99,
+            "category": "Electronics",
+            "sku": "TEST-001",
+            "in_stock": true,
+            "quantity": 100
+          },
+          {
+            "id": 2,
+            "name": "Test Product 2",
+            "description": "Another test product for integration testing",
+            "price": 49.99,
+            "category": "Clothing",
+            "sku": "TEST-002",
+            "in_stock": true,
+            "quantity": 50
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/products",
+      "headers": {
+        "Content-Type": ["application/json"]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 201,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "id": 999,
+        "name": "{{jsonPath request.body '$.name'}}",
+        "description": "{{jsonPath request.body '$.description'}}",
+        "price": "{{jsonPath request.body '$.price'}}",
+        "category": "{{jsonPath request.body '$.category'}}",
+        "sku": "{{jsonPath request.body '$.sku'}}",
+        "in_stock": "{{jsonPath request.body '$.in_stock'}}",
+        "quantity": "{{jsonPath request.body '$.quantity'}}",
+        "created_at": "{{now 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''}}"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/products/[0-9]+"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "id": "{{regexExtract request.path '\\/api\\/products\\/([0-9]+)'}}",
+        "name": "Test Product 1",
+        "description": "A test product for integration testing",
+        "price": 29.99,
+        "category": "Electronics",
+        "sku": "TEST-001",
+        "in_stock": true,
+        "quantity": 100
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "PATCH",
+      "path": "/api/products/[0-9]+",
+      "headers": {
+        "Content-Type": ["application/json"]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "id": "{{regexExtract request.path '\\/api\\/products\\/([0-9]+)'}}",
+        "name": "Test Product 1",
+        "description": "A test product for integration testing",
+        "price": "{{jsonPath request.body '$.price'}}",
+        "category": "Electronics",
+        "sku": "TEST-001",
+        "in_stock": "{{jsonPath request.body '$.in_stock'}}",
+        "quantity": 100,
+        "updated_at": "{{now 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''}}"
+      }
+    }
+  }
+]

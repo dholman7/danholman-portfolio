@@ -1,0 +1,107 @@
+# Core testing framework
+pytest>=7.4.0
+pytest-html>=3.2.0
+pytest-cov>=4.1.0
+pytest-xdist>=3.3.0
+pytest-mock>=3.11.1
+pytest-timeout>=2.1.0
+pytest-rerunfailures>=12.0
+pytest-json-report>=1.5.0
+pytest-html>=3.2.0
+pytest-metadata>=3.0.0
+
+# Web automation
+selenium>=4.15.0
+webdriver-manager>=4.0.1
+
+# API testing
+requests>=2.31.0
+httpx>=0.25.0
+responses>=0.23.0
+
+# Data generation and factories
+faker>=19.6.0
+factory-boy>=3.3.0
+
+# Data handling
+pydantic>=2.4.0
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Configuration and environment
+python-dotenv>=1.0.0
+pydantic-settings>=2.0.0
+pyyaml>=6.0.1
+
+# Logging and reporting
+structlog>=23.1.0
+# allure-pytest>=2.15.0  # Temporarily disabled due to Python 3.11 compatibility issues
+
+# Database testing
+sqlalchemy>=2.0.0
+alembic>=1.12.0
+psycopg2-binary>=2.9.7
+pymongo>=4.5.0
+
+# Performance testing
+locust>=2.17.0
+pytest-benchmark>=4.0.0
+
+# Security testing
+bandit>=1.7.5
+safety>=2.3.5
+
+# Code quality
+black>=23.9.0
+isort>=5.12.0
+flake8>=6.1.0
+mypy>=1.6.0
+ruff>=0.0.292
+
+# Utilities
+click>=8.1.7
+rich>=13.6.0
+tqdm>=4.66.0
+python-dateutil>=2.8.2
+
+# Cloud and infrastructure
+boto3>=1.28.0
+botocore>=1.31.0
+moto>=4.2.0
+
+# GraphQL testing
+gql>=3.4.0
+graphql-core>=3.2.3
+
+# Contract testing
+pact-python>=2.0.0
+
+# Visual testing
+# pytest-playwright>=0.4.0  # Temporarily disabled due to --browser argument conflict
+pytest-splinter>=3.3.0
+
+# Mobile testing
+appium-python-client>=3.1.0
+
+# Accessibility testing
+# pytest-axe>=1.0.0  # Temporarily disabled due to --browser argument conflict with pytest-playwright
+
+# Parallel execution
+pytest-parallel>=0.1.0
+
+# Test data management
+pytest-datadir>=1.4.0
+pytest-datafiles>=3.0.0
+
+# Monitoring and observability
+datadog>=0.48.0
+newrelic>=8.8.0
+
+# Development tools
+pre-commit>=3.4.0
+tox>=4.11.0
+nox>=2023.8.25
+
+# Documentation
+sphinx>=7.1.0
+sphinx-rtd-theme>=1.3.0

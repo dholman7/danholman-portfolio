@@ -1,0 +1,106 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/users"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "users": [
+          {
+            "id": 1,
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john.doe@example.com",
+            "phone": "+1234567890"
+          },
+          {
+            "id": 2,
+            "first_name": "Jane",
+            "last_name": "Smith",
+            "email": "jane.smith@example.com",
+            "phone": "+1234567891"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/users",
+      "headers": {
+        "Content-Type": ["application/json"]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 201,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "id": 999,
+        "first_name": "{{jsonPath request.body '$.first_name'}}",
+        "last_name": "{{jsonPath request.body '$.last_name'}}",
+        "email": "{{jsonPath request.body '$.email'}}",
+        "phone": "{{jsonPath request.body '$.phone'}}",
+        "created_at": "{{now 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''}}"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/users/[0-9]+"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "id": "{{regexExtract request.path '\\/api\\/users\\/([0-9]+)'}}",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "+1234567890"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "PUT",
+      "path": "/api/users/[0-9]+",
+      "headers": {
+        "Content-Type": ["application/json"]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "id": "{{regexExtract request.path '\\/api\\/users\\/([0-9]+)'}}",
+        "first_name": "{{jsonPath request.body '$.first_name'}}",
+        "last_name": "{{jsonPath request.body '$.last_name'}}",
+        "email": "{{jsonPath request.body '$.email'}}",
+        "phone": "{{jsonPath request.body '$.phone'}}",
+        "updated_at": "{{now 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''}}"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "DELETE",
+      "path": "/api/users/[0-9]+"
+    },
+    "httpResponse": {
+      "statusCode": 204
+    }
+  }
+]

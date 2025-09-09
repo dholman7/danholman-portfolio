@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  # Mock API service for integration tests
+  mock-api:
+    image: mockserver/mockserver:latest
+    container_name: automation-mock-api
+    ports:
+      - "1080:1080"
+    environment:
+      MOCKSERVER_SERVER_PORT: 1080
+      MOCKSERVER_LOG_LEVEL: INFO
+    volumes:
+      - ./test_data/mock-expectations:/opt/mockserver/expectations
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1080/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Test database for integration tests
+  test-db:
+    image: postgres:15-alpine
+    container_name: automation-test-db
+    environment:
+      POSTGRES_DB: test_automation
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - test-db-data:/var/lib/postgresql/data
+      - ./test_data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d test_automation"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for caching tests
+  test-redis:
+    image: redis:7-alpine
+    container_name: automation-test-redis
+    ports:
+      - "6380:6379"
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Test runner - only for integration tests
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: automation-test-runner
+    depends_on:
+      mock-api:
+        condition: service_healthy
+      test-db:
+        condition: service_healthy
+      test-redis:
+        condition: service_healthy
+    environment:
+      # Test environment configuration
+      TEST_ENVIRONMENT: docker
+      API_BASE_URL: http://mock-api:1080
+      DATABASE_URL: postgresql://test_user:test_password@test-db:5432/test_automation
+      REDIS_URL: redis://test-redis:6379
+      # Browser configuration for headless testing
+      BROWSER: chrome
+      HEADLESS: "true"
+      # Test configuration
+      PYTEST_TIMEOUT: 300
+      PYTEST_MAX_FAIL: 5
+    volumes:
+      - ./reports:/app/reports
+      - ./logs:/app/logs
+      - ./test_data:/app/test_data
+    networks:
+      - test-network
+    command: ["pytest", "tests/integration/", "-v", "--tb=short", "--html=reports/docker-integration-report.html", "--self-contained-html"]
+
+  # Development test runner with interactive shell
+  test-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: automation-test-dev
+    depends_on:
+      mock-api:
+        condition: service_healthy
+      test-db:
+        condition: service_healthy
+      test-redis:
+        condition: service_healthy
+    environment:
+      TEST_ENVIRONMENT: docker
+      API_BASE_URL: http://mock-api:1080
+      DATABASE_URL: postgresql://test_user:test_password@test-db:5432/test_automation
+      REDIS_URL: redis://test-redis:6379
+      BROWSER: chrome
+      HEADLESS: "false"
+    volumes:
+      - .:/app
+      - ./reports:/app/reports
+      - ./logs:/app/logs
+      - ./test_data:/app/test_data
+    networks:
+      - test-network
+    stdin_open: true
+    tty: true
+    command: ["/bin/bash"]
+
+volumes:
+  test-db-data:
+
+networks:
+  test-network:
+    driver: bridge
