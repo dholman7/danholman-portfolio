@@ -1,0 +1,13 @@
+def test_create_user_success():
+    """Test successful user creation."""
+    user_data = {
+        "username": "testuser",
+        "email": "test@example.com",
+        "password": "securepassword"
+    }
+    
+    response = create_user(user_data)
+    
+    assert response.status_code == 201
+    assert response.json()["username"] == "testuser"
+    assert "id" in response.json()

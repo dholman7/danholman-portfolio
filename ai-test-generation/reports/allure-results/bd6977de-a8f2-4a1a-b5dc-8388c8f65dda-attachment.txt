@@ -1,0 +1,10 @@
+Generate test cases for the following API endpoint:
+- Method: POST
+- Endpoint: /api/users
+- Description: Create a new user account
+
+Requirements:
+- Include positive and negative test cases
+- Use pytest framework
+- Include proper assertions
+- Add docstrings
