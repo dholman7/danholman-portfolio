@@ -1,0 +1,42 @@
+---
+description: Main project overview and general guidelines for Dan Holman's portfolio
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Dan Holman Portfolio - Main Project Rules
+
+## Project Overview
+This is Dan Holman's professional portfolio showcasing expertise in test automation, cloud-native development, and AI-powered testing. The repository demonstrates 13+ years of experience as a Senior Software Developer in Test (SDET) & Automation Architect.
+
+### Key Modules:
+- **automation-framework/**: Python/TypeScript test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing
+- **cloud-native-app/**: AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code
+- **ai-test-generation/**: AI-powered test generation using LLMs for automated test case creation
+- **case-studies/**: Technical writeups on contract testing, test data scaling, and CI/CD quality gates
+- **ai-private/**: Private submodule containing sensitive prompts, agent rules, and datasets
+
+### Tech Stack:
+- **Languages**: Python 3.13, TypeScript, Java, GraphQL
+- **Cloud & DevOps**: AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog
+- **Testing Tools**: Playwright, Pact, Cypress, Selenium, Appium, Postman, Axe
+- **Other**: ReactJS, Docker, SQL, Git
+
+## General Guidelines
+- Follow the principle of "public by default, private by exception" - keep sensitive content in `ai-private/`
+- All code should be production-ready and demonstrate best practices
+- Prioritize maintainability, testability, and documentation
+- Use semantic versioning and conventional commits
+- Include comprehensive README files for each module
+- Follow security-first principles for all implementations
+- Optimize for developer experience and CI/CD integration
+
+## File Organization
+- Use kebab-case for directory and file names
+- Group related files in appropriate directories
+- Use index files for clean imports
+- Implement proper module boundaries
+- Use consistent naming conventions across the project
+- Organize tests alongside source code
+- Use proper configuration file organization
+- Implement proper documentation structure

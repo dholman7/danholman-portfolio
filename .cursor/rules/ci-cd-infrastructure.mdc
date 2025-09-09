@@ -1,0 +1,57 @@
+---
+description: CI/CD, infrastructure, and deployment rules
+globs: ["**/.github/workflows/**", "**/Dockerfile", "**/docker-compose.yml", "**/Makefile", "**/cdk.json", "**/infra/**"]
+alwaysApply: true
+---
+
+# CI/CD and Infrastructure Rules
+
+## GitHub Actions Workflows
+- All modules must have corresponding GitHub Actions workflows
+- Use path-based triggers to run only relevant jobs
+- Implement proper caching for dependencies (npm, pip)
+- Use matrix strategies for multi-version testing
+- Implement proper error handling and rollback strategies
+- Use proper secret management (GitHub Secrets, AWS Secrets Manager)
+- Include linting, testing, and security scanning in all pipelines
+- Use Makefiles for common development tasks
+
+## AWS Infrastructure
+- All AWS resources must be defined as Infrastructure as Code
+- Use CloudFormation or CDK for AWS deployments
+- Implement proper secret management (AWS Secrets Manager)
+- Use proper IAM roles and policies
+- Implement proper monitoring and logging
+- Use proper backup and recovery strategies
+- Implement proper security scanning
+- Use proper cost optimization strategies
+
+## Docker and Containerization
+- Use multi-stage builds for production images
+- Implement proper layer caching
+- Use proper base images (alpine for smaller size)
+- Implement proper security scanning
+- Use proper health checks
+- Implement proper logging strategies
+- Use proper resource limits
+- Implement proper networking
+
+## Monitoring and Observability
+- Implement proper logging strategies
+- Use structured logging with consistent formats
+- Implement proper metrics collection
+- Use proper alerting strategies
+- Implement proper tracing
+- Use proper error tracking
+- Implement proper performance monitoring
+- Use proper capacity planning
+
+## Security
+- Implement proper secret management
+- Use proper authentication and authorization
+- Implement proper input validation
+- Use proper encryption at rest and in transit
+- Implement proper security scanning
+- Use proper vulnerability management
+- Implement proper access controls
+- Follow OWASP security guidelines

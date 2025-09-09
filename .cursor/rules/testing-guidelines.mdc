@@ -1,0 +1,58 @@
+---
+description: Comprehensive testing guidelines and best practices
+globs: ["**/tests/**", "**/test_*.py", "**/*.test.ts", "**/*.spec.ts", "**/pytest.ini", "**/jest.config.*"]
+alwaysApply: true
+---
+
+# Testing Guidelines
+
+## General Testing Principles
+- Write tests that are fast, independent, repeatable, and self-validating
+- Use the Arrange-Act-Assert pattern for test structure
+- Implement proper test data management
+- Use Page Object Model for UI testing
+- Implement proper test isolation and cleanup
+- Use appropriate test doubles (mocks, stubs, fakes)
+- Implement proper test reporting and documentation
+- Use contract testing for API integration
+- Implement proper test data factories
+- Use proper test naming conventions
+- Implement proper test parallelization
+- Use proper test environment management
+- Implement proper test result analysis
+- Use proper test maintenance strategies
+- Implement proper test performance monitoring
+
+## Test Types and Organization
+- **Unit Tests**: Test individual functions/methods in isolation
+- **Component Tests**: Test components with mocked dependencies
+- **Integration Tests**: Test interactions between components
+- **End-to-End Tests**: Test complete user workflows
+- **Contract Tests**: Test API contracts between services
+- **Performance Tests**: Test system performance under load
+- **Visual Regression Tests**: Test UI changes
+- **Accessibility Tests**: Test accessibility compliance
+
+## Test Data Management
+- Use factories for generating test data
+- Implement proper test data cleanup
+- Use realistic but anonymized data
+- Implement data-driven testing where appropriate
+- Use fixtures for complex test setup
+- Implement proper test data isolation
+
+## Test Reporting
+- Use Allure for comprehensive test reporting
+- Implement proper test categorization
+- Use proper test tagging and filtering
+- Implement trend analysis and flaky test detection
+- Use proper test result visualization
+- Implement proper test failure analysis
+
+## Test Automation
+- Use appropriate testing frameworks (pytest, Jest, Playwright)
+- Implement proper test parallelization
+- Use proper test environment management
+- Implement proper test data management
+- Use proper test result reporting
+- Implement proper test maintenance strategies

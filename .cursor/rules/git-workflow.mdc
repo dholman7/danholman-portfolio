@@ -1,0 +1,56 @@
+---
+description: Git workflow, pull request, and version control rules
+globs: ["**/.gitignore", "**/CODEOWNERS", "**/.github/**"]
+alwaysApply: true
+---
+
+# Git and Version Control Rules
+
+## Git Workflow
+- **NEVER commit or push changes without explicit permission from the repository owner**
+- **NEVER push directly to main branch - always use Pull Requests**
+- **ALWAYS use the complete @pull_request_template.md for all Pull Requests**
+- Always ask for approval before making any git operations (commit, push, merge, etc.)
+- Use descriptive commit messages following conventional commit format
+- Create feature branches for significant changes
+- Request code review for all changes before merging
+- Never force push to main branch
+- Always pull latest changes before starting work
+
+## Pull Request Requirements
+- **MANDATORY**: Use the complete pull request template located at `.github/pull_request_template.md`
+- **MANDATORY**: Fill out ALL sections of the PR template completely
+- **MANDATORY**: Check all relevant checkboxes in the template
+- **MANDATORY**: Provide detailed descriptions of changes made
+- **MANDATORY**: Include test results and evidence of testing
+- **MANDATORY**: Add screenshots/demos when applicable
+- **MANDATORY**: Link related issues and provide context
+- **MANDATORY**: Complete the reviewer checklist
+- **MANDATORY**: Tag appropriate reviewers (@dholman7)
+- **MANDATORY**: Ensure all CI/CD checks pass before requesting review
+
+## Branch Protection Rules
+- Main branch is protected and requires Pull Request reviews
+- No direct pushes to main branch allowed
+- All Pull Requests must pass CI/CD checks
+- All Pull Requests must be reviewed and approved
+- All Pull Requests must use the complete template
+
+## Pull Request Workflow
+1. **Create Feature Branch**: `git checkout -b feature/description-of-change`
+2. **Make Changes**: Implement the feature/fix with proper testing
+3. **Commit Changes**: Use conventional commit format
+4. **Push Branch**: `git push origin feature/description-of-change`
+5. **Create Pull Request**: Use GitHub UI with complete template
+6. **Fill Template**: Complete ALL sections of the PR template
+7. **Request Review**: Tag @dholman7 and wait for approval
+8. **Address Feedback**: Make requested changes and update PR
+9. **Merge**: Only after approval and all checks pass
+
+## Commit Message Format
+- Use conventional commits: `type(scope): description`
+- Types: feat, fix, docs, style, refactor, test, chore
+- Use present tense: "Add feature" not "Added feature"
+- Use imperative mood: "Move cursor to..." not "Moves cursor to..."
+- Limit first line to 72 characters
+- Reference issues: "Closes #123"

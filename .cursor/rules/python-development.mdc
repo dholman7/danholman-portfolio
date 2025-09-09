@@ -1,0 +1,78 @@
+---
+description: Python 3.13 development rules and best practices
+globs: ["**/*.py", "**/pyproject.toml", "**/requirements.txt", "**/pytest.ini"]
+alwaysApply: true
+---
+
+# Python Development Rules
+
+## Python Installation
+- Use .python-version file to specify Python 3.13
+- Install with: `pyenv install $(cat .python-version)` or `asdf install python $(cat .python-version)`
+- All GitHub Actions workflows must read .python-version for setup-python action
+- All AWS CloudFormation/CDK templates must reference .python-version for Lambda runtime
+- Use virtual environments for all Python development
+- Pin dependency versions in requirements.txt or pyproject.toml
+- Use pip-tools for dependency management in complex projects
+
+## Python Development Philosophy
+- Follow PEP-20 (Zen of Python) principles
+- Write code that is self-documenting and follows the principle of least surprise
+- Prioritize readability and maintainability over cleverness
+- Use type hints extensively for better IDE support and documentation
+- Follow the "batteries included" philosophy - use standard library when possible
+- Write tests that serve as living documentation
+- Use composition over inheritance
+- Follow the single responsibility principle
+
+## Python 3.13 Language Features
+- Use Python 3.13 features: improved error messages, better typing, performance improvements
+- Leverage structural pattern matching (match/case) for complex conditionals
+- Use walrus operator (:=) judiciously for assignment expressions
+- Utilize f-strings for all string formatting
+- Use dataclasses for simple data containers
+- Implement context managers for resource management
+- Use pathlib for all file system operations
+- Implement proper __str__ and __repr__ methods
+
+## Code Style and Patterns
+- Follow PEP 8 with 88-character line limit (Black default)
+- Use Black for code formatting and isort for import sorting
+- Use Ruff for linting and code analysis
+- Implement proper docstrings following Google style
+- Use meaningful variable and function names
+- Group imports: standard library, third-party, local imports
+- Use list/dict comprehensions for simple transformations
+- Use dataclasses or Pydantic models for data validation
+- Follow the Page Object Model pattern for test automation
+
+## Error Handling
+- Use context managers for resource cleanup
+- Implement custom exception classes for domain-specific errors
+- Use try/except/else/finally blocks appropriately
+- Log exceptions with full stack traces
+- Implement proper error recovery strategies
+- Use assertions for debugging and development
+- Validate inputs at function boundaries
+- Implement proper timeout handling for external calls
+
+## Security and Logging
+- Never commit secrets or sensitive data
+- Use environment variables for configuration
+- Use secure random number generation
+- Implement proper authentication and authorization
+- Use HTTPS for all external communications
+- Use structured logging with consistent formats
+- Implement proper secret rotation strategies
+- Follow OWASP security guidelines
+
+## Performance Optimization
+- Use appropriate data structures for the use case
+- Implement proper caching strategies
+- Use generators for large datasets
+- Optimize database queries and connections
+- Implement proper connection pooling
+- Use profiling tools to identify bottlenecks
+- Implement proper memory management
+- Use appropriate algorithms for the problem domain
+- Monitor and measure performance improvements

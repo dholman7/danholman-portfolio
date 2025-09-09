@@ -1,0 +1,68 @@
+---
+description: TypeScript/Node.js development rules and best practices
+globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/package.json", "**/tsconfig.json"]
+alwaysApply: true
+---
+
+# TypeScript/Node.js Development Rules
+
+## Language Features
+- Use TypeScript for all JavaScript development
+- Leverage strict type checking and strict mode
+- Use modern ES6+ features: arrow functions, destructuring, template literals
+- Implement proper interfaces and type definitions
+- Use enums for constants and configuration
+- Leverage union types and type guards
+- Use generics for reusable components
+- Implement proper error handling with Result types
+- Use async/await instead of Promises chains
+- Leverage optional chaining and nullish coalescing
+- Use Yarn for package manager
+
+## ES6+ Specific Rules
+- Use const for immutable values, let for mutable values
+- Prefer arrow functions for short functions
+- Use template literals for string interpolation
+- Implement proper destructuring for objects and arrays
+- Use spread operator for array/object operations
+- Implement proper module imports/exports
+- Use classes with proper inheritance patterns
+- Implement proper async/await error handling
+- Use Map and Set for appropriate use cases
+- Leverage array methods: map, filter, reduce, forEach
+
+## Code Style and Patterns
+- Use ESLint and Prettier for code formatting
+- Follow Airbnb TypeScript style guide
+- Use meaningful variable and function names
+- Implement proper JSDoc comments
+- Use consistent indentation (2 spaces)
+- Group imports: Node modules, internal modules, relative imports
+- Use interfaces for object shapes
+- Implement proper error boundaries
+- Use composition over inheritance
+- Follow the single responsibility principle
+
+## Error Handling
+- Use proper TypeScript error types
+- Implement custom error classes
+- Use try/catch blocks appropriately
+- Implement proper async error handling
+- Use Result types for error handling
+- Log errors with proper context
+- Implement proper error recovery
+- Use proper timeout handling
+- Validate inputs at function boundaries
+- Implement proper error reporting
+
+## Testing and Quality
+- Use Jest for unit testing
+- Implement proper test coverage (minimum 80%)
+- Use Playwright for end-to-end testing
+- Implement proper mocking strategies
+- Use test-driven development when appropriate
+- Implement proper integration tests
+- Use contract testing with Pact
+- Implement proper performance testing
+- Use accessibility testing with Axe
+- Implement proper visual regression testing
