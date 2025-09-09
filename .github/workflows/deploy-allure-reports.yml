@@ -13,6 +13,7 @@ on:
           - automation-framework
           - ai-test-generation
           - cloud-native-app
+          - react-playwright-demo
           - all
         required: true
         default: all
@@ -40,6 +41,20 @@ jobs:
         with:
           pattern: "*-allure-report"
           path: allure-reports/
+          merge-multiple: true
+          
+      - name: Download Playwright Reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-playwright-report"
+          path: playwright-reports/
+          merge-multiple: true
+          
+      - name: Download Coverage Reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-coverage-report"
+          path: coverage-reports/
           merge-multiple: true
 
       - name: Setup Pages
@@ -78,6 +93,35 @@ jobs:
             echo "<!DOCTYPE html><html><head><title>Allure Reports - Cloud Native App</title></head><body><h1>Allure Test Reports - Cloud Native App</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/cloud-native-app/index.html
           fi
           
+          if [ -d "allure-reports/react-playwright-demo-allure-report" ]; then
+            echo "Copying react-playwright-demo report..."
+            cp -r allure-reports/react-playwright-demo-allure-report gh-pages-deploy/react-playwright-demo
+          else
+            echo "Creating placeholder for react-playwright-demo..."
+            mkdir -p gh-pages-deploy/react-playwright-demo
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - React Playwright Demo</title></head><body><h1>Allure Test Reports - React Playwright Demo</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/react-playwright-demo/index.html
+          fi
+          
+          # Copy Playwright reports
+          if [ -d "playwright-reports" ]; then
+            echo "Copying Playwright reports..."
+            cp -r playwright-reports gh-pages-deploy/playwright-reports
+          else
+            echo "Creating placeholder for Playwright reports..."
+            mkdir -p gh-pages-deploy/playwright-reports
+            echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/playwright-reports/index.html
+          fi
+          
+          # Copy Coverage reports
+          if [ -d "coverage-reports" ]; then
+            echo "Copying Coverage reports..."
+            cp -r coverage-reports gh-pages-deploy/coverage-reports
+          else
+            echo "Creating placeholder for Coverage reports..."
+            mkdir -p gh-pages-deploy/coverage-reports
+            echo "<!DOCTYPE html><html><head><title>Coverage Reports</title></head><body><h1>Code Coverage Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/coverage-reports/index.html
+          fi
+          
           # Create main index page
           cat > gh-pages-deploy/index.html << 'EOF'
           <!DOCTYPE html>
@@ -114,6 +158,28 @@ jobs:
                       <h2>Cloud Native App</h2>
                       <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
                       <a href="cloud-native-app/">View Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>React Playwright Demo</h2>
+                      <p>Modern React/TypeScript frontend with comprehensive E2E testing and form validation.</p>
+                      <a href="react-playwright-demo/">View Report</a>
+                  </div>
+                  
+                  <hr>
+                  
+                  <h2>Additional Test Reports</h2>
+                  
+                  <div class="module">
+                      <h3>Playwright HTML Reports</h3>
+                      <p>Interactive test results with screenshots, videos, and traces for E2E testing.</p>
+                      <a href="playwright-reports/">View Playwright Reports</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h3>Coverage Reports</h3>
+                      <p>Code coverage analysis with HTML visualization showing test coverage across all modules.</p>
+                      <a href="coverage-reports/">View Coverage Reports</a>
                   </div>
                   
                   <hr>
