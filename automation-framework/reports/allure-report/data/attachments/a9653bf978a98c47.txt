@@ -1,0 +1,1 @@
+Input: 5, Result: 10, Expected: 10

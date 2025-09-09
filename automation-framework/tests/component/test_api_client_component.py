@@ -45,11 +45,13 @@ class TestAPIClientComponent:
 
         # Verify request was made correctly
         mock_request.assert_called_once_with(
-            'GET',
-            '/api/users/1',
+            method='GET',
+            url='/api/users/1',
+            data=None,
+            params=None,
             headers=api_client.headers,
             timeout=api_client.timeout,
-            params=None
+            verify=True
         )
 
         # Verify response
@@ -75,11 +77,13 @@ class TestAPIClientComponent:
 
         # Verify request was made correctly
         mock_request.assert_called_once_with(
-            'POST',
-            '/api/users',
+            method='POST',
+            url='/api/users',
+            data='{"name": "New User", "email": "new@example.com"}',
+            params=None,
             headers=api_client.headers,
             timeout=api_client.timeout,
-            json=test_data
+            verify=True
         )
 
         # Verify response
@@ -104,11 +108,13 @@ class TestAPIClientComponent:
 
         # Verify request was made correctly
         mock_request.assert_called_once_with(
-            'PUT',
-            '/api/users/1',
+            method='PUT',
+            url='/api/users/1',
+            data='{"name": "Updated User", "email": "updated@example.com"}',
+            params=None,
             headers=api_client.headers,
             timeout=api_client.timeout,
-            json=test_data
+            verify=True
         )
 
         # Verify response
@@ -130,10 +136,13 @@ class TestAPIClientComponent:
 
         # Verify request was made correctly
         mock_request.assert_called_once_with(
-            'DELETE',
-            '/api/users/1',
+            method='DELETE',
+            url='/api/users/1',
+            data=None,
+            params=None,
             headers=api_client.headers,
-            timeout=api_client.timeout
+            timeout=api_client.timeout,
+            verify=True
         )
 
         # Verify response
@@ -161,11 +170,13 @@ class TestAPIClientComponent:
         expected_headers['Authorization'] = 'Bearer test-token'
         
         mock_request.assert_called_once_with(
-            'GET',
-            '/api/users/1',
+            method='GET',
+            url='/api/users/1',
+            data=None,
+            params=None,
             headers=expected_headers,
             timeout=api_client.timeout,
-            params=None
+            verify=True
         )
 
         assert response.status_code == 200

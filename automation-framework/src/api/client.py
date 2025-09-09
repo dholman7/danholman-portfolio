@@ -95,6 +95,11 @@ class APIClient:
             "User-Agent": "Pytest-Automation-Framework/1.0.0"
         })
     
+    @property
+    def headers(self) -> Dict[str, str]:
+        """Get current headers."""
+        return dict(self.session.headers)
+    
     def _make_request(
         self,
         method: str,
@@ -118,7 +123,12 @@ class APIClient:
         Returns:
             APIResponse instance
         """
-        url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
+        # Handle URL construction properly
+        if self.base_url:
+            url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
+        else:
+            # If no base_url, use endpoint as-is (for relative URLs in tests)
+            url = endpoint
         timeout = timeout or self.timeout
         
         # Prepare headers
@@ -172,11 +182,16 @@ class APIClient:
             response_time = time.time() - start_time
             logger.error(f"Request failed: {method.upper()} {url} - {e}")
             
+            # Normalize error message for timeout
+            error_msg = str(e)
+            if "timeout" in error_msg.lower() or "timed out" in error_msg.lower():
+                error_msg = "Request timeout"
+            
             # Return error response
             return APIResponse(
                 status_code=0,
                 headers={},
-                data={"error": str(e)},
+                data={"error": error_msg},
                 response_time=response_time,
                 url=url,
                 method=method.upper(),
@@ -264,7 +279,12 @@ class APIClient:
         Returns:
             APIResponse instance
         """
-        url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
+        # Handle URL construction properly
+        if self.base_url:
+            url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
+        else:
+            # If no base_url, use endpoint as-is (for relative URLs in tests)
+            url = endpoint
         timeout = timeout or self.timeout
         
         # Prepare files
@@ -333,6 +353,20 @@ class APIClient:
         self.auth_token = token
         self.session.headers.update({"Authorization": f"Bearer {token}"})
         logger.debug("Authentication token updated")
+    
+    def set_auth(self, auth_type: str, token: str) -> None:
+        """Set authentication with type and token."""
+        if auth_type.lower() == "bearer":
+            self.set_auth_token(token)
+        elif auth_type.lower() == "api_key":
+            self.set_api_key(token)
+        else:
+            raise ValueError(f"Unsupported auth type: {auth_type}")
+    
+    def set_headers(self, headers: Dict[str, str]) -> None:
+        """Set custom headers."""
+        self.session.headers.update(headers)
+        logger.debug(f"Headers updated: {headers}")
     
     def set_api_key(self, key: str) -> None:
         """Set API key."""

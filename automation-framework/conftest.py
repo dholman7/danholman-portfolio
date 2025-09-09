@@ -51,7 +51,9 @@ def test_dataset(test_data_manager: TestDataManager) -> Dict[str, Any]:
 @pytest.fixture
 def api_client() -> APIClient:
     """Provide API client instance."""
-    client = APIClient()
+    # Use test base URL from environment or default
+    base_url = os.getenv("TEST_API_BASE_URL", "https://jsonplaceholder.typicode.com")
+    client = APIClient(base_url=base_url)
     yield client
     client.close()
 

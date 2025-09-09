@@ -497,6 +497,48 @@ pytest -m "not expect_failure"      # Run all tests except expected failures
 pytest -m "not docker_integration"  # Run all tests except Docker integration tests
 ```
 
+## 🧪 Local Testing with Allure Reports
+
+This framework includes comprehensive local testing capabilities with Allure reporting and history support for trend analysis.
+
+### **Quick Start**
+
+#### Option 1: Native Allure (requires Java)
+```bash
+# 1. Setup Allure commandline
+make allure-setup
+
+# 2. Run tests with Allure reports
+make test-allure-local
+
+# 3. Serve reports locally with history
+make allure-serve-local
+```
+
+#### Option 2: Docker-based Allure (no Java required)
+```bash
+# 1. Run tests with Allure reports
+make test-allure-local
+
+# 2. Serve reports using Docker
+make allure-docker-serve
+```
+
+### **Available Commands**
+
+| Command | Description |
+|---------|-------------|
+| `make allure-setup` | Install Allure commandline for local development |
+| `make test-allure-local` | Run all tests with Allure reports and history |
+| `make test-allure-quick` | Quick test run (smoke tests only) with Allure |
+| `make allure-serve-local` | Serve Allure reports with history support |
+| `make allure-serve-single MODULE=<name>` | Serve reports for specific module |
+| `make allure-history` | Copy Allure history for trend analysis |
+| `make allure-clean` | Clean all Allure reports and history |
+| `make allure-docker-serve` | Serve Allure reports using Docker (no Java required) |
+| `make allure-docker-generate` | Generate Allure reports using Docker |
+| `make allure-docker-clean` | Clean Docker-based Allure containers |
+
 ## 🚀 Running Tests
 
 ### Basic Test Execution

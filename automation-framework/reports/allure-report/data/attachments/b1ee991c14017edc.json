@@ -1,0 +1,939 @@
+{
+  "users": [
+    {
+      "first_name": "Deborah",
+      "last_name": "James",
+      "email": "michael69@example.com",
+      "phone": "001-547-928-1723x947",
+      "username": "ylyons",
+      "password": "(5YXwR@n^ol*",
+      "date_of_birth": "1967-06-19",
+      "address": {
+        "street": "4693 Brian Mountains Suite 959",
+        "city": "Dawsonstad",
+        "state": "Colorado",
+        "zip_code": "09764",
+        "country": "Lebanon"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "Asia/Calcutta",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": false
+        },
+        "theme": "auto"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Christopher",
+      "last_name": "Mora",
+      "email": "myerslisa@example.org",
+      "phone": "(414)397-9274x82444",
+      "username": "bethdiaz",
+      "password": "$w6RpUjZDDh5",
+      "date_of_birth": "1980-02-20",
+      "address": {
+        "street": "4244 Montgomery Drives",
+        "city": "Ruizport",
+        "state": "South Carolina",
+        "zip_code": "08838",
+        "country": "Guatemala"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "Africa/Monrovia",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "auto"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Spencer",
+      "last_name": "Terry",
+      "email": "gatesmarcus@example.net",
+      "phone": "+1-789-549-6024x93613",
+      "username": "hayesmatthew",
+      "password": "Q_j*7gZqQC60",
+      "date_of_birth": "1983-05-05",
+      "address": {
+        "street": "41582 Martin Mill",
+        "city": "West Jasminehaven",
+        "state": "Missouri",
+        "zip_code": "73042",
+        "country": "Bermuda"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "America/Atikokan",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "auto"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Jessica",
+      "last_name": "Palmer",
+      "email": "wigginsbrandon@example.net",
+      "phone": "(216)848-1697x26645",
+      "username": "ablack",
+      "password": "@O1aEenxSi7Z",
+      "date_of_birth": "1947-07-14",
+      "address": {
+        "street": "1174 Jones Garden",
+        "city": "Crawfordland",
+        "state": "Delaware",
+        "zip_code": "52055",
+        "country": "Cyprus"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "America/Tijuana",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Mark",
+      "last_name": "Williams",
+      "email": "alan15@example.org",
+      "phone": "(369)888-8608x2088",
+      "username": "tmontes",
+      "password": "#3Gq0RZo&0i#",
+      "date_of_birth": "2002-03-19",
+      "address": {
+        "street": "028 Brian Walk Suite 582",
+        "city": "Mahoneyfurt",
+        "state": "Alaska",
+        "zip_code": "13329",
+        "country": "Cameroon"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "America/Antigua",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": false
+        },
+        "theme": "light"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Jennifer",
+      "last_name": "Rivera",
+      "email": "hinesmarcus@example.com",
+      "phone": "001-817-462-2021x63783",
+      "username": "qnelson",
+      "password": "$BH4fx2Dxv1Y",
+      "date_of_birth": "1968-03-17",
+      "address": {
+        "street": "790 Shepard Brook",
+        "city": "Colinside",
+        "state": "New Jersey",
+        "zip_code": "35737",
+        "country": "Togo"
+      },
+      "preferences": {
+        "language": "fr",
+        "timezone": "America/Panama",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "push": false
+        },
+        "theme": "auto"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Rachael",
+      "last_name": "Schwartz",
+      "email": "rperkins@example.net",
+      "phone": "814.235.9221x9265",
+      "username": "yporter",
+      "password": "&!2m6NounrgO",
+      "date_of_birth": "1957-10-28",
+      "address": {
+        "street": "0312 Montoya Courts",
+        "city": "South Briana",
+        "state": "Florida",
+        "zip_code": "66147",
+        "country": "Poland"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "Asia/Tashkent",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "light"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Joseph",
+      "last_name": "Fernandez",
+      "email": "zfowler@example.net",
+      "phone": "467-494-4167",
+      "username": "thomasnicholas",
+      "password": "wy!+D1QeUvG6",
+      "date_of_birth": "1992-08-11",
+      "address": {
+        "street": "730 Bridges Stream Apt. 670",
+        "city": "West Kevin",
+        "state": "Wisconsin",
+        "zip_code": "73070",
+        "country": "French Guiana"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "Europe/Lisbon",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Robert",
+      "last_name": "Obrien",
+      "email": "beth49@example.org",
+      "phone": "(397)476-0819x3428",
+      "username": "andrew16",
+      "password": "+5b(jM2Tp7ZG",
+      "date_of_birth": "1985-09-06",
+      "address": {
+        "street": "01629 Harding Estates",
+        "city": "West Derek",
+        "state": "Missouri",
+        "zip_code": "49020",
+        "country": "Morocco"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "Europe/Ljubljana",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": false
+        },
+        "theme": "light"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Samantha",
+      "last_name": "Hunt",
+      "email": "madelinemorris@example.net",
+      "phone": "001-594-623-0569x3860",
+      "username": "jsuarez",
+      "password": "lm4VMMaa@XaQ",
+      "date_of_birth": "1962-09-18",
+      "address": {
+        "street": "265 Jerry Islands",
+        "city": "New Andreachester",
+        "state": "New Mexico",
+        "zip_code": "45490",
+        "country": "Japan"
+      },
+      "preferences": {
+        "language": "fr",
+        "timezone": "America/El_Salvador",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    }
+  ],
+  "products": [
+    {
+      "name": "Sharable actuating Local Area Network",
+      "description": "Herself surface term story because smile. Really decision situation different it without. Dinner cup fight exactly doctor.",
+      "price": 763.34,
+      "category": "Toys",
+      "sku": "LZK-1956-ZUB",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Newton, Flynn and Mitchell",
+        "model": "Model-409",
+        "color": "Green",
+        "size": "L",
+        "weight": 45.82,
+        "dimensions": {
+          "length": 23.8,
+          "width": 79.3,
+          "height": 39.4
+        }
+      }
+    },
+    {
+      "name": "Synergized upward-trending solution",
+      "description": "Difference official standard can. Almost laugh job account stay physical. Home election until seek of.",
+      "price": 675.07,
+      "category": "Beauty",
+      "sku": "IVM-7760-BIB",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Ashley, King and Moore",
+        "model": "Model-583",
+        "color": "Black",
+        "size": "S",
+        "weight": 43.63,
+        "dimensions": {
+          "length": 38.3,
+          "width": 87.5,
+          "height": 78.9
+        }
+      }
+    },
+    {
+      "name": "Cross-platform systematic attitude",
+      "description": "Remember without find fire fly behavior. Meet miss customer join bring room candidate. Stock network develop option.",
+      "price": 944.35,
+      "category": "Health",
+      "sku": "HZZ-4969-AQQ",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Boyer-Lambert",
+        "model": "Model-816",
+        "color": "White",
+        "size": "L",
+        "weight": 33.73,
+        "dimensions": {
+          "length": 94.1,
+          "width": 98.4,
+          "height": 26.3
+        }
+      }
+    },
+    {
+      "name": "Multi-channeled executive frame",
+      "description": "Rock pretty behavior note player across me. Direction tough positive her benefit everything focus. Them onto take determine head. Close herself factor career phone among choice.",
+      "price": 910.99,
+      "category": "Food & Beverage",
+      "sku": "SEX-8714-GRU",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Williamson-Cooper",
+        "model": "Model-412",
+        "color": "Red",
+        "size": "XS",
+        "weight": 43.16,
+        "dimensions": {
+          "length": 34.0,
+          "width": 5.5,
+          "height": 3.8
+        }
+      }
+    },
+    {
+      "name": "Business-focused global process improvement",
+      "description": "Surface day character important. Chair factor to million letter animal check.",
+      "price": 542.28,
+      "category": "Beauty",
+      "sku": "KNW-3015-FAG",
+      "in_stock": true,
+      "quantity": 14,
+      "attributes": {
+        "brand": "Fitzpatrick Inc",
+        "model": "Model-712",
+        "color": "Yellow",
+        "size": "XXL",
+        "weight": 35.37,
+        "dimensions": {
+          "length": 17.0,
+          "width": 35.0,
+          "height": 23.6
+        }
+      }
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "ORD-62654397",
+      "user_id": "michael69@example.com",
+      "products": [
+        {
+          "id": "YCI-9042-KIL",
+          "name": "Advanced context-sensitive contingency",
+          "price": 643.69,
+          "quantity": 5
+        },
+        {
+          "id": "PVW-7049-UAC",
+          "name": "Grass-roots transitional forecast",
+          "price": 687.17,
+          "quantity": 3
+        },
+        {
+          "id": "QON-7418-PJM",
+          "name": "Universal uniform orchestration",
+          "price": 653.09,
+          "quantity": 2
+        },
+        {
+          "id": "ITZ-5628-PGU",
+          "name": "Re-engineered composite neural-net",
+          "price": 96.45,
+          "quantity": 2
+        },
+        {
+          "id": "ZKP-3947-OYM",
+          "name": "Visionary web-enabled instruction set",
+          "price": 181.13,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 6960.17,
+      "status": "pending",
+      "shipping_address": {
+        "street": "3594 Andrew Road Suite 422",
+        "city": "South Michellemouth",
+        "state": "North Carolina",
+        "zip_code": "46395",
+        "country": "Panama"
+      },
+      "billing_address": {
+        "street": "3594 Andrew Road Suite 422",
+        "city": "South Michellemouth",
+        "state": "North Carolina",
+        "zip_code": "46395",
+        "country": "Panama"
+      },
+      "payment_method": "credit_card",
+      "created_at": "2025-09-06 17:19:34",
+      "updated_at": "2025-09-10 17:19:34"
+    },
+    {
+      "order_id": "ORD-29942640",
+      "user_id": "myerslisa@example.org",
+      "products": [
+        {
+          "id": "UTA-1260-FIZ",
+          "name": "Intuitive global hardware",
+          "price": 978.14,
+          "quantity": 1
+        },
+        {
+          "id": "MNO-1170-TIP",
+          "name": "Multi-channeled systemic standardization",
+          "price": 475.14,
+          "quantity": 2
+        },
+        {
+          "id": "TGA-0179-GSV",
+          "name": "Focused bifurcated definition",
+          "price": 120.09,
+          "quantity": 1
+        },
+        {
+          "id": "GJV-6547-XNS",
+          "name": "Object-based directional migration",
+          "price": 472.45,
+          "quantity": 4
+        },
+        {
+          "id": "ENV-6771-NBT",
+          "name": "Distributed real-time customer loyalty",
+          "price": 965.85,
+          "quantity": 3
+        }
+      ],
+      "total_amount": 6835.86,
+      "status": "shipped",
+      "shipping_address": {
+        "street": "459 Keith Tunnel Apt. 538",
+        "city": "Andreaville",
+        "state": "Ohio",
+        "zip_code": "03822",
+        "country": "Denmark"
+      },
+      "billing_address": {
+        "street": "459 Keith Tunnel Apt. 538",
+        "city": "Andreaville",
+        "state": "Ohio",
+        "zip_code": "03822",
+        "country": "Denmark"
+      },
+      "payment_method": "apple_pay",
+      "created_at": "2025-08-23 21:23:59",
+      "updated_at": "2025-08-25 21:23:59"
+    },
+    {
+      "order_id": "ORD-62263875",
+      "user_id": "gatesmarcus@example.net",
+      "products": [
+        {
+          "id": "HNS-4364-VMA",
+          "name": "Implemented content-based synergy",
+          "price": 314.15,
+          "quantity": 5
+        },
+        {
+          "id": "IRB-4552-MNQ",
+          "name": "Fundamental maximized secured line",
+          "price": 154.96,
+          "quantity": 2
+        },
+        {
+          "id": "AVV-1221-BMJ",
+          "name": "Grass-roots dynamic website",
+          "price": 19.87,
+          "quantity": 5
+        },
+        {
+          "id": "XDK-2973-RHS",
+          "name": "Triple-buffered zero administration groupware",
+          "price": 107.72,
+          "quantity": 1
+        },
+        {
+          "id": "DFU-0924-TBP",
+          "name": "Stand-alone needs-based knowledge user",
+          "price": 444.77,
+          "quantity": 5
+        }
+      ],
+      "total_amount": 4311.59,
+      "status": "delivered",
+      "shipping_address": {
+        "street": "57117 Dwayne Shore Apt. 271",
+        "city": "East Joyceberg",
+        "state": "Maryland",
+        "zip_code": "85190",
+        "country": "Niger"
+      },
+      "billing_address": {
+        "street": "57117 Dwayne Shore Apt. 271",
+        "city": "East Joyceberg",
+        "state": "Maryland",
+        "zip_code": "85190",
+        "country": "Niger"
+      },
+      "payment_method": "google_pay",
+      "created_at": "2025-08-26 11:19:10",
+      "updated_at": "2025-09-02 11:19:10"
+    },
+    {
+      "order_id": "ORD-99050678",
+      "user_id": "wigginsbrandon@example.net",
+      "products": [
+        {
+          "id": "BIW-3929-XBS",
+          "name": "User-centric logistical functionalities",
+          "price": 700.27,
+          "quantity": 2
+        },
+        {
+          "id": "CHJ-5266-TXO",
+          "name": "Devolved bifurcated hub",
+          "price": 243.39,
+          "quantity": 1
+        },
+        {
+          "id": "CZF-2309-ZWF",
+          "name": "User-centric secondary help-desk",
+          "price": 208.54,
+          "quantity": 2
+        },
+        {
+          "id": "DIY-4957-GKL",
+          "name": "Integrated global model",
+          "price": 971.89,
+          "quantity": 1
+        },
+        {
+          "id": "UOD-3126-RAZ",
+          "name": "Cross-platform next generation leverage",
+          "price": 120.78,
+          "quantity": 3
+        }
+      ],
+      "total_amount": 3395.24,
+      "status": "pending",
+      "shipping_address": {
+        "street": "77329 Hall Ramp",
+        "city": "West Amandaside",
+        "state": "Nebraska",
+        "zip_code": "88930",
+        "country": "Gabon"
+      },
+      "billing_address": {
+        "street": "77329 Hall Ramp",
+        "city": "West Amandaside",
+        "state": "Nebraska",
+        "zip_code": "88930",
+        "country": "Gabon"
+      },
+      "payment_method": "debit_card",
+      "created_at": "2025-09-04 11:03:03",
+      "updated_at": "2025-09-06 11:03:03"
+    },
+    {
+      "order_id": "ORD-60666341",
+      "user_id": "alan15@example.org",
+      "products": [
+        {
+          "id": "AEL-1842-ZXT",
+          "name": "De-engineered client-driven benchmark",
+          "price": 129.97,
+          "quantity": 5
+        },
+        {
+          "id": "NUS-0480-VND",
+          "name": "Centralized radical capacity",
+          "price": 56.88,
+          "quantity": 5
+        },
+        {
+          "id": "BJC-8322-AKX",
+          "name": "Versatile 4thgeneration utilization",
+          "price": 591.46,
+          "quantity": 4
+        },
+        {
+          "id": "SWU-6677-XHJ",
+          "name": "Organized systematic knowledgebase",
+          "price": 23.08,
+          "quantity": 1
+        },
+        {
+          "id": "SZC-0266-EZI",
+          "name": "Multi-layered dedicated model",
+          "price": 975.85,
+          "quantity": 3
+        }
+      ],
+      "total_amount": 6250.72,
+      "status": "delivered",
+      "shipping_address": {
+        "street": "00062 Rodriguez Loaf",
+        "city": "Salazarstad",
+        "state": "Michigan",
+        "zip_code": "47166",
+        "country": "Saint Helena"
+      },
+      "billing_address": {
+        "street": "00062 Rodriguez Loaf",
+        "city": "Salazarstad",
+        "state": "Michigan",
+        "zip_code": "47166",
+        "country": "Saint Helena"
+      },
+      "payment_method": "credit_card",
+      "created_at": "2025-08-12 12:09:36",
+      "updated_at": "2025-08-13 12:09:36"
+    },
+    {
+      "order_id": "ORD-71717905",
+      "user_id": "hinesmarcus@example.com",
+      "products": [
+        {
+          "id": "ATN-0100-RAG",
+          "name": "Profound cohesive standardization",
+          "price": 446.72,
+          "quantity": 1
+        },
+        {
+          "id": "FJQ-8986-FHV",
+          "name": "Mandatory zero-defect complexity",
+          "price": 534.43,
+          "quantity": 4
+        },
+        {
+          "id": "RQP-0083-EOE",
+          "name": "Enterprise-wide bi-directional database",
+          "price": 682.59,
+          "quantity": 4
+        },
+        {
+          "id": "CCQ-1377-VPO",
+          "name": "Multi-channeled zero administration extranet",
+          "price": 601.43,
+          "quantity": 1
+        },
+        {
+          "id": "XLV-3430-BXJ",
+          "name": "Sharable content-based solution",
+          "price": 855.22,
+          "quantity": 5
+        }
+      ],
+      "total_amount": 10192.33,
+      "status": "cancelled",
+      "shipping_address": {
+        "street": "829 Stephanie Mission Apt. 923",
+        "city": "South Tiffany",
+        "state": "Idaho",
+        "zip_code": "44966",
+        "country": "Israel"
+      },
+      "billing_address": {
+        "street": "829 Stephanie Mission Apt. 923",
+        "city": "South Tiffany",
+        "state": "Idaho",
+        "zip_code": "44966",
+        "country": "Israel"
+      },
+      "payment_method": "google_pay",
+      "created_at": "2025-09-04 02:07:10",
+      "updated_at": "2025-09-09 02:07:10"
+    },
+    {
+      "order_id": "ORD-88558680",
+      "user_id": "rperkins@example.net",
+      "products": [
+        {
+          "id": "VHA-7594-TYT",
+          "name": "Reduced dynamic time-frame",
+          "price": 361.56,
+          "quantity": 1
+        },
+        {
+          "id": "AFE-5839-CUG",
+          "name": "Extended incremental framework",
+          "price": 632.02,
+          "quantity": 2
+        },
+        {
+          "id": "UXG-7006-RLG",
+          "name": "Centralized 6thgeneration hardware",
+          "price": 823.7,
+          "quantity": 4
+        },
+        {
+          "id": "NIM-2750-LAG",
+          "name": "Profit-focused secondary firmware",
+          "price": 134.87,
+          "quantity": 2
+        },
+        {
+          "id": "TDD-0204-KBQ",
+          "name": "Programmable leadingedge monitoring",
+          "price": 537.33,
+          "quantity": 4
+        }
+      ],
+      "total_amount": 7339.46,
+      "status": "processing",
+      "shipping_address": {
+        "street": "644 Charles Loaf Apt. 611",
+        "city": "New Jennifer",
+        "state": "Rhode Island",
+        "zip_code": "31014",
+        "country": "France"
+      },
+      "billing_address": {
+        "street": "644 Charles Loaf Apt. 611",
+        "city": "New Jennifer",
+        "state": "Rhode Island",
+        "zip_code": "31014",
+        "country": "France"
+      },
+      "payment_method": "apple_pay",
+      "created_at": "2025-08-19 12:32:21",
+      "updated_at": "2025-08-19 12:32:21"
+    },
+    {
+      "order_id": "ORD-51293647",
+      "user_id": "zfowler@example.net",
+      "products": [
+        {
+          "id": "TWE-5592-WZB",
+          "name": "Innovative solution-oriented complexity",
+          "price": 801.23,
+          "quantity": 2
+        },
+        {
+          "id": "DEW-0784-SUN",
+          "name": "Optional interactive encoding",
+          "price": 696.61,
+          "quantity": 5
+        },
+        {
+          "id": "QDG-1708-YEK",
+          "name": "Virtual object-oriented data-warehouse",
+          "price": 440.47,
+          "quantity": 3
+        },
+        {
+          "id": "THC-9116-BUR",
+          "name": "Future-proofed dedicated installation",
+          "price": 289.15,
+          "quantity": 2
+        },
+        {
+          "id": "KAY-9146-UFN",
+          "name": "Profit-focused discrete function",
+          "price": 578.77,
+          "quantity": 2
+        }
+      ],
+      "total_amount": 8142.76,
+      "status": "pending",
+      "shipping_address": {
+        "street": "4049 Williams Bypass Suite 620",
+        "city": "Freemanberg",
+        "state": "New Mexico",
+        "zip_code": "02150",
+        "country": "American Samoa"
+      },
+      "billing_address": {
+        "street": "4049 Williams Bypass Suite 620",
+        "city": "Freemanberg",
+        "state": "New Mexico",
+        "zip_code": "02150",
+        "country": "American Samoa"
+      },
+      "payment_method": "debit_card",
+      "created_at": "2025-08-29 23:06:14",
+      "updated_at": "2025-08-31 23:06:14"
+    },
+    {
+      "order_id": "ORD-78857202",
+      "user_id": "beth49@example.org",
+      "products": [
+        {
+          "id": "WQV-5918-STV",
+          "name": "Switchable grid-enabled info-mediaries",
+          "price": 341.66,
+          "quantity": 2
+        },
+        {
+          "id": "DRG-7611-HAQ",
+          "name": "Future-proofed intangible core",
+          "price": 755.74,
+          "quantity": 1
+        },
+        {
+          "id": "KGQ-8986-UZG",
+          "name": "Diverse coherent access",
+          "price": 524.35,
+          "quantity": 2
+        },
+        {
+          "id": "ZEA-5995-THG",
+          "name": "Innovative exuding hardware",
+          "price": 527.57,
+          "quantity": 5
+        },
+        {
+          "id": "CCL-9274-TLY",
+          "name": "Cross-platform analyzing budgetary management",
+          "price": 436.56,
+          "quantity": 2
+        }
+      ],
+      "total_amount": 5998.73,
+      "status": "delivered",
+      "shipping_address": {
+        "street": "7149 Pugh Road Apt. 917",
+        "city": "Kathychester",
+        "state": "Delaware",
+        "zip_code": "89811",
+        "country": "Honduras"
+      },
+      "billing_address": {
+        "street": "7149 Pugh Road Apt. 917",
+        "city": "Kathychester",
+        "state": "Delaware",
+        "zip_code": "89811",
+        "country": "Honduras"
+      },
+      "payment_method": "debit_card",
+      "created_at": "2025-09-01 23:06:18",
+      "updated_at": "2025-09-02 23:06:18"
+    },
+    {
+      "order_id": "ORD-64598658",
+      "user_id": "madelinemorris@example.net",
+      "products": [
+        {
+          "id": "IPF-1116-LYT",
+          "name": "Public-key upward-trending forecast",
+          "price": 473.74,
+          "quantity": 2
+        },
+        {
+          "id": "GHY-1893-HJN",
+          "name": "Innovative 4thgeneration access",
+          "price": 264.26,
+          "quantity": 5
+        },
+        {
+          "id": "VBQ-4538-ZHE",
+          "name": "Universal 3rdgeneration hub",
+          "price": 287.61,
+          "quantity": 5
+        },
+        {
+          "id": "EEY-0825-XLK",
+          "name": "Reduced national collaboration",
+          "price": 133.75,
+          "quantity": 4
+        },
+        {
+          "id": "OSD-5077-NKF",
+          "name": "Inverse fault-tolerant success",
+          "price": 283.62,
+          "quantity": 2
+        }
+      ],
+      "total_amount": 4809.07,
+      "status": "returned",
+      "shipping_address": {
+        "street": "6092 Fleming Falls",
+        "city": "Robertview",
+        "state": "South Carolina",
+        "zip_code": "19551",
+        "country": "Benin"
+      },
+      "billing_address": {
+        "street": "6092 Fleming Falls",
+        "city": "Robertview",
+        "state": "South Carolina",
+        "zip_code": "19551",
+        "country": "Benin"
+      },
+      "payment_method": "credit_card",
+      "created_at": "2025-08-26 11:42:09",
+      "updated_at": "2025-08-28 11:42:09"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2025-09-09T16:29:59.907170",
+    "user_count": 10,
+    "product_count": 5,
+    "order_count": 10
+  }
+}

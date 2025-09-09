@@ -1,0 +1,1 @@
+Logging methods tested successfully

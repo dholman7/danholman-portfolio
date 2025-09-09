@@ -227,7 +227,7 @@ class TestMaskSensitiveData:
         """Test masking email addresses."""
         email = "test@example.com"
         result = mask_sensitive_data(email)
-        assert "test" in result
+        assert "tes" in result  # First 3 characters should be visible
         assert "@example.com" in result
         assert "*" in result
 

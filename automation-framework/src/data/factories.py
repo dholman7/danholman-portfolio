@@ -16,6 +16,9 @@ fake_en = Faker('en_US')
 fake_es = Faker('es_ES')
 fake_fr = Faker('fr_FR')
 
+# Default fake instance for backward compatibility
+fake = fake_en
+
 
 @dataclass
 class UserData:
@@ -30,6 +33,21 @@ class UserData:
     address: Dict[str, str] = field(default_factory=dict)
     preferences: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        return {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email,
+            'phone': self.phone,
+            'username': self.username,
+            'password': self.password,
+            'date_of_birth': self.date_of_birth,
+            'address': self.address,
+            'preferences': self.preferences,
+            'metadata': self.metadata
+        }
 
 
 @dataclass
@@ -43,6 +61,19 @@ class ProductData:
     in_stock: bool = True
     quantity: int = 0
     attributes: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        return {
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'category': self.category,
+            'sku': self.sku,
+            'in_stock': self.in_stock,
+            'quantity': self.quantity,
+            'attributes': self.attributes
+        }
 
 
 @dataclass
@@ -58,6 +89,23 @@ class OrderData:
     payment_method: str
     created_at: str
     updated_at: str
+    user: Optional[Any] = None
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        return {
+            'order_id': self.order_id,
+            'user_id': self.user_id,
+            'products': self.products,
+            'total_amount': self.total_amount,
+            'status': self.status,
+            'shipping_address': self.shipping_address,
+            'billing_address': self.billing_address,
+            'payment_method': self.payment_method,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+            'user': self.user
+        }
 
 
 class UserFactory:
@@ -68,7 +116,15 @@ class UserFactory:
         locale: str = "en_US",
         include_address: bool = True,
         include_preferences: bool = True,
-        custom_fields: Optional[Dict[str, Any]] = None
+        custom_fields: Optional[Dict[str, Any]] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        email: Optional[str] = None,
+        phone: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        date_of_birth: Optional[str] = None,
+        **kwargs
     ) -> UserData:
         """
         Create a single user with realistic data.
@@ -82,16 +138,17 @@ class UserFactory:
         Returns:
             UserData instance
         """
-        fake = Faker(locale)
+        # Use global fake instance if available (for testing), otherwise create new one
+        fake = fake_en if locale == "en_US" else Faker(locale)
         
-        # Generate basic user data
-        first_name = fake.first_name()
-        last_name = fake.last_name()
-        email = fake.email()
-        phone = fake.phone_number()
-        username = fake.user_name()
-        password = fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
-        date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=80).strftime("%Y-%m-%d")
+        # Generate basic user data (use provided values or generate new ones)
+        first_name = first_name or fake.first_name()
+        last_name = last_name or fake.last_name()
+        email = email or fake.email()
+        phone = phone or fake.phone_number()
+        username = username or fake.user_name()
+        password = password or fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
+        date_of_birth = date_of_birth or fake.date_of_birth(minimum_age=18, maximum_age=80).strftime("%Y-%m-%d")
         
         user_data = UserData(
             first_name=first_name,
@@ -213,7 +270,13 @@ class ProductFactory:
     def create_product(
         category: Optional[str] = None,
         price_range: tuple = (10.0, 1000.0),
-        in_stock: Optional[bool] = None
+        in_stock: Optional[bool] = None,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        price: Optional[float] = None,
+        sku: Optional[str] = None,
+        quantity: Optional[int] = None,
+        **kwargs
     ) -> ProductData:
         """
         Create a single product with realistic data.
@@ -228,14 +291,14 @@ class ProductFactory:
         """
         fake = fake_en
         
-        # Generate product data
-        name = fake.catch_phrase()
-        description = fake.text(max_nb_chars=200)
-        price = round(random.uniform(*price_range), 2)
+        # Generate product data (use provided values or generate new ones)
+        name = name or fake.catch_phrase()
+        description = description or fake.text(max_nb_chars=200)
+        price = price or round(random.uniform(*price_range), 2)
         category = category or random.choice(ProductFactory.PRODUCT_CATEGORIES)
-        sku = fake.bothify(text="???-####-???", letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        sku = sku or fake.bothify(text="???-####-???", letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ")
         in_stock = in_stock if in_stock is not None else random.choice([True, False])
-        quantity = random.randint(0, 100) if in_stock else 0
+        quantity = quantity or (random.randint(0, 100) if in_stock else 0)
         
         # Generate attributes based on category
         attributes = ProductFactory._generate_attributes(category)
@@ -333,10 +396,11 @@ class OrderFactory:
     
     @staticmethod
     def create_order(
-        user_id: str,
-        products: List[Dict[str, Any]],
+        user_id: Optional[str] = None,
+        products: Optional[List[Dict[str, Any]]] = None,
         status: Optional[str] = None,
-        payment_method: Optional[str] = None
+        payment_method: Optional[str] = None,
+        **kwargs
     ) -> OrderData:
         """
         Create a single order with realistic data.
@@ -354,6 +418,8 @@ class OrderFactory:
         
         # Generate order data
         order_id = fake.bothify(text="ORD-########")
+        user_id = user_id or fake.uuid4()
+        products = products or [{"id": fake.uuid4(), "name": fake.word(), "price": round(random.uniform(10, 100), 2), "quantity": random.randint(1, 5)}]
         status = status or random.choice(OrderFactory.ORDER_STATUSES)
         payment_method = payment_method or random.choice(OrderFactory.PAYMENT_METHODS)
         
@@ -393,7 +459,7 @@ class OrderFactory:
     
     @staticmethod
     def create_orders(
-        user_ids: List[str],
+        count: int,
         products_per_order: int = 3,
         status: Optional[str] = None,
         payment_method: Optional[str] = None
@@ -402,7 +468,7 @@ class OrderFactory:
         Create multiple orders.
         
         Args:
-            user_ids: List of user IDs
+            count: Number of orders to create
             products_per_order: Number of products per order
             status: Order status (random if None)
             payment_method: Payment method (random if None)
@@ -410,9 +476,11 @@ class OrderFactory:
         Returns:
             List of OrderData instances
         """
+        fake = fake_en
         orders = []
         
-        for user_id in user_ids:
+        for i in range(count):
+            user_id = fake.uuid4()
             # Generate products for this order
             products = []
             for _ in range(products_per_order):
@@ -473,7 +541,7 @@ class TestDataManager:
         
         # Generate orders
         self.orders = OrderFactory.create_orders(
-            user_ids=user_ids[:order_count],  # Limit to available users
+            count=order_count,
             products_per_order=random.randint(1, 5)
         )
         
