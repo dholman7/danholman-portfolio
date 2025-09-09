@@ -1,0 +1,49 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - img "Tech Logo" [ref=e7]
+    - heading "Create Account" [level=1] [ref=e8]
+    - paragraph [ref=e9]: Sign up for a new account
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]: First Name
+        - textbox "John" [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e17]: Last Name
+        - textbox "Doe" [ref=e19]
+    - generic [ref=e20]:
+      - generic [ref=e21]: Email Address
+      - generic [ref=e22]:
+        - img [ref=e23]
+        - textbox "john@example.com" [ref=e26]
+    - generic [ref=e27]:
+      - generic [ref=e28]: Password
+      - generic [ref=e29]:
+        - img [ref=e30]
+        - textbox "Enter your password" [ref=e33]: password123
+        - button [ref=e34]:
+          - img [ref=e35]
+    - generic [ref=e38]:
+      - generic [ref=e39]: Confirm Password
+      - generic [ref=e40]:
+        - img [ref=e41]
+        - textbox "Confirm your password" [active] [ref=e44]: different123
+        - button [ref=e45]:
+          - img [ref=e46]
+    - generic [ref=e49]:
+      - checkbox [ref=e51]
+      - generic [ref=e53]:
+        - text: I agree to the
+        - link "Terms and Conditions" [ref=e54] [cursor=pointer]:
+          - /url: "#"
+        - text: and
+        - link "Privacy Policy" [ref=e55] [cursor=pointer]:
+          - /url: "#"
+    - button "Create Account" [ref=e56]
+  - paragraph [ref=e58]:
+    - text: Already have an account?
+    - button "Sign in" [ref=e59]
+```
