@@ -111,7 +111,7 @@
 
 <!-- Attach a GIF that describes how you feel about what you wrote or implemented. Feel free to include additional context! -->
 
-![](https://media.giphy.com/media/your-gif-here.gif)
+![](LINK_TO_GIPHY_IMAGE)
 
 ---
 

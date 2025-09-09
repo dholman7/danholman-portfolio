@@ -91,6 +91,17 @@ jobs:
           path: ai-test-generation/reports/allure-report/
           retention-days: 30
 
+      - name: Create placeholder reports if missing
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Create placeholder directories if they don't exist
+          mkdir -p automation-framework/reports/allure-report
+          mkdir -p ai-test-generation/reports/allure-report
+          
+          # Create placeholder index files
+          echo "<!DOCTYPE html><html><head><title>Allure Reports</title></head><body><h1>Allure Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > automation-framework/reports/allure-report/index.html
+          echo "<!DOCTYPE html><html><head><title>Allure Reports</title></head><body><h1>Allure Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > ai-test-generation/reports/allure-report/index.html
+
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
@@ -101,6 +112,7 @@ jobs:
             ai-test-generation/reports/allure-report
           destination_dir: allure-reports
           keep_files: true
+          allow_empty_commit: true
 
   matrix-test-report:
     name: Matrix Test Report (Plans)
