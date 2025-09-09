@@ -35,17 +35,22 @@ jobs:
             automation-framework/pyproject.toml
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f pyproject.toml ]; then pip install .; fi
+          if [ -f pyproject.toml ]; then pip install -e ".[test]"; fi
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
-      - run: |
-          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then pytest -q || true; else echo 'no tests'; fi
-      - name: Generate Allure Results
+      - name: Run Tests with Allure Results
         if: always()
         run: |
           if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
-            pytest --alluredir=reports/allure-results || true
+            # Create reports directory
+            mkdir -p reports/allure-results
+            # Run tests with Allure reporting
+            pytest --alluredir=reports/allure-results -v || true
+            # List generated files for debugging
+            ls -la reports/allure-results/ || echo "No Allure results generated"
+          else 
+            echo 'no tests found'
           fi
       - name: Upload Allure Results
         if: always()
@@ -72,17 +77,22 @@ jobs:
             ai-test-generation/pyproject.toml
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f pyproject.toml ]; then pip install .; fi
+          if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
-      - run: |
-          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then pytest -q || true; else echo 'no tests'; fi
-      - name: Generate Allure Results
+      - name: Run Tests with Allure Results
         if: always()
         run: |
           if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
-            pytest --alluredir=reports/allure-results || true
+            # Create reports directory
+            mkdir -p reports/allure-results
+            # Run tests with Allure reporting
+            pytest --alluredir=reports/allure-results -v || true
+            # List generated files for debugging
+            ls -la reports/allure-results/ || echo "No Allure results generated"
+          else 
+            echo 'no tests found'
           fi
       - name: Upload Allure Results
         if: always()
