@@ -1,0 +1,6 @@
+{
+  "framework": "pytest",
+  "language": "python",
+  "test_type": "api",
+  "output_dir": "generated_tests"
+}
