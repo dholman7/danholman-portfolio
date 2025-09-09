@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Test Defects",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*AssertionError.*|.*TimeoutException.*|.*GenerationError.*"
+  },
+  {
+    "name": "AI Generation Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*GenerationError.*|.*AIError.*|.*ModelError.*"
+  },
+  {
+    "name": "Template Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*TemplateError.*|.*JinjaError.*|.*RenderingError.*"
+  },
+  {
+    "name": "Configuration Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*ConfigError.*|.*ValidationError.*|.*SetupError.*"
+  },
+  {
+    "name": "File System Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*FileError.*|.*IOError.*|.*PathError.*"
+  },
+  {
+    "name": "YAML Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*YAMLError.*|.*ParseError.*|.*SchemaError.*"
+  },
+  {
+    "name": "Prompt Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*PromptError.*|.*TemplateError.*|.*RenderingError.*"
+  },
+  {
+    "name": "Validation Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*ValidationError.*|.*SchemaError.*|.*FormatError.*"
+  },
+  {
+    "name": "Integration Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*IntegrationError.*|.*ConnectionError.*|.*APIError.*"
+  },
+  {
+    "name": "Performance Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*PerformanceError.*|.*TimeoutError.*|.*SlowGeneration.*"
+  }
+]

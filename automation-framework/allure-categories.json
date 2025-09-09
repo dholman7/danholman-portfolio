@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Test Defects",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*AssertionError.*|.*TimeoutException.*|.*ElementNotFound.*"
+  },
+  {
+    "name": "Product Defects",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*HTTPError.*|.*ConnectionError.*|.*APIError.*"
+  },
+  {
+    "name": "Test Infrastructure",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*WebDriverException.*|.*SeleniumException.*|.*BrowserException.*"
+  },
+  {
+    "name": "Flaky Tests",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*flaky.*|.*intermittent.*|.*unstable.*"
+  },
+  {
+    "name": "Environment Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*EnvironmentError.*|.*ConfigurationError.*|.*SetupError.*"
+  },
+  {
+    "name": "Data Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*DataError.*|.*ValidationError.*|.*TestDataError.*"
+  },
+  {
+    "name": "Performance Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*PerformanceError.*|.*TimeoutError.*|.*SlowTest.*"
+  },
+  {
+    "name": "Security Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*SecurityError.*|.*AuthenticationError.*|.*AuthorizationError.*"
+  },
+  {
+    "name": "API Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*APIError.*|.*HTTPError.*|.*RequestError.*"
+  },
+  {
+    "name": "UI Issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*UIError.*|.*ElementError.*|.*InteractionError.*"
+  }
+]

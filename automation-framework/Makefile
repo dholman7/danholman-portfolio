@@ -135,10 +135,76 @@ coverage-xml: ## Generate XML coverage report
 report: ## Generate comprehensive test reports
 	. .venv/bin/activate && pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --cov=src --cov-report=html
 
-report-allure: ## Generate Allure reports
+# Allure Reporting
+allure-results: ## Generate Allure test results
 	. .venv/bin/activate && pytest --alluredir=reports/allure-results
 	@echo "Allure results generated in reports/allure-results/"
-	@echo "Run 'allure serve reports/allure-results' to view the report"
+
+allure-generate: allure-results ## Generate Allure HTML report
+	@if command -v allure >/dev/null 2>&1; then \
+		allure generate reports/allure-results --clean -o reports/allure-report; \
+		echo "Allure report generated in reports/allure-report/"; \
+	else \
+		echo "Allure command not found. Install with: npm install -g allure-commandline"; \
+		echo "Or use Docker: docker run -v $(PWD)/reports/allure-results:/app/allure-results -v $(PWD)/reports/allure-report:/app/allure-report frankescobar/allure-docker-service:latest allure generate /app/allure-results /app/allure-report"; \
+	fi
+
+allure-serve: allure-results ## Serve Allure report locally
+	@if command -v allure >/dev/null 2>&1; then \
+		allure serve reports/allure-results; \
+	else \
+		echo "Allure command not found. Install with: npm install -g allure-commandline"; \
+		echo "Or use Docker: docker run -p 5050:5050 -v $(PWD)/reports/allure-results:/app/allure-results frankescobar/allure-docker-service:latest"; \
+	fi
+
+allure-open: ## Open Allure report in browser (requires allure-generate first)
+	@if [ -d "reports/allure-report" ]; then \
+		@if command -v allure >/dev/null 2>&1; then \
+			allure open reports/allure-report; \
+		else \
+			echo "Opening report in browser..."; \
+			python -m http.server 8000 -d reports/allure-report; \
+		fi; \
+	else \
+		echo "Allure report not found. Run 'make allure-generate' first."; \
+	fi
+
+allure-history: ## Copy Allure history for trend analysis
+	@if [ -d "reports/allure-report/history" ]; then \
+		cp -r reports/allure-report/history/* reports/allure-results/history/ 2>/dev/null || true; \
+		echo "Allure history copied for trend analysis"; \
+	else \
+		echo "No previous Allure history found"; \
+	fi
+
+allure-clean: ## Clean Allure reports and results
+	rm -rf reports/allure-results/
+	rm -rf reports/allure-report/
+	@echo "Allure reports cleaned"
+
+allure-docker-serve: allure-results ## Serve Allure report using Docker
+	docker run -p 5050:5050 -v $(PWD)/reports/allure-results:/app/allure-results frankescobar/allure-docker-service:latest
+
+allure-docker-generate: allure-results ## Generate Allure report using Docker
+	docker run -v $(PWD)/reports/allure-results:/app/allure-results -v $(PWD)/reports/allure-report:/app/allure-report frankescobar/allure-docker-service:latest allure generate /app/allure-results /app/allure-report
+
+# Enhanced reporting with Allure
+report-allure: allure-generate ## Generate comprehensive Allure report
+	@echo "Allure report generated in reports/allure-report/"
+	@echo "Run 'make allure-serve' to view the report locally"
+
+report-comprehensive: ## Generate all types of reports (HTML, JUnit, Coverage, Allure)
+	. .venv/bin/activate && pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --cov=src --cov-report=html --cov-report=xml --alluredir=reports/allure-results
+	@if command -v allure >/dev/null 2>&1; then \
+		allure generate reports/allure-results --clean -o reports/allure-report; \
+		echo "Comprehensive reports generated:"; \
+		echo "  - HTML: reports/report.html"; \
+		echo "  - JUnit: reports/junit.xml"; \
+		echo "  - Coverage: htmlcov/"; \
+		echo "  - Allure: reports/allure-report/"; \
+	else \
+		echo "Allure not available, but other reports generated"; \
+	fi
 
 # Data Management
 generate-test-data: ## Generate test data using factories

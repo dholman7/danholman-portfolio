@@ -1,0 +1,146 @@
+name: Allure Report Generation
+
+on:
+  workflow_run:
+    workflows: ["ci"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      module:
+        type: choice
+        options:
+          - automation-framework
+          - ai-test-generation
+          - all
+        required: true
+        default: all
+        description: Module to generate Allure report for
+
+jobs:
+  generate-allure-report:
+    name: Generate Allure Report
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Allure Commandline
+        run: |
+          npm install -g allure-commandline
+
+      - name: Download Allure Results - Automation Framework
+        if: github.event.inputs.module == 'all' || github.event.inputs.module == 'automation-framework' || github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          name: automation-framework-allure-results
+          path: automation-framework/reports/allure-results
+        continue-on-error: true
+
+      - name: Download Allure Results - AI Test Generation
+        if: github.event.inputs.module == 'all' || github.event.inputs.module == 'ai-test-generation' || github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-test-generation-allure-results
+          path: ai-test-generation/reports/allure-results
+        continue-on-error: true
+
+      - name: Generate Allure Report - Automation Framework
+        if: github.event.inputs.module == 'all' || github.event.inputs.module == 'automation-framework' || github.event_name == 'workflow_run'
+        working-directory: automation-framework
+        run: |
+          if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
+            echo "Generating Allure report for automation-framework..."
+            allure generate reports/allure-results --clean -o reports/allure-report
+            echo "Allure report generated successfully"
+          else
+            echo "No Allure results found for automation-framework"
+          fi
+
+      - name: Generate Allure Report - AI Test Generation
+        if: github.event.inputs.module == 'all' || github.event.inputs.module == 'ai-test-generation' || github.event_name == 'workflow_run'
+        working-directory: ai-test-generation
+        run: |
+          if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
+            echo "Generating Allure report for ai-test-generation..."
+            allure generate reports/allure-results --clean -o reports/allure-report
+            echo "Allure report generated successfully"
+          else
+            echo "No Allure results found for ai-test-generation"
+          fi
+
+      - name: Upload Allure Report - Automation Framework
+        if: github.event.inputs.module == 'all' || github.event.inputs.module == 'automation-framework' || github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-framework-allure-report
+          path: automation-framework/reports/allure-report/
+          retention-days: 30
+
+      - name: Upload Allure Report - AI Test Generation
+        if: github.event.inputs.module == 'all' || github.event.inputs.module == 'ai-test-generation' || github.event_name == 'workflow_run'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-test-generation-allure-report
+          path: ai-test-generation/reports/allure-report/
+          retention-days: 30
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: |
+            automation-framework/reports/allure-report
+            ai-test-generation/reports/allure-report
+          destination_dir: allure-reports
+          keep_files: true
+
+  matrix-test-report:
+    name: Matrix Test Report (Plans)
+    runs-on: ubuntu-latest
+    if: github.event.inputs.module == 'all' || github.event_name == 'workflow_run'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Allure Commandline
+        run: |
+          npm install -g allure-commandline
+
+      - name: Create Matrix Test Report
+        run: |
+          echo "# Allure Test Reports" > allure-matrix-report.md
+          echo "" >> allure-matrix-report.md
+          echo "## Available Reports" >> allure-matrix-report.md
+          echo "" >> allure-matrix-report.md
+          echo "### Automation Framework" >> allure-matrix-report.md
+          echo "- [Latest Report](https://danholman.github.io/danholman-portfolio/allure-reports/automation-framework/)" >> allure-matrix-report.md
+          echo "" >> allure-matrix-report.md
+          echo "### AI Test Generation" >> allure-matrix-report.md
+          echo "- [Latest Report](https://danholman.github.io/danholman-portfolio/allure-reports/ai-test-generation/)" >> allure-matrix-report.md
+          echo "" >> allure-matrix-report.md
+          echo "## Usage" >> allure-matrix-report.md
+          echo "" >> allure-matrix-report.md
+          echo "These reports are automatically generated from CI/CD pipeline test results." >> allure-matrix-report.md
+          echo "Reports are updated on every successful build of the main branch." >> allure-matrix-report.md
+
+      - name: Upload Matrix Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-matrix-report
+          path: allure-matrix-report.md
+          retention-days: 30
