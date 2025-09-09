@@ -25,6 +25,15 @@ This is Dan Holman's professional portfolio showcasing expertise in test automat
 - Follow security-first principles for all implementations
 - Optimize for developer experience and CI/CD integration
 
+## Git and Version Control Rules
+- **NEVER commit or push changes without explicit permission from the repository owner**
+- Always ask for approval before making any git operations (commit, push, merge, etc.)
+- Use descriptive commit messages following conventional commit format
+- Create feature branches for significant changes
+- Request code review for all changes before merging
+- Never force push to main branch
+- Always pull latest changes before starting work
+
 ## Python Installation
 - Use .python-version file to specify Python 3.13
 - Install with: `pyenv install $(cat .python-version)` or `asdf install python $(cat .python-version)`

@@ -6,14 +6,14 @@ on:
     paths:
       - 'automation-framework/**'
       - 'cloud-native-app/**'
-      - 'ai-testing/**'
+      - 'ai-test-generation/**'
       - '.github/workflows/**'
       - 'Makefile'
   pull_request:
     paths:
       - 'automation-framework/**'
       - 'cloud-native-app/**'
-      - 'ai-testing/**'
+      - 'ai-test-generation/**'
       - '.github/workflows/**'
       - 'Makefile'
 
@@ -38,12 +38,12 @@ jobs:
       - run: |
           if npm run | grep -q 'test'; then npm test --silent; else echo 'no test script'; fi
 
-  ai-testing:
-    name: AI Testing (Python)
+  ai-test-generation:
+    name: AI Test Generation (Python)
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ai-testing
+        working-directory: ai-test-generation
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -51,8 +51,8 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
           cache-dependency-path: |
-            ai-testing/requirements.txt
-            ai-testing/pyproject.toml
+            ai-test-generation/requirements.txt
+            ai-test-generation/pyproject.toml
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install .; fi

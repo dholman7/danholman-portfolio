@@ -29,10 +29,11 @@ An AWS serverless demo app with:
 ---
 
 ### 🔹 [AI Test Generation](./ai-test-generation)
-Prototype scripts using LLMs to:
-- Generate test cases from API schemas
-- Reduce manual authoring effort
-- Accelerate coverage for unit, integration, and contract tests
+Comprehensive AI-powered testing framework featuring:
+- LLM-driven test case generation from API schemas
+- GitHub Actions matrix strategies for high-scale parallel testing
+- Dynamic test matrix generation and artifact merging
+- Production-ready CI/CD patterns for test automation
 
 ---
 
@@ -46,10 +47,34 @@ Technical writeups and lessons learned:
 
 ## 🔧 Tech Stack
 
-- **Languages:** Python, TypeScript, Java, GraphQL  
+- **Languages:** Python, TypeScript, GraphQL  
 - **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
-- **Testing Tools:** Playwright, Pact, Cypress, Selenium, Appium, Postman, Axe  
-- **Other:** ReactJS, Docker, SQL, Git
+- **Testing Tools:** pytest, Selenium, Pact, Jest, requests, faker  
+- **Other:** Docker, SQL, Git
+
+## 🚀 CI/CD Pipeline
+
+This portfolio demonstrates production-ready CI/CD practices across all modules:
+
+### **Automated Testing & Quality Gates**
+- **Multi-language Testing**: Python (pytest) and TypeScript (Jest) test suites
+- **Parallel Test Execution**: GitHub Actions matrix strategies for high-scale testing
+- **Code Quality**: Automated linting, formatting, type checking, and security scanning
+- **Coverage Reporting**: Comprehensive test coverage tracking and reporting
+
+### **Deployment Automation**
+- **Infrastructure as Code**: AWS CDK and CloudFormation for reproducible deployments
+- **Multi-Environment**: Automated deployments to dev, staging, and production
+- **Security Scanning**: Automated dependency and vulnerability scanning
+- **Rollback Capabilities**: Safe deployment practices with rollback strategies
+
+### **CI/CD Features Demonstrated**
+- **Path-based Triggers**: Efficient CI runs based on changed modules
+- **Artifact Management**: Build artifact collection and distribution
+- **Environment Management**: Proper secret and configuration management
+- **Monitoring Integration**: Test result aggregation and reporting
+
+📖 **[Detailed CI/CD Documentation](./docs/cicd-overview.md)** - Comprehensive overview of all CI/CD practices and patterns
 
 ---
 
@@ -65,7 +90,7 @@ Technical writeups and lessons learned:
 ### What are agent rules?
 Agent rules constrain and guide model behavior (tone, safety, allowed tools).
 - Public rules live in `ai-test-generation/agents/*.public.yaml`.
-- Private rules (full SOPs, tools) live in `ai-private/agents/*.private.yaml`.
+
 
 ### Using code and docs as context
 - Put code/docs in the prompt or reference files that your runner loads.
@@ -89,7 +114,7 @@ Agent rules constrain and guide model behavior (tone, safety, allowed tools).
 
 
 ## Working in Cursor
-- See `docs/cursor-demo.md` for a guided demo using repo-wide context.
+- See the comprehensive documentation in each module for detailed usage examples.
 - Keep changes mock-only; no API calls are required.
 
 ### Cursor Rules Configuration

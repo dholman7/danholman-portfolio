@@ -2,6 +2,34 @@
 
 A scalable, production-ready test automation framework built with pytest, demonstrating best practices for test automation at scale.
 
+## 🚀 CI/CD Pipeline
+
+This framework includes a comprehensive CI/CD pipeline demonstrating production-ready testing practices:
+
+### **Automated Testing Pipeline**
+- **Python Testing**: Comprehensive testing with Python 3.11
+- **Parallel Test Execution**: Matrix strategy for efficient test distribution
+- **Code Quality Gates**: Automated linting, formatting, type checking, and security scanning
+- **Comprehensive Test Coverage**: Unit, integration, API, UI, performance, and contract tests
+
+### **Quality Assurance**
+- **Security Scanning**: Bandit and Safety for vulnerability detection
+- **Code Quality**: Black, isort, flake8, Ruff, and MyPy for code standards
+- **Test Reporting**: HTML, XML, and coverage reports with artifact management
+- **Docker Integration**: Isolated testing environment with mock services
+
+### **Deployment Automation**
+- **Multi-Environment Support**: Development, staging, and production deployments
+- **Artifact Management**: Build artifact collection and distribution
+- **Smoke Testing**: Automated post-deployment validation
+- **Rollback Capabilities**: Safe deployment practices with rollback strategies
+
+### **CI/CD Features**
+- **Path-based Triggers**: Efficient CI runs based on changed files
+- **Matrix Strategies**: Parallel execution across multiple dimensions
+- **Artifact Aggregation**: Comprehensive test result collection and reporting
+- **Environment Management**: Proper secret and configuration handling
+
 ## 🚀 Features
 
 ### Core Capabilities
@@ -11,7 +39,7 @@ A scalable, production-ready test automation framework built with pytest, demons
 - **Data-Driven Testing**: Flexible test data management with factories
 - **Parallel Execution**: Built-in support for parallel test execution
 - **Comprehensive Reporting**: HTML, XML, and Allure reports
-- **CI/CD Ready**: GitHub Actions, Jenkins, and TeamCity integration
+- **CI/CD Ready**: Comprehensive GitHub Actions pipeline with parallel execution
 
 ### Testing Types Supported
 - **API Testing**: REST and GraphQL with retry logic and authentication

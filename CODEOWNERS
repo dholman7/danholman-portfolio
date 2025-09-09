@@ -1,0 +1,26 @@
+# Global ownership
+* @dholman7
+
+# Module-specific ownership
+/automation-framework/ @dholman7
+/cloud-native-app/ @dholman7
+/ai-test-generation/ @dholman7
+/case-studies/ @dholman7
+
+# Configuration files
+/.github/ @dholman7
+/.cursorrules @dholman7
+/.pre-commit-config.yaml @dholman7
+/Makefile @dholman7
+/README.md @dholman7
+/LICENSE @dholman7
+
+# Documentation
+/docs/ @dholman7
+*.md @dholman7
+
+# CI/CD workflows
+/.github/workflows/ @dholman7
+
+# Private content (if any)
+/ai-private/ @dholman7

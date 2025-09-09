@@ -2,6 +2,34 @@
 
 A highly scalable AWS serverless application demonstrating cloud-native development expertise with TypeScript, CDK, and comprehensive testing.
 
+## 🚀 CI/CD Pipeline
+
+This application demonstrates production-ready CI/CD practices for cloud-native development:
+
+### **Automated Testing Pipeline**
+- **Node.js Testing**: Comprehensive testing with Node.js 18
+- **Type Safety Validation**: Comprehensive TypeScript type checking
+- **Code Quality Gates**: ESLint, Prettier, and automated formatting
+- **Security Scanning**: npm audit and Snyk vulnerability detection
+
+### **Infrastructure as Code**
+- **CDK Synthesis**: Automated CloudFormation template generation
+- **Multi-Environment Deployment**: Dev, staging, and production environments
+- **Infrastructure Validation**: CDK diff and synthesis validation
+- **Rollback Capabilities**: Safe deployment practices with rollback strategies
+
+### **Deployment Automation**
+- **Environment Management**: Proper AWS credential and configuration handling
+- **Build Artifact Management**: Lambda function packaging and distribution
+- **Smoke Testing**: Post-deployment validation and health checks
+- **Cleanup Automation**: Automated cleanup of old deployments
+
+### **CI/CD Features**
+- **Path-based Triggers**: Efficient CI runs based on changed files
+- **Artifact Management**: Build artifact collection and distribution
+- **Environment Protection**: Proper environment-specific deployment controls
+- **Monitoring Integration**: CloudWatch integration and logging
+
 ## 🚀 Features
 
 ### Core Functionality
@@ -25,7 +53,7 @@ A highly scalable AWS serverless application demonstrating cloud-native developm
 - **Integration Tests**: End-to-end API testing
 - **Type Checking**: Strict TypeScript compilation
 - **Linting**: ESLint and Prettier for code quality
-- **CI/CD**: GitHub Actions pipeline with automated testing and deployment
+- **CI/CD**: Comprehensive GitHub Actions pipeline with multi-environment deployment
 
 ## 🏗️ Architecture
 

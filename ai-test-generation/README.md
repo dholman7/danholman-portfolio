@@ -2,16 +2,43 @@
 
 A comprehensive Python package that provides structured guidance templates for AI-powered test generation across multiple testing frameworks and languages. This framework enables developers to create, customize, and deploy testing guidance that AI coding assistants can follow to generate high-quality, consistent tests.
 
+## 🚀 CI/CD Pipeline
+
+This package demonstrates advanced CI/CD practices for AI-powered testing frameworks:
+
+### **Automated Testing Pipeline**
+- **Python Testing**: Comprehensive testing with Python 3.13
+- **Parallel Test Execution**: High-scale parallel testing with GitHub Actions matrix
+- **Code Quality Gates**: Automated linting, formatting, type checking, and security scanning
+- **Comprehensive Test Coverage**: Unit, component, integration, and E2E test coverage
+
+### **AI Testing Framework Features**
+- **Dynamic Matrix Generation**: Automated test matrix creation for parallel execution
+- **Artifact Management**: Test result collection, merging, and comprehensive reporting
+- **Template Validation**: Automated validation of AI guidance templates
+- **Multi-Framework Support**: Testing across pytest, Jest, and other frameworks
+
+### **Deployment Automation**
+- **Package Publishing**: Automated PyPI package publishing on version tags
+- **Documentation Generation**: Automated documentation and example generation
+- **Template Distribution**: Automated distribution of guidance templates
+- **Version Management**: Semantic versioning with automated changelog generation
+
+### **CI/CD Features**
+- **Path-based Triggers**: Efficient CI runs based on changed files
+- **Matrix Strategies**: Parallel execution across multiple test dimensions
+- **Artifact Aggregation**: Comprehensive test result collection and reporting
+- **Quality Gates**: Automated quality checks and security scanning
+
 ## Overview
 
 This package contains curated rule sets for generating tests across multiple languages and frameworks:
 
-- **Python Testing**: pytest, unittest, FastAPI, Django
-- **TypeScript/JavaScript**: Jest, Playwright, Cypress, Vitest
-- **API Testing**: REST APIs, GraphQL, OpenAPI/Swagger
+- **Python Testing**: pytest, unittest, Selenium
+- **TypeScript/JavaScript**: Jest
+- **API Testing**: REST APIs, GraphQL
 - **Contract Testing**: Pact consumer/provider tests
-- **End-to-End Testing**: Playwright, Cypress, Selenium
-- **Performance Testing**: k6, Artillery, JMeter
+- **End-to-End Testing**: Selenium
 
 ## Installation
 
@@ -91,19 +118,14 @@ ai-test-gen generate copilot --type typescript --type contract --output .github/
 ### Python Testing Guidance
 - **pytest**: Modern Python testing with fixtures, parametrization, and plugins
 - **unittest**: Standard library testing with proper setup/teardown
-- **FastAPI**: API testing with test client and dependency injection
-- **Django**: Model, view, and form testing patterns
+- **Selenium**: Web browser automation and testing
 
 ### TypeScript/JavaScript Testing Guidance
 - **Jest**: Unit testing with mocking and snapshots
-- **Playwright**: End-to-end testing with page object model
-- **Cypress**: Component and E2E testing patterns
-- **Vitest**: Fast unit testing with Vite integration
 
 ### API Testing Guidance
 - **REST APIs**: Request/response validation, status codes, headers
 - **GraphQL**: Query/mutation testing, schema validation
-- **OpenAPI**: Contract-based testing with Swagger/OpenAPI specs
 
 ### Contract Testing Guidance
 - **Pact Consumer**: Consumer-driven contract testing
@@ -197,9 +219,18 @@ with open(".cursor/rules/python-pytest.mdc", "w") as f:
 See our comprehensive examples showing how to:
 
 - [Create custom guidance templates](examples/create-custom-guidance.md) - Step-by-step guide
-- [Generate FastAPI guidance](examples/create_fastapi_guidance.py) - Working script example
-- [Sample FastAPI app](examples/sample_fastapi_app.py) - Test application
+- [Generate pytest guidance](examples/create_pytest_guidance.py) - Working script example
+- [Sample Python app](examples/sample_python_app.py) - Test application
 - [Generated tests example](examples/generated_tests_example.py) - AI-generated tests
+
+### Parallel Testing with GitHub Actions
+
+Demonstrates high-scale parallel testing using GitHub Actions matrix strategies:
+
+- [Parallel Testing Guide](docs/parallel-testing.md) - Comprehensive parallel testing implementation
+- [Matrix Generation Script](scripts/generate_test_matrix.py) - Dynamic test matrix creation
+- [Report Merging](scripts/merge_junit_reports.py) - JUnit XML report aggregation
+- [Test Summary](scripts/generate_test_summary.py) - Detailed test execution analysis
 
 ### Quick Example
 

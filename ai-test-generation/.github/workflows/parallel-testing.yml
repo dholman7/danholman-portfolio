@@ -1,0 +1,259 @@
+name: Parallel Testing Matrix
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_scope:
+        type: choice
+        options:
+          - all
+          - python
+          - typescript
+          - api
+          - contract
+        required: true
+        default: all
+        description: Test scope to run
+      max_parallel:
+        type: string
+        required: false
+        default: "10"
+        description: Maximum parallel jobs (1-20)
+
+jobs:
+  # Generate test matrix dynamically
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13.0"
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      
+      - name: Generate test matrix
+        id: generate-matrix
+        run: |
+          python scripts/generate_test_matrix.py \
+            --scope "${{ github.event.inputs.test_scope || 'all' }}" \
+            --output test_matrix.json
+      
+      - name: Set matrix data
+        id: set-matrix
+        run: echo "matrix=$(jq -c . < test_matrix.json)" >> $GITHUB_OUTPUT
+      
+      - name: Archive matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-matrix.json
+          path: test_matrix.json
+
+  # Parallel test execution
+  parallel-tests:
+    runs-on: ubuntu-latest
+    needs: generate-matrix
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(github.event.inputs.max_parallel || '10') }}
+      matrix:
+        test_config: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+    
+    env:
+      TEST_TYPE: ${{ matrix.test_config.type }}
+      TEST_FRAMEWORK: ${{ matrix.test_config.framework }}
+      TEST_LANGUAGE: ${{ matrix.test_config.language }}
+      TEST_CATEGORY: ${{ matrix.test_config.category }}
+    
+    steps:
+      - name: Debug test configuration
+        run: |
+          echo "Test Type: $TEST_TYPE"
+          echo "Framework: $TEST_FRAMEWORK"
+          echo "Language: $TEST_LANGUAGE"
+          echo "Category: $TEST_CATEGORY"
+          echo "Matrix Config: ${{ toJson(matrix.test_config) }}"
+      
+      - name: Set sanitized job name
+        run: |
+          sanitized_name=$(echo "${TEST_TYPE}_${TEST_FRAMEWORK}_${TEST_LANGUAGE}_${TEST_CATEGORY}" | tr -cs 'a-zA-Z0-9_' '_')
+          echo "JOB_NAME=${sanitized_name}" >> $GITHUB_ENV
+      
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13.0"
+      
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/pytest
+          key: ${{ runner.os }}-${{ matrix.test_config.language }}-${{ matrix.test_config.framework }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.test_config.language }}-${{ matrix.test_config.framework }}-
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+          
+          # Install framework-specific dependencies
+          if [ "$TEST_FRAMEWORK" = "pytest" ]; then
+            pip install pytest pytest-cov pytest-xdist pytest-html
+          elif [ "$TEST_FRAMEWORK" = "jest" ]; then
+            npm install --save-dev jest @types/jest ts-jest
+          fi
+      
+      - name: Run tests
+        run: |
+          # Create reports directory
+          mkdir -p reports
+          
+          # Run tests based on configuration
+          if [ "$TEST_LANGUAGE" = "python" ] && [ "$TEST_FRAMEWORK" = "pytest" ]; then
+            pytest tests/ \
+              --html=reports/${JOB_NAME}.html \
+              --self-contained-html \
+              --cov=ai_test_generation \
+              --cov-report=xml:reports/${JOB_NAME}_coverage.xml \
+              --cov-report=html:reports/${JOB_NAME}_coverage.html \
+              --junitxml=reports/${JOB_NAME}.xml \
+              -v
+          elif [ "$TEST_LANGUAGE" = "typescript" ] && [ "$TEST_FRAMEWORK" = "jest" ]; then
+            npm test -- --coverage --outputFile=reports/${JOB_NAME}_coverage.xml
+          else
+            echo "Running generic tests for $TEST_TYPE"
+            python -m pytest tests/ -v --tb=short
+          fi
+      
+      - name: List test artifacts
+        run: |
+          echo "Test artifacts for ${JOB_NAME}:"
+          ls -la reports/ || echo "No reports directory found"
+        if: always()
+      
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ env.JOB_NAME }}
+          path: |
+            reports/
+            coverage.xml
+          retention-days: 30
+
+  # Merge and aggregate test results
+  merge-results:
+    runs-on: ubuntu-latest
+    needs: [generate-matrix, parallel-tests]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13.0"
+      
+      - name: Install merge dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest-html-merger junit-xml
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded_artifacts
+      
+      - name: Display artifact structure
+        run: |
+          echo "Downloaded artifacts structure:"
+          find downloaded_artifacts -type f -name "*.html" -o -name "*.xml" | head -20
+        if: always()
+      
+      - name: Merge HTML reports
+        run: |
+          mkdir -p merged_reports
+          
+          # Find all HTML reports
+          find downloaded_artifacts -name "*.html" -not -path "*/coverage/*" | while read file; do
+            echo "Found HTML report: $file"
+          done
+          
+          # Merge pytest HTML reports if any exist
+          if find downloaded_artifacts -name "*.html" -not -path "*/coverage/*" | grep -q .; then
+            pytest-html-merger -i downloaded_artifacts -o merged_reports/parallel_test_results.html
+          else
+            echo "No HTML reports found to merge"
+          fi
+        if: always()
+      
+      - name: Merge JUnit XML reports
+        run: |
+          # Find all JUnit XML reports
+          find downloaded_artifacts -name "*.xml" | while read file; do
+            echo "Found XML report: $file"
+          done
+          
+          # Create a simple aggregated report
+          python scripts/merge_junit_reports.py downloaded_artifacts merged_reports/parallel_test_results.xml
+        if: always()
+      
+      - name: Generate summary report
+        run: |
+          python scripts/generate_test_summary.py \
+            --input-dir downloaded_artifacts \
+            --output merged_reports/test_summary.md
+        if: always()
+      
+      - name: Upload merged results
+        uses: actions/upload-artifact@v4
+        with:
+          name: parallel-test-results
+          path: |
+            merged_reports/
+          retention-days: 90
+      
+      - name: Comment on PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            try {
+              const summaryPath = 'merged_reports/test_summary.md';
+              if (fs.existsSync(summaryPath)) {
+                const summary = fs.readFileSync(summaryPath, 'utf8');
+                
+                github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: `## 🧪 Parallel Test Results\n\n${summary}`
+                });
+              }
+            } catch (error) {
+              console.log('Could not post test summary:', error.message);
+            }
