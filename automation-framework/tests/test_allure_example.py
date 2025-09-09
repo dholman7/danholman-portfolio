@@ -92,7 +92,7 @@ class TestAllureExample:
     @allure.story("Test with Dynamic Title")
     @allure.title("Dynamic test title based on environment")
     @allure.description("This test demonstrates dynamic test titles.")
-    @allure.severity(allure.severity_level.LOW)
+    @allure.severity(allure.severity_level.TRIVIAL)
     @allure.tag("dynamic")
     def test_dynamic_title(self):
         """Test with dynamic title based on environment."""
@@ -113,23 +113,23 @@ class TestAllureExample:
     def test_with_links(self):
         """Test that demonstrates external links in Allure reports."""
         # Add issue link
-        allure.link("https://github.com/danholman/danholman-portfolio/issues/1", 
-                   "Related Issue", allure.link_type.ISSUE)
+        allure.link("https://github.com/danholman/danholman-portfolio/issues/1",
+                   "Related Issue", "issue")
         
         # Add TMS link
         allure.link("https://github.com/danholman/danholman-portfolio/issues/2", 
-                   "Test Management System", allure.link_type.TMS)
+                   "Test Management System", "tms")
         
         # Add custom link
         allure.link("https://github.com/danholman/danholman-portfolio", 
-                   "Repository", allure.link_type.LINK)
+                   "Repository", "link")
 
         assert True
 
     @allure.story("Test with Categories")
     @allure.title("Test that will be categorized")
     @allure.description("This test demonstrates how tests are categorized in Allure reports.")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("categorization")
     def test_with_categories(self):
         """Test that demonstrates categorization."""
@@ -167,7 +167,7 @@ class TestAllureExample:
     @allure.story("Test with Environment Info")
     @allure.title("Test with environment information")
     @allure.description("This test demonstrates environment information in Allure reports.")
-    @allure.severity(allure.severity_level.LOW)
+    @allure.severity(allure.severity_level.TRIVIAL)
     @allure.tag("environment")
     def test_environment_info(self):
         """Test that demonstrates environment information."""
@@ -250,7 +250,7 @@ class TestAllureExample:
         with allure.step("Use fixture data"):
             allure.attach(str(sample_data), "Fixture Data", allure.attachment_type.JSON)
             assert "key" in sample_data
-            assert sample_data["value"] == "test"
+            assert sample_data["key"] == "value"
 
 
 @pytest.fixture
@@ -267,7 +267,7 @@ class TestAllureSuite:
 
     @allure.title("Suite setup test")
     @allure.description("This test demonstrates suite-level setup.")
-    @allure.severity(allure.severity_level.LOW)
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_suite_setup(self):
         """Test that demonstrates suite setup."""
         with allure.step("Initialize suite"):
@@ -275,7 +275,7 @@ class TestAllureSuite:
 
     @allure.title("Suite teardown test")
     @allure.description("This test demonstrates suite-level teardown.")
-    @allure.severity(allure.severity_level.LOW)
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_suite_teardown(self):
         """Test that demonstrates suite teardown."""
         with allure.step("Cleanup suite"):

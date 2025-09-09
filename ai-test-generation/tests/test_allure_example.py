@@ -126,7 +126,7 @@ test_suite:
     @allure.story("Prompt Engineering")
     @allure.title("Generate prompts for AI")
     @allure.description("This test demonstrates prompt engineering with Allure reporting.")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("prompts", "ai")
     def test_prompt_generation(self):
         """Test that demonstrates prompt generation."""
@@ -234,7 +234,7 @@ def test_create_user_success():
     @allure.story("Error Handling")
     @allure.title("Test error handling in generation")
     @allure.description("This test demonstrates error handling in AI test generation.")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("error_handling", "robustness")
     def test_error_handling(self):
         """Test that demonstrates error handling."""
@@ -314,7 +314,7 @@ class TestAllureAISuite:
 
     @allure.title("AI Suite setup test")
     @allure.description("This test demonstrates suite-level setup for AI tests.")
-    @allure.severity(allure.severity_level.LOW)
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_ai_suite_setup(self):
         """Test that demonstrates AI suite setup."""
         with allure.step("Initialize AI suite"):
@@ -328,7 +328,7 @@ class TestAllureAISuite:
 
     @allure.title("AI Suite teardown test")
     @allure.description("This test demonstrates suite-level teardown for AI tests.")
-    @allure.severity(allure.severity_level.LOW)
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_ai_suite_teardown(self):
         """Test that demonstrates AI suite teardown."""
         with allure.step("Cleanup AI suite"):

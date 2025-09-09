@@ -128,4 +128,8 @@ markers = [
     "component: marks tests as component tests with mocked dependencies",
     "integration: marks tests as integration tests",
     "e2e: marks tests as end-to-end tests",
+    "ai_generated: marks tests as AI-generated test cases",
+    "test_generation: marks tests related to test generation functionality",
+    "llm_integration: marks tests related to LLM integration",
+    "prompt_engineering: marks tests related to prompt engineering",
 ]

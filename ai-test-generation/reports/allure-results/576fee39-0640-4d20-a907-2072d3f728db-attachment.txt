@@ -1,0 +1,4 @@
+def test_{{test_name}}():
+    """{{test_description}}"""
+    # Test implementation
+    assert {{assertion}}
