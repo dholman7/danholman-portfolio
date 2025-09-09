@@ -7,7 +7,7 @@ A highly scalable AWS serverless application demonstrating cloud-native developm
 This application demonstrates production-ready CI/CD practices for cloud-native development:
 
 ### **Automated Testing Pipeline**
-- **Node.js Testing**: Comprehensive testing with Node.js 18
+- **Node.js Testing**: Comprehensive testing with Node.js 20
 - **Type Safety Validation**: Comprehensive TypeScript type checking
 - **Code Quality Gates**: ESLint, Prettier, and automated formatting
 - **Security Scanning**: npm audit and Snyk vulnerability detection
@@ -111,7 +111,7 @@ cloud-native-app/
 ## 🛠️ Tech Stack
 
 ### Backend
-- **AWS Lambda**: Serverless compute with Node.js 18
+- **AWS Lambda**: Serverless compute with Node.js 20
 - **API Gateway**: RESTful API with request validation
 - **DynamoDB**: NoSQL database with GSI and LSI
 - **S3**: Object storage with lifecycle policies
@@ -130,7 +130,7 @@ cloud-native-app/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 20.19+
 - Yarn package manager
 - AWS CLI configured
 - AWS CDK installed globally
@@ -157,7 +157,7 @@ npm --version
 ```
 
 **Note**: 
-- This project includes a `.nvmrc` file specifying Node.js version 18.19.0
+- This project includes a `.nvmrc` file specifying Node.js version 20.19.0
 - npm comes bundled with Node.js, so no separate installation is needed
 - After installing nvm, you can simply run `nvm use` in the project directory to automatically use the correct Node.js version
 
@@ -172,9 +172,9 @@ source ~/.zshrc
 nvm --version
 
 # Reinstall Node.js if needed
-nvm uninstall 18.19.0
-nvm install 18.19.0
-nvm use 18.19.0
+nvm uninstall 20.19.0
+nvm install 20.19.0
+nvm use 20.19.0
 ```
 
 #### Installing Yarn
