@@ -1,0 +1,88 @@
+metadata:
+  name: FastAPI Testing Guidance
+  version: 1.0.0
+  description: Comprehensive guidance for testing FastAPI applications with pytest
+    and httpx
+  languages:
+  - python
+  frameworks:
+  - fastapi
+  - pytest
+  - httpx
+  categories:
+  - api
+  - integration
+  - unit
+  author: AI Test Generation Framework
+  license: MIT
+guidance:
+- name: Dependency Injection Testing
+  description: Test FastAPI dependencies and dependency overrides
+  content: "# Test FastAPI dependencies\nfrom fastapi import Depends\nfrom unittest.mock\
+    \ import Mock\n\n# Override dependencies for testing\ndef test_with_dependency_override():\n\
+    \    def override_get_db():\n        return Mock()\n    \n    app.dependency_overrides[get_db]\
+    \ = override_get_db\n    \n    client = TestClient(app)\n    response = client.get(\"\
+    /protected-route\")\n    assert response.status_code == 200\n    \n    # Clean\
+    \ up\n    app.dependency_overrides.clear()"
+  tags:
+  - dependencies
+  - mocking
+  - fastapi
+  priority: 2
+- name: Request Validation Testing
+  description: Test request body validation and error responses
+  content: "# Test request validation\ndef test_invalid_request_body():\n    client\
+    \ = TestClient(app)\n    response = client.post(\"/users\", json={\"invalid\"\
+    : \"data\"})\n    assert response.status_code == 422\n    assert \"validation\
+    \ error\" in response.json()[\"detail\"][0][\"msg\"]\n\ndef test_missing_required_fields():\n\
+    \    client = TestClient(app)\n    response = client.post(\"/users\", json={})\n\
+    \    assert response.status_code == 422\n    errors = response.json()[\"detail\"\
+    ]\n    assert any(\"field required\" in error[\"msg\"] for error in errors)"
+  tags:
+  - validation
+  - errors
+  - pydantic
+  priority: 2
+- name: Response Model Testing
+  description: Test response models and serialization
+  content: "# Test response models\ndef test_response_model_serialization():\n   \
+    \ client = TestClient(app)\n    response = client.get(\"/users/1\")\n    assert\
+    \ response.status_code == 200\n    \n    user = response.json()\n    # Verify\
+    \ all expected fields are present\n    assert \"id\" in user\n    assert \"name\"\
+    \ in user\n    assert \"email\" in user\n    assert \"age\" in user\n    \n  \
+    \  # Verify data types\n    assert isinstance(user[\"id\"], int)\n    assert isinstance(user[\"\
+    name\"], str)\n    assert isinstance(user[\"email\"], str)"
+  tags:
+  - serialization
+  - models
+  - pydantic
+  priority: 2
+- name: Error Handling Testing
+  description: Test HTTP exceptions and error responses
+  content: "# Test error handling\ndef test_404_error():\n    client = TestClient(app)\n\
+    \    response = client.get(\"/users/999\")\n    assert response.status_code ==\
+    \ 404\n    assert response.json()[\"detail\"] == \"User not found\"\n\ndef test_422_validation_error():\n\
+    \    client = TestClient(app)\n    response = client.post(\"/users\", json={\"\
+    name\": \"\"})  # Empty name\n    assert response.status_code == 422\n    errors\
+    \ = response.json()[\"detail\"]\n    assert any(\"string too short\" in error[\"\
+    msg\"] for error in errors)"
+  tags:
+  - errors
+  - exceptions
+  - http
+  priority: 2
+- name: API Endpoint Testing
+  description: Test FastAPI endpoints with proper request/response validation
+  content: "# Test FastAPI endpoints\nfrom fastapi.testclient import TestClient\n\
+    from httpx import AsyncClient\nimport pytest\n\n# Use TestClient for synchronous\
+    \ testing\ndef test_get_endpoint():\n    client = TestClient(app)\n    response\
+    \ = client.get(\"/users/1\")\n    assert response.status_code == 200\n    assert\
+    \ response.json()[\"id\"] == 1\n\n# Use AsyncClient for async testing\n@pytest.mark.asyncio\n\
+    async def test_async_endpoint():\n    async with AsyncClient(app=app, base_url=\"\
+    http://test\") as client:\n        response = await client.get(\"/users/1\")\n\
+    \        assert response.status_code == 200"
+  tags:
+  - api
+  - endpoints
+  - fastapi
+  priority: 1

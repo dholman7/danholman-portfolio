@@ -1,0 +1,275 @@
+metadata:
+  name: "Python pytest Testing Rules"
+  version: "1.0.0"
+  description: "Comprehensive rules for generating pytest-based tests with modern Python testing practices"
+  languages: ["python"]
+  frameworks: ["pytest"]
+  categories: ["unit", "integration"]
+  author: "Dan Holman"
+  license: "MIT"
+
+rules:
+  - name: "Test Structure and Naming"
+    description: "Define proper test file and function structure with descriptive naming"
+    content: |
+      # Test files should be named test_*.py or *_test.py
+      # Test functions should start with test_
+      # Use descriptive test names that explain the expected behavior
+      # Group related tests in classes when appropriate
+      
+      def test_user_can_login_with_valid_credentials():
+          """Test that user can login with valid credentials."""
+          pass
+      
+      def test_user_cannot_login_with_invalid_credentials():
+          """Test that user cannot login with invalid credentials."""
+          pass
+      
+      class TestUserService:
+          """Test class for UserService functionality."""
+          
+          def test_create_user_with_valid_data(self):
+              """Test creating user with valid data."""
+              pass
+    tags: ["structure", "naming", "organization"]
+    priority: 1
+
+  - name: "Fixtures and Setup"
+    description: "Use pytest fixtures for setup, teardown, and test data management"
+    content: |
+      # Use @pytest.fixture for reusable test data and setup
+      # Scope fixtures appropriately (function, class, module, session)
+      # Use parametrized fixtures for multiple test cases
+      # Use conftest.py for shared fixtures across test modules
+      
+      import pytest
+      from unittest.mock import Mock
+      
+      @pytest.fixture
+      def sample_user():
+          """Create a sample user for testing."""
+          return User(name="Test User", email="test@example.com")
+      
+      @pytest.fixture(scope="module")
+      def database():
+          """Create a test database with module scope."""
+          db = create_test_database()
+          yield db
+          db.cleanup()
+      
+      @pytest.fixture(params=["admin", "user", "guest"])
+      def user_role(request):
+          """Create users with different roles."""
+          return create_user(role=request.param)
+      
+      @pytest.fixture
+      def mock_external_api():
+          """Mock external API calls."""
+          with patch('requests.get') as mock_get:
+              mock_get.return_value.json.return_value = {"status": "success"}
+              yield mock_get
+    tags: ["fixtures", "setup", "teardown", "mocking"]
+    priority: 1
+
+  - name: "Parametrization and Data-Driven Tests"
+    description: "Use pytest.mark.parametrize for data-driven testing"
+    content: |
+      # Use @pytest.mark.parametrize for testing multiple inputs
+      # Use indirect parametrization for complex test data
+      # Use pytest.param for custom test IDs and marks
+      
+      @pytest.mark.parametrize("input_value,expected", [
+          (1, 2),
+          (2, 4),
+          (3, 6),
+          (0, 0),
+      ])
+      def test_double_function(input_value, expected):
+          """Test that double function works correctly."""
+          assert double(input_value) == expected
+      
+      @pytest.mark.parametrize("user_data,expected_status", [
+          ({"name": "Valid User", "email": "valid@example.com"}, 201),
+          ({"name": "", "email": "invalid@example.com"}, 400),
+          ({"name": "Valid User", "email": "invalid-email"}, 400),
+      ])
+      def test_create_user_validation(user_data, expected_status):
+          """Test user creation with various input data."""
+          response = create_user(user_data)
+          assert response.status_code == expected_status
+      
+      @pytest.mark.parametrize("user", ["admin", "user", "guest"], indirect=True)
+      def test_user_permissions(user):
+          """Test user permissions for different roles."""
+          assert user.has_permission("read")
+          if user.role == "admin":
+              assert user.has_permission("write")
+    tags: ["parametrization", "data-driven", "test-data"]
+    priority: 2
+
+  - name: "Assertions and Error Testing"
+    description: "Write comprehensive assertions and test error conditions"
+    content: |
+      # Use descriptive assertion messages
+      # Test both success and failure cases
+      # Use pytest.raises for exception testing
+      # Use pytest.warns for warning testing
+      
+      def test_divide_by_zero_raises_exception():
+          """Test that dividing by zero raises ValueError."""
+          with pytest.raises(ValueError, match="Cannot divide by zero"):
+              divide(10, 0)
+      
+      def test_invalid_input_raises_custom_exception():
+          """Test that invalid input raises custom exception."""
+          with pytest.raises(ValidationError) as exc_info:
+              validate_user_data({"name": "", "email": "invalid"})
+          assert "Name cannot be empty" in str(exc_info.value)
+      
+      def test_function_returns_expected_structure():
+          """Test that function returns expected data structure."""
+          result = get_user_profile(1)
+          assert isinstance(result, dict)
+          assert "id" in result
+          assert "name" in result
+          assert "email" in result
+          assert result["id"] == 1
+          assert isinstance(result["name"], str)
+          assert "@" in result["email"]
+      
+      def test_deprecated_function_warns():
+          """Test that deprecated function issues warning."""
+          with pytest.warns(DeprecationWarning, match="Function is deprecated"):
+              old_function()
+    tags: ["assertions", "exceptions", "error-handling", "validation"]
+    priority: 1
+
+  - name: "Mocking and Patching"
+    description: "Use mocking effectively for isolating units under test"
+    content: |
+      # Use unittest.mock for mocking external dependencies
+      # Use pytest-mock for more convenient mocking
+      # Mock at the right level (external APIs, database calls, etc.)
+      # Use side_effect for complex mock behavior
+      
+      from unittest.mock import Mock, patch, MagicMock
+      
+      def test_user_service_with_mocked_database(mocker):
+          """Test user service with mocked database."""
+          # Mock the database connection
+          mock_db = mocker.patch('app.database.get_connection')
+          mock_db.return_value.query.return_value = [{"id": 1, "name": "Test User"}]
+          
+          user_service = UserService()
+          users = user_service.get_all_users()
+          
+          assert len(users) == 1
+          assert users[0]["name"] == "Test User"
+          mock_db.assert_called_once()
+      
+      @patch('requests.get')
+      def test_external_api_call(mock_get):
+          """Test external API call with mocked response."""
+          mock_response = Mock()
+          mock_response.json.return_value = {"status": "success", "data": []}
+          mock_response.status_code = 200
+          mock_get.return_value = mock_response
+          
+          result = fetch_external_data()
+          
+          assert result["status"] == "success"
+          mock_get.assert_called_once_with("https://api.example.com/data")
+      
+      def test_file_operations_with_mock(mocker):
+          """Test file operations with mocked file system."""
+          mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="test content"))
+          
+          content = read_file("test.txt")
+          
+          assert content == "test content"
+          mock_open.assert_called_once_with("test.txt", "r")
+    tags: ["mocking", "patching", "isolation", "external-dependencies"]
+    priority: 2
+
+  - name: "Test Organization and Markers"
+    description: "Organize tests with markers and proper grouping"
+    content: |
+      # Use pytest markers to categorize tests
+      # Use pytest.mark.skip for conditional skipping
+      # Use pytest.mark.xfail for expected failures
+      # Use pytest.mark.slow for slow tests
+      
+      import pytest
+      
+      @pytest.mark.unit
+      def test_calculate_total():
+          """Unit test for calculate_total function."""
+          assert calculate_total([1, 2, 3]) == 6
+      
+      @pytest.mark.integration
+      def test_database_integration():
+          """Integration test with database."""
+          # Test that requires database connection
+          pass
+      
+      @pytest.mark.slow
+      def test_large_dataset_processing():
+          """Test processing large dataset (slow test)."""
+          # Test that takes a long time to run
+          pass
+      
+      @pytest.mark.skipif(sys.platform == "win32", reason="Not supported on Windows")
+      def test_unix_specific_feature():
+          """Test Unix-specific functionality."""
+          pass
+      
+      @pytest.mark.xfail(reason="Known issue, will be fixed in next release")
+      def test_known_bug():
+          """Test for known bug that will be fixed."""
+          assert False  # This test is expected to fail
+      
+      # Run specific test categories:
+      # pytest -m unit
+      # pytest -m "not slow"
+      # pytest -m "integration and not slow"
+    tags: ["markers", "organization", "categorization", "filtering"]
+    priority: 2
+
+  - name: "Configuration and Conftest"
+    description: "Use conftest.py for shared configuration and fixtures"
+    content: |
+      # Use conftest.py for shared fixtures and configuration
+      # Place conftest.py in appropriate directories for scope
+      # Use pytest_configure for global test configuration
+      # Use pytest_collection_modifyitems for test collection customization
+      
+      # conftest.py
+      import pytest
+      import os
+      from pathlib import Path
+      
+      @pytest.fixture(scope="session")
+      def test_data_dir():
+          """Provide path to test data directory."""
+          return Path(__file__).parent / "test_data"
+      
+      @pytest.fixture(scope="session")
+      def database_url():
+          """Provide test database URL."""
+          return os.getenv("TEST_DATABASE_URL", "sqlite:///test.db")
+      
+      def pytest_configure(config):
+          """Configure pytest with custom settings."""
+          config.addinivalue_line("markers", "unit: Unit tests")
+          config.addinivalue_line("markers", "integration: Integration tests")
+          config.addinivalue_line("markers", "slow: Slow running tests")
+      
+      def pytest_collection_modifyitems(config, items):
+          """Modify test collection based on configuration."""
+          if config.getoption("--skip-slow"):
+              skip_slow = pytest.mark.skip(reason="Skipping slow tests")
+              for item in items:
+                  if "slow" in item.keywords:
+                      item.add_marker(skip_slow)
+    tags: ["configuration", "conftest", "shared-fixtures", "global-setup"]
+    priority: 3

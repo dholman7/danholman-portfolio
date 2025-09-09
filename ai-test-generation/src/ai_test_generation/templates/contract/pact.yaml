@@ -1,0 +1,550 @@
+metadata:
+  name: "Pact Contract Testing Rules"
+  version: "1.0.0"
+  description: "Comprehensive rules for Pact consumer-driven contract testing"
+  languages: ["python", "typescript", "javascript"]
+  frameworks: ["pact-python", "pact-js", "pact-jvm"]
+  categories: ["contract", "integration", "api"]
+  author: "Dan Holman"
+  license: "MIT"
+
+rules:
+  - name: "Consumer Contract Definition"
+    description: "Define consumer expectations for API interactions using Pact"
+    content: |
+      # Define consumer expectations for API interactions
+      # Use Pact to mock provider responses
+      # Test that consumer can handle expected provider responses
+      # Generate contract files for provider verification
+      
+      # Python with pact-python
+      from pact import Consumer, Provider
+      import requests
+      
+      def test_get_user_contract():
+          """Test contract for getting a user."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          (pact
+           .given('user exists')
+           .upon_receiving('a request for user')
+           .with_request('GET', '/users/1')
+           .will_respond_with(200, body={
+               'id': 1,
+               'name': 'Test User',
+               'email': 'test@example.com',
+               'role': 'user'
+           }))
+          
+          with pact:
+              # Test your consumer code here
+              response = requests.get(f"{pact.uri}/users/1")
+              assert response.status_code == 200
+              user = response.json()
+              assert user['id'] == 1
+              assert user['name'] == 'Test User'
+      
+      # TypeScript with pact-js
+      import { Pact } from '@pact-foundation/pact';
+      
+      describe('User Service Contract', () => {
+        const provider = new Pact({
+          consumer: 'UserService',
+          provider: 'UserAPI',
+          port: 1234,
+          log: path.resolve(process.cwd(), 'logs', 'pact.log'),
+          dir: path.resolve(process.cwd(), 'pacts'),
+          logLevel: 'INFO',
+        });
+        
+        beforeAll(() => provider.setup());
+        afterEach(() => provider.verify());
+        afterAll(() => provider.finalize());
+        
+        it('should get user by id', async () => {
+          await provider
+            .given('user exists')
+            .uponReceiving('a request for user')
+            .withRequest({
+              method: 'GET',
+              path: '/users/1',
+            })
+            .willRespondWith({
+              status: 200,
+              headers: { 'Content-Type': 'application/json' },
+              body: {
+                id: 1,
+                name: 'Test User',
+                email: 'test@example.com',
+                role: 'user'
+              },
+            });
+          
+          const user = await userService.getUser(1);
+          expect(user.id).toBe(1);
+          expect(user.name).toBe('Test User');
+        });
+      });
+    tags: ["consumer", "contract", "pact", "mocking"]
+    priority: 1
+
+  - name: "Provider State Management"
+    description: "Define provider states for different test scenarios"
+    content: |
+      # Define provider states for different test scenarios
+      # Use provider state callbacks to set up test data
+      # Test various provider states and transitions
+      # Handle state cleanup and isolation
+      
+      # Python provider state example
+      def test_user_creation_contract():
+          """Test contract for user creation with different states."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          # State: No users exist
+          (pact
+           .given('no users exist')
+           .upon_receiving('a request to create first user')
+           .with_request('POST', '/users', body={
+               'name': 'First User',
+               'email': 'first@example.com'
+           })
+           .will_respond_with(201, body={
+               'id': 1,
+               'name': 'First User',
+               'email': 'first@example.com',
+               'created_at': '2023-01-01T00:00:00Z'
+           }))
+          
+          # State: User already exists
+          (pact
+           .given('user with email already exists')
+           .upon_receiving('a request to create duplicate user')
+           .with_request('POST', '/users', body={
+               'name': 'Duplicate User',
+               'email': 'existing@example.com'
+           })
+           .will_respond_with(409, body={
+               'error': 'User with email already exists',
+               'code': 'DUPLICATE_EMAIL'
+           }))
+          
+          with pact:
+              # Test first user creation
+              response = requests.post(f"{pact.uri}/users", json={
+                  'name': 'First User',
+                  'email': 'first@example.com'
+              })
+              assert response.status_code == 201
+              
+              # Test duplicate user creation
+              response = requests.post(f"{pact.uri}/users", json={
+                  'name': 'Duplicate User',
+                  'email': 'existing@example.com'
+              })
+              assert response.status_code == 409
+      
+      # Provider state setup (for provider verification)
+      def setup_provider_states():
+          """Setup provider states for contract verification."""
+          states = {
+              'no users exist': lambda: clear_database(),
+              'user with email already exists': lambda: create_user('existing@example.com'),
+              'user exists': lambda: create_user('test@example.com'),
+              'user is admin': lambda: create_admin_user(),
+          }
+          return states
+    tags: ["provider-states", "setup", "cleanup", "isolation"]
+    priority: 1
+
+  - name: "Request/Response Matching"
+    description: "Define flexible matching rules for requests and responses"
+    content: |
+      # Use flexible matching for dynamic data (timestamps, IDs, etc.)
+      # Define matchers for different data types
+      # Use regex patterns for complex matching
+      # Handle optional fields and arrays
+      
+      def test_flexible_matching_contract():
+          """Test contract with flexible matching rules."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          (pact
+           .given('user exists')
+           .upon_receiving('a request for user with flexible matching')
+           .with_request('GET', '/users/1')
+           .will_respond_with(200, body={
+               'id': 1,
+               'name': 'Test User',
+               'email': 'test@example.com',
+               'created_at': '2023-01-01T00:00:00Z',
+               'updated_at': '2023-01-01T00:00:00Z',
+               'metadata': {
+                   'last_login': '2023-01-01T00:00:00Z',
+                   'login_count': 5
+               }
+           }))
+          
+          with pact:
+              response = requests.get(f"{pact.uri}/users/1")
+              assert response.status_code == 200
+              user = response.json()
+              assert user['id'] == 1
+              assert user['name'] == 'Test User'
+              assert 'created_at' in user
+              assert 'updated_at' in user
+      
+      # TypeScript with flexible matching
+      it('should handle flexible response matching', async () => {
+        await provider
+          .given('user exists')
+          .uponReceiving('a request for user with flexible matching')
+          .withRequest({
+            method: 'GET',
+            path: '/users/1',
+          })
+          .willRespondWith({
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+            body: {
+              id: 1,
+              name: 'Test User',
+              email: 'test@example.com',
+              createdAt: '2023-01-01T00:00:00Z',
+              updatedAt: '2023-01-01T00:00:00Z',
+              metadata: {
+                lastLogin: '2023-01-01T00:00:00Z',
+                loginCount: 5
+              }
+            },
+          });
+        
+        const user = await userService.getUser(1);
+        expect(user.id).toBe(1);
+        expect(user.name).toBe('Test User');
+        expect(user.createdAt).toBeDefined();
+        expect(user.metadata).toBeDefined();
+      });
+    tags: ["matching", "flexible", "dynamic-data", "matchers"]
+    priority: 2
+
+  - name: "Error Scenarios and Edge Cases"
+    description: "Test error scenarios and edge cases in contracts"
+    content: |
+      # Test various error conditions in contracts
+      # Define error response structures
+      # Test timeout and network error scenarios
+      # Test malformed request handling
+      
+      def test_error_scenarios_contract():
+          """Test contract for various error scenarios."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          # 404 Not Found
+          (pact
+           .given('user does not exist')
+           .upon_receiving('a request for non-existent user')
+           .with_request('GET', '/users/999')
+           .will_respond_with(404, body={
+               'error': 'User not found',
+               'code': 'USER_NOT_FOUND',
+               'message': 'User with ID 999 does not exist'
+           }))
+          
+          # 400 Bad Request
+          (pact
+           .given('invalid request data')
+           .upon_receiving('a request with invalid data')
+           .with_request('POST', '/users', body={
+               'name': '',
+               'email': 'invalid-email'
+           })
+           .will_respond_with(400, body={
+               'error': 'Validation failed',
+               'code': 'VALIDATION_ERROR',
+               'details': {
+                   'name': ['Name cannot be empty'],
+                   'email': ['Invalid email format']
+               }
+           }))
+          
+          # 500 Internal Server Error
+          (pact
+           .given('server error occurs')
+           .upon_receiving('a request that causes server error')
+           .with_request('GET', '/users/error')
+           .will_respond_with(500, body={
+               'error': 'Internal server error',
+               'code': 'INTERNAL_ERROR',
+               'message': 'An unexpected error occurred'
+           }))
+          
+          with pact:
+              # Test 404
+              response = requests.get(f"{pact.uri}/users/999")
+              assert response.status_code == 404
+              error = response.json()
+              assert error['code'] == 'USER_NOT_FOUND'
+              
+              # Test 400
+              response = requests.post(f"{pact.uri}/users", json={
+                  'name': '',
+                  'email': 'invalid-email'
+              })
+              assert response.status_code == 400
+              error = response.json()
+              assert error['code'] == 'VALIDATION_ERROR'
+              
+              # Test 500
+              response = requests.get(f"{pact.uri}/users/error")
+              assert response.status_code == 500
+              error = response.json()
+              assert error['code'] == 'INTERNAL_ERROR'
+      
+      def test_timeout_scenarios():
+          """Test timeout scenarios in contracts."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          (pact
+           .given('slow response')
+           .upon_receiving('a request that times out')
+           .with_request('GET', '/users/slow')
+           .will_respond_with(200, body={'id': 1, 'name': 'Slow User'}, delay=5))
+          
+          with pact:
+              # Test timeout handling
+              try:
+                  response = requests.get(f"{pact.uri}/users/slow", timeout=2)
+                  assert False, "Should have timed out"
+              except requests.exceptions.Timeout:
+                  pass  # Expected timeout
+    tags: ["error-handling", "edge-cases", "timeouts", "validation"]
+    priority: 2
+
+  - name: "Contract Verification and CI/CD"
+    description: "Integrate contract testing into CI/CD pipelines"
+    content: |
+      # Set up contract verification in CI/CD
+      # Use Pact Broker for contract management
+      # Implement contract testing in build pipelines
+      # Handle contract versioning and compatibility
+      
+      # Makefile for contract testing
+      .PHONY: test-contracts verify-contracts publish-contracts
+      
+      test-contracts:
+          # Run consumer tests to generate contracts
+          python -m pytest tests/contracts/consumer/ -v
+      
+      verify-contracts:
+          # Verify contracts against provider
+          pact-verifier --provider-base-url=http://localhost:3000 \
+                        --pact-urls=./pacts/user-service-user-api.json
+      
+      publish-contracts:
+          # Publish contracts to Pact Broker
+          pact-broker publish ./pacts \
+                            --broker-base-url=https://pact-broker.example.com \
+                            --consumer-app-version=1.0.0
+      
+      # GitHub Actions workflow
+      name: Contract Testing
+      
+      on:
+        push:
+          branches: [main]
+        pull_request:
+          branches: [main]
+      
+      jobs:
+        consumer-tests:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.9'
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+            - name: Run consumer tests
+              run: make test-contracts
+            - name: Publish contracts
+              run: make publish-contracts
+              env:
+                PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
+      
+        provider-verification:
+          runs-on: ubuntu-latest
+          needs: consumer-tests
+          steps:
+            - uses: actions/checkout@v3
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: '18'
+            - name: Install dependencies
+              run: npm install
+            - name: Start provider
+              run: npm start &
+            - name: Wait for provider
+              run: npx wait-on http://localhost:3000/health
+            - name: Verify contracts
+              run: make verify-contracts
+      
+      # Contract versioning strategy
+      def test_contract_versioning():
+          """Test contract versioning and compatibility."""
+          # Test backward compatibility
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          # Version 1.0 contract
+          (pact
+           .given('user exists')
+           .upon_receiving('a request for user v1.0')
+           .with_request('GET', '/users/1')
+           .will_respond_with(200, body={
+               'id': 1,
+               'name': 'Test User',
+               'email': 'test@example.com'
+           }))
+          
+          # Version 2.0 contract with additional fields
+          (pact
+           .given('user exists')
+           .upon_receiving('a request for user v2.0')
+           .with_request('GET', '/users/1')
+           .will_respond_with(200, body={
+               'id': 1,
+               'name': 'Test User',
+               'email': 'test@example.com',
+               'role': 'user',
+               'created_at': '2023-01-01T00:00:00Z'
+           }))
+          
+          with pact:
+              # Test both versions
+              response = requests.get(f"{pact.uri}/users/1")
+              assert response.status_code == 200
+              user = response.json()
+              assert user['id'] == 1
+              assert user['name'] == 'Test User'
+    tags: ["ci-cd", "verification", "pact-broker", "versioning", "compatibility"]
+    priority: 3
+
+  - name: "Advanced Pact Features"
+    description: "Use advanced Pact features for complex testing scenarios"
+    content: |
+      # Use Pact interactions for complex workflows
+      # Test multiple API calls in sequence
+      # Use Pact plugins for custom functionality
+      # Implement custom matchers and generators
+      
+      def test_complex_workflow_contract():
+          """Test complex workflow with multiple interactions."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          # Step 1: Create user
+          (pact
+           .given('no users exist')
+           .upon_receiving('a request to create user')
+           .with_request('POST', '/users', body={
+               'name': 'Test User',
+               'email': 'test@example.com'
+           })
+           .will_respond_with(201, body={
+               'id': 1,
+               'name': 'Test User',
+               'email': 'test@example.com',
+               'created_at': '2023-01-01T00:00:00Z'
+           }))
+          
+          # Step 2: Get user
+          (pact
+           .given('user exists')
+           .upon_receiving('a request to get user')
+           .with_request('GET', '/users/1')
+           .will_respond_with(200, body={
+               'id': 1,
+               'name': 'Test User',
+               'email': 'test@example.com',
+               'created_at': '2023-01-01T00:00:00Z'
+           }))
+          
+          # Step 3: Update user
+          (pact
+           .given('user exists')
+           .upon_receiving('a request to update user')
+           .with_request('PUT', '/users/1', body={
+               'name': 'Updated User',
+               'email': 'updated@example.com'
+           })
+           .will_respond_with(200, body={
+               'id': 1,
+               'name': 'Updated User',
+               'email': 'updated@example.com',
+               'created_at': '2023-01-01T00:00:00Z',
+               'updated_at': '2023-01-01T01:00:00Z'
+           }))
+          
+          with pact:
+              # Test complete workflow
+              # Create user
+              response = requests.post(f"{pact.uri}/users", json={
+                  'name': 'Test User',
+                  'email': 'test@example.com'
+              })
+              assert response.status_code == 201
+              user = response.json()
+              user_id = user['id']
+              
+              # Get user
+              response = requests.get(f"{pact.uri}/users/{user_id}")
+              assert response.status_code == 200
+              user = response.json()
+              assert user['name'] == 'Test User'
+              
+              # Update user
+              response = requests.put(f"{pact.uri}/users/{user_id}", json={
+                  'name': 'Updated User',
+                  'email': 'updated@example.com'
+              })
+              assert response.status_code == 200
+              user = response.json()
+              assert user['name'] == 'Updated User'
+      
+      def test_custom_matchers():
+          """Test custom matchers for complex data structures."""
+          pact = Consumer('UserService').has_pact_with(Provider('UserAPI'))
+          
+          (pact
+           .given('user with orders exists')
+           .upon_receiving('a request for user with orders')
+           .with_request('GET', '/users/1/orders')
+           .will_respond_with(200, body={
+               'user_id': 1,
+               'orders': [
+                   {
+                       'id': 1,
+                       'total': 100.00,
+                       'status': 'completed',
+                       'created_at': '2023-01-01T00:00:00Z'
+                   }
+               ],
+               'pagination': {
+                   'page': 1,
+                   'limit': 10,
+                   'total': 1
+               }
+           }))
+          
+          with pact:
+              response = requests.get(f"{pact.uri}/users/1/orders")
+              assert response.status_code == 200
+              data = response.json()
+              assert data['user_id'] == 1
+              assert len(data['orders']) == 1
+              assert data['orders'][0]['id'] == 1
+              assert data['pagination']['total'] == 1
+    tags: ["advanced", "workflows", "interactions", "custom-matchers", "plugins"]
+    priority: 3

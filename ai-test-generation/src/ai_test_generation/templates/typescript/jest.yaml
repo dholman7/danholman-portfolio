@@ -1,0 +1,462 @@
+metadata:
+  name: "TypeScript Jest Testing Rules"
+  version: "1.0.0"
+  description: "Comprehensive rules for generating Jest-based tests with TypeScript"
+  languages: ["typescript", "javascript"]
+  frameworks: ["jest"]
+  categories: ["unit", "integration"]
+  author: "Dan Holman"
+  license: "MIT"
+
+rules:
+  - name: "Test Structure and Organization"
+    description: "Define proper test file structure and organization with TypeScript"
+    content: |
+      // Test files should be named *.test.ts or *.spec.ts
+      // Use describe() blocks to group related tests
+      // Use it() or test() for individual test cases
+      // Use TypeScript interfaces for test data types
+      
+      interface User {
+        id: number;
+        name: string;
+        email: string;
+        role: 'admin' | 'user' | 'guest';
+      }
+      
+      interface TestData {
+        validUser: User;
+        invalidUser: Partial<User>;
+      }
+      
+      describe('UserService', () => {
+        let userService: UserService;
+        let testData: TestData;
+        
+        beforeEach(() => {
+          userService = new UserService();
+          testData = {
+            validUser: { id: 1, name: 'Test User', email: 'test@example.com', role: 'user' },
+            invalidUser: { name: '', email: 'invalid' }
+          };
+        });
+        
+        describe('createUser', () => {
+          it('should create a user with valid data', () => {
+            const result = userService.createUser(testData.validUser);
+            expect(result).toBeDefined();
+            expect(result.id).toBe(1);
+            expect(result.name).toBe('Test User');
+          });
+          
+          it('should throw error when creating user with invalid data', () => {
+            expect(() => {
+              userService.createUser(testData.invalidUser as User);
+            }).toThrow('Invalid user data');
+          });
+        });
+      });
+    tags: ["structure", "organization", "typescript", "interfaces"]
+    priority: 1
+
+  - name: "Mocking and Spying"
+    description: "Use Jest mocking and spying effectively for test isolation"
+    content: |
+      // Use jest.fn() for function mocks
+      // Use jest.spyOn() for method spying
+      // Use jest.mock() for module mocking
+      // Use jest.requireActual() when you need the real module
+      
+      import { UserService } from '../src/UserService';
+      import { DatabaseService } from '../src/DatabaseService';
+      
+      // Mock entire module
+      jest.mock('../src/DatabaseService');
+      const MockedDatabaseService = DatabaseService as jest.MockedClass<typeof DatabaseService>;
+      
+      describe('UserService with mocked dependencies', () => {
+        let userService: UserService;
+        let mockDatabaseService: jest.Mocked<DatabaseService>;
+        
+        beforeEach(() => {
+          mockDatabaseService = new MockedDatabaseService();
+          userService = new UserService(mockDatabaseService);
+        });
+        
+        it('should save user to database', async () => {
+          const userData = { name: 'Test User', email: 'test@example.com' };
+          mockDatabaseService.save.mockResolvedValue({ id: 1, ...userData });
+          
+          const result = await userService.createUser(userData);
+          
+          expect(mockDatabaseService.save).toHaveBeenCalledWith(userData);
+          expect(result.id).toBe(1);
+        });
+        
+        it('should handle database errors', async () => {
+          const userData = { name: 'Test User', email: 'test@example.com' };
+          mockDatabaseService.save.mockRejectedValue(new Error('Database connection failed'));
+          
+          await expect(userService.createUser(userData)).rejects.toThrow('Database connection failed');
+        });
+      });
+      
+      // Spy on methods
+      describe('UserService method spying', () => {
+        it('should call validateUser method', () => {
+          const userService = new UserService();
+          const validateSpy = jest.spyOn(userService, 'validateUser');
+          
+          userService.createUser({ name: 'Test', email: 'test@example.com' });
+          
+          expect(validateSpy).toHaveBeenCalled();
+          validateSpy.mockRestore();
+        });
+      });
+    tags: ["mocking", "spying", "isolation", "dependencies"]
+    priority: 1
+
+  - name: "Async Testing and Promises"
+    description: "Test asynchronous code with proper async/await patterns"
+    content: |
+      // Use async/await for testing promises
+      // Use done callback for callback-based async code
+      // Use expect().resolves and expect().rejects for promise testing
+      // Use fake timers for testing time-dependent code
+      
+      describe('Async UserService', () => {
+        let userService: UserService;
+        
+        beforeEach(() => {
+          userService = new UserService();
+        });
+        
+        it('should fetch user asynchronously', async () => {
+          const userId = 1;
+          const expectedUser = { id: 1, name: 'Test User', email: 'test@example.com' };
+          
+          // Mock the async method
+          jest.spyOn(userService, 'fetchUserFromAPI').mockResolvedValue(expectedUser);
+          
+          const result = await userService.getUser(userId);
+          
+          expect(result).toEqual(expectedUser);
+          expect(userService.fetchUserFromAPI).toHaveBeenCalledWith(userId);
+        });
+        
+        it('should handle async errors', async () => {
+          const userId = 999;
+          jest.spyOn(userService, 'fetchUserFromAPI').mockRejectedValue(new Error('User not found'));
+          
+          await expect(userService.getUser(userId)).rejects.toThrow('User not found');
+        });
+        
+        it('should work with promise chains', () => {
+          const userId = 1;
+          const expectedUser = { id: 1, name: 'Test User' };
+          
+          jest.spyOn(userService, 'fetchUserFromAPI').mockResolvedValue(expectedUser);
+          
+          return userService.getUser(userId).then(result => {
+            expect(result).toEqual(expectedUser);
+          });
+        });
+        
+        it('should test callback-based async code', (done) => {
+          const userId = 1;
+          
+          userService.getUserCallback(userId, (error, result) => {
+            expect(error).toBeNull();
+            expect(result).toBeDefined();
+            done();
+          });
+        });
+      });
+      
+      // Testing with fake timers
+      describe('Timer-based functionality', () => {
+        beforeEach(() => {
+          jest.useFakeTimers();
+        });
+        
+        afterEach(() => {
+          jest.useRealTimers();
+        });
+        
+        it('should debounce function calls', () => {
+          const debouncedFn = jest.fn();
+          const debounced = debounce(debouncedFn, 100);
+          
+          debounced();
+          debounced();
+          debounced();
+          
+          expect(debouncedFn).not.toHaveBeenCalled();
+          
+          jest.advanceTimersByTime(100);
+          
+          expect(debouncedFn).toHaveBeenCalledTimes(1);
+        });
+      });
+    tags: ["async", "promises", "callbacks", "timers"]
+    priority: 1
+
+  - name: "Snapshot Testing"
+    description: "Use Jest snapshots for testing component output and data structures"
+    content: |
+      // Use snapshots for testing component rendering
+      // Use snapshots for testing data structure consistency
+      // Update snapshots when intentional changes are made
+      // Use inline snapshots for simple cases
+      
+      import React from 'react';
+      import { render } from '@testing-library/react';
+      import { UserCard } from '../src/UserCard';
+      
+      describe('UserCard Component', () => {
+        it('should render user card correctly', () => {
+          const user = {
+            id: 1,
+            name: 'John Doe',
+            email: 'john@example.com',
+            avatar: 'https://example.com/avatar.jpg'
+          };
+          
+          const { container } = render(<UserCard user={user} />);
+          expect(container.firstChild).toMatchSnapshot();
+        });
+        
+        it('should render with different props', () => {
+          const user = {
+            id: 2,
+            name: 'Jane Smith',
+            email: 'jane@example.com',
+            avatar: null
+          };
+          
+          const { container } = render(<UserCard user={user} showEmail={false} />);
+          expect(container.firstChild).toMatchSnapshot();
+        });
+      });
+      
+      describe('Data Structure Snapshots', () => {
+        it('should generate consistent API response', () => {
+          const apiResponse = {
+            users: [
+              { id: 1, name: 'User 1', email: 'user1@example.com' },
+              { id: 2, name: 'User 2', email: 'user2@example.com' }
+            ],
+            pagination: {
+              page: 1,
+              limit: 10,
+              total: 2
+            }
+          };
+          
+          expect(apiResponse).toMatchSnapshot();
+        });
+        
+        it('should match inline snapshot', () => {
+          const result = processUserData({ name: 'Test', email: 'test@example.com' });
+          expect(result).toMatchInlineSnapshot(`
+            Object {
+              "email": "test@example.com",
+              "id": 1,
+              "name": "Test",
+              "processedAt": "2023-01-01T00:00:00.000Z",
+            }
+          `);
+        });
+      });
+    tags: ["snapshots", "components", "data-structures", "ui-testing"]
+    priority: 2
+
+  - name: "Test Utilities and Helpers"
+    description: "Create reusable test utilities and helper functions"
+    content: |
+      // Create test utilities for common setup tasks
+      // Use factory functions for creating test data
+      // Create custom matchers for domain-specific assertions
+      // Use test helpers for complex setup scenarios
+      
+      // test-utils.ts
+      import { render, RenderOptions } from '@testing-library/react';
+      import { ThemeProvider } from '../src/theme/ThemeProvider';
+      import { UserProvider } from '../src/context/UserContext';
+      
+      interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+        user?: User;
+        theme?: 'light' | 'dark';
+      }
+      
+      export function renderWithProviders(
+        ui: React.ReactElement,
+        { user, theme = 'light', ...renderOptions }: CustomRenderOptions = {}
+      ) {
+        function Wrapper({ children }: { children: React.ReactNode }) {
+          return (
+            <ThemeProvider theme={theme}>
+              <UserProvider user={user}>
+                {children}
+              </UserProvider>
+            </ThemeProvider>
+          );
+        }
+        
+        return render(ui, { wrapper: Wrapper, ...renderOptions });
+      }
+      
+      // test-data-factories.ts
+      export function createUser(overrides: Partial<User> = {}): User {
+        return {
+          id: 1,
+          name: 'Test User',
+          email: 'test@example.com',
+          role: 'user',
+          ...overrides
+        };
+      }
+      
+      export function createUserList(count: number): User[] {
+        return Array.from({ length: count }, (_, index) => 
+          createUser({ id: index + 1, name: `User ${index + 1}` })
+        );
+      }
+      
+      // custom-matchers.ts
+      declare global {
+        namespace jest {
+          interface Matchers<R> {
+            toBeValidUser(): R;
+            toHaveValidEmail(): R;
+          }
+        }
+      }
+      
+      expect.extend({
+        toBeValidUser(received: any) {
+          const pass = received && 
+            typeof received.id === 'number' &&
+            typeof received.name === 'string' &&
+            typeof received.email === 'string';
+          
+          return {
+            message: () => `expected ${received} to be a valid user`,
+            pass
+          };
+        },
+        
+        toHaveValidEmail(received: any) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const pass = typeof received === 'string' && emailRegex.test(received);
+          
+          return {
+            message: () => `expected ${received} to be a valid email`,
+            pass
+          };
+        }
+      });
+      
+      // Usage in tests
+      describe('UserService with test utilities', () => {
+        it('should create user with factory data', () => {
+          const userData = createUser({ name: 'Custom User' });
+          const result = userService.createUser(userData);
+          
+          expect(result).toBeValidUser();
+          expect(result.email).toHaveValidEmail();
+        });
+        
+        it('should render component with providers', () => {
+          const user = createUser();
+          const { getByText } = renderWithProviders(
+            <UserProfile />, 
+            { user, theme: 'dark' }
+          );
+          
+          expect(getByText(user.name)).toBeInTheDocument();
+        });
+      });
+    tags: ["utilities", "helpers", "factories", "matchers"]
+    priority: 2
+
+  - name: "Performance and Integration Testing"
+    description: "Test performance characteristics and integration scenarios"
+    content: |
+      // Use performance testing for critical paths
+      // Test integration between components and services
+      // Use setup and teardown for integration tests
+      // Test error boundaries and error handling
+      
+      describe('Performance Tests', () => {
+        it('should process large dataset within time limit', async () => {
+          const largeDataset = createUserList(10000);
+          const startTime = performance.now();
+          
+          const result = await userService.processUsers(largeDataset);
+          
+          const endTime = performance.now();
+          const executionTime = endTime - startTime;
+          
+          expect(executionTime).toBeLessThan(1000); // Should complete within 1 second
+          expect(result.processed).toBe(10000);
+        });
+        
+        it('should handle concurrent requests', async () => {
+          const promises = Array.from({ length: 100 }, (_, i) => 
+            userService.getUser(i + 1)
+          );
+          
+          const results = await Promise.all(promises);
+          
+          expect(results).toHaveLength(100);
+          expect(results.every(result => result !== null)).toBe(true);
+        });
+      });
+      
+      describe('Integration Tests', () => {
+        let testDatabase: TestDatabase;
+        let userService: UserService;
+        let emailService: EmailService;
+        
+        beforeAll(async () => {
+          testDatabase = await createTestDatabase();
+          userService = new UserService(testDatabase);
+          emailService = new EmailService();
+        });
+        
+        afterAll(async () => {
+          await testDatabase.cleanup();
+        });
+        
+        beforeEach(async () => {
+          await testDatabase.clear();
+        });
+        
+        it('should create user and send welcome email', async () => {
+          const userData = createUser();
+          const emailSpy = jest.spyOn(emailService, 'sendWelcomeEmail');
+          
+          const user = await userService.createUser(userData);
+          await userService.sendWelcomeEmail(user.id);
+          
+          expect(emailSpy).toHaveBeenCalledWith(user.email);
+          
+          const savedUser = await testDatabase.getUser(user.id);
+          expect(savedUser).toEqual(user);
+        });
+        
+        it('should handle database transaction rollback on error', async () => {
+          const userData = createUser();
+          jest.spyOn(emailService, 'sendWelcomeEmail').mockRejectedValue(new Error('Email service down'));
+          
+          await expect(userService.createUserWithWelcomeEmail(userData))
+            .rejects.toThrow('Email service down');
+          
+          // User should not be saved if email fails
+          const users = await testDatabase.getAllUsers();
+          expect(users).toHaveLength(0);
+        });
+      });
+    tags: ["performance", "integration", "concurrency", "error-handling"]
+    priority: 3

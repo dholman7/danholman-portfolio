@@ -1,0 +1,80 @@
+# Python pytest Testing Rules
+
+Comprehensive rules for generating pytest-based tests
+
+## Languages
+- python
+
+
+## Frameworks
+- pytest
+
+
+## Categories
+- unit
+- integration
+
+
+---
+
+
+## Test Structure
+
+Define proper test file and function structure
+
+```python
+# Test files should be named test_*.py or *_test.py
+# Test functions should start with test_
+# Use descriptive test names that explain the behavior
+
+def test_user_can_login_with_valid_credentials():
+    """Test that user can login with valid credentials."""
+    pass
+
+def test_user_cannot_login_with_invalid_credentials():
+    """Test that user cannot login with invalid credentials."""
+    pass
+```
+
+
+**Tags:** structure, naming
+
+
+---
+
+
+## Fixtures
+
+Use pytest fixtures for setup and teardown
+
+```python
+# Use @pytest.fixture for reusable test data
+# Scope fixtures appropriately (function, class, module, session)
+# Use parametrized fixtures for multiple test cases
+
+import pytest
+
+@pytest.fixture
+def sample_user():
+    """Create a sample user for testing."""
+    return User(name="Test User", email="test@example.com")
+
+@pytest.fixture(scope="module")
+def database():
+    """Create a test database."""
+    db = create_test_database()
+    yield db
+    db.cleanup()
+
+@pytest.fixture(params=["admin", "user", "guest"])
+def user_role(request):
+    """Create users with different roles."""
+    return create_user(role=request.param)
+```
+
+
+**Tags:** fixtures, setup
+
+
+---
+
