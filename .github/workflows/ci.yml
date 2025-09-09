@@ -36,26 +36,34 @@ jobs:
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install -e ".[test]"; fi
+          # Install Allure dependencies
+          pip install allure-pytest allure-python-commons
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
       - name: Run Tests with Allure Results
         if: always()
         run: |
-          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
-            # Create reports directory
-            mkdir -p reports/allure-results
-            # Run tests with Allure reporting
-            pytest --alluredir=reports/allure-results -v || true
-            # Run regression tests specifically if they exist
-            if [ -f tests/test_regression.py ]; then
-              pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
-            fi
-            # List generated files for debugging
-            ls -la reports/allure-results/ || echo "No Allure results generated"
-          else 
-            echo 'no tests found'
+          # Create reports directory
+          mkdir -p reports/allure-results
+          
+          # Check if tests directory exists
+          if [ -d tests ]; then
+            echo "Found tests directory, running pytest..."
+            pytest tests/ --alluredir=reports/allure-results -v || true
+          else
+            echo "No tests directory found"
           fi
+          
+          # Check for test files in current directory
+          if ls test_*.py 1> /dev/null 2>&1; then
+            echo "Found test files in current directory, running pytest..."
+            pytest test_*.py --alluredir=reports/allure-results -v || true
+          fi
+          
+          # List generated files for debugging
+          echo "Allure results directory contents:"
+          ls -la reports/allure-results/ || echo "No Allure results generated"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -103,26 +111,34 @@ jobs:
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
+          # Install Allure dependencies
+          pip install allure-pytest allure-python-commons
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
       - name: Run Tests with Allure Results
         if: always()
         run: |
-          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
-            # Create reports directory
-            mkdir -p reports/allure-results
-            # Run tests with Allure reporting
-            pytest --alluredir=reports/allure-results -v || true
-            # Run regression tests specifically if they exist
-            if [ -f tests/test_regression.py ]; then
-              pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
-            fi
-            # List generated files for debugging
-            ls -la reports/allure-results/ || echo "No Allure results generated"
-          else 
-            echo 'no tests found'
+          # Create reports directory
+          mkdir -p reports/allure-results
+          
+          # Check if tests directory exists
+          if [ -d tests ]; then
+            echo "Found tests directory, running pytest..."
+            pytest tests/ --alluredir=reports/allure-results -v || true
+          else
+            echo "No tests directory found"
           fi
+          
+          # Check for test files in current directory
+          if ls test_*.py 1> /dev/null 2>&1; then
+            echo "Found test files in current directory, running pytest..."
+            pytest test_*.py --alluredir=reports/allure-results -v || true
+          fi
+          
+          # List generated files for debugging
+          echo "Allure results directory contents:"
+          ls -la reports/allure-results/ || echo "No Allure results generated"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -168,8 +184,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
-          cache-dependency-path: |
-            cloud-native-app/yarn.lock
+          cache-dependency-path: yarn.lock
       - run: |
           # Install Node.js dependencies
           if [ -f package.json ]; then yarn install; fi
@@ -185,17 +200,18 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Run Python tests (including regression tests)
-          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
-            echo "Running Python tests..."
-            pytest --alluredir=reports/allure-results -v || true
-            # Run regression tests specifically if they exist
-            if [ -f tests/test_regression.py ]; then
-              echo "Running regression tests..."
-              pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
-            fi
-          else 
-            echo 'no Python tests found'
+          # Check if tests directory exists
+          if [ -d tests ]; then
+            echo "Found tests directory, running pytest..."
+            pytest tests/ --alluredir=reports/allure-results -v || true
+          else
+            echo "No tests directory found"
+          fi
+          
+          # Check for test files in current directory
+          if ls test_*.py 1> /dev/null 2>&1; then
+            echo "Found test files in current directory, running pytest..."
+            pytest test_*.py --alluredir=reports/allure-results -v || true
           fi
           
           # Run TypeScript/Jest tests (without Allure for now)
@@ -205,6 +221,7 @@ jobs:
           fi
           
           # List generated files for debugging
+          echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
       - name: Generate Allure Report
         if: always()
