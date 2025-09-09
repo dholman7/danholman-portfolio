@@ -52,6 +52,10 @@ jobs:
           ls -la reports/allure-results/ || echo "No Allure results generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
+          echo "Allure results file count:"
+          find reports/allure-results/ -name "*.json" | wc -l || echo "0"
+          echo "Sample Allure result files:"
+          find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -117,6 +121,10 @@ jobs:
           ls -la reports/allure-results/ || echo "No Allure results generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
+          echo "Allure results file count:"
+          find reports/allure-results/ -name "*.json" | wc -l || echo "0"
+          echo "Sample Allure result files:"
+          find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -192,6 +200,10 @@ jobs:
           ls -la reports/allure-results/ || echo "No Allure results generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
+          echo "Allure results file count:"
+          find reports/allure-results/ -name "*.json" | wc -l || echo "0"
+          echo "Sample Allure result files:"
+          find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
       - name: Generate Allure Report
         if: always()
         run: |
