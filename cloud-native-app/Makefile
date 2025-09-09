@@ -68,6 +68,41 @@ test-e2e:
 	yarn test tests/e2e/
 	@echo "E2E tests completed."
 
+# Run regression tests
+test-regression:
+	@echo "Running regression tests..."
+	python -m pytest tests/test_regression.py --alluredir=reports/allure-results -v
+	@echo "Regression tests completed."
+
+# Allure Reporting
+allure-results: ## Generate Allure test results
+	@echo "Generating Allure results..."
+	mkdir -p reports/allure-results
+	python -m pytest tests/test_regression.py --alluredir=reports/allure-results -v
+	@echo "Allure results generated in reports/allure-results/"
+
+allure-generate: allure-results ## Generate Allure HTML report
+	@if command -v allure >/dev/null 2>&1; then \
+		allure generate reports/allure-results --clean -o reports/allure-report; \
+		echo "Allure report generated in reports/allure-report/"; \
+	else \
+		echo "Allure command not found. Install with: npm install -g allure-commandline"; \
+		echo "Or use Docker: docker run -v $(PWD)/reports/allure-results:/app/allure-results -v $(PWD)/reports/allure-report:/app/allure-report frankescobar/allure-docker-service:latest allure generate /app/allure-results /app/allure-report"; \
+	fi
+
+allure-serve: allure-results ## Serve Allure report locally
+	@if command -v allure >/dev/null 2>&1; then \
+		allure serve reports/allure-results --port 5051; \
+	else \
+		echo "Allure command not found. Install with: npm install -g allure-commandline"; \
+		echo "Or use Docker: docker run -p 5051:5050 -v $(PWD)/reports/allure-results:/app/allure-results frankescobar/allure-docker-service:latest"; \
+	fi
+
+allure-clean: ## Clean Allure reports and results
+	rm -rf reports/allure-results/
+	rm -rf reports/allure-report/
+	@echo "Allure reports cleaned"
+
 # Build the project
 build:
 	@echo "Building project..."

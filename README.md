@@ -49,7 +49,7 @@ Technical writeups and lessons learned:
 
 - **Languages:** Python, TypeScript, GraphQL  
 - **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
-- **Testing Tools:** pytest, Selenium, Pact, Jest, requests, faker  
+- **Testing Tools:** pytest, Selenium, Pact, Jest, requests, faker, Allure  
 - **Other:** Docker, SQL, Git
 
 ## 🚀 CI/CD Pipeline
@@ -75,6 +75,86 @@ This portfolio demonstrates production-ready CI/CD practices across all modules:
 - **Monitoring Integration**: Test result aggregation and reporting
 
 📖 **[Detailed CI/CD Documentation](./docs/cicd-overview.md)** - Comprehensive overview of all CI/CD practices and patterns
+
+---
+
+## 🧪 Local Testing with Allure Reports
+
+This portfolio includes comprehensive local testing capabilities with Allure reporting and history support for trend analysis.
+
+### **Quick Start**
+
+#### Option 1: Native Allure (requires Java)
+```bash
+# 1. Setup Allure commandline
+make allure-setup
+
+# 2. Run tests with Allure reports
+make test-allure-local
+
+# 3. Serve reports locally with history
+make allure-serve-local
+```
+
+#### Option 2: Docker-based Allure (no Java required)
+```bash
+# 1. Run tests with Allure reports
+make test-allure-local
+
+# 2. Serve reports using Docker
+make allure-docker-serve
+```
+
+### **Available Commands**
+
+| Command | Description |
+|---------|-------------|
+| `make allure-setup` | Install Allure commandline for local development |
+| `make test-allure-local` | Run all tests with Allure reports and history |
+| `make test-allure-quick` | Quick test run (smoke tests only) with Allure |
+| `make allure-serve-local` | Serve Allure reports with history support |
+| `make allure-serve-single MODULE=<name>` | Serve reports for specific module |
+| `make allure-history` | Copy Allure history for trend analysis |
+| `make allure-clean` | Clean all Allure reports and history |
+| `make allure-docker-serve` | Serve Allure reports using Docker (no Java required) |
+| `make allure-docker-generate` | Generate Allure reports using Docker |
+| `make allure-docker-clean` | Clean Docker-based Allure containers |
+
+### **Local Report URLs**
+
+After running `make allure-serve-local`, access reports at:
+- **Automation Framework**: http://localhost:5050
+- **AI Test Generation**: http://localhost:5051  
+- **Cloud Native App**: http://localhost:5052
+
+### **History Support**
+
+The local setup maintains test execution history for trend analysis:
+- **Trend Charts**: Track test results over time
+- **Flaky Test Detection**: Identify unstable tests
+- **Performance Trends**: Monitor test execution times
+- **Failure Patterns**: Analyze recurring test failures
+
+### **Module-Specific Testing**
+
+```bash
+# Test specific modules
+make -C automation-framework test-allure
+make -C ai-test-generation test-allure  
+make -C cloud-native-app test-allure
+
+# Serve individual module reports
+make allure-serve-single MODULE=automation-framework
+```
+
+### **Development Workflow**
+
+```bash
+# Complete development workflow
+make install-dev          # Install dependencies
+make test-allure-local    # Run tests with Allure
+make allure-serve-local   # View reports with history
+```
 
 ---
 

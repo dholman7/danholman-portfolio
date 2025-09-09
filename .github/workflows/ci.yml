@@ -47,6 +47,10 @@ jobs:
             mkdir -p reports/allure-results
             # Run tests with Allure reporting
             pytest --alluredir=reports/allure-results -v || true
+            # Run regression tests specifically if they exist
+            if [ -f tests/test_regression.py ]; then
+              pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
+            fi
             # List generated files for debugging
             ls -la reports/allure-results/ || echo "No Allure results generated"
           else 
@@ -89,6 +93,10 @@ jobs:
             mkdir -p reports/allure-results
             # Run tests with Allure reporting
             pytest --alluredir=reports/allure-results -v || true
+            # Run regression tests specifically if they exist
+            if [ -f tests/test_regression.py ]; then
+              pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
+            fi
             # List generated files for debugging
             ls -la reports/allure-results/ || echo "No Allure results generated"
           else 
@@ -103,9 +111,51 @@ jobs:
           retention-days: 30
 
   cloud-native-app:
-    name: Cloud Native App
+    name: Cloud Native App (TypeScript/Python)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cloud-native-app
     steps:
       - uses: actions/checkout@v4
-      - name: Placeholder
-        run: echo "Add CDK or infra steps when ready"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+      - run: |
+          # Install Node.js dependencies
+          if [ -f package.json ]; then yarn install; fi
+          # Install Python dependencies for regression tests
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest allure-pytest allure-python-commons
+      - run: |
+          if command -v yarn >/dev/null 2>&1; then yarn lint || true; fi
+          if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
+      - name: Run Tests with Allure Results
+        if: always()
+        run: |
+          if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
+            # Create reports directory
+            mkdir -p reports/allure-results
+            # Run tests with Allure reporting
+            pytest --alluredir=reports/allure-results -v || true
+            # Run regression tests specifically if they exist
+            if [ -f tests/test_regression.py ]; then
+              pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
+            fi
+            # List generated files for debugging
+            ls -la reports/allure-results/ || echo "No Allure results generated"
+          else 
+            echo 'no tests found'
+          fi
+      - name: Upload Allure Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-native-app-allure-results
+          path: reports/allure-results/
+          retention-days: 30

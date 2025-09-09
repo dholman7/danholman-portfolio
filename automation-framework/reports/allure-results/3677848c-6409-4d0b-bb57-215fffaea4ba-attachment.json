@@ -1,0 +1,706 @@
+{
+  "users": [
+    {
+      "first_name": "Peter",
+      "last_name": "Greene",
+      "email": "kevinrios@example.net",
+      "phone": "001-551-491-6542x2012",
+      "username": "torreskylie",
+      "password": "zZ8EbAmy@q9S",
+      "date_of_birth": "1954-04-06",
+      "address": {
+        "street": "6525 Gomez Vista Suite 112",
+        "city": "North Alexander",
+        "state": "Ohio",
+        "zip_code": "55183",
+        "country": "Croatia"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "America/Los_Angeles",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        },
+        "theme": "light"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Norma",
+      "last_name": "Washington",
+      "email": "mmitchell@example.com",
+      "phone": "4615285911",
+      "username": "rzhang",
+      "password": "Is24Hule%e6b",
+      "date_of_birth": "1960-11-07",
+      "address": {
+        "street": "108 Le Via",
+        "city": "Dawnshire",
+        "state": "Iowa",
+        "zip_code": "60442",
+        "country": "Zambia"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "Asia/Amman",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "push": true
+        },
+        "theme": "auto"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Benjamin",
+      "last_name": "Hicks",
+      "email": "ashleyruiz@example.org",
+      "phone": "958-348-5409",
+      "username": "tracey54",
+      "password": "b7yJMl5e_R^M",
+      "date_of_birth": "1968-10-24",
+      "address": {
+        "street": "23629 Kevin Prairie",
+        "city": "West Stephaniemouth",
+        "state": "New Jersey",
+        "zip_code": "05932",
+        "country": "Anguilla"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "Africa/Bangui",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": false
+        },
+        "theme": "light"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Brenda",
+      "last_name": "Espinoza",
+      "email": "nathan52@example.com",
+      "phone": "4515044946",
+      "username": "corysanchez",
+      "password": "y(1nQHYmMlPX",
+      "date_of_birth": "1984-07-13",
+      "address": {
+        "street": "397 Torres Orchard Apt. 323",
+        "city": "North Alyssa",
+        "state": "California",
+        "zip_code": "07642",
+        "country": "Christmas Island"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "America/Cancun",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Jessica",
+      "last_name": "Brown",
+      "email": "nicholsjared@example.org",
+      "phone": "+1-645-406-4826x0204",
+      "username": "eburke",
+      "password": "D#N3FHlPHahs",
+      "date_of_birth": "2006-02-02",
+      "address": {
+        "street": "043 Walters Meadow Apt. 234",
+        "city": "West Derrick",
+        "state": "New York",
+        "zip_code": "93187",
+        "country": "Christmas Island"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "Asia/Aden",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Justin",
+      "last_name": "Hancock",
+      "email": "michael00@example.com",
+      "phone": "234.762.2514",
+      "username": "david18",
+      "password": "f$82Jbjk(30G",
+      "date_of_birth": "1984-08-17",
+      "address": {
+        "street": "77126 Tucker Mills",
+        "city": "Heathfurt",
+        "state": "West Virginia",
+        "zip_code": "95430",
+        "country": "Oman"
+      },
+      "preferences": {
+        "language": "fr",
+        "timezone": "Africa/Dar_es_Salaam",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Claire",
+      "last_name": "Mccoy",
+      "email": "jeffreylambert@example.com",
+      "phone": "001-339-796-5474",
+      "username": "burnettamber",
+      "password": "^DEz9VF6#1%G",
+      "date_of_birth": "1963-09-11",
+      "address": {
+        "street": "81447 Brooks Villages",
+        "city": "Mitchellton",
+        "state": "Maryland",
+        "zip_code": "66833",
+        "country": "Malawi"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "Africa/Libreville",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Erik",
+      "last_name": "Jenkins",
+      "email": "ricediana@example.net",
+      "phone": "896.362.2354",
+      "username": "debbie88",
+      "password": "mr)Xu)B)#6*W",
+      "date_of_birth": "1986-10-02",
+      "address": {
+        "street": "528 Floyd Landing Suite 628",
+        "city": "Traceyport",
+        "state": "Tennessee",
+        "zip_code": "19550",
+        "country": "Peru"
+      },
+      "preferences": {
+        "language": "es",
+        "timezone": "America/Havana",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        },
+        "theme": "light"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Alicia",
+      "last_name": "Moore",
+      "email": "joshua20@example.org",
+      "phone": "8769581249",
+      "username": "kaitlynanderson",
+      "password": "#Y7U0PoYgi+A",
+      "date_of_birth": "1954-10-10",
+      "address": {
+        "street": "121 Robin Lock Suite 250",
+        "city": "Warrenview",
+        "state": "Louisiana",
+        "zip_code": "79108",
+        "country": "Bhutan"
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "America/Rio_Branco",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "push": true
+        },
+        "theme": "auto"
+      },
+      "metadata": {}
+    },
+    {
+      "first_name": "Kaitlyn",
+      "last_name": "Aguirre",
+      "email": "melindahodge@example.net",
+      "phone": "250-573-1303",
+      "username": "monique46",
+      "password": "#QGr#PH3c7Oj",
+      "date_of_birth": "2004-12-16",
+      "address": {
+        "street": "05519 Daniel Street",
+        "city": "Leestad",
+        "state": "Mississippi",
+        "zip_code": "66617",
+        "country": "Spain"
+      },
+      "preferences": {
+        "language": "fr",
+        "timezone": "America/Belize",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        },
+        "theme": "dark"
+      },
+      "metadata": {}
+    }
+  ],
+  "products": [
+    {
+      "name": "Polarized static contingency",
+      "description": "Gun across our put hand attack building experience. People five top half thus. Approach strategy some long.\nSuffer reveal white suggest. Doctor article weight through build.",
+      "price": 873.74,
+      "category": "Books",
+      "sku": "IZT-3182-XQM",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Thompson, Franklin and Smith",
+        "model": "Model-111",
+        "color": "Yellow",
+        "size": "XL",
+        "weight": 4.21,
+        "dimensions": {
+          "length": 57.3,
+          "width": 51.0,
+          "height": 55.6
+        },
+        "author": "Alicia Mccarthy",
+        "isbn": "978-1-78038-374-3",
+        "pages": 269,
+        "language": "English"
+      }
+    },
+    {
+      "name": "Devolved exuding function",
+      "description": "Ten technology here son capital color party. Marriage hospital want model assume. She example employee address station image.\nPull must audience share write account. Current then cultural.",
+      "price": 550.91,
+      "category": "Automotive",
+      "sku": "YIH-1802-TDD",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Campbell-Harris",
+        "model": "Model-205",
+        "color": "Green",
+        "size": "XXL",
+        "weight": 43.67,
+        "dimensions": {
+          "length": 18.2,
+          "width": 49.2,
+          "height": 77.6
+        }
+      }
+    },
+    {
+      "name": "Robust bi-directional functionalities",
+      "description": "Network future couple well pretty partner. Yes nature task line me.\nContain first government fear field here movie. Language address anyone.",
+      "price": 14.46,
+      "category": "Beauty",
+      "sku": "ZEL-6449-HPT",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Montgomery Inc",
+        "model": "Model-095",
+        "color": "Green",
+        "size": "XXL",
+        "weight": 46.7,
+        "dimensions": {
+          "length": 48.2,
+          "width": 29.1,
+          "height": 64.7
+        }
+      }
+    },
+    {
+      "name": "Fully-configurable high-level ability",
+      "description": "Author behind they job someone past international. Nearly on within picture.\nWall water right land step.\nEspecially model since smile speak. Big wife think determine picture character per.",
+      "price": 232.03,
+      "category": "Clothing",
+      "sku": "RNL-0139-KIS",
+      "in_stock": true,
+      "quantity": 31,
+      "attributes": {
+        "brand": "Banks, George and Barron",
+        "model": "Model-678",
+        "color": "Black",
+        "size": "L",
+        "weight": 31.67,
+        "dimensions": {
+          "length": 41.4,
+          "width": 75.0,
+          "height": 60.5
+        },
+        "material": "Cotton",
+        "care_instructions": "Machine wash cold",
+        "season": "Summer"
+      }
+    },
+    {
+      "name": "Multi-channeled exuding moratorium",
+      "description": "Clear data exist director small seek. Member firm good same everything base morning. Range owner nor test human.\nCertain politics recognize and table. Manage may call like force.",
+      "price": 511.16,
+      "category": "Health",
+      "sku": "HDX-6568-HRM",
+      "in_stock": false,
+      "quantity": 0,
+      "attributes": {
+        "brand": "Morris, Taylor and Morgan",
+        "model": "Model-820",
+        "color": "Red",
+        "size": "M",
+        "weight": 1.96,
+        "dimensions": {
+          "length": 25.0,
+          "width": 27.2,
+          "height": 46.9
+        }
+      }
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "ORD-46579133",
+      "user_id": "kevinrios@example.net",
+      "products": [
+        {
+          "id": "JPU-1733-ZWN",
+          "name": "Balanced responsive matrices",
+          "price": 836.37,
+          "quantity": 4
+        }
+      ],
+      "total_amount": 3345.48,
+      "status": "returned",
+      "shipping_address": {
+        "street": "5415 Amanda Plaza Apt. 980",
+        "city": "Taylormouth",
+        "state": "Maine",
+        "zip_code": "03224",
+        "country": "Finland"
+      },
+      "billing_address": {
+        "street": "5415 Amanda Plaza Apt. 980",
+        "city": "Taylormouth",
+        "state": "Maine",
+        "zip_code": "03224",
+        "country": "Finland"
+      },
+      "payment_method": "debit_card",
+      "created_at": "2025-09-05 09:46:05",
+      "updated_at": "2025-09-05 09:46:05"
+    },
+    {
+      "order_id": "ORD-07057786",
+      "user_id": "mmitchell@example.com",
+      "products": [
+        {
+          "id": "MGS-5132-AQQ",
+          "name": "Exclusive modular interface",
+          "price": 862.18,
+          "quantity": 3
+        }
+      ],
+      "total_amount": 2586.54,
+      "status": "pending",
+      "shipping_address": {
+        "street": "63563 Oliver Court Suite 442",
+        "city": "West Laurenborough",
+        "state": "Maine",
+        "zip_code": "18710",
+        "country": "Faroe Islands"
+      },
+      "billing_address": {
+        "street": "63563 Oliver Court Suite 442",
+        "city": "West Laurenborough",
+        "state": "Maine",
+        "zip_code": "18710",
+        "country": "Faroe Islands"
+      },
+      "payment_method": "google_pay",
+      "created_at": "2025-08-24 18:41:29",
+      "updated_at": "2025-08-30 18:41:29"
+    },
+    {
+      "order_id": "ORD-19586313",
+      "user_id": "ashleyruiz@example.org",
+      "products": [
+        {
+          "id": "DLK-1514-DUK",
+          "name": "Reactive national complexity",
+          "price": 842.74,
+          "quantity": 5
+        }
+      ],
+      "total_amount": 4213.7,
+      "status": "returned",
+      "shipping_address": {
+        "street": "13667 Charles Glens Suite 852",
+        "city": "Parkerside",
+        "state": "Michigan",
+        "zip_code": "80512",
+        "country": "Somalia"
+      },
+      "billing_address": {
+        "street": "13667 Charles Glens Suite 852",
+        "city": "Parkerside",
+        "state": "Michigan",
+        "zip_code": "80512",
+        "country": "Somalia"
+      },
+      "payment_method": "bank_transfer",
+      "created_at": "2025-09-09 01:08:08",
+      "updated_at": "2025-09-15 01:08:08"
+    },
+    {
+      "order_id": "ORD-62282143",
+      "user_id": "nathan52@example.com",
+      "products": [
+        {
+          "id": "LRB-3734-XRS",
+          "name": "Universal exuding forecast",
+          "price": 476.0,
+          "quantity": 4
+        }
+      ],
+      "total_amount": 1904.0,
+      "status": "shipped",
+      "shipping_address": {
+        "street": "560 Danielle Fall",
+        "city": "South Daniel",
+        "state": "New Hampshire",
+        "zip_code": "07247",
+        "country": "Paraguay"
+      },
+      "billing_address": {
+        "street": "560 Danielle Fall",
+        "city": "South Daniel",
+        "state": "New Hampshire",
+        "zip_code": "07247",
+        "country": "Paraguay"
+      },
+      "payment_method": "credit_card",
+      "created_at": "2025-09-08 05:58:21",
+      "updated_at": "2025-09-14 05:58:21"
+    },
+    {
+      "order_id": "ORD-34731132",
+      "user_id": "nicholsjared@example.org",
+      "products": [
+        {
+          "id": "WGA-2393-QYR",
+          "name": "Future-proofed asymmetric challenge",
+          "price": 383.84,
+          "quantity": 3
+        }
+      ],
+      "total_amount": 1151.52,
+      "status": "processing",
+      "shipping_address": {
+        "street": "753 Greene Land",
+        "city": "Timothychester",
+        "state": "Michigan",
+        "zip_code": "17840",
+        "country": "Saint Lucia"
+      },
+      "billing_address": {
+        "street": "753 Greene Land",
+        "city": "Timothychester",
+        "state": "Michigan",
+        "zip_code": "17840",
+        "country": "Saint Lucia"
+      },
+      "payment_method": "credit_card",
+      "created_at": "2025-08-17 14:39:47",
+      "updated_at": "2025-08-18 14:39:47"
+    },
+    {
+      "order_id": "ORD-52186334",
+      "user_id": "michael00@example.com",
+      "products": [
+        {
+          "id": "VCL-1503-RLM",
+          "name": "Function-based 3rdgeneration ability",
+          "price": 510.4,
+          "quantity": 4
+        }
+      ],
+      "total_amount": 2041.6,
+      "status": "delivered",
+      "shipping_address": {
+        "street": "7075 Bernard Meadow",
+        "city": "Duranbury",
+        "state": "Wyoming",
+        "zip_code": "63167",
+        "country": "Suriname"
+      },
+      "billing_address": {
+        "street": "7075 Bernard Meadow",
+        "city": "Duranbury",
+        "state": "Wyoming",
+        "zip_code": "63167",
+        "country": "Suriname"
+      },
+      "payment_method": "google_pay",
+      "created_at": "2025-08-19 08:40:34",
+      "updated_at": "2025-08-25 08:40:34"
+    },
+    {
+      "order_id": "ORD-58575851",
+      "user_id": "jeffreylambert@example.com",
+      "products": [
+        {
+          "id": "YWE-2262-JMN",
+          "name": "Digitized homogeneous capability",
+          "price": 206.39,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 206.39,
+      "status": "pending",
+      "shipping_address": {
+        "street": "42315 Baker Crossroad Suite 616",
+        "city": "Debbieville",
+        "state": "Minnesota",
+        "zip_code": "58173",
+        "country": "Nicaragua"
+      },
+      "billing_address": {
+        "street": "42315 Baker Crossroad Suite 616",
+        "city": "Debbieville",
+        "state": "Minnesota",
+        "zip_code": "58173",
+        "country": "Nicaragua"
+      },
+      "payment_method": "bank_transfer",
+      "created_at": "2025-08-13 14:44:06",
+      "updated_at": "2025-08-18 14:44:06"
+    },
+    {
+      "order_id": "ORD-37311762",
+      "user_id": "ricediana@example.net",
+      "products": [
+        {
+          "id": "GZG-2655-ZLS",
+          "name": "De-engineered incremental circuit",
+          "price": 95.26,
+          "quantity": 5
+        }
+      ],
+      "total_amount": 476.3,
+      "status": "delivered",
+      "shipping_address": {
+        "street": "498 Claire Inlet Apt. 611",
+        "city": "South Rachelside",
+        "state": "New York",
+        "zip_code": "27918",
+        "country": "Rwanda"
+      },
+      "billing_address": {
+        "street": "498 Claire Inlet Apt. 611",
+        "city": "South Rachelside",
+        "state": "New York",
+        "zip_code": "27918",
+        "country": "Rwanda"
+      },
+      "payment_method": "paypal",
+      "created_at": "2025-09-09 08:26:40",
+      "updated_at": "2025-09-16 08:26:40"
+    },
+    {
+      "order_id": "ORD-12112883",
+      "user_id": "joshua20@example.org",
+      "products": [
+        {
+          "id": "CTT-2228-QJE",
+          "name": "Face-to-face zero tolerance toolset",
+          "price": 237.86,
+          "quantity": 5
+        }
+      ],
+      "total_amount": 1189.3,
+      "status": "delivered",
+      "shipping_address": {
+        "street": "8474 Russell Garden",
+        "city": "Lake Amy",
+        "state": "Nebraska",
+        "zip_code": "06363",
+        "country": "Barbados"
+      },
+      "billing_address": {
+        "street": "8474 Russell Garden",
+        "city": "Lake Amy",
+        "state": "Nebraska",
+        "zip_code": "06363",
+        "country": "Barbados"
+      },
+      "payment_method": "google_pay",
+      "created_at": "2025-09-01 23:03:04",
+      "updated_at": "2025-09-08 23:03:04"
+    },
+    {
+      "order_id": "ORD-08448269",
+      "user_id": "melindahodge@example.net",
+      "products": [
+        {
+          "id": "EUP-9582-JEP",
+          "name": "Quality-focused global system engine",
+          "price": 836.89,
+          "quantity": 5
+        }
+      ],
+      "total_amount": 4184.45,
+      "status": "pending",
+      "shipping_address": {
+        "street": "21359 Larsen Plaza",
+        "city": "Jameschester",
+        "state": "California",
+        "zip_code": "41931",
+        "country": "Trinidad and Tobago"
+      },
+      "billing_address": {
+        "street": "21359 Larsen Plaza",
+        "city": "Jameschester",
+        "state": "California",
+        "zip_code": "41931",
+        "country": "Trinidad and Tobago"
+      },
+      "payment_method": "google_pay",
+      "created_at": "2025-08-14 22:01:43",
+      "updated_at": "2025-08-14 22:01:43"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2025-09-09T11:05:31.357487",
+    "user_count": 10,
+    "product_count": 5,
+    "order_count": 10
+  }
+}
