@@ -91,67 +91,77 @@ jobs:
           path: ai-test-generation/reports/allure-report/
           retention-days: 30
 
-      - name: Create placeholder reports if missing
+      - name: Prepare GitHub Pages Deployment
         if: github.ref == 'refs/heads/main'
         run: |
-          # Create placeholder directories if they don't exist
-          mkdir -p automation-framework/reports/allure-report
-          mkdir -p ai-test-generation/reports/allure-report
+          # Create a single deployment directory
+          mkdir -p gh-pages-deploy
           
-          # Create placeholder index files
-          echo "<!DOCTYPE html><html><head><title>Allure Reports</title></head><body><h1>Allure Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > automation-framework/reports/allure-report/index.html
-          echo "<!DOCTYPE html><html><head><title>Allure Reports</title></head><body><h1>Allure Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > ai-test-generation/reports/allure-report/index.html
+          # Copy reports to deployment directory
+          if [ -d "automation-framework/reports/allure-report" ] && [ "$(ls -A automation-framework/reports/allure-report)" ]; then
+            echo "Copying automation-framework report..."
+            cp -r automation-framework/reports/allure-report gh-pages-deploy/automation-framework
+          else
+            echo "Creating placeholder for automation-framework..."
+            mkdir -p gh-pages-deploy/automation-framework
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - Automation Framework</title></head><body><h1>Allure Test Reports - Automation Framework</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/automation-framework/index.html
+          fi
+          
+          if [ -d "ai-test-generation/reports/allure-report" ] && [ "$(ls -A ai-test-generation/reports/allure-report)" ]; then
+            echo "Copying ai-test-generation report..."
+            cp -r ai-test-generation/reports/allure-report gh-pages-deploy/ai-test-generation
+          else
+            echo "Creating placeholder for ai-test-generation..."
+            mkdir -p gh-pages-deploy/ai-test-generation
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - AI Test Generation</title></head><body><h1>Allure Test Reports - AI Test Generation</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/ai-test-generation/index.html
+          fi
+          
+          # Create main index page
+          cat > gh-pages-deploy/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Allure Test Reports</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  .container { max-width: 800px; margin: 0 auto; }
+                  .module { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+                  .module h2 { color: #333; }
+                  .module a { color: #007bff; text-decoration: none; }
+                  .module a:hover { text-decoration: underline; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>Allure Test Reports</h1>
+                  <p>Interactive test reports generated from CI/CD pipeline test results.</p>
+                  
+                  <div class="module">
+                      <h2>Automation Framework</h2>
+                      <p>Test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
+                      <a href="automation-framework/">View Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>AI Test Generation</h2>
+                      <p>AI-powered test generation using LLMs for automated test case creation.</p>
+                      <a href="ai-test-generation/">View Report</a>
+                  </div>
+                  
+                  <hr>
+                  <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
+              </div>
+          </body>
+          </html>
+          EOF
 
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: |
-            automation-framework/reports/allure-report
-            ai-test-generation/reports/allure-report
+          publish_dir: gh-pages-deploy
           destination_dir: allure-reports
           keep_files: true
           allow_empty_commit: true
 
-  matrix-test-report:
-    name: Matrix Test Report (Plans)
-    runs-on: ubuntu-latest
-    if: github.event.inputs.module == 'all' || github.event_name == 'workflow_run'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install Allure Commandline
-        run: |
-          npm install -g allure-commandline
-
-      - name: Create Matrix Test Report
-        run: |
-          echo "# Allure Test Reports" > allure-matrix-report.md
-          echo "" >> allure-matrix-report.md
-          echo "## Available Reports" >> allure-matrix-report.md
-          echo "" >> allure-matrix-report.md
-          echo "### Automation Framework" >> allure-matrix-report.md
-          echo "- [Latest Report](https://danholman.github.io/danholman-portfolio/allure-reports/automation-framework/)" >> allure-matrix-report.md
-          echo "" >> allure-matrix-report.md
-          echo "### AI Test Generation" >> allure-matrix-report.md
-          echo "- [Latest Report](https://danholman.github.io/danholman-portfolio/allure-reports/ai-test-generation/)" >> allure-matrix-report.md
-          echo "" >> allure-matrix-report.md
-          echo "## Usage" >> allure-matrix-report.md
-          echo "" >> allure-matrix-report.md
-          echo "These reports are automatically generated from CI/CD pipeline test results." >> allure-matrix-report.md
-          echo "Reports are updated on every successful build of the main branch." >> allure-matrix-report.md
-
-      - name: Upload Matrix Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-matrix-report
-          path: allure-matrix-report.md
-          retention-days: 30
