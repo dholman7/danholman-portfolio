@@ -168,6 +168,8 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
+          cache-dependency-path: |
+            cloud-native-app/yarn.lock
       - run: |
           # Install Node.js dependencies
           if [ -f package.json ]; then yarn install; fi
@@ -180,20 +182,30 @@ jobs:
       - name: Run Tests with Allure Results
         if: always()
         run: |
+          # Create reports directory
+          mkdir -p reports/allure-results
+          
+          # Run Python tests (including regression tests)
           if [ -d tests ] || ls -1 *.py >/dev/null 2>&1; then 
-            # Create reports directory
-            mkdir -p reports/allure-results
-            # Run tests with Allure reporting
+            echo "Running Python tests..."
             pytest --alluredir=reports/allure-results -v || true
             # Run regression tests specifically if they exist
             if [ -f tests/test_regression.py ]; then
+              echo "Running regression tests..."
               pytest tests/test_regression.py --alluredir=reports/allure-results -v || true
             fi
-            # List generated files for debugging
-            ls -la reports/allure-results/ || echo "No Allure results generated"
           else 
-            echo 'no tests found'
+            echo 'no Python tests found'
           fi
+          
+          # Run TypeScript/Jest tests (without Allure for now)
+          if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            echo "Running TypeScript/Jest tests..."
+            yarn test --coverage || true
+          fi
+          
+          # List generated files for debugging
+          ls -la reports/allure-results/ || echo "No Allure results generated"
       - name: Generate Allure Report
         if: always()
         run: |
