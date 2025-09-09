@@ -440,10 +440,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python $&#123;&#123; matrix.python-version &#125;&#125;
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: $&#123;&#123; matrix.python-version &#125;&#125;
     
     - name: Install dependencies
       run: |
@@ -451,7 +451,7 @@ jobs:
     
     - name: Run tests
       run: |
-        pytest -m "not slow" --browser=${{ matrix.browser }} --headless
+        pytest -m "not slow" --browser=$&#123;&#123; matrix.browser &#125;&#125; --headless
 ```
 
 ## 📊 Reporting

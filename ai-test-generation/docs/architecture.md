@@ -157,26 +157,26 @@ Each generator follows a consistent pattern:
 Generators use Jinja2 templates to format rule sets:
 
 ```jinja2
-# {{ metadata.name }}
+# &#123;&#123; metadata.name &#125;&#125;
 
-{{ metadata.description }}
+&#123;&#123; metadata.description &#125;&#125;
 
 ## Languages
-{% for lang in metadata.languages %}- {{ lang }}
-{% endfor %}
+&#123;% for lang in metadata.languages %&#125;- &#123;&#123; lang &#125;&#125;
+&#123;% endfor %&#125;
 
 ---
 
-{% for rule in rules %}
-## {{ rule.name }}
+&#123;% for rule in rules %&#125;
+## &#123;&#123; rule.name &#125;&#125;
 
-{{ rule.description }}
+&#123;&#123; rule.description &#125;&#125;
 
-```{{ language }}
-{{ rule.content }}
+```&#123;&#123; language &#125;&#125;
+&#123;&#123; rule.content &#125;&#125;
 ```
 
-{% endfor %}
+&#123;% endfor %&#125;
 ```
 
 ## CLI Design

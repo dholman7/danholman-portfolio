@@ -145,10 +145,10 @@ class TestTemplateProcessing:
         
         with allure.step("Load template"):
             template = """
-def test_{{test_name}}():
-    \"\"\"{{test_description}}\"\"\"
+def test_&#123;&#123;test_name&#125;&#125;():
+    \"\"\"&#123;&#123;test_description&#125;&#125;\"\"\"
     # Test implementation
-    assert {{assertion}}
+    assert &#123;&#123;assertion&#125;&#125;
             """.strip()
             allure.attach(template, "Template", allure.attachment_type.TEXT)
         
@@ -280,13 +280,13 @@ def test_template_error_handling():
     """Test error handling for template processing failures."""
     try:
         # Template processing
-        result = template_processor.render("{{invalid_template", {})
+        result = template_processor.render("&#123;&#123;invalid_template", {})
     except Exception as e:
         with allure.step("Capture template error"):
             error_info = {
                 "error_type": type(e).__name__,
                 "error_message": str(e),
-                "template": "{{invalid_template",
+                "template": "&#123;&#123;invalid_template",
                 "data": {}
             }
             allure.attach(json.dumps(error_info, indent=2), 

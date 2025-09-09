@@ -46,7 +46,7 @@ strategy:
   fail-fast: false
   max-parallel: 10  # Configurable via workflow inputs
   matrix:
-    test_config: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+    test_config: $&#123;&#123; fromJSON(needs.generate-matrix.outputs.matrix) &#125;&#125;
 ```
 
 ### 3. Comprehensive Test Coverage
@@ -185,7 +185,7 @@ The workflow includes sophisticated artifact merging:
     path: |
       ~/.cache/pip
       ~/.cache/pytest
-    key: ${{ runner.os }}-${{ matrix.test_config.language }}-${{ matrix.test_config.framework }}-${{ hashFiles('**/requirements.txt') }}
+    key: $&#123;&#123; runner.os &#125;&#125;-$&#123;&#123; matrix.test_config.language &#125;&#125;-$&#123;&#123; matrix.test_config.framework &#125;&#125;-${{ hashFiles('**/requirements.txt') }}
 ```
 
 ## Monitoring and Reporting
@@ -316,8 +316,8 @@ strategy:
 ```yaml
 strategy:
   matrix:
-    test_config: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
-  max-parallel: ${{ github.repository_owner == 'danholman' && 20 || 5 }}
+    test_config: $&#123;&#123; fromJSON(needs.generate-matrix.outputs.matrix) &#125;&#125;
+  max-parallel: $&#123;&#123; github.repository_owner == 'danholman' && 20 || 5 &#125;&#125;
 ```
 
 This parallel testing implementation demonstrates production-ready patterns for high-scale test automation, providing both technical depth and practical applicability for modern CI/CD pipelines.

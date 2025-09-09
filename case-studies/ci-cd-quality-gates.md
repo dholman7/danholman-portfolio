@@ -113,7 +113,7 @@ jobs:
       - name: Run Snyk Security Scan
         uses: snyk/actions/python@master
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: $&#123;&#123; secrets.SNYK_TOKEN &#125;&#125;
 ```
 
 ### 4. Performance Quality Gates
