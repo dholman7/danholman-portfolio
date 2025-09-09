@@ -120,7 +120,15 @@ make allure-docker-serve
 | `make allure-docker-generate` | Generate Allure reports using Docker |
 | `make allure-docker-clean` | Clean Docker-based Allure containers |
 
-### **Local Report URLs**
+### **Report URLs**
+
+#### **Live GitHub Pages Reports**
+- **All Reports**: https://dholman7.github.io/danholman-portfolio/
+- **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
+- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-test-generation/
+- **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
+
+#### **Local Development Reports**
 
 After running `make allure-serve-local`, access reports at:
 - **Automation Framework**: http://localhost:5050

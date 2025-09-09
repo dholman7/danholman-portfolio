@@ -43,19 +43,9 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Check if tests directory exists
-          if [ -d tests ]; then
-            echo "Found tests directory, running pytest..."
-            pytest tests/ --alluredir=reports/allure-results -v || true
-          else
-            echo "No tests directory found"
-          fi
-          
-          # Check for test files in current directory
-          if ls test_*.py 1> /dev/null 2>&1; then
-            echo "Found test files in current directory, running pytest..."
-            pytest test_*.py --alluredir=reports/allure-results -v || true
-          fi
+          # Run tests with proper pytest configuration
+          echo "Running pytest with Allure reporting..."
+          pytest --alluredir=reports/allure-results -v --tb=short || true
           
           # List generated files for debugging
           echo "Allure results directory contents:"
@@ -114,19 +104,9 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Check if tests directory exists
-          if [ -d tests ]; then
-            echo "Found tests directory, running pytest..."
-            pytest tests/ --alluredir=reports/allure-results -v || true
-          else
-            echo "No tests directory found"
-          fi
-          
-          # Check for test files in current directory
-          if ls test_*.py 1> /dev/null 2>&1; then
-            echo "Found test files in current directory, running pytest..."
-            pytest test_*.py --alluredir=reports/allure-results -v || true
-          fi
+          # Run tests with proper pytest configuration
+          echo "Running pytest with Allure reporting..."
+          pytest --alluredir=reports/allure-results -v --tb=short || true
           
           # List generated files for debugging
           echo "Allure results directory contents:"
@@ -189,19 +169,9 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Check if tests directory exists
-          if [ -d tests ]; then
-            echo "Found tests directory, running pytest..."
-            pytest tests/ --alluredir=reports/allure-results -v || true
-          else
-            echo "No tests directory found"
-          fi
-          
-          # Check for test files in current directory
-          if ls test_*.py 1> /dev/null 2>&1; then
-            echo "Found test files in current directory, running pytest..."
-            pytest test_*.py --alluredir=reports/allure-results -v || true
-          fi
+          # Run Python tests with proper pytest configuration
+          echo "Running pytest with Allure reporting..."
+          pytest --alluredir=reports/allure-results -v --tb=short || true
           
           # Run TypeScript/Jest tests (without Allure for now)
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
