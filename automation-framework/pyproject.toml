@@ -222,6 +222,7 @@ markers = [
     "contract: Contract testing",
     "e2e: End-to-end tests",
     "unit: Unit tests",
+    "component: Component tests with mocked dependencies",
     "functional: Functional tests",
     "accessibility: Accessibility tests",
     "visual: Visual regression tests",
