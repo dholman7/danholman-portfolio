@@ -1,0 +1,213 @@
+# Cursor Rules for danholman-portfolio
+
+## Project Overview
+This is Dan Holman's professional portfolio showcasing expertise in test automation, cloud-native development, and AI-powered testing. The repository demonstrates 13+ years of experience as a Senior Software Developer in Test (SDET) & Automation Architect.
+
+### Key Modules:
+- **automation-framework/**: Python/TypeScript test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing
+- **cloud-native-app/**: AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code
+- **ai-testing/**: AI-powered test generation using LLMs for automated test case creation
+- **case-studies/**: Technical writeups on contract testing, test data scaling, and CI/CD quality gates
+- **ai-private/**: Private submodule containing sensitive prompts, agent rules, and datasets
+
+### Tech Stack:
+- **Languages**: Python 3.13, TypeScript, Java, GraphQL
+- **Cloud & DevOps**: AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog
+- **Testing Tools**: Playwright, Pact, Cypress, Selenium, Appium, Postman, Axe
+- **Other**: ReactJS, Docker, SQL, Git
+
+## General Guidelines
+- Follow the principle of "public by default, private by exception" - keep sensitive content in `ai-private/`
+- All code should be production-ready and demonstrate best practices
+- Prioritize maintainability, testability, and documentation
+- Use semantic versioning and conventional commits
+- Include comprehensive README files for each module
+- Follow security-first principles for all implementations
+- Optimize for developer experience and CI/CD integration
+
+## Python Installation
+- Use .python-version file to specify Python 3.13
+- Install with: `pyenv install $(cat .python-version)` or `asdf install python $(cat .python-version)`
+- All GitHub Actions workflows must read .python-version for setup-python action
+- All AWS CloudFormation/CDK templates must reference .python-version for Lambda runtime
+- Use virtual environments for all Python development
+- Pin dependency versions in requirements.txt or pyproject.toml
+- Use pip-tools for dependency management in complex projects
+
+## CI/CD and Infrastructure Rules
+- All modules must have corresponding GitHub Actions workflows
+- Use path-based triggers to run only relevant jobs
+- Implement proper caching for dependencies (npm, pip)
+- Use matrix strategies for multi-version testing
+- All AWS resources must be defined as Infrastructure as Code
+- Use CloudFormation or CDK for AWS deployments
+- Implement proper secret management (GitHub Secrets, AWS Secrets Manager)
+- Include linting, testing, and security scanning in all pipelines
+- Use Makefiles for common development tasks
+- Implement proper error handling and rollback strategies
+
+## Python Development Philosophy
+- Follow PEP-20 (Zen of Python) principles as defined in project-specific rules
+- Write code that is self-documenting and follows the principle of least surprise
+- Prioritize readability and maintainability over cleverness
+- Use type hints extensively for better IDE support and documentation
+- Follow the "batteries included" philosophy - use standard library when possible
+- Write tests that serve as living documentation
+- Use composition over inheritance
+- Follow the single responsibility principle
+
+## Python 3.13 Development Rules
+
+### Language Features
+- Use Python 3.13 features: improved error messages, better typing, performance improvements
+- Leverage structural pattern matching (match/case) for complex conditionals
+- Use walrus operator (:=) judiciously for assignment expressions
+- Utilize f-strings for all string formatting
+- Use dataclasses for simple data containers
+- Implement context managers for resource management
+- Use pathlib for all file system operations
+- Implement proper __str__ and __repr__ methods
+- Follow project-specific Python 3.13 language rules for type parameters, generics, and async patterns
+
+### Code Style and Patterns
+- Follow PEP 8 with 88-character line limit (Black default)
+- Use Black for code formatting and isort for import sorting
+- Use Ruff for linting and code analysis
+- Implement proper docstrings following Google style
+- Use meaningful variable and function names
+- Group imports: standard library, third-party, local imports
+- Use list/dict comprehensions for simple transformations
+- Use dataclasses or Pydantic models for data validation
+- Follow the Page Object Model pattern for test automation
+- Follow project-specific Python language rules for type hints, async patterns, and code structure
+
+### Error Handling
+- Use context managers for resource cleanup
+- Implement custom exception classes for domain-specific errors
+- Use try/except/else/finally blocks appropriately
+- Log exceptions with full stack traces
+- Implement proper error recovery strategies
+- Use assertions for debugging and development
+- Validate inputs at function boundaries
+- Implement proper timeout handling for external calls
+- Follow project-specific Python language rules for exception handling, logging, and async error patterns
+
+### Security and Logging
+- Never commit secrets or sensitive data
+- Use environment variables for configuration
+- Use secure random number generation
+- Implement proper authentication and authorization
+- Use HTTPS for all external communications
+- Use structured logging with consistent formats
+- Implement proper secret rotation strategies
+- Follow OWASP security guidelines
+- Follow project-specific Python language rules for security practices, input validation, and logging
+
+### Performance Optimization
+- Use appropriate data structures for the use case
+- Implement proper caching strategies
+- Use generators for large datasets
+- Optimize database queries and connections
+- Implement proper connection pooling
+- Use profiling tools to identify bottlenecks
+- Implement proper memory management
+- Use appropriate algorithms for the problem domain
+- Monitor and measure performance improvements
+- Follow project-specific Python language rules for JIT optimization, type stability, and async performance
+
+## TypeScript/Node.js Rules
+
+### Language Features
+- Use TypeScript for all JavaScript development
+- Leverage strict type checking and strict mode
+- Use modern ES6+ features: arrow functions, destructuring, template literals
+- Implement proper interfaces and type definitions
+- Use enums for constants and configuration
+- Leverage union types and type guards
+- Use generics for reusable components
+- Implement proper error handling with Result types
+- Use async/await instead of Promises chains
+- Leverage optional chaining and nullish coalescing
+- Use Yarn for package manager.
+
+### ES6+ Specific Rules
+- Use const for immutable values, let for mutable values
+- Prefer arrow functions for short functions
+- Use template literals for string interpolation
+- Implement proper destructuring for objects and arrays
+- Use spread operator for array/object operations
+- Implement proper module imports/exports
+- Use classes with proper inheritance patterns
+- Implement proper async/await error handling
+- Use Map and Set for appropriate use cases
+- Leverage array methods: map, filter, reduce, forEach
+
+### Code Style and Patterns
+- Use ESLint and Prettier for code formatting
+- Follow Airbnb TypeScript style guide
+- Use meaningful variable and function names
+- Implement proper JSDoc comments
+- Use consistent indentation (2 spaces)
+- Group imports: Node modules, internal modules, relative imports
+- Use interfaces for object shapes
+- Implement proper error boundaries
+- Use composition over inheritance
+- Follow the single responsibility principle
+
+### Error Handling
+- Use proper TypeScript error types
+- Implement custom error classes
+- Use try/catch blocks appropriately
+- Implement proper async error handling
+- Use Result types for error handling
+- Log errors with proper context
+- Implement proper error recovery
+- Use proper timeout handling
+- Validate inputs at function boundaries
+- Implement proper error reporting
+
+### Testing and Quality
+- Use Jest for unit testing
+- Implement proper test coverage (minimum 80%)
+- Use Playwright for end-to-end testing
+- Implement proper mocking strategies
+- Use test-driven development when appropriate
+- Implement proper integration tests
+- Use contract testing with Pact
+- Implement proper performance testing
+- Use accessibility testing with Axe
+- Implement proper visual regression testing
+
+## Testing Guidelines
+- Write tests that are fast, independent, repeatable, and self-validating
+- Use the Arrange-Act-Assert pattern for test structure
+- Implement proper test data management
+- Use Page Object Model for UI testing
+- Implement proper test isolation and cleanup
+- Use appropriate test doubles (mocks, stubs, fakes)
+- Implement proper test reporting and documentation
+- Use contract testing for API integration
+- Implement proper test data factories
+- Use proper test naming conventions
+- Implement proper test parallelization
+- Use proper test environment management
+- Implement proper test result analysis
+- Use proper test maintenance strategies
+- Implement proper test performance monitoring
+
+## File Organization
+- Use kebab-case for directory and file names
+- Group related files in appropriate directories
+- Use index files for clean imports
+- Implement proper module boundaries
+- Use consistent naming conventions across the project
+- Organize tests alongside source code
+- Use proper configuration file organization
+- Implement proper documentation structure
+- Use proper asset organization
+- Implement proper environment-specific configurations
+- Use proper build artifact organization
+- Implement proper deployment artifact organization
+- Use proper logging and monitoring organization
+- Implement proper secret management organization
+- Use proper backup and recovery organization

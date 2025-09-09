@@ -28,7 +28,7 @@ An AWS serverless demo app with:
 
 ---
 
-### 🔹 [AI-Powered Testing](./ai-testing)
+### 🔹 [AI Test Generation](./ai-test-generation)
 Prototype scripts using LLMs to:
 - Generate test cases from API schemas
 - Reduce manual authoring effort
@@ -64,7 +64,7 @@ Technical writeups and lessons learned:
 
 ### What are agent rules?
 Agent rules constrain and guide model behavior (tone, safety, allowed tools).
-- Public rules live in `ai-testing/agents/*.public.yaml`.
+- Public rules live in `ai-test-generation/agents/*.public.yaml`.
 - Private rules (full SOPs, tools) live in `ai-private/agents/*.private.yaml`.
 
 ### Using code and docs as context
@@ -75,10 +75,10 @@ Agent rules constrain and guide model behavior (tone, safety, allowed tools).
 ### Public vs private content
 - Public: sanitized prompts, agent configs, eval harness.
 - Private: original prompts/agents/datasets in `ai-private/` (private submodule).
-- Generate redacted artifacts: `make redacted` inside `ai-testing/`.
+- Generate redacted artifacts: `make redacted` inside `ai-test-generation/`.
 
 ### Running the demo flow
-1. `cd ai-testing`
+1. `cd ai-test-generation`
 2. `make install`
 3. `make eval-run` (simulates a model call and scores output)
 4. Inspect `evals/reports/scores.jsonl`
@@ -92,6 +92,16 @@ Agent rules constrain and guide model behavior (tone, safety, allowed tools).
 - See `docs/cursor-demo.md` for a guided demo using repo-wide context.
 - Keep changes mock-only; no API calls are required.
 
+### Cursor Rules Configuration
+This repository includes a [`.cursorrules`](.cursorrules) file that provides Cursor with project-specific context and coding standards. The rules cover:
+
+- **Project Overview**: Portfolio structure and module purposes
+- **Python 3.13 Development**: Language features, patterns, and best practices
+- **TypeScript/ES6+ Rules**: Modern JavaScript patterns and conventions
+- **Testing Guidelines**: pytest, Jest, and automation patterns
+- **File Organization**: Project structure and naming conventions
+
+These rules help Cursor understand the codebase context and generate code that follows the project's standards and patterns.
 
 > Cursor is an AI code editor with repo-wide code awareness, natural language editing, and fast autocomplete. See the official site: https://cursor.com/.
 
