@@ -1,0 +1,130 @@
+name: Deploy Allure Reports to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["ci"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      module:
+        type: choice
+        options:
+          - automation-framework
+          - ai-test-generation
+          - cloud-native-app
+          - all
+        required: true
+        default: all
+        description: Module to deploy Allure report for
+
+jobs:
+  deploy-allure-reports:
+    name: Deploy Allure Reports to GitHub Pages
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Allure Reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-allure-report"
+          path: allure-reports/
+          merge-multiple: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Prepare Allure Reports for Deployment
+        run: |
+          # Create deployment directory
+          mkdir -p gh-pages-deploy
+          
+          # Copy reports to deployment directory
+          if [ -d "allure-reports/automation-framework-allure-report" ]; then
+            echo "Copying automation-framework report..."
+            cp -r allure-reports/automation-framework-allure-report gh-pages-deploy/automation-framework
+          else
+            echo "Creating placeholder for automation-framework..."
+            mkdir -p gh-pages-deploy/automation-framework
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - Automation Framework</title></head><body><h1>Allure Test Reports - Automation Framework</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/automation-framework/index.html
+          fi
+          
+          if [ -d "allure-reports/ai-test-generation-allure-report" ]; then
+            echo "Copying ai-test-generation report..."
+            cp -r allure-reports/ai-test-generation-allure-report gh-pages-deploy/ai-test-generation
+          else
+            echo "Creating placeholder for ai-test-generation..."
+            mkdir -p gh-pages-deploy/ai-test-generation
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - AI Test Generation</title></head><body><h1>Allure Test Reports - AI Test Generation</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/ai-test-generation/index.html
+          fi
+          
+          if [ -d "allure-reports/cloud-native-app-allure-report" ]; then
+            echo "Copying cloud-native-app report..."
+            cp -r allure-reports/cloud-native-app-allure-report gh-pages-deploy/cloud-native-app
+          else
+            echo "Creating placeholder for cloud-native-app..."
+            mkdir -p gh-pages-deploy/cloud-native-app
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - Cloud Native App</title></head><body><h1>Allure Test Reports - Cloud Native App</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/cloud-native-app/index.html
+          fi
+          
+          # Create main index page
+          cat > gh-pages-deploy/index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Allure Test Reports</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .module { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .module h2 { color: #333; }
+        .module a { color: #007bff; text-decoration: none; }
+        .module a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Allure Test Reports</h1>
+        <p>Interactive test reports generated from CI/CD pipeline test results.</p>
+        
+        <div class="module">
+            <h2>Automation Framework</h2>
+            <p>Test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
+            <a href="automation-framework/">View Report</a>
+        </div>
+        
+        <div class="module">
+            <h2>AI Test Generation</h2>
+            <p>AI-powered test generation using LLMs for automated test case creation.</p>
+            <a href="ai-test-generation/">View Report</a>
+        </div>
+        
+        <div class="module">
+            <h2>Cloud Native App</h2>
+            <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
+            <a href="cloud-native-app/">View Report</a>
+        </div>
+        
+        <hr>
+        <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
+    </div>
+</body>
+</html>
+EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: gh-pages-deploy
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
