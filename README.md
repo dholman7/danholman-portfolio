@@ -49,7 +49,7 @@ Technical writeups and lessons learned:
 
 - **Languages:** Python, TypeScript, GraphQL  
 - **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
-- **Testing Tools:** pytest, Selenium, Pact, Jest, requests, faker, Allure  
+- **Testing Tools:** pytest, Selenium, Pact, Jest, requests, Allure  
 - **Other:** Docker, SQL, Git
 
 ## 🚀 CI/CD Pipeline
