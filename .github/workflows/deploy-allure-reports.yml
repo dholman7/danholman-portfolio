@@ -77,48 +77,48 @@ jobs:
           
           # Create main index page
           cat > gh-pages-deploy/index.html << 'EOF'
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Allure Test Reports</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .module { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
-        .module h2 { color: #333; }
-        .module a { color: #007bff; text-decoration: none; }
-        .module a:hover { text-decoration: underline; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Allure Test Reports</h1>
-        <p>Interactive test reports generated from CI/CD pipeline test results.</p>
-        
-        <div class="module">
-            <h2>Automation Framework</h2>
-            <p>Test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
-            <a href="automation-framework/">View Report</a>
-        </div>
-        
-        <div class="module">
-            <h2>AI Test Generation</h2>
-            <p>AI-powered test generation using LLMs for automated test case creation.</p>
-            <a href="ai-test-generation/">View Report</a>
-        </div>
-        
-        <div class="module">
-            <h2>Cloud Native App</h2>
-            <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
-            <a href="cloud-native-app/">View Report</a>
-        </div>
-        
-        <hr>
-        <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
-    </div>
-</body>
-</html>
-EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Allure Test Reports</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  .container { max-width: 800px; margin: 0 auto; }
+                  .module { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+                  .module h2 { color: #333; }
+                  .module a { color: #007bff; text-decoration: none; }
+                  .module a:hover { text-decoration: underline; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>Allure Test Reports</h1>
+                  <p>Interactive test reports generated from CI/CD pipeline test results.</p>
+                  
+                  <div class="module">
+                      <h2>Automation Framework</h2>
+                      <p>Test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
+                      <a href="automation-framework/">View Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>AI Test Generation</h2>
+                      <p>AI-powered test generation using LLMs for automated test case creation.</p>
+                      <a href="ai-test-generation/">View Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>Cloud Native App</h2>
+                      <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
+                      <a href="cloud-native-app/">View Report</a>
+                  </div>
+                  
+                  <hr>
+                  <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
+              </div>
+          </body>
+          </html>
+          EOF
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
