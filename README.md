@@ -37,6 +37,19 @@ Comprehensive AI-powered testing framework featuring:
 
 ---
 
+### 🔹 [React Playwright Demo](./react-playwright-demo)
+Modern React/TypeScript frontend demo with comprehensive E2E testing:
+- React 18 with TypeScript and Vite for modern development
+- Tailwind CSS for responsive, accessible UI design
+- Playwright E2E testing with interactive HTML reports (http://localhost:9323/)
+- Allure reporting integration for test analytics
+- GitHub Actions PR preview deployment
+- Form validation with react-hook-form and Zod
+- Mock API integration for demonstration purposes
+- Parallel test execution for faster feedback
+
+---
+
 ### 🔹 [Case Studies](./case-studies)
 Technical writeups and lessons learned:
 - [Contract Testing Strategy](./case-studies/contract-testing.md)  
@@ -47,9 +60,10 @@ Technical writeups and lessons learned:
 
 ## 🔧 Tech Stack
 
-- **Languages:** Python, TypeScript, GraphQL  
+- **Languages:** Python, TypeScript, GraphQL, JavaScript  
+- **Frontend:** React 18, Vite, Tailwind CSS, react-hook-form, Zod  
 - **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
-- **Testing Tools:** pytest, Selenium, Pact, Jest, requests, Allure  
+- **Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, requests, Allure, Coverage Reports  
 - **Other:** Docker, SQL, Git
 
 ## 🚀 CI/CD Pipeline
@@ -76,49 +90,84 @@ This portfolio demonstrates production-ready CI/CD practices across all modules:
 
 📖 **[Detailed CI/CD Documentation](./docs/cicd-overview.md)** - Comprehensive overview of all CI/CD practices and patterns
 
+## 🧪 Testing & Reporting Technologies
+
+This portfolio showcases comprehensive testing strategies with multiple reporting formats and real-time feedback:
+
+### **Test Execution & Reporting**
+- **Allure Reports**: Comprehensive test reporting with trends, history, and detailed analytics
+- **Playwright HTML Reports**: Interactive test results with screenshots, videos, and traces
+- **Coverage Reports**: Code coverage analysis with HTML visualization
+- **JUnit XML**: Standardized test results for CI/CD integration
+- **JSON Reports**: Machine-readable test data for automation
+
+### **Live Reporting URLs**
+
+#### **GitHub Pages Reports** (CI/CD Generated - Updated on every push)
+- **Allure Reports**: https://dholman7.github.io/danholman-portfolio/
+- **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
+- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-test-generation/
+- **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
+- **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
+
+#### **Local Development Reports** (Interactive testing during development)
+- **Playwright Reports**: http://localhost:9323/ (interactive test results with screenshots/videos)
+- **Coverage Reports**: http://localhost:5173/ (code coverage visualization)
+- **Allure Reports**: http://localhost:5050-5053 (comprehensive test analytics with trends)
+
+#### **CI/CD Test Failure Diagnosis**
+- **GitHub Actions**: View test results, logs, and artifacts directly in PRs
+- **Allure Reports**: Historical trends and failure patterns from CI runs
+- **Playwright Reports**: Screenshots and videos of failed tests in CI
+- **Coverage Reports**: Code coverage changes between commits
+
+### **Testing Technologies Demonstrated**
+
+| Technology | Purpose | Reports | Local Demo | CI/CD Demo |
+|------------|---------|---------|------------|------------|
+| **Playwright** | E2E Testing | HTML + Allure | http://localhost:9323/ | GitHub Actions + Allure |
+| **pytest** | Python Testing | Allure + Coverage | Local + Allure | GitHub Actions + Allure |
+| **Jest** | JavaScript Testing | Coverage + Allure | Local + Allure | GitHub Actions + Allure |
+| **Coverage.py** | Code Coverage | HTML Reports | http://localhost:5173/ | GitHub Actions |
+| **Allure** | Test Analytics | Trend Analysis | Local + GitHub Pages | GitHub Actions + GitHub Pages |
+
+### **Report Features**
+- **Real-time Updates**: Reports update automatically with each test run
+- **Historical Trends**: Track test performance and stability over time
+- **Interactive Dashboards**: Click through test results, screenshots, and traces
+- **Coverage Visualization**: See exactly which code is tested
+- **Parallel Execution**: Fast test runs with comprehensive reporting
+
+### **CI/CD Test Failure Diagnosis**
+
+This portfolio demonstrates production-ready test failure diagnosis workflows:
+
+#### **GitHub Actions Integration**
+- **PR Status Checks**: Tests run automatically on every pull request
+- **Artifact Collection**: Screenshots, videos, and logs uploaded for failed tests
+- **Matrix Testing**: Parallel execution across multiple environments
+- **Failure Notifications**: Immediate feedback on test failures
+
+#### **Diagnostic Capabilities**
+- **Screenshot Capture**: Visual evidence of test failures
+- **Video Recording**: Step-by-step playback of failed test scenarios
+- **Console Logs**: Detailed error messages and stack traces
+- **Network Logs**: API call failures and timing issues
+- **Coverage Reports**: Identify untested code paths
+
+#### **Historical Analysis**
+- **Allure Trends**: Track test stability over time
+- **Flaky Test Detection**: Identify unreliable tests
+- **Performance Monitoring**: Track test execution times
+- **Failure Patterns**: Analyze recurring issues
+
+#### **Quick Access to CI Results**
+- **GitHub Actions**: Direct links to test runs in PRs
+- **Allure Reports**: Comprehensive test analytics with history
+- **Artifact Downloads**: Download test artifacts for local analysis
+- **Integration Status**: Real-time test status in GitHub UI
+
 ---
-
-## 🧪 Local Testing with Allure Reports
-
-This portfolio includes comprehensive local testing capabilities with Allure reporting and history support for trend analysis.
-
-### **Quick Start**
-
-#### Option 1: Native Allure (requires Java)
-```bash
-# 1. Setup Allure commandline
-make allure-setup
-
-# 2. Run tests with Allure reports
-make test-allure-local
-
-# 3. Serve reports locally with history
-make allure-serve-local
-```
-
-#### Option 2: Docker-based Allure (no Java required)
-```bash
-# 1. Run tests with Allure reports
-make test-allure-local
-
-# 2. Serve reports using Docker
-make allure-docker-serve
-```
-
-### **Available Commands**
-
-| Command | Description |
-|---------|-------------|
-| `make allure-setup` | Install Allure commandline for local development |
-| `make test-allure-local` | Run all tests with Allure reports and history |
-| `make test-allure-quick` | Quick test run (smoke tests only) with Allure |
-| `make allure-serve-local` | Serve Allure reports with history support |
-| `make allure-serve-single MODULE=<name>` | Serve reports for specific module |
-| `make allure-history` | Copy Allure history for trend analysis |
-| `make allure-clean` | Clean all Allure reports and history |
-| `make allure-docker-serve` | Serve Allure reports using Docker (no Java required) |
-| `make allure-docker-generate` | Generate Allure reports using Docker |
-| `make allure-docker-clean` | Clean Docker-based Allure containers |
 
 ### **Report URLs**
 
@@ -127,6 +176,7 @@ make allure-docker-serve
 - **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
 - **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-test-generation/
 - **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
+- **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
 
 #### **Local Development Reports**
 
@@ -134,6 +184,7 @@ After running `make allure-serve-local`, access reports at:
 - **Automation Framework**: http://localhost:5050
 - **AI Test Generation**: http://localhost:5051  
 - **Cloud Native App**: http://localhost:5052
+- **React Playwright Demo**: http://localhost:5053
 
 ### **History Support**
 
@@ -150,10 +201,30 @@ The local setup maintains test execution history for trend analysis:
 make -C automation-framework test-allure
 make -C ai-test-generation test-allure  
 make -C cloud-native-app test-allure
+make -C react-playwright-demo test-allure
 
 # Serve individual module reports
 make allure-serve-single MODULE=automation-framework
+make allure-serve-single MODULE=react-playwright-demo
 ```
+
+### **CI/CD Test Suite**
+
+This portfolio includes a comprehensive CI/CD test suite that can be run manually or automatically:
+
+#### **Manual Test Execution**
+Visit the [GitHub Actions page](https://github.com/dholman7/danholman-portfolio/actions/workflows/portfolio-test-suite.yml) to run the complete test suite manually with custom options:
+
+- **Module Selection**: Choose specific modules or run all
+- **Test Type Filtering**: Unit, integration, E2E, or performance tests
+- **Allure Reporting**: Enable/disable comprehensive test analytics
+- **Real-time Results**: View live test execution and results
+
+#### **Automatic Execution**
+Tests run automatically on:
+- **Push to main**: Full test suite execution
+- **Pull Requests**: Comprehensive testing with path-based triggers
+- **Code Changes**: Smart execution based on modified files
 
 ### **Development Workflow**
 
@@ -173,40 +244,37 @@ make allure-serve-local   # View reports with history
 
 ---
 
-## AI Testing: Concepts and How-To
+## AI-Powered Development: Concepts and How-To
 
-### What are agent rules?
-Agent rules constrain and guide model behavior (tone, safety, allowed tools).
-- Public rules live in `ai-test-generation/agents/*.public.yaml`.
+This portfolio demonstrates how AI tools can accelerate development workflows and improve code quality. Here's how to leverage AI effectively in your coding practice.
 
+### GitHub Copilot Integration
 
-### Using code and docs as context
-- Put code/docs in the prompt or reference files that your runner loads.
-- Example: `evals/cases/summarize.jsonl` points to `evals/example-cf.yaml` as context.
-- Your real runner would read the context file and include it in the model input.
+GitHub Copilot is an AI pair programmer that helps you write code faster and with fewer errors. This portfolio shows practical examples of Copilot usage:
 
-### Public vs private content
-- Public: sanitized prompts, agent configs, eval harness.
-- Private: original prompts/agents/datasets in `ai-private/` (private submodule).
-- Generate redacted artifacts: `make redacted` inside `ai-test-generation/`.
+- **Code Generation**: Generate boilerplate code, tests, and documentation
+- **Pattern Recognition**: Learn from existing code patterns in the repository
+- **Multi-language Support**: Works across Python, TypeScript, JavaScript, and more
+- **Context Awareness**: Understands your codebase and suggests relevant solutions
 
-### Running the demo flow
-1. `cd ai-test-generation`
-2. `make install`
-3. `make eval-run` (simulates a model call and scores output)
-4. Inspect `evals/reports/scores.jsonl`
+**Best Practices with Copilot:**
+- Review all generated code before committing
+- Use descriptive comments to guide Copilot's suggestions
+- Leverage Copilot for repetitive tasks and test generation
+- Combine with manual coding for complex logic
 
-### Env and secrets
-- Copy `.env.example` to `.env` and set keys locally.
-- Never commit real secrets. Pre-commit hooks help prevent this.
+### Cursor AI Editor
 
+Cursor is an AI-powered code editor that provides intelligent code completion and natural language editing capabilities. This repository is optimized for Cursor usage:
 
-## Working in Cursor
-- See the comprehensive documentation in each module for detailed usage examples.
-- Keep changes mock-only; no API calls are required.
+**Key Features Demonstrated:**
+- **Repo-wide Code Awareness**: Cursor understands the entire codebase context
+- **Natural Language Editing**: Describe what you want to build in plain English
+- **Intelligent Autocomplete**: Context-aware code suggestions
+- **Multi-file Editing**: Make changes across multiple files simultaneously
 
-### Cursor Rules Configuration
-This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configuration that provides Cursor with project-specific context and coding standards. The rules are organized by domain for better maintainability:
+**Cursor Rules Configuration**
+This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configuration that provides Cursor with project-specific context and coding standards:
 
 - **[my-project-rule.mdc](.cursor/rules/my-project-rule.mdc)**: Main project overview and general guidelines
 - **[python-development.mdc](.cursor/rules/python-development.mdc)**: Python 3.13 development rules and best practices
@@ -215,7 +283,30 @@ This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configurat
 - **[git-workflow.mdc](.cursor/rules/git-workflow.mdc)**: Git workflow, pull request, and version control rules
 - **[ci-cd-infrastructure.mdc](.cursor/rules/ci-cd-infrastructure.mdc)**: CI/CD, infrastructure, and deployment rules
 
-This modular approach provides focused, domain-specific guidance that helps Cursor understand the codebase context and generate code that follows the project's standards and patterns.
+### AI-Assisted Testing
 
-> Cursor is an AI code editor with repo-wide code awareness, natural language editing, and fast autocomplete. See the official site: https://cursor.com/.
+The [AI Test Generation](./ai-test-generation) module demonstrates how AI can automate test creation:
+
+- **Test Case Generation**: Generate comprehensive test suites from API schemas
+- **Test Data Creation**: Automatically create realistic test data
+- **Test Maintenance**: Update tests when code changes
+- **Quality Assurance**: Ensure test coverage and quality
+
+### Getting Started with AI Development
+
+1. **Choose Your AI Tool**: Start with GitHub Copilot for code completion or Cursor for full AI editing
+2. **Set Up Context**: Use the `.cursor/rules/` configuration to provide project context
+3. **Start Small**: Begin with simple tasks like generating tests or documentation
+4. **Iterate and Learn**: Review AI suggestions and refine your prompts
+5. **Scale Up**: Gradually use AI for more complex development tasks
+
+### Best Practices
+
+- **Always Review**: Never blindly accept AI-generated code
+- **Provide Context**: Give clear, specific instructions to AI tools
+- **Maintain Quality**: Use AI to enhance, not replace, good coding practices
+- **Stay Updated**: AI tools evolve rapidly, keep up with new features
+- **Security First**: Be cautious with AI-generated code in security-sensitive areas
+
+> **Learn More**: Visit [Cursor.com](https://cursor.com/) for the latest AI coding features and [GitHub Copilot](https://github.com/features/copilot) for pair programming assistance.
 
