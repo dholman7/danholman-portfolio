@@ -50,6 +50,8 @@ jobs:
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
+          echo "Reports directory structure:"
+          find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -70,6 +72,7 @@ jobs:
           name: automation-framework-allure-results
           path: reports/allure-results/
           retention-days: 30
+          if-no-files-found: warn
 
       - name: Upload Allure Report
         if: always()
@@ -78,6 +81,7 @@ jobs:
           name: automation-framework-allure-report
           path: reports/allure-report/
           retention-days: 30
+          if-no-files-found: warn
 
   ai-test-generation:
     name: AI Test Generation (Python)
@@ -111,6 +115,8 @@ jobs:
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
+          echo "Reports directory structure:"
+          find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -131,6 +137,7 @@ jobs:
           name: ai-test-generation-allure-results
           path: reports/allure-results/
           retention-days: 30
+          if-no-files-found: warn
 
       - name: Upload Allure Report
         if: always()
@@ -139,6 +146,7 @@ jobs:
           name: ai-test-generation-allure-report
           path: reports/allure-report/
           retention-days: 30
+          if-no-files-found: warn
 
   cloud-native-app:
     name: Cloud Native App (TypeScript/Python)
@@ -182,6 +190,8 @@ jobs:
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
+          echo "Reports directory structure:"
+          find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
       - name: Generate Allure Report
         if: always()
         run: |
@@ -202,6 +212,7 @@ jobs:
           name: cloud-native-app-allure-results
           path: reports/allure-results/
           retention-days: 30
+          if-no-files-found: warn
 
       - name: Upload Allure Report
         if: always()
@@ -210,4 +221,5 @@ jobs:
           name: cloud-native-app-allure-report
           path: reports/allure-report/
           retention-days: 30
+          if-no-files-found: warn
 
