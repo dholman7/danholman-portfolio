@@ -29,10 +29,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
-          cache-dependency-path: |
-            automation-framework/requirements.txt
-            automation-framework/pyproject.toml
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install -e ".[test]"; fi
@@ -104,10 +100,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
-          cache-dependency-path: |
-            ai-test-generation/requirements.txt
-            ai-test-generation/pyproject.toml
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
@@ -179,12 +171,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
       - run: |
           # Install Node.js dependencies
           if [ -f package.json ]; then yarn install; fi
