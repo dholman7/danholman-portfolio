@@ -359,24 +359,142 @@ PARALLEL_WORKERS=4
 
 ### Pytest Configuration
 
-The framework uses `pytest.ini` for configuration:
+The framework uses `pyproject.toml` for configuration with comprehensive marker support:
 
-```ini
-[tool:pytest]
-minversion = 7.0
-addopts = 
-    --strict-markers
-    --verbose
-    --cov=src
-    --html=reports/report.html
-    --junitxml=reports/junit.xml
-testpaths = tests
-markers =
-    smoke: Quick smoke tests
-    regression: Full regression suite
-    api: API testing
-    ui: UI testing
-    performance: Performance tests
+```toml
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--strict-markers",
+    "--verbose",
+    "--cov=src",
+    "--html=reports/report.html",
+    "--junitxml=reports/junit.xml"
+]
+testpaths = ["tests"]
+markers = [
+    "smoke: Quick smoke tests for basic functionality",
+    "regression: Full regression test suite",
+    "unit: Unit tests for individual components",
+    "component: Component tests with mocked dependencies",
+    "integration: Integration tests with real services",
+    "e2e: End-to-end tests for complete workflows",
+    "performance: Performance and load testing",
+    "api: API testing scenarios",
+    "ui: User interface testing",
+    "slow: Tests that take longer to execute",
+    "parallel: Tests that can run in parallel",
+    "sequential: Tests that must run sequentially",
+    "critical: Critical business functionality",
+    "high: High priority tests",
+    "medium: Medium priority tests",
+    "low: Low priority tests",
+    "docker_integration: Docker-based integration tests",
+    "expect_failure: Tests that are expected to fail for demonstration purposes"
+]
+```
+
+### Test Markers Reference
+
+The framework supports a comprehensive set of markers for organizing and filtering tests:
+
+#### **Test Type Markers**
+- `@pytest.mark.unit` - Unit tests for individual functions/methods
+- `@pytest.mark.component` - Component tests with mocked dependencies
+- `@pytest.mark.integration` - Integration tests with real services
+- `@pytest.mark.e2e` - End-to-end tests for complete workflows
+- `@pytest.mark.performance` - Performance and load testing
+
+#### **Feature Markers**
+- `@pytest.mark.api` - API testing scenarios
+- `@pytest.mark.ui` - User interface testing
+- `@pytest.mark.smoke` - Quick smoke tests for basic functionality
+- `@pytest.mark.regression` - Full regression test suite
+
+#### **Execution Markers**
+- `@pytest.mark.slow` - Tests that take longer to execute
+- `@pytest.mark.parallel` - Tests that can run in parallel
+- `@pytest.mark.sequential` - Tests that must run sequentially
+- `@pytest.mark.docker_integration` - Docker-based integration tests
+
+#### **Priority Markers**
+- `@pytest.mark.critical` - Critical business functionality
+- `@pytest.mark.high` - High priority tests
+- `@pytest.mark.medium` - Medium priority tests
+- `@pytest.mark.low` - Low priority tests
+
+#### **Special Markers**
+- `@pytest.mark.expect_failure` - Tests that are expected to fail for demonstration purposes
+
+### Marker Usage Examples
+
+```python
+# Single marker
+@pytest.mark.unit
+def test_user_validation():
+    """Unit test for user validation logic."""
+    pass
+
+# Multiple markers
+@pytest.mark.api
+@pytest.mark.slow
+@pytest.mark.critical
+def test_user_creation_api():
+    """Critical API test for user creation."""
+    pass
+
+# Marker combinations
+@pytest.mark.performance
+@pytest.mark.slow
+def test_concurrent_user_creation():
+    """Performance test for concurrent user creation."""
+    pass
+
+# Expected failure marker
+@pytest.mark.expect_failure
+@pytest.mark.unit
+def test_demonstration_failure():
+    """This test is expected to fail for demonstration purposes."""
+    pass
+```
+
+### Running Tests by Markers
+
+```bash
+# Run specific test types
+pytest -m "unit"                    # Run only unit tests
+pytest -m "component"               # Run only component tests
+pytest -m "integration"             # Run only integration tests
+pytest -m "e2e"                     # Run only end-to-end tests
+pytest -m "performance"             # Run only performance tests
+
+# Run by feature
+pytest -m "api"                     # Run only API tests
+pytest -m "ui"                      # Run only UI tests
+pytest -m "smoke"                   # Run only smoke tests
+pytest -m "regression"              # Run only regression tests
+
+# Run by priority
+pytest -m "critical"                # Run only critical tests
+pytest -m "high"                    # Run only high priority tests
+pytest -m "medium or low"           # Run medium and low priority tests
+
+# Run by execution characteristics
+pytest -m "slow"                    # Run only slow tests
+pytest -m "parallel"                # Run only parallel tests
+pytest -m "sequential"              # Run only sequential tests
+pytest -m "docker_integration"      # Run only Docker integration tests
+
+# Complex marker combinations
+pytest -m "api and not slow"        # Run API tests that are not slow
+pytest -m "unit or component"       # Run unit or component tests
+pytest -m "critical and not slow"   # Run critical tests that are not slow
+pytest -m "performance and slow"    # Run performance tests that are slow
+
+# Exclude specific markers
+pytest -m "not slow"                # Run all tests except slow ones
+pytest -m "not expect_failure"      # Run all tests except expected failures
+pytest -m "not docker_integration"  # Run all tests except Docker integration tests
 ```
 
 ## 🚀 Running Tests

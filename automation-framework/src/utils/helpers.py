@@ -127,12 +127,12 @@ def generate_random_phone() -> str:
     Generate random phone number.
     
     Returns:
-        Random phone number in format (XXX) XXX-XXXX
+        Random phone number in format +1-XXX-XXX-XXXX
     """
     area_code = random.randint(200, 999)
     exchange = random.randint(200, 999)
     number = random.randint(1000, 9999)
-    return f"({area_code}) {exchange}-{number}"
+    return f"+1-{area_code}-{exchange}-{number}"
 
 
 def format_timestamp(timestamp: Optional[datetime] = None, format_str: str = "%Y-%m-%d %H:%M:%S") -> str:
@@ -275,6 +275,20 @@ def mask_sensitive_data(data: str, mask_char: str = "*", visible_chars: int = 4)
     if len(data) <= visible_chars:
         return mask_char * len(data)
     
+    # Special handling for email addresses
+    if "@" in data:
+        local_part, domain = data.split("@", 1)
+        # For emails, show the first visible_chars characters, but always mask at least one character
+        if len(local_part) <= visible_chars:
+            if len(local_part) > 1:
+                # Show first 3 characters and mask the rest
+                masked_local = local_part[:3] + mask_char * (len(local_part) - 3)
+            else:
+                masked_local = local_part
+        else:
+            masked_local = local_part[:visible_chars] + mask_char * (len(local_part) - visible_chars)
+        return f"{masked_local}@{domain}"
+    
     return data[:visible_chars] + mask_char * (len(data) - visible_chars)
 
 
@@ -289,7 +303,39 @@ def validate_email(email: str) -> bool:
         True if valid email format
     """
     import re
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if not email or not isinstance(email, str):
+        return False
+    
+    # More permissive regex that allows short domains like "a@b.c"
+    # but rejects consecutive dots and other invalid patterns
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$'
+    
+    # Additional checks for invalid patterns
+    if '..' in email or email.startswith('.') or email.endswith('.'):
+        return False
+    if email.count('@') != 1:
+        return False
+    
+    # Check for valid local part (before @)
+    local_part = email.split('@')[0]
+    if not local_part or local_part.startswith('.') or local_part.endswith('.'):
+        return False
+    
+    # Check for valid domain part (after @)
+    domain_part = email.split('@')[1]
+    if not domain_part or '.' not in domain_part:
+        return False
+    
+    # Check for dots at start/end of domain parts
+    domain_parts = domain_part.split('.')
+    for part in domain_parts:
+        if not part or part.startswith('.') or part.endswith('.'):
+            return False
+    
+    # Check for reasonable length limits
+    if len(local_part) > 64 or len(domain_part) > 253:
+        return False
+    
     return bool(re.match(pattern, email))
 
 
@@ -304,10 +350,23 @@ def validate_phone(phone: str) -> bool:
         True if valid phone format
     """
     import re
+    
+    if not phone or not isinstance(phone, str):
+        return False
+    
     # Remove all non-digit characters
     digits = re.sub(r'\D', '', phone)
-    # Check if it's 10 digits (US format)
-    return len(digits) == 10
+    
+    # Check if it's 10 digits (US format) or 11 digits (with country code)
+    if len(digits) == 10:
+        return True
+    elif len(digits) == 11 and digits.startswith('1'):
+        return True
+    # International format: 7-14 digits (more restrictive than ITU-T E.164)
+    elif 7 <= len(digits) <= 14:
+        return True
+    else:
+        return False
 
 
 def convert_to_dict(obj: Any) -> dict:

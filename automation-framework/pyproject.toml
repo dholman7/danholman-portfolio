@@ -234,6 +234,8 @@ markers = [
     "high: High priority tests",
     "medium: Medium priority tests",
     "low: Low priority tests",
+    "docker_integration: Docker-based integration tests",
+    "expect_failure: Tests that are expected to fail for demonstration purposes",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",
