@@ -198,15 +198,16 @@ Agent rules constrain and guide model behavior (tone, safety, allowed tools).
 - Keep changes mock-only; no API calls are required.
 
 ### Cursor Rules Configuration
-This repository includes a [`.cursorrules`](.cursorrules) file that provides Cursor with project-specific context and coding standards. The rules cover:
+This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configuration that provides Cursor with project-specific context and coding standards. The rules are organized by domain for better maintainability:
 
-- **Project Overview**: Portfolio structure and module purposes
-- **Python 3.13 Development**: Language features, patterns, and best practices
-- **TypeScript/ES6+ Rules**: Modern JavaScript patterns and conventions
-- **Testing Guidelines**: pytest, Jest, and automation patterns
-- **File Organization**: Project structure and naming conventions
+- **[my-project-rule.mdc](.cursor/rules/my-project-rule.mdc)**: Main project overview and general guidelines
+- **[python-development.mdc](.cursor/rules/python-development.mdc)**: Python 3.13 development rules and best practices
+- **[typescript-development.mdc](.cursor/rules/typescript-development.mdc)**: TypeScript/Node.js rules and modern ES6+ patterns
+- **[testing-guidelines.mdc](.cursor/rules/testing-guidelines.mdc)**: Comprehensive testing guidelines for pytest, Jest, and automation
+- **[git-workflow.mdc](.cursor/rules/git-workflow.mdc)**: Git workflow, pull request, and version control rules
+- **[ci-cd-infrastructure.mdc](.cursor/rules/ci-cd-infrastructure.mdc)**: CI/CD, infrastructure, and deployment rules
 
-These rules help Cursor understand the codebase context and generate code that follows the project's standards and patterns.
+This modular approach provides focused, domain-specific guidance that helps Cursor understand the codebase context and generate code that follows the project's standards and patterns.
 
 > Cursor is an AI code editor with repo-wide code awareness, natural language editing, and fast autocomplete. See the official site: https://cursor.com/.
 
