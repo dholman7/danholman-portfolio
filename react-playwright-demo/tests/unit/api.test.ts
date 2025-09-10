@@ -1,4 +1,5 @@
 // Mock API functions for testing
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockRegister = async (data: Record<string, unknown>) => {
   await new Promise(resolve => setTimeout(resolve, 100));
   
@@ -9,6 +10,7 @@ const mockRegister = async (data: Record<string, unknown>) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockLogin = async (email: string, password: string) => {
   await new Promise(resolve => setTimeout(resolve, 100));
   

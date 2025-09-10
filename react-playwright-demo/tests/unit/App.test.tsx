@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
+import App from '../../src/App';
 
 describe('App Component', () => {
   beforeEach(() => {
@@ -14,8 +14,8 @@ describe('App Component', () => {
     });
 
     it('should display registration form by default', () => {
-      expect(screen.getByRole('heading', { name: 'Create Account' })).toBeInTheDocument();
-      expect(screen.getByText('Sign up for a new account')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Create your account' })).toBeInTheDocument();
+      expect(screen.getByText('Get started with a free account')).toBeInTheDocument();
     });
 
     it('should display all registration form fields', () => {
@@ -34,7 +34,7 @@ describe('App Component', () => {
       const toggleButton = screen.getByTestId('toggle-mode');
       await userEvent.click(toggleButton);
 
-      expect(screen.getByText('Welcome Back')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 2, name: 'Welcome back' })).toBeInTheDocument();
       expect(screen.getByText('Sign in to your account')).toBeInTheDocument();
     });
 

@@ -21,6 +21,7 @@ const registerSchema = z.object({
 type RegisterFormData = z.infer<typeof registerSchema>
 
 // Mock API functions
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockRegister = async (data: RegisterFormData) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
@@ -33,6 +34,7 @@ const mockRegister = async (data: RegisterFormData) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockLogin = async (email: string, password: string) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
