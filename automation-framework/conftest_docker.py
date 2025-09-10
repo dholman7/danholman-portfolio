@@ -9,7 +9,7 @@ from pathlib import Path
 
 from src.config.settings import config
 from src.api.client import APIClient, GraphQLClient
-from src.data.factories import TestDataManager, UserFactory, ProductFactory, OrderFactory
+from src.data.factories import DataManager, UserFactory, ProductFactory, OrderFactory
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -109,13 +109,13 @@ def docker_graphql_client(docker_services_ready) -> GraphQLClient:
 
 
 @pytest.fixture(scope="session")
-def docker_test_data_manager() -> TestDataManager:
+def docker_test_data_manager() -> DataManager:
     """Provide test data manager for Docker environment."""
-    return TestDataManager()
+    return DataManager()
 
 
 @pytest.fixture(scope="session")
-def docker_test_dataset(docker_test_data_manager: TestDataManager) -> Dict[str, Any]:
+def docker_test_dataset(docker_test_data_manager: DataManager) -> Dict[str, Any]:
     """Generate and provide test dataset for Docker environment."""
     return docker_test_data_manager.generate_test_dataset(
         user_count=25,

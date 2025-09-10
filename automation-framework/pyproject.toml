@@ -59,7 +59,7 @@ test = [
 api = [
     "httpx>=0.25.0",
     "gql>=3.4.0",
-    "pact-python>=2.0.0",
+    "pact-python>=2.3.3",
 ]
 web = [
     "webdriver-manager>=4.0.1",
@@ -189,7 +189,6 @@ addopts = [
     "--junitxml=reports/junit.xml",
     "--html=reports/report.html",
     "--self-contained-html",
-    "--alluredir=reports/allure-results",
     "--maxfail=5",
     "--durations=10",
     "--cache-clear",
@@ -220,11 +219,13 @@ markers = [
     "tablet: Tablet device tests",
     "desktop: Desktop device tests",
     "contract: Contract testing",
+    "pact: Pact contract testing",
     "e2e: End-to-end tests",
     "unit: Unit tests",
     "component: Component tests with mocked dependencies",
     "functional: Functional tests",
     "accessibility: Accessibility tests",
+    "axe: Axe accessibility testing",
     "visual: Visual regression tests",
     "security: Security tests",
     "data_driven: Data-driven tests",

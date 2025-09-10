@@ -73,7 +73,7 @@ gql>=3.4.0
 graphql-core>=3.2.3
 
 # Contract testing
-pact-python>=2.0.0
+pact-python>=2.3.3
 
 # Visual testing
 # pytest-playwright>=0.4.0  # Temporarily disabled due to --browser argument conflict
@@ -83,7 +83,7 @@ pytest-splinter>=3.3.0
 appium-python-client>=3.1.0
 
 # Accessibility testing
-# pytest-axe>=1.0.0  # Temporarily disabled due to --browser argument conflict with pytest-playwright
+pytest-axe>=1.0.0
 
 # Parallel execution
 pytest-parallel>=0.1.0

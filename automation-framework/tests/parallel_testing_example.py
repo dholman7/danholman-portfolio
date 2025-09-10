@@ -25,7 +25,7 @@ import allure
 
 
 @dataclass
-class TestConfig:
+class ExecutionConfig:
     """Configuration for a single test execution unit."""
     test_type: str
     framework: str
@@ -47,7 +47,7 @@ class ParallelTestMatrixGenerator:
     
     def __init__(self, base_path: str = "tests"):
         self.base_path = Path(base_path)
-        self.test_configs: List[TestConfig] = []
+        self.test_configs: List[ExecutionConfig] = []
     
     def discover_tests(self) -> None:
         """Discover all available tests and create configurations."""
@@ -87,7 +87,7 @@ class ParallelTestMatrixGenerator:
             test_dir = self.base_path / config["path"]
             if test_dir.exists():
                 # Add base configuration
-                self.test_configs.append(TestConfig(
+                self.test_configs.append(ExecutionConfig(
                     test_type=test_type,
                     framework=config["framework"],
                     language=config["language"],
@@ -100,7 +100,7 @@ class ParallelTestMatrixGenerator:
                 # Add environment-specific configs for integration and e2e tests
                 if test_type in ["integration", "e2e"]:
                     for env in environments:
-                        self.test_configs.append(TestConfig(
+                        self.test_configs.append(ExecutionConfig(
                             test_type=test_type,
                             framework=config["framework"],
                             language=config["language"],
@@ -114,7 +114,7 @@ class ParallelTestMatrixGenerator:
                 if test_type == "e2e":
                     for browser in browsers:
                         for device in devices:
-                            self.test_configs.append(TestConfig(
+                            self.test_configs.append(ExecutionConfig(
                                 test_type=test_type,
                                 framework=config["framework"],
                                 language=config["language"],
@@ -126,7 +126,7 @@ class ParallelTestMatrixGenerator:
                                 device=device
                             ))
     
-    def filter_by_scope(self, scope: str = "all") -> List[TestConfig]:
+    def filter_by_scope(self, scope: str = "all") -> List[ExecutionConfig]:
         """Filter test configurations by scope."""
         if scope == "all":
             return self.test_configs
@@ -160,7 +160,7 @@ class ParallelTestMatrixGenerator:
         print(f"Matrix saved to: {output_file}")
 
 
-class TestResultAggregator:
+class ResultAggregator:
     """Aggregates and merges test results from parallel execution."""
     
     def __init__(self, results_dir: str = "test_results"):
@@ -255,7 +255,7 @@ class TestResultAggregator:
 class ParallelTestRunner:
     """Runs tests in parallel with proper configuration."""
     
-    def __init__(self, config: TestConfig):
+    def __init__(self, config: ExecutionConfig):
         self.config = config
         self.results = {}
     
@@ -344,7 +344,7 @@ def test_matrix_generation():
 
 def test_result_aggregation():
     """Test the result aggregation functionality."""
-    aggregator = TestResultAggregator()
+    aggregator = ResultAggregator()
     
     # Mock some test results
     aggregator.aggregated_results['total_tests'] = 100
@@ -361,7 +361,7 @@ def test_result_aggregation():
 
 def test_parallel_runner():
     """Test the parallel test runner."""
-    config = TestConfig(
+    config = ExecutionConfig(
         test_type="unit",
         framework="pytest",
         language="python",

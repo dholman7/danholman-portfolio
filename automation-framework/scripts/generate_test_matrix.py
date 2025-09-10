@@ -115,11 +115,25 @@ def generate_test_matrix(scope: str = "all") -> List[Dict[str, Any]]:
                 "framework": "pytest",
                 "language": "python",
                 "category": "pact",
-                "test_path": "tests/integration",
+                "test_path": "tests/contract",
                 "markers": ["contract", "pact", "python"]
             }
         ]
         test_configs.extend(contract_configs)
+    
+    # Accessibility testing configurations
+    if scope in ["all", "accessibility"]:
+        accessibility_configs = [
+            {
+                "type": "accessibility",
+                "framework": "pytest",
+                "language": "python",
+                "category": "axe",
+                "test_path": "tests/accessibility",
+                "markers": ["accessibility", "axe", "python"]
+            }
+        ]
+        test_configs.extend(accessibility_configs)
     
     # Add environment-specific configurations
     environments = ["staging", "production"]
@@ -141,7 +155,7 @@ def main():
     parser.add_argument(
         "--scope",
         default="all",
-        choices=["all", "python", "typescript", "api", "contract"],
+        choices=["all", "python", "typescript", "api", "contract", "accessibility"],
         help="Test scope to include in matrix"
     )
     parser.add_argument(

@@ -362,6 +362,65 @@ python scripts/demo_parallel_testing.py --workflow-only
 - `e2e` - End-to-end tests with browser/device combinations
 - `performance` - Performance tests only
 - `api` - API-related tests (integration + e2e)
+- `contract` - Contract testing with Pact
+- `accessibility` - Accessibility testing with Axe
+
+### Contract Testing
+
+The framework includes comprehensive Pact contract testing for microservices:
+
+```python
+import pytest
+from src.contract import PactClient, MockExternalService
+
+@pytest.mark.contract
+@pytest.mark.pact
+def test_user_service_contract(pact_client, mock_service):
+    """Test contract for User Service API."""
+    # Setup contract interaction
+    endpoint_config = mock_service.get_user_endpoints()["GET:/api/users"]
+    
+    pact_client.setup_interaction(
+        description="Get all users",
+        provider_state="users exist",
+        request={
+            "method": endpoint_config["method"],
+            "path": endpoint_config["path"],
+            "headers": endpoint_config["headers"]
+        },
+        response=endpoint_config["response"]
+    )
+    
+    # Start mock service and write contract
+    pact_client.start_service(port=0)
+    verification_result = pact_client.verify_contract()
+    
+    assert verification_result, "Contract verification failed"
+    pact_client.write_pact()
+```
+
+**Features:**
+- ✅ Consumer-driven contract testing with Pact
+- ✅ Mock external services for isolated testing
+- ✅ Automatic contract verification
+- ✅ Pact file generation for provider verification
+- ✅ Support for REST and GraphQL APIs
+- ✅ Integration with CI/CD pipeline
+
+### Accessibility Testing
+
+**Note**: Accessibility testing has been moved to the [react-playwright-demo](../react-playwright-demo/) project, which provides a real web server for comprehensive accessibility testing.
+
+The react-playwright-demo includes:
+- ✅ WCAG 2.1 A, AA, and AAA compliance testing
+- ✅ Axe integration for comprehensive accessibility auditing
+- ✅ Element-specific accessibility testing
+- ✅ Comprehensive accessibility reporting
+- ✅ Screenshot capture for violations
+- ✅ Integration with Playwright for browser testing
+- ✅ CI/CD pipeline integration
+
+For accessibility testing, please refer to the [react-playwright-demo accessibility documentation](../react-playwright-demo/README.md#accessibility-testing).
 - `ui` - UI-related tests (e2e with browser combinations)
 
 **Matrix Dimensions:**

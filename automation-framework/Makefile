@@ -208,7 +208,7 @@ report-comprehensive: ## Generate all types of reports (HTML, JUnit, Coverage, A
 
 # Data Management
 generate-test-data: ## Generate test data using factories
-	python -c "from src.data.factories import TestDataManager; tdm = TestDataManager(); data = tdm.generate_test_dataset(100, 50, 200); print('Test data generated successfully')"
+	python -c "from src.data.factories import DataManager; tdm = DataManager(); data = tdm.generate_test_dataset(100, 50, 200); print('Test data generated successfully')"
 
 clean-test-data: ## Clean generated test data
 	rm -rf test_data/generated/

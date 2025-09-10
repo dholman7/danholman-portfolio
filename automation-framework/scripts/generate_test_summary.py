@@ -113,7 +113,8 @@ def categorize_tests(test_data: List[Dict[str, Any]]) -> Dict[str, List[Dict[str
         "component": [],
         "e2e": [],
         "api": [],
-        "contract": []
+        "contract": [],
+        "accessibility": []
     }
     
     for test in test_data:
@@ -131,6 +132,8 @@ def categorize_tests(test_data: List[Dict[str, Any]]) -> Dict[str, List[Dict[str
             categories["api"].append(test)
         elif "contract" in file_name:
             categories["contract"].append(test)
+        elif "accessibility" in file_name:
+            categories["accessibility"].append(test)
         else:
             # Default to unit if no category found
             categories["unit"].append(test)

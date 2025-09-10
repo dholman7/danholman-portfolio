@@ -13,8 +13,9 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 
 from src.config.settings import config, Browser
 from src.api.client import APIClient, GraphQLClient
-from src.data.factories import TestDataManager, UserFactory, ProductFactory, OrderFactory
-from src.utils.logger import TestLogger, get_logger
+from src.data.factories import DataManager, UserFactory, ProductFactory, OrderFactory
+from src.utils.logger import ContextLogger, get_logger
+from src.contract import PactClient, MockExternalService
 
 logger = get_logger(__name__)
 
@@ -33,13 +34,13 @@ def test_config() -> Dict[str, Any]:
 
 
 @pytest.fixture(scope="session")
-def test_data_manager() -> TestDataManager:
+def test_data_manager() -> DataManager:
     """Provide test data manager instance."""
-    return TestDataManager()
+    return DataManager()
 
 
 @pytest.fixture(scope="session")
-def test_dataset(test_data_manager: TestDataManager) -> Dict[str, Any]:
+def test_dataset(test_data_manager: DataManager) -> Dict[str, Any]:
     """Generate and provide test dataset."""
     return test_data_manager.generate_test_dataset(
         user_count=50,
@@ -233,14 +234,14 @@ def temp_directory() -> Generator[Path, None, None]:
 
 
 @pytest.fixture
-def test_logger(request) -> TestLogger:
+def test_logger(request) -> ContextLogger:
     """Provide test-specific logger."""
     test_name = request.node.name
-    return TestLogger(test_name)
+    return ContextLogger(test_name)
 
 
 @pytest.fixture(autouse=True)
-def test_setup_teardown(request, test_logger: TestLogger):
+def test_setup_teardown(request, test_logger: ContextLogger):
     """Automatic test setup and teardown."""
     # Setup
     test_logger.log_step("Test setup", f"Starting {request.node.name}")
@@ -354,3 +355,37 @@ def pytest_addoption(parser):
     parser.addoption(
         "--parallel", action="store", type=int, default=1, help="number of parallel workers"
     )
+    parser.addoption(
+        "--pact-dir", action="store", default="pacts", help="directory for pact files"
+    )
+
+
+# Contract Testing Fixtures
+@pytest.fixture(scope="session")
+def pact_directory(request):
+    """Provide pact directory from command line option."""
+    return request.config.getoption("--pact-dir")
+
+
+@pytest.fixture(scope="class")
+def user_service_pact_client(pact_directory):
+    """Create Pact client for User Service."""
+    client = PactClient("user-service-consumer", "user-service-provider", pact_directory)
+    yield client
+    client.stop_service()
+
+
+@pytest.fixture(scope="class")
+def product_service_pact_client(pact_directory):
+    """Create Pact client for Product Service."""
+    client = PactClient("product-service-consumer", "product-service-provider", pact_directory)
+    yield client
+    client.stop_service()
+
+
+@pytest.fixture(scope="class")
+def mock_external_service():
+    """Create mock external service for contract testing."""
+    return MockExternalService()
+
+

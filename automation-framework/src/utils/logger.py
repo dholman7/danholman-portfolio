@@ -93,7 +93,7 @@ def get_logger(name: str) -> logging.Logger:
     return logging.getLogger(name)
 
 
-class TestLogger:
+class ContextLogger:
     """Test-specific logger with additional context."""
     
     def __init__(self, test_name: str, logger: Optional[logging.Logger] = None):

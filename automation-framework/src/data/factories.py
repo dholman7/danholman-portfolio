@@ -504,7 +504,7 @@ class OrderFactory:
         return orders
 
 
-class TestDataManager:
+class DataManager:
     """Manager for test data operations."""
     
     def __init__(self):

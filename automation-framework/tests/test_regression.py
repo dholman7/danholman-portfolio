@@ -14,9 +14,9 @@ from unittest.mock import patch, MagicMock
 from src.api.client import APIClient
 from src.config.settings import FrameworkConfig
 from src.core.base_page import BasePage
-from src.data.factories import UserFactory, ProductFactory, OrderFactory, TestDataManager
+from src.data.factories import UserFactory, ProductFactory, OrderFactory, DataManager
 from src.utils.helpers import generate_random_string, format_timestamp, validate_email
-from src.utils.logger import TestLogger, get_logger
+from src.utils.logger import ContextLogger, get_logger
 
 
 @allure.epic("Automation Framework")
@@ -102,7 +102,7 @@ class TestAutomationFrameworkRegression:
     def test_data_factory_generation(self):
         """Test data factory functionality."""
         with allure.step("Initialize data factory"):
-            factory = TestDataManager()
+            factory = DataManager()
             assert factory is not None
             
         with allure.step("Test data generation"):
@@ -178,7 +178,7 @@ class TestAutomationFrameworkRegression:
             client = APIClient()
             mock_driver = MagicMock()
             page = BasePage(mock_driver)
-            factory = TestDataManager()
+            factory = DataManager()
             logger = get_logger("integration_test")
             
         with allure.step("Verify component interaction"):
@@ -246,7 +246,7 @@ class TestAutomationFrameworkRegression:
             client = APIClient()
             mock_driver = MagicMock()
             page = BasePage(mock_driver)
-            factory = TestDataManager()
+            factory = DataManager()
             logger = get_logger("performance_test")
             
             end_time = time.time()

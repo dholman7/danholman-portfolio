@@ -272,7 +272,7 @@ jobs:
       
       - name: Run contract tests
         run: |
-          pytest tests/ -m "contract" --html=reports/contract-report.html --self-contained-html --junitxml=reports/contract-junit.xml
+          pytest tests/contract/ -m "contract" --html=reports/contract-report.html --self-contained-html --junitxml=reports/contract-junit.xml
         env:
           PACT_BROKER_URL: http://localhost:8080
           TEST_ENVIRONMENT: staging
@@ -285,6 +285,8 @@ jobs:
           path: |
             reports/contract-report.html
             reports/contract-junit.xml
+            pacts/
+
 
   # Parallel Test Execution
   parallel-tests:

@@ -16,9 +16,9 @@ import allure
 
 from tests.parallel_testing_example import (
     ParallelTestMatrixGenerator,
-    TestResultAggregator,
+    ResultAggregator,
     ParallelTestRunner,
-    TestConfig
+    ExecutionConfig
 )
 
 
@@ -110,7 +110,7 @@ class TestTestResultAggregator:
     def setup_method(self):
         """Set up test environment."""
         self.temp_dir = tempfile.mkdtemp()
-        self.aggregator = TestResultAggregator()
+        self.aggregator = ResultAggregator()
     
     def teardown_method(self):
         """Clean up test environment."""
@@ -169,7 +169,7 @@ class TestParallelTestRunner:
     
     def test_runner_initialization(self):
         """Test runner initialization."""
-        config = TestConfig(
+        config = ExecutionConfig(
             test_type="unit",
             framework="pytest",
             language="python",
@@ -185,7 +185,7 @@ class TestParallelTestRunner:
     
     def test_environment_setup(self):
         """Test environment variable setup."""
-        config = TestConfig(
+        config = ExecutionConfig(
             test_type="e2e",
             framework="pytest",
             language="python",
@@ -335,11 +335,11 @@ class TestAllureIntegration:
             import shutil
             shutil.rmtree(temp_dir, ignore_errors=True)
     
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.CRITICAL)
     @allure.description("Test that parallel execution configuration is valid")
     def test_parallel_execution_configuration(self):
         """Test that parallel execution configuration is valid."""
-        config = TestConfig(
+        config = ExecutionConfig(
             test_type="integration",
             framework="pytest",
             language="python",
