@@ -75,13 +75,13 @@ jobs:
             echo "<!DOCTYPE html><html><head><title>Allure Reports - Automation Framework</title></head><body><h1>Allure Test Reports - Automation Framework</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/automation-framework/index.html
           fi
           
-          if [ -d "allure-reports/ai-test-generation-allure-report" ]; then
-            echo "Copying ai-test-generation report..."
-            cp -r allure-reports/ai-test-generation-allure-report gh-pages-deploy/ai-test-generation
+          if [ -d "allure-reports/ai-rulesets-allure-report" ]; then
+            echo "Copying ai-rulesets report..."
+            cp -r allure-reports/ai-rulesets-allure-report gh-pages-deploy/ai-rulesets
           else
-            echo "Creating placeholder for ai-test-generation..."
-            mkdir -p gh-pages-deploy/ai-test-generation
-            echo "<!DOCTYPE html><html><head><title>Allure Reports - AI Test Generation</title></head><body><h1>Allure Test Reports - AI Test Generation</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/ai-test-generation/index.html
+            echo "Creating placeholder for ai-rulesets..."
+            mkdir -p gh-pages-deploy/ai-rulesets
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - AI Rulesets</title></head><body><h1>Allure Test Reports - AI Rulesets</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/ai-rulesets/index.html
           fi
           
           if [ -d "allure-reports/cloud-native-app-allure-report" ]; then
@@ -149,9 +149,9 @@ jobs:
                   </div>
                   
                   <div class="module">
-                      <h2>AI Test Generation</h2>
-                      <p>AI-powered test generation using LLMs for automated test case creation.</p>
-                      <a href="ai-test-generation/">View Report</a>
+                      <h2>AI Rulesets</h2>
+                      <p>Organizational AI rulesets and utilities for creating custom development standards and guidelines.</p>
+                      <a href="ai-rulesets/">View Report</a>
                   </div>
                   
                   <div class="module">

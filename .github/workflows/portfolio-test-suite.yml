@@ -119,13 +119,13 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
-  ai-test-generation:
-    name: AI Test Generation (Python)
+  ai-rulesets:
+    name: AI Rulesets (Python)
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'ai-test-generation' || github.event_name != 'workflow_dispatch' }}
+    if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'ai-rulesets' || github.event_name != 'workflow_dispatch' }}
     defaults:
       run:
-        working-directory: ai-test-generation
+        working-directory: ai-rulesets
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -164,18 +164,18 @@ jobs:
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
             npm install -g allure-commandline
-            echo "Generating Allure report for ai-test-generation..."
+            echo "Generating Allure report for ai-rulesets..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"
           else
-            echo "No Allure results found for ai-test-generation"
+            echo "No Allure results found for ai-rulesets"
           fi
 
       - name: Upload Allure Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ai-test-generation-allure-results
+          name: ai-rulesets-allure-results
           path: reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
@@ -184,7 +184,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ai-test-generation-allure-report
+          name: ai-rulesets-allure-report
           path: reports/allure-report/
           retention-days: 30
           if-no-files-found: warn

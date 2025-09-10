@@ -132,7 +132,7 @@ jobs:
             pytest tests/ \
               --html=reports/${JOB_NAME}.html \
               --self-contained-html \
-              --cov=ai_test_generation \
+              --cov=ai_rulesets \
               --cov-report=xml:reports/${JOB_NAME}_coverage.xml \
               --cov-report=html:reports/${JOB_NAME}_coverage.html \
               --junitxml=reports/${JOB_NAME}.xml \
