@@ -258,20 +258,16 @@ info: ## Show portfolio information
 # Quality Checks
 quality-check: ## Run comprehensive code quality checks for all modules
 	@echo "🔍 Running comprehensive code quality checks..."
-	$(MAKE) -C ai-rulesets quality-check || true
-	@echo "✅ Quality checks completed"
+	python scripts/quality_checker.py
 
 quality-readmes: ## Check README files for accuracy across all modules
 	@echo "📚 Checking README files across all modules..."
-	$(MAKE) -C ai-rulesets quality-readmes || true
-	@echo "✅ README checks completed"
+	python scripts/quality_checker.py --readmes-only
 
 quality-workflows: ## Check GitHub workflow files across all modules
 	@echo "⚙️ Checking workflow files across all modules..."
-	$(MAKE) -C ai-rulesets quality-workflows || true
-	@echo "✅ Workflow checks completed"
+	python scripts/quality_checker.py --workflows-only
 
 quality-tests: ## Check test execution and reporting across all modules
 	@echo "🧪 Checking test execution across all modules..."
-	$(MAKE) -C ai-rulesets quality-tests || true
-	@echo "✅ Test checks completed"
+	python scripts/quality_checker.py --tests-only

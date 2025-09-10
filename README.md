@@ -253,6 +253,9 @@ make quality-check
 make quality-readmes      # README validation
 make quality-workflows    # Workflow validation  
 make quality-tests        # Test execution validation
+
+# Or run directly
+python scripts/quality_checker.py
 ```
 
 ### **Quality Checker Features**
