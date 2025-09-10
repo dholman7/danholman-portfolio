@@ -6,7 +6,7 @@ test.describe('Accessibility Tests', () => {
     // Navigate to the app
     await page.goto('/');
     
-    // Wait for the page to load
+    // Wait for the page to load completely
     await page.waitForLoadState('networkidle');
     
     // Inject Axe accessibility testing library
@@ -26,6 +26,7 @@ test.describe('Accessibility Tests', () => {
   test('Registration page should be accessible', async ({ page }) => {
     // Navigate to registration page
     await page.goto('/register');
+    await page.waitForLoadState('networkidle');
     
     // Check accessibility compliance
     await checkA11y(page, null, {
@@ -39,6 +40,7 @@ test.describe('Accessibility Tests', () => {
   test('Login page should be accessible', async ({ page }) => {
     // Navigate to login page
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
     
     // Check accessibility compliance
     await checkA11y(page, null, {
@@ -52,6 +54,7 @@ test.describe('Accessibility Tests', () => {
   test('Dashboard should be accessible', async ({ page }) => {
     // Navigate to dashboard (assuming user is logged in)
     await page.goto('/dashboard');
+    await page.waitForLoadState('networkidle');
     
     // Check accessibility compliance
     await checkA11y(page, null, {
@@ -64,6 +67,7 @@ test.describe('Accessibility Tests', () => {
 
   test('Forms should have proper labels and ARIA attributes', async ({ page }) => {
     await page.goto('/register');
+    await page.waitForLoadState('networkidle');
     
     // Check specific form elements
     const violations = await getViolations(page, {
@@ -75,6 +79,7 @@ test.describe('Accessibility Tests', () => {
 
   test('Navigation should be keyboard accessible', async ({ page }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
     
     // Check navigation elements
     const violations = await getViolations(page, {
@@ -90,6 +95,7 @@ test.describe('Accessibility Tests', () => {
 
   test('Images should have alt text', async ({ page }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
     
     // Check image accessibility
     const violations = await getViolations(page, {
@@ -104,6 +110,7 @@ test.describe('Accessibility Tests', () => {
 
   test('Color contrast should meet WCAG standards', async ({ page }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
     
     // Check color contrast
     const violations = await getViolations(page, {
@@ -117,6 +124,7 @@ test.describe('Accessibility Tests', () => {
 
   test('Page should have proper heading structure', async ({ page }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
     
     // Check heading structure
     const violations = await getViolations(page, {
@@ -131,6 +139,7 @@ test.describe('Accessibility Tests', () => {
 
   test('Focus management should be proper', async ({ page }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
     
     // Check focus management
     const violations = await getViolations(page, {

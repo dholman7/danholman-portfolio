@@ -16,7 +16,7 @@
   },
   "include": [
     "src/**/*",
-    "tests/**/*",
+    "e2e/**/*",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
