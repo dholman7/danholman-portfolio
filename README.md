@@ -7,6 +7,15 @@ in building automation frameworks, cloud-native solutions, and quality platforms
 This repo highlights examples of my work in **test automation, AWS cloud development, and AI-powered testing**.
 Each folder contains code samples or writeups demonstrating skills I use daily to improve developer velocity, reduce defects, and increase reliability.
 
+## 🧪 **[Live Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)**
+
+**View comprehensive test results, Allure reports, and coverage analysis from all modules:**
+- **Combined Allure Reports**: Unified test analytics across all modules
+- **Individual Module Reports**: Detailed test results for each project
+- **Playwright Reports**: Interactive E2E test results with screenshots and videos
+- **Coverage Reports**: Code coverage analysis and visualization
+- **Real-time Updates**: Automatically updated on every CI/CD run
+
 ---
 
 ## 📂 Projects
@@ -109,12 +118,14 @@ This portfolio showcases comprehensive testing strategies with multiple reportin
 
 ### **Live Reporting URLs**
 
-#### **GitHub Pages Reports** (CI/CD Generated - Updated on every push)
-- **Allure Reports**: https://dholman7.github.io/danholman-portfolio/
-- **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
-- **AI Rulesets**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
-- **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
-- **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
+#### **🎯 [GitHub Pages Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)** (CI/CD Generated - Updated on every push)
+- **📊 [Combined Allure Reports](https://dholman7.github.io/danholman-portfolio/combined-allure/)**: Unified test analytics across all modules
+- **🤖 [Automation Framework](https://dholman7.github.io/danholman-portfolio/automation-framework/)**: Python/TypeScript test automation results
+- **🧠 [AI Rulesets](https://dholman7.github.io/danholman-portfolio/ai-rulesets/)**: AI rulesets and quality checker results
+- **☁️ [Cloud Native App](https://dholman7.github.io/danholman-portfolio/cloud-native-app/)**: AWS serverless testing results
+- **⚛️ [React Playwright Demo](https://dholman7.github.io/danholman-portfolio/react-playwright-demo/)**: E2E testing with Playwright reports
+- **🎬 [Playwright Reports](https://dholman7.github.io/danholman-portfolio/playwright-reports/)**: Interactive test results with screenshots and videos
+- **📈 [Coverage Reports](https://dholman7.github.io/danholman-portfolio/coverage-reports/)**: Code coverage analysis and visualization
 
 #### **Local Development Reports** (Interactive testing during development)
 - **Playwright Reports**: http://localhost:9323/ (interactive test results with screenshots/videos)
@@ -177,12 +188,14 @@ This portfolio demonstrates production-ready test failure diagnosis workflows:
 
 ### **Report URLs**
 
-#### **Live GitHub Pages Reports**
-- **All Reports**: https://dholman7.github.io/danholman-portfolio/
-- **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
-- **AI Rulesets**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
-- **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
-- **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
+#### **🎯 [Live GitHub Pages Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)**
+- **📊 [Combined Allure Reports](https://dholman7.github.io/danholman-portfolio/combined-allure/)**: Unified test analytics
+- **🤖 [Automation Framework](https://dholman7.github.io/danholman-portfolio/automation-framework/)**: Test automation results
+- **🧠 [AI Rulesets](https://dholman7.github.io/danholman-portfolio/ai-rulesets/)**: AI quality checker results
+- **☁️ [Cloud Native App](https://dholman7.github.io/danholman-portfolio/cloud-native-app/)**: AWS serverless results
+- **⚛️ [React Playwright Demo](https://dholman7.github.io/danholman-portfolio/react-playwright-demo/)**: E2E testing results
+- **🎬 [Playwright Reports](https://dholman7.github.io/danholman-portfolio/playwright-reports/)**: Interactive test results
+- **📈 [Coverage Reports](https://dholman7.github.io/danholman-portfolio/coverage-reports/)**: Code coverage analysis
 
 #### **Local Development Reports**
 
