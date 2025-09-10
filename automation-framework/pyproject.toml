@@ -247,6 +247,15 @@ markers = [
     "validation: Test validation tests",
     "error_handling: Error handling tests",
     "pipeline: Full pipeline tests",
+    "students: Student API tests",
+    "courses: Course API tests",
+    "enrollments: Enrollment API tests",
+    "list: List operation tests",
+    "create: Create operation tests",
+    "get_by_id: Get by ID operation tests",
+    "update: Update operation tests",
+    "delete: Delete operation tests",
+    "enroll: Enrollment operation tests",
     "custom_markers: Custom marker tests",
 ]
 filterwarnings = [

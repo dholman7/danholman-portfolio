@@ -187,7 +187,7 @@ class TestStudentsAPI:
     
     @allure.feature("Students API")
     @allure.story("Get Student by ID")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.students
     @pytest.mark.get_by_id
@@ -208,7 +208,7 @@ class TestStudentsAPI:
     
     @allure.feature("Students API")
     @allure.story("Update Student")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.students
     @pytest.mark.update
@@ -226,7 +226,7 @@ class TestStudentsAPI:
     
     @allure.feature("Students API")
     @allure.story("Delete Student")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.students
     @pytest.mark.delete
@@ -282,7 +282,7 @@ class TestCoursesAPI:
     
     @allure.feature("Courses API")
     @allure.story("Get Course by ID")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.courses
     @pytest.mark.get_by_id
@@ -299,7 +299,7 @@ class TestCoursesAPI:
     
     @allure.feature("Courses API")
     @allure.story("Update Course")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.courses
     @pytest.mark.update
@@ -317,7 +317,7 @@ class TestCoursesAPI:
     
     @allure.feature("Courses API")
     @allure.story("Delete Course")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.courses
     @pytest.mark.delete
@@ -337,7 +337,7 @@ class TestEnrollmentsAPI:
     
     @allure.feature("Enrollments API")
     @allure.story("List Student Courses")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.enrollments
     @pytest.mark.list
@@ -354,7 +354,7 @@ class TestEnrollmentsAPI:
     
     @allure.feature("Enrollments API")
     @allure.story("Enroll Student in Course")
-    @allure.severity(allure.severity_level.HIGH)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.api
     @pytest.mark.enrollments
     @pytest.mark.enroll

@@ -76,7 +76,7 @@ jobs:
           import os
           
           # Load test matrix
-          with open('students_courses_test_matrix.json', 'r') as f:
+          with open('automation-framework/students_courses_test_matrix.json', 'r') as f:
               matrix = json.load(f)
           
           # Get filter parameters
