@@ -22,7 +22,7 @@ class WorkflowValidator:
         """Validate all workflow files in the project."""
         self.issues = []
         
-        # Find all workflow files
+        # Find all workflow files (exclude node_modules)
         workflow_files = list(self.project_root.glob(".github/workflows/*.yml")) + \
                         list(self.project_root.glob(".github/workflows/*.yaml"))
         
@@ -31,6 +31,10 @@ class WorkflowValidator:
             module_workflows = list(self.project_root.glob(f"{module}/.github/workflows/*.yml")) + \
                               list(self.project_root.glob(f"{module}/.github/workflows/*.yaml"))
             workflow_files.extend(module_workflows)
+        
+        # Filter out files in node_modules and other excluded directories
+        excluded_dirs = {'node_modules', '.git', '.venv', '__pycache__', 'htmlcov', 'reports', 'dist', 'build', '.next'}
+        workflow_files = [f for f in workflow_files if not any(excluded_dir in str(f) for excluded_dir in excluded_dirs)]
         
         for workflow_file in workflow_files:
             self._validate_workflow_file(workflow_file)

@@ -117,15 +117,27 @@ class ReadmeValidator:
             
             # Check internal links
             if link_url.startswith('./') or not link_url.startswith('/'):
-                # Relative link
-                target_path = file_path.parent / link_url
-                if not target_path.exists():
-                    self.issues.append(ValidationResult(
-                        is_valid=False,
-                        message=f"Broken internal link: {link_url}",
-                        file_path=str(file_path),
-                        severity="error"
-                    ))
+                # Skip anchor links (starting with #)
+                if link_url.startswith('#'):
+                    # Check if anchor exists in the same file
+                    anchor_name = link_url[1:].lower()
+                    if not re.search(rf'#+\s+{re.escape(anchor_name)}\b', content, re.IGNORECASE):
+                        self.issues.append(ValidationResult(
+                            is_valid=False,
+                            message=f"Broken internal link: {link_url}",
+                            file_path=str(file_path),
+                            severity="error"
+                        ))
+                else:
+                    # Relative file link
+                    target_path = file_path.parent / link_url
+                    if not target_path.exists():
+                        self.issues.append(ValidationResult(
+                            is_valid=False,
+                            message=f"Broken internal link: {link_url}",
+                            file_path=str(file_path),
+                            severity="error"
+                        ))
     
     def _check_outdated_references(self, file_path: Path, content: str) -> None:
         """Check for outdated references."""

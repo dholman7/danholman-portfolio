@@ -43,7 +43,7 @@ make quality-check
 
 # Check specific aspects
 make quality-readmes      # README validation
-make quality-workflows    # Workflow validation  
+make quality-workflows    # Workflow validation
 make quality-tests        # Test execution validation
 
 # Automatically fix common issues
@@ -84,7 +84,7 @@ The quality checker can automatically fix common issues:
 
 #### **Fixable Issues**
 - **Trailing whitespace**: Removes trailing spaces from lines
-- **Outdated references**: Updates old module names (AI Test Generation → AI Rulesets)
+- **Outdated references**: Updates old module names (AI Rulesets → AI Rulesets)
 - **Long lines**: Breaks long lines at logical points (bullet points, URLs, tables)
 - **Missing workflow triggers**: Adds basic GitHub Actions triggers
 - **Missing step names**: Adds generic names for workflow steps

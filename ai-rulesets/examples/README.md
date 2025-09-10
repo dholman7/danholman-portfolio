@@ -194,7 +194,7 @@ loaded_template = GuidanceTemplate.from_file("my-guidance.yaml")
 
 ## 🤝 Contributing
 
-We welcome contributions! See the main [Contributing Guide](../CONTRIBUTING.md) for details on:
+We welcome contributions! See the main [Contributing Guide](../../CONTRIBUTING.md) for details on:
 - Adding new guidance templates
 - Improving existing examples
 - Adding support for new AI tools

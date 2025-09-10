@@ -1,7 +1,8 @@
 # Dan Holman – Software Developer in Test Portfolio
 
 Welcome to my professional portfolio!
-I’m a **Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience in building automation frameworks, cloud-native solutions, and quality platforms at scale.
+I'm a **Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience 
+in building automation frameworks, cloud-native solutions, and quality platforms at scale.
 
 This repo highlights examples of my work in **test automation, AWS cloud development, and AI-powered testing**.
 Each folder contains code samples or writeups demonstrating skills I use daily to improve developer velocity, reduce defects, and increase reliability.
