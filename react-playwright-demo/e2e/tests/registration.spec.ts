@@ -12,8 +12,8 @@ test.describe('User Registration', () => {
     await allure.story('Registration Form Display');
     await allure.severity('critical');
     
-    // Check if we're on the registration form
-    await expect(page.locator('h1')).toContainText('Create Account');
+    // Check if we're on the registration form - new UI uses h2 for form title
+    await expect(page.locator('h2')).toContainText('Create your account');
     await expect(page.locator('[data-testid="first-name-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="last-name-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="email-input"]')).toBeVisible();
@@ -21,6 +21,10 @@ test.describe('User Registration', () => {
     await expect(page.locator('[data-testid="confirm-password-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="terms-checkbox"]')).toBeVisible();
     await expect(page.locator('[data-testid="submit-button"]')).toBeVisible();
+    
+    // Check for new branding elements
+    await expect(page.locator('text=HolmanTech')).toBeVisible();
+    await expect(page.locator('[data-testid="tech-logo"]')).toBeVisible();
   });
 
   test('should show validation errors for empty form submission', async ({ page }) => {
@@ -69,7 +73,7 @@ test.describe('User Registration', () => {
     await expect(page.locator('[data-testid="terms-error"]')).toContainText('You must accept the terms and conditions');
   });
 
-  test('should successfully register with valid data', async ({ page }) => {
+  test('should successfully register with valid data and show dashboard', async ({ page }) => {
     await allure.epic('User Management');
     await allure.feature('User Registration');
     await allure.story('Successful Registration');
@@ -84,11 +88,16 @@ test.describe('User Registration', () => {
     
     await page.click('[data-testid="submit-button"]');
     
-    // Wait for loading to complete
-    await page.waitForSelector('[data-testid="submit-button"]:not(:disabled)', { timeout: 10000 });
+    // Wait for loading to complete and check for dashboard
+    await page.waitForSelector('text=Welcome to your HolmanTech Dashboard', { timeout: 10000 });
     
-    // Check for success or error message (mock API returns random results)
-    await expect(page.locator('[data-testid="message"]')).toBeVisible();
+    // Check for dashboard elements
+    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
+    await expect(page.locator('text=Welcome, John!')).toBeVisible();
+    await expect(page.locator('text=Account Status')).toBeVisible();
+    await expect(page.locator('text=Last Login')).toBeVisible();
+    await expect(page.locator('text=Quick Actions')).toBeVisible();
+    await expect(page.locator('text=Sign out')).toBeVisible();
   });
 
   test('should toggle password visibility', async ({ page }) => {

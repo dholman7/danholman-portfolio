@@ -14,8 +14,8 @@ test.describe('User Login', () => {
     await allure.story('Login Form Display');
     await allure.severity('critical');
     
-    // Check if we're on the login form
-    await expect(page.locator('h1')).toContainText('Welcome Back');
+    // Check if we're on the login form - new UI uses h2 for form title
+    await expect(page.locator('h2')).toContainText('Welcome back');
     await expect(page.locator('[data-testid="email-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="password-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="submit-button"]')).toBeVisible();
@@ -49,17 +49,22 @@ test.describe('User Login', () => {
     await expect(page.locator('[data-testid="password-error"]')).toContainText('Password must be at least 8 characters');
   });
 
-  test('should attempt login with valid credentials', async ({ page }) => {
+  test('should successfully login with valid credentials and show dashboard', async ({ page }) => {
     await page.fill('[data-testid="email-input"]', 'john@example.com');
     await page.fill('[data-testid="password-input"]', 'password123');
     
     await page.click('[data-testid="submit-button"]');
     
-    // Wait for loading to complete
-    await page.waitForSelector('[data-testid="submit-button"]:not(:disabled)', { timeout: 10000 });
+    // Wait for loading to complete and check for dashboard
+    await page.waitForSelector('text=Welcome to your HolmanTech Dashboard', { timeout: 10000 });
     
-    // Check for success or error message (mock API returns random results)
-    await expect(page.locator('[data-testid="message"]')).toBeVisible();
+    // Check for dashboard elements
+    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
+    await expect(page.locator('text=Welcome, User!')).toBeVisible();
+    await expect(page.locator('text=Account Status')).toBeVisible();
+    await expect(page.locator('text=Last Login')).toBeVisible();
+    await expect(page.locator('text=Quick Actions')).toBeVisible();
+    await expect(page.locator('text=Sign out')).toBeVisible();
   });
 
   test('should toggle password visibility in login form', async ({ page }) => {
@@ -79,8 +84,8 @@ test.describe('User Login', () => {
     // Click toggle mode button
     await page.click('[data-testid="toggle-mode"]');
     
-    // Should now be in registration mode
-    await expect(page.locator('h1')).toContainText('Create Account');
+    // Should now be in registration mode - new UI uses h2 for form title
+    await expect(page.locator('h2')).toContainText('Create your account');
     await expect(page.locator('[data-testid="first-name-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="last-name-input"]')).toBeVisible();
   });

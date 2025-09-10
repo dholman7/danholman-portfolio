@@ -12,8 +12,9 @@ test.describe('UI Components and Responsiveness', () => {
     await allure.story('Element Visibility');
     await allure.severity('high');
     
-    // Check main container
-    await expect(page.locator('div').filter({ hasText: 'Create Account' }).first()).toBeVisible();
+    // Check main branding elements
+    await expect(page.locator('text=HolmanTech')).toBeVisible();
+    await expect(page.locator('text=Get started with HolmanTech')).toBeVisible();
     
     // Check logo
     await expect(page.locator('[data-testid="tech-logo"]')).toBeVisible();
@@ -29,6 +30,11 @@ test.describe('UI Components and Responsiveness', () => {
     
     // Check toggle mode button
     await expect(page.locator('[data-testid="toggle-mode"]')).toBeVisible();
+    
+    // Check feature list on the left side
+    await expect(page.locator('text=Secure and reliable platform')).toBeVisible();
+    await expect(page.locator('text=24/7 customer support')).toBeVisible();
+    await expect(page.locator('text=Advanced analytics dashboard')).toBeVisible();
   });
 
   test('should have proper form labels', async ({ page }) => {
