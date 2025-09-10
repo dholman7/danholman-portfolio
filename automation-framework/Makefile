@@ -295,11 +295,7 @@ clean: ## Clean up generated files and caches
 clean-all: clean clean-test-data ## Clean everything including test data
 
 # Documentation
-docs: ## Generate documentation
-	sphinx-build -b html docs/ docs/_build/html
-
-docs-serve: ## Serve documentation locally
-	cd docs/_build/html && python -m http.server 8000
+# Documentation is now located in .cursor/rules/ directory
 
 # Performance Analysis
 profile: ## Run performance profiling

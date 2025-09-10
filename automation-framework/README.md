@@ -370,7 +370,7 @@ python scripts/demo_parallel_testing.py --workflow-only
 - **Browsers**: Chrome, Firefox, Edge
 - **Devices**: desktop, mobile, tablet
 
-For detailed parallel testing documentation, see [docs/parallel-testing.md](docs/parallel-testing.md).
+For detailed parallel testing documentation, see [.cursor/rules/parallel-testing.md](.cursor/rules/parallel-testing.md).
 
 ### Utility Scripts
 

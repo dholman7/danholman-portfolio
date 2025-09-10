@@ -227,7 +227,7 @@ See our comprehensive examples showing how to:
 
 Demonstrates high-scale parallel testing using GitHub Actions matrix strategies:
 
-- [Parallel Testing Guide](docs/parallel-testing.md) - Comprehensive parallel testing implementation
+- [Parallel Testing Guide](../automation-framework/docs/parallel-testing.md) - Comprehensive parallel testing implementation
 - [Matrix Generation Script](scripts/generate_test_matrix.py) - Dynamic test matrix creation
 - [Report Merging](scripts/merge_junit_reports.py) - JUnit XML report aggregation
 - [Test Summary](scripts/generate_test_summary.py) - Detailed test execution analysis
