@@ -41,7 +41,7 @@ This application demonstrates production-ready CI/CD practices for frontend deve
 - **Modern UI**: Clean, accessible interface with proper form states
 
 ### Technical Highlights
-- **React 18**: Latest React features with TypeScript
+- **React 19**: Latest React features with TypeScript
 - **Vite**: Fast build tool and development server
 - **Tailwind CSS**: Utility-first CSS framework
 - **Form Management**: react-hook-form with Zod validation
@@ -95,7 +95,7 @@ react-playwright-demo/
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18**: Modern React with hooks and concurrent features
+- **React 19**: Modern React with hooks and concurrent features
 - **TypeScript**: Type-safe JavaScript development
 - **Vite**: Fast build tool and development server
 - **Tailwind CSS**: Utility-first CSS framework
