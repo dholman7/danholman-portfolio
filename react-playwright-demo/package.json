@@ -34,7 +34,10 @@
     "test:e2e:report": "playwright show-report",
     "test:allure": "playwright test && allure generate allure-results --clean -o allure-report && allure open allure-report",
     "test:allure:generate": "allure generate allure-results --clean -o allure-report",
-    "test:allure:open": "allure open allure-report"
+    "test:allure:open": "allure open allure-report",
+    "test:accessibility": "playwright test tests/e2e/tests/accessibility.spec.ts",
+    "test:accessibility:headed": "playwright test tests/e2e/tests/accessibility.spec.ts --headed",
+    "test:accessibility:debug": "playwright test tests/e2e/tests/accessibility.spec.ts --debug"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -58,6 +61,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "allure-playwright": "^3.3.3",
     "autoprefixer": "^10.4.21",
+    "axe-playwright": "^2.2.1",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

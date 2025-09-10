@@ -35,7 +35,7 @@ export class LambdaConstruct extends Construct {
 
     // Common Lambda configuration
     const commonLambdaConfig: Partial<lambda.FunctionProps> = {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       memorySize: 256,
       timeout: cdk.Duration.seconds(30),
       logRetention: logs.RetentionDays.ONE_MONTH,
