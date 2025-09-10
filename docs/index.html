@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan Holman Portfolio - Test Results Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .card-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #ee82f0, #f3455a);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(45deg, #3d8bfe, #00e6fe);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .combined-reports {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .combined-reports h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        
+        .last-updated {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Test Results Dashboard</h1>
+            <p>Comprehensive test automation portfolio showcasing 13+ years of SDET expertise</p>
+        </div>
+        
+        <div class="combined-reports">
+            <h2>📊 Combined Test Results</h2>
+            <p>Unified Allure reports from all modules with comprehensive test execution analysis, coverage metrics, and detailed failure analysis.</p>
+            <div class="card-links">
+                <a href="combined-allure/" class="btn">
+                    🎯 View Combined Allure Report
+                </a>
+                <a href="combined-coverage/" class="btn btn-success">
+                    📈 View Combined Coverage Report
+                </a>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2>
+                    <span class="card-icon">🤖</span>
+                    Automation Framework
+                </h2>
+                <p>Python/TypeScript test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
+                <div class="card-links">
+                    <a href="automation-framework/" class="btn">Allure Report</a>
+                    <a href="automation-framework/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span class="card-icon">🧠</span>
+                    AI Rulesets
+                </h2>
+                <p>Organizational AI rulesets and utilities for creating custom development standards and guidelines.</p>
+                <div class="card-links">
+                    <a href="ai-rulesets/" class="btn">Allure Report</a>
+                    <a href="ai-rulesets/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span class="card-icon">☁️</span>
+                    Cloud Native App
+                </h2>
+                <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
+                <div class="card-links">
+                    <a href="cloud-native-app/" class="btn">Allure Report</a>
+                    <a href="cloud-native-app/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span class="card-icon">⚛️</span>
+                    React Playwright Demo
+                </h2>
+                <p>Modern React/TypeScript frontend with comprehensive E2E testing and form validation.</p>
+                <div class="card-links">
+                    <a href="react-playwright-demo/" class="btn">Allure Report</a>
+                    <a href="react-playwright-demo/playwright/" class="btn btn-success">Playwright Report</a>
+                    <a href="react-playwright-demo/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="combined-reports">
+            <h2>🔗 Additional Resources</h2>
+            <div class="card-links">
+                <a href="https://github.com/dholman7/danholman-portfolio" class="btn btn-secondary" target="_blank">
+                    📁 View Source Code
+                </a>
+                <a href="https://github.com/dholman7/danholman-portfolio/actions" class="btn btn-secondary" target="_blank">
+                    🔄 View CI/CD Pipeline
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Dan Holman - Senior Software Developer in Test (SDET) & Automation Architect</p>
+            <p class="last-updated">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+    </div>
+    
+    <script>
+        // Update last updated time
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        
+        // Add status badges based on report availability (this would be populated by the deployment script)
+        // For now, we'll add a simple status indicator
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const statusBadge = document.createElement('span');
+            statusBadge.className = 'status-badge status-success';
+            statusBadge.textContent = 'Available';
+            card.querySelector('h2').appendChild(statusBadge);
+        });
+    </script>
+</body>
+</html>

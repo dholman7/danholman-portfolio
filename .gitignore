@@ -41,7 +41,7 @@ cdk.out/
 .idea/
 
 # Local context docs (not committed)
-/docs/
+# /docs/ - Allow docs/index.html for GitHub Pages landing page
 
 # Private AI submodule mount and sensitive dirs
 ai-private/

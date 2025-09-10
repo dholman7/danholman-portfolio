@@ -60,12 +60,68 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Setup Python for report combination
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
       - name: Prepare Allure Reports for Deployment
         run: |
           # Create deployment directory
           mkdir -p gh-pages-deploy
           
-          # Copy reports to deployment directory
+          # Copy the main landing page
+          if [ -f "docs/index.html" ]; then
+            echo "Copying main landing page..."
+            cp docs/index.html gh-pages-deploy/index.html
+          else
+            echo "Creating basic landing page..."
+            cat > gh-pages-deploy/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Test Results Dashboard</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+                  .container { max-width: 800px; margin: 0 auto; text-align: center; }
+                  .module { margin: 20px 0; padding: 20px; background: white; color: #333; border-radius: 10px; }
+                  .module h2 { color: #2c3e50; }
+                  .module a { color: #007bff; text-decoration: none; padding: 10px 20px; background: #007bff; color: white; border-radius: 5px; display: inline-block; margin: 5px; }
+                  .module a:hover { background: #0056b3; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>🧪 Test Results Dashboard</h1>
+                  <p>Comprehensive test automation portfolio showcasing 13+ years of SDET expertise</p>
+                  
+                  <div class="module">
+                      <h2>📊 Combined Test Results</h2>
+                      <p>Unified Allure reports from all modules</p>
+                      <a href="combined-allure/">View Combined Allure Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>🤖 Automation Framework</h2>
+                      <p>Python/TypeScript test automation framework</p>
+                      <a href="automation-framework/">View Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>⚛️ React Playwright Demo</h2>
+                      <p>Modern React/TypeScript frontend with E2E testing</p>
+                      <a href="react-playwright-demo/">View Allure Report</a>
+                      <a href="react-playwright-demo/playwright/">View Playwright Report</a>
+                  </div>
+                  
+                  <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
+              </div>
+          </body>
+          </html>
+          EOF
+          fi
+          
+          # Copy individual module reports
           if [ -d "allure-reports/automation-framework-allure-report" ]; then
             echo "Copying automation-framework report..."
             cp -r allure-reports/automation-framework-allure-report gh-pages-deploy/automation-framework
@@ -106,88 +162,72 @@ jobs:
           if [ -d "playwright-reports" ]; then
             echo "Copying Playwright reports..."
             cp -r playwright-reports gh-pages-deploy/playwright-reports
+            # Also copy to react-playwright-demo/playwright for direct access
+            mkdir -p gh-pages-deploy/react-playwright-demo/playwright
+            cp -r playwright-reports/* gh-pages-deploy/react-playwright-demo/playwright/ 2>/dev/null || true
           else
             echo "Creating placeholder for Playwright reports..."
             mkdir -p gh-pages-deploy/playwright-reports
+            mkdir -p gh-pages-deploy/react-playwright-demo/playwright
             echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/playwright-reports/index.html
+            echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/react-playwright-demo/playwright/index.html
           fi
           
           # Copy Coverage reports
           if [ -d "coverage-reports" ]; then
             echo "Copying Coverage reports..."
             cp -r coverage-reports gh-pages-deploy/coverage-reports
+            # Also copy individual module coverage reports
+            for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+              if [ -d "coverage-reports/${module}-coverage-report" ]; then
+                mkdir -p gh-pages-deploy/${module}/coverage
+                cp -r coverage-reports/${module}-coverage-report/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+              fi
+            done
           else
             echo "Creating placeholder for Coverage reports..."
             mkdir -p gh-pages-deploy/coverage-reports
             echo "<!DOCTYPE html><html><head><title>Coverage Reports</title></head><body><h1>Code Coverage Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/coverage-reports/index.html
           fi
           
-          # Create main index page
-          cat > gh-pages-deploy/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <title>Allure Test Reports</title>
-              <style>
-                  body { font-family: Arial, sans-serif; margin: 40px; }
-                  .container { max-width: 800px; margin: 0 auto; }
-                  .module { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
-                  .module h2 { color: #333; }
-                  .module a { color: #007bff; text-decoration: none; }
-                  .module a:hover { text-decoration: underline; }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <h1>Allure Test Reports</h1>
-                  <p>Interactive test reports generated from CI/CD pipeline test results.</p>
-                  
-                  <div class="module">
-                      <h2>Automation Framework</h2>
-                      <p>Test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
-                      <a href="automation-framework/">View Report</a>
-                  </div>
-                  
-                  <div class="module">
-                      <h2>AI Rulesets</h2>
-                      <p>Organizational AI rulesets and utilities for creating custom development standards and guidelines.</p>
-                      <a href="ai-rulesets/">View Report</a>
-                  </div>
-                  
-                  <div class="module">
-                      <h2>Cloud Native App</h2>
-                      <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
-                      <a href="cloud-native-app/">View Report</a>
-                  </div>
-                  
-                  <div class="module">
-                      <h2>React Playwright Demo</h2>
-                      <p>Modern React/TypeScript frontend with comprehensive E2E testing and form validation.</p>
-                      <a href="react-playwright-demo/">View Report</a>
-                  </div>
-                  
-                  <hr>
-                  
-                  <h2>Additional Test Reports</h2>
-                  
-                  <div class="module">
-                      <h3>Playwright HTML Reports</h3>
-                      <p>Interactive test results with screenshots, videos, and traces for E2E testing.</p>
-                      <a href="playwright-reports/">View Playwright Reports</a>
-                  </div>
-                  
-                  <div class="module">
-                      <h3>Coverage Reports</h3>
-                      <p>Code coverage analysis with HTML visualization showing test coverage across all modules.</p>
-                      <a href="coverage-reports/">View Coverage Reports</a>
-                  </div>
-                  
-                  <hr>
-                  <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
-              </div>
-          </body>
-          </html>
-          EOF
+          # Create combined Allure report
+          echo "Creating combined Allure report..."
+          mkdir -p gh-pages-deploy/combined-allure
+          
+          # Collect all Allure results directories
+          ALLURE_RESULTS_DIRS=""
+          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+            if [ -d "allure-reports/${module}-allure-report" ]; then
+              # Extract results from the report directory
+              RESULTS_DIR="allure-reports/${module}-allure-report"
+              if [ -d "${RESULTS_DIR}/data/test-cases" ]; then
+                ALLURE_RESULTS_DIRS="${ALLURE_RESULTS_DIRS} ${RESULTS_DIR}/data/test-cases"
+              fi
+            fi
+          done
+          
+          # If we have Allure results, combine them
+          if [ -n "$ALLURE_RESULTS_DIRS" ]; then
+            echo "Combining Allure results from: $ALLURE_RESULTS_DIRS"
+            python3 scripts/combine-allure-reports.py --sources $ALLURE_RESULTS_DIRS --output gh-pages-deploy/combined-allure-results --summary gh-pages-deploy/combined-summary.json
+            
+            # Generate combined Allure report if Allure is available
+            if command -v allure >/dev/null 2>&1; then
+              allure generate gh-pages-deploy/combined-allure-results --clean -o gh-pages-deploy/combined-allure
+              echo "Combined Allure report generated"
+            else
+              echo "Allure not available, creating placeholder for combined report"
+              echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Combined test results from all modules. Allure commandline required to generate full report.</p><p>Run: allure generate combined-allure-results --clean -o combined-allure</p></body></html>" > gh-pages-deploy/combined-allure/index.html
+            fi
+          else
+            echo "No Allure results found, creating placeholder"
+            echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/combined-allure/index.html
+          fi
+          
+          # Create combined coverage report placeholder
+          echo "Creating combined coverage report..."
+          mkdir -p gh-pages-deploy/combined-coverage
+          echo "<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p></body></html>" > gh-pages-deploy/combined-coverage/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
