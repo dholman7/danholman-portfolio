@@ -10,9 +10,8 @@ export default {
     }],
   },
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.{ts,tsx}',
-    '<rootDir>/src/**/*.{test,spec}.{ts,tsx}',
-    '<rootDir>/src/**/*.{test,spec}.{ts,tsx}',
+    '<rootDir>/tests/unit/**/*.{test,spec}.{ts,tsx}',
+    '<rootDir>/tests/integration/**/*.{test,spec}.{ts,tsx}',
   ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',

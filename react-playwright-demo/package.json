@@ -23,7 +23,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:unit": "jest --testPathPatterns=src",
+    "test:unit": "jest --testPathPatterns=tests/unit",
     "test:integration": "jest --testPathPatterns=tests/integration",
     "test:e2e": "playwright test",
     "test:e2e:parallel": "playwright test --workers=4",
@@ -35,9 +35,9 @@
     "test:allure": "playwright test && allure generate allure-results --clean -o allure-report && allure open allure-report",
     "test:allure:generate": "allure generate allure-results --clean -o allure-report",
     "test:allure:open": "allure open allure-report",
-    "test:accessibility": "playwright test e2e/tests/accessibility.spec.ts",
-    "test:accessibility:headed": "playwright test e2e/tests/accessibility.spec.ts --headed",
-    "test:accessibility:debug": "playwright test e2e/tests/accessibility.spec.ts --debug"
+    "test:accessibility": "playwright test tests/e2e/accessibility/accessibility.spec.ts",
+    "test:accessibility:headed": "playwright test tests/e2e/accessibility/accessibility.spec.ts --headed",
+    "test:accessibility:debug": "playwright test tests/e2e/accessibility/accessibility.spec.ts --debug"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
