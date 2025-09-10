@@ -106,7 +106,7 @@ This portfolio showcases comprehensive testing strategies with multiple reportin
 #### **GitHub Pages Reports** (CI/CD Generated - Updated on every push)
 - **Allure Reports**: https://dholman7.github.io/danholman-portfolio/
 - **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
-- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
+- **AI Rulesets**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
 - **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
 - **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
 
@@ -174,7 +174,7 @@ This portfolio demonstrates production-ready test failure diagnosis workflows:
 #### **Live GitHub Pages Reports**
 - **All Reports**: https://dholman7.github.io/danholman-portfolio/
 - **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
-- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
+- **AI Rulesets**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
 - **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
 - **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
 
@@ -199,6 +199,7 @@ The local setup maintains test execution history for trend analysis:
 ```bash
 # Test specific modules
 make -C automation-framework test-allure
+make -C ai-rulesets test-allure
 make -C cloud-native-app test-allure
 make -C react-playwright-demo test-allure
 
@@ -233,6 +234,74 @@ make install-dev          # Install dependencies
 make test-allure-local    # Run tests with Allure
 make allure-serve-local   # View reports with history
 ```
+
+## 🚀 Running All Tests
+
+This portfolio provides multiple ways to run tests across all modules:
+
+### **Quick Test Execution**
+
+```bash
+# Run all tests for all modules
+make test
+
+# Run comprehensive regression tests
+make test-regression
+
+# Run tests with Allure reporting
+make test-allure
+
+# Quick smoke tests only
+make test-allure-quick
+```
+
+### **Individual Module Testing**
+
+```bash
+# Test specific modules
+make -C automation-framework test
+make -C ai-rulesets test
+make -C cloud-native-app test
+make -C react-playwright-demo test
+
+# Test with Allure reporting
+make -C automation-framework test-allure
+make -C ai-rulesets test-allure
+make -C cloud-native-app test-allure
+make -C react-playwright-demo test-allure
+```
+
+### **Allure Report Generation**
+
+```bash
+# Generate Allure reports for all modules
+make allure-generate
+
+# Serve reports locally with history
+make allure-serve-local
+
+# Serve reports using Docker (no Java required)
+make allure-docker-serve
+
+# Serve specific module reports
+make allure-serve-single MODULE=automation-framework
+make allure-serve-single MODULE=ai-rulesets
+make allure-serve-single MODULE=cloud-native-app
+make allure-serve-single MODULE=react-playwright-demo
+```
+
+### **Available Test Commands**
+
+| Command | Description |
+|---------|-------------|
+| `make test` | Run all tests for all modules |
+| `make test-regression` | Run comprehensive regression tests |
+| `make test-allure` | Run tests and generate Allure reports |
+| `make test-allure-local` | Run tests with Allure and maintain history |
+| `make test-allure-quick` | Quick smoke tests with Allure |
+| `make allure-serve-local` | Serve Allure reports with history |
+| `make allure-docker-serve` | Serve reports using Docker |
+| `make allure-clean` | Clean all Allure reports |
 
 ---
 
