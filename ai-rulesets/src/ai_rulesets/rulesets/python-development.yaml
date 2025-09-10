@@ -1,0 +1,62 @@
+metadata:
+  name: "Python Development Standards"
+  version: "1.0.0"
+  description: "Organizational Python development standards and best practices"
+  categories: ["development", "python", "standards"]
+  tags: ["python", "pytest", "black", "ruff", "mypy"]
+  author: "Dan Holman"
+  maintainer: "engineering@company.com"
+  target_tools: ["cursor", "copilot"]
+
+rules:
+  - name: "Code Style"
+    description: "Python code style guidelines"
+    content: |
+      # Use Black for code formatting with 88-character line limit
+      # Use Ruff for linting and code analysis
+      # Follow PEP 8 with organizational modifications
+      # Use type hints extensively for better IDE support
+      # Use meaningful variable and function names
+      # Group imports: standard library, third-party, local imports
+    tags: ["style", "formatting", "linting"]
+    priority: 1
+    category: "code-quality"
+
+  - name: "Testing Standards"
+    description: "Python testing guidelines and patterns"
+    content: |
+      # Use pytest for all testing
+      # Write descriptive test names that explain behavior
+      # Use fixtures for test data and setup
+      # Aim for 80%+ test coverage
+      # Use parametrized tests for multiple test cases
+      # Mock external dependencies appropriately
+    tags: ["testing", "pytest", "coverage"]
+    priority: 1
+    category: "testing"
+
+  - name: "Error Handling"
+    description: "Python error handling best practices"
+    content: |
+      # Use context managers for resource cleanup
+      # Implement custom exception classes for domain-specific errors
+      # Use try/except/else/finally blocks appropriately
+      # Log exceptions with full stack traces
+      # Implement proper error recovery strategies
+      # Use assertions for debugging and development
+    tags: ["error-handling", "exceptions", "logging"]
+    priority: 2
+    category: "code-quality"
+
+  - name: "Security Practices"
+    description: "Python security best practices"
+    content: |
+      # Never commit secrets or sensitive data
+      # Use environment variables for configuration
+      # Use secure random number generation
+      # Implement proper authentication and authorization
+      # Use HTTPS for all external communications
+      # Follow OWASP security guidelines
+    tags: ["security", "secrets", "authentication"]
+    priority: 1
+    category: "security"

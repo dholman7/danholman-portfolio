@@ -1,0 +1,34 @@
+[
+  {
+    "type": "smoke",
+    "framework": "pytest",
+    "language": "python",
+    "category": "critical",
+    "environment": "production",
+    "job_name": "smoke_pytest_python_critical_production",
+    "test_path": "tests/smoke",
+    "markers": [
+      "smoke",
+      "critical",
+      "production"
+    ],
+    "timeout": 300,
+    "retries": 2
+  },
+  {
+    "type": "performance",
+    "framework": "pytest",
+    "language": "python",
+    "category": "load",
+    "environment": "staging",
+    "job_name": "performance_pytest_python_load_staging",
+    "test_path": "tests/performance",
+    "markers": [
+      "performance",
+      "load",
+      "staging"
+    ],
+    "timeout": 1800,
+    "retries": 1
+  }
+]

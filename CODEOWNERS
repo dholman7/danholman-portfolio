@@ -11,7 +11,7 @@
 
 # Core modules
 /automation-framework/ @dholman7
-/ai-test-generation/ @dholman7
+/ai-rulesets/ @dholman7
 /cloud-native-app/ @dholman7
 
 # Configuration files

@@ -30,6 +30,7 @@ This is Dan Holman's professional portfolio showcasing expertise in test automat
 - Include comprehensive README files for each module
 - Follow security-first principles for all implementations
 - Optimize for developer experience and CI/CD integration
+- **NEVER commit test reports, Allure results, or generated files to git**
 
 ## File Organization
 - Use kebab-case for directory and file names

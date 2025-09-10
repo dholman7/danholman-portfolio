@@ -1,0 +1,2 @@
+[console_scripts]
+ai-rulesets = ai_rulesets.main:main

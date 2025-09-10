@@ -62,7 +62,7 @@ fi
 # Create directories for Allure history
 echo "📁 Creating Allure directories..."
 mkdir -p allure-history/automation-framework
-mkdir -p allure-history/ai-test-generation
+mkdir -p allure-history/ai-rulesets
 mkdir -p allure-history/cloud-native-app
 
 # Create a global Allure configuration
@@ -71,15 +71,15 @@ cat > allure-config.yml << 'EOF'
 allure:
   results:
     - automation-framework/reports/allure-results
-    - ai-test-generation/reports/allure-results
+    - ai-rulesets/reports/allure-results
     - cloud-native-app/reports/allure-results
   report:
     - automation-framework/reports/allure-report
-    - ai-test-generation/reports/allure-report
+    - ai-rulesets/reports/allure-report
     - cloud-native-app/reports/allure-report
   history:
     - allure-history/automation-framework
-    - allure-history/ai-test-generation
+    - allure-history/ai-rulesets
     - allure-history/cloud-native-app
 EOF
 
@@ -92,5 +92,5 @@ echo "3. View individual module reports: make allure-serve-single MODULE=<module
 echo ""
 echo "📊 Available modules:"
 echo "   - automation-framework"
-echo "   - ai-test-generation" 
+echo "   - ai-rulesets" 
 echo "   - cloud-native-app"

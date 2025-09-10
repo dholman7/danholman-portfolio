@@ -6,7 +6,7 @@ on:
     paths:
       - 'automation-framework/**'
       - 'cloud-native-app/**'
-      - 'ai-test-generation/**'
+      - 'ai-rulesets/**'
       - 'react-playwright-demo/**'
       - '.github/workflows/**'
       - 'Makefile'
@@ -14,7 +14,7 @@ on:
     paths:
       - 'automation-framework/**'
       - 'cloud-native-app/**'
-      - 'ai-test-generation/**'
+      - 'ai-rulesets/**'
       - 'react-playwright-demo/**'
       - '.github/workflows/**'
       - 'Makefile'
@@ -25,7 +25,7 @@ on:
         options:
           - all
           - automation-framework
-          - ai-test-generation
+          - ai-rulesets
           - cloud-native-app
           - react-playwright-demo
         required: true

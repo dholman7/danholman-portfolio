@@ -1,0 +1,246 @@
+[
+  {
+    "type": "unit",
+    "framework": "pytest",
+    "language": "python",
+    "category": "core",
+    "test_path": "tests/unit",
+    "markers": [
+      "unit",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "unit_pytest_python_core_staging"
+  },
+  {
+    "type": "unit",
+    "framework": "pytest",
+    "language": "python",
+    "category": "core",
+    "test_path": "tests/unit",
+    "markers": [
+      "unit",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "unit_pytest_python_core_production"
+  },
+  {
+    "type": "component",
+    "framework": "pytest",
+    "language": "python",
+    "category": "integration",
+    "test_path": "tests/component",
+    "markers": [
+      "component",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "component_pytest_python_integration_staging"
+  },
+  {
+    "type": "component",
+    "framework": "pytest",
+    "language": "python",
+    "category": "integration",
+    "test_path": "tests/component",
+    "markers": [
+      "component",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "component_pytest_python_integration_production"
+  },
+  {
+    "type": "integration",
+    "framework": "pytest",
+    "language": "python",
+    "category": "api",
+    "test_path": "tests/integration",
+    "markers": [
+      "integration",
+      "api",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "integration_pytest_python_api_staging"
+  },
+  {
+    "type": "integration",
+    "framework": "pytest",
+    "language": "python",
+    "category": "api",
+    "test_path": "tests/integration",
+    "markers": [
+      "integration",
+      "api",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "integration_pytest_python_api_production"
+  },
+  {
+    "type": "e2e",
+    "framework": "pytest",
+    "language": "python",
+    "category": "end-to-end",
+    "test_path": "tests/e2e",
+    "markers": [
+      "e2e",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "e2e_pytest_python_end-to-end_staging"
+  },
+  {
+    "type": "e2e",
+    "framework": "pytest",
+    "language": "python",
+    "category": "end-to-end",
+    "test_path": "tests/e2e",
+    "markers": [
+      "e2e",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "e2e_pytest_python_end-to-end_production"
+  },
+  {
+    "type": "unit",
+    "framework": "jest",
+    "language": "typescript",
+    "category": "core",
+    "test_path": "tests/unit",
+    "markers": [
+      "unit",
+      "typescript"
+    ],
+    "environment": "staging",
+    "job_name": "unit_jest_typescript_core_staging"
+  },
+  {
+    "type": "unit",
+    "framework": "jest",
+    "language": "typescript",
+    "category": "core",
+    "test_path": "tests/unit",
+    "markers": [
+      "unit",
+      "typescript"
+    ],
+    "environment": "production",
+    "job_name": "unit_jest_typescript_core_production"
+  },
+  {
+    "type": "integration",
+    "framework": "jest",
+    "language": "typescript",
+    "category": "api",
+    "test_path": "tests/integration",
+    "markers": [
+      "integration",
+      "api",
+      "typescript"
+    ],
+    "environment": "staging",
+    "job_name": "integration_jest_typescript_api_staging"
+  },
+  {
+    "type": "integration",
+    "framework": "jest",
+    "language": "typescript",
+    "category": "api",
+    "test_path": "tests/integration",
+    "markers": [
+      "integration",
+      "api",
+      "typescript"
+    ],
+    "environment": "production",
+    "job_name": "integration_jest_typescript_api_production"
+  },
+  {
+    "type": "api",
+    "framework": "pytest",
+    "language": "python",
+    "category": "rest",
+    "test_path": "tests/integration",
+    "markers": [
+      "api",
+      "rest",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "api_pytest_python_rest_staging"
+  },
+  {
+    "type": "api",
+    "framework": "pytest",
+    "language": "python",
+    "category": "rest",
+    "test_path": "tests/integration",
+    "markers": [
+      "api",
+      "rest",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "api_pytest_python_rest_production"
+  },
+  {
+    "type": "api",
+    "framework": "pytest",
+    "language": "python",
+    "category": "graphql",
+    "test_path": "tests/integration",
+    "markers": [
+      "api",
+      "graphql",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "api_pytest_python_graphql_staging"
+  },
+  {
+    "type": "api",
+    "framework": "pytest",
+    "language": "python",
+    "category": "graphql",
+    "test_path": "tests/integration",
+    "markers": [
+      "api",
+      "graphql",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "api_pytest_python_graphql_production"
+  },
+  {
+    "type": "contract",
+    "framework": "pytest",
+    "language": "python",
+    "category": "pact",
+    "test_path": "tests/integration",
+    "markers": [
+      "contract",
+      "pact",
+      "python"
+    ],
+    "environment": "staging",
+    "job_name": "contract_pytest_python_pact_staging"
+  },
+  {
+    "type": "contract",
+    "framework": "pytest",
+    "language": "python",
+    "category": "pact",
+    "test_path": "tests/integration",
+    "markers": [
+      "contract",
+      "pact",
+      "python"
+    ],
+    "environment": "production",
+    "job_name": "contract_pytest_python_pact_production"
+  }
+]

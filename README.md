@@ -28,12 +28,12 @@ An AWS serverless demo app with:
 
 ---
 
-### 🔹 [AI Test Generation](./ai-test-generation)
-Comprehensive AI-powered testing framework featuring:
-- LLM-driven test case generation from API schemas
-- GitHub Actions matrix strategies for high-scale parallel testing
-- Dynamic test matrix generation and artifact merging
-- Production-ready CI/CD patterns for test automation
+### 🔹 [AI Rulesets](./ai-rulesets)
+Organizational AI rulesets and utilities for creating custom development standards:
+- Pre-built rulesets for Python, TypeScript, testing, CI/CD, and security
+- Document processing utilities to create custom rulesets from company standards
+- Cursor and GitHub Copilot integration for consistent AI assistance
+- Ruleset generation and validation tools for organizational standards
 
 ---
 
@@ -106,7 +106,7 @@ This portfolio showcases comprehensive testing strategies with multiple reportin
 #### **GitHub Pages Reports** (CI/CD Generated - Updated on every push)
 - **Allure Reports**: https://dholman7.github.io/danholman-portfolio/
 - **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
-- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-test-generation/
+- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
 - **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
 - **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
 
@@ -174,7 +174,7 @@ This portfolio demonstrates production-ready test failure diagnosis workflows:
 #### **Live GitHub Pages Reports**
 - **All Reports**: https://dholman7.github.io/danholman-portfolio/
 - **Automation Framework**: https://dholman7.github.io/danholman-portfolio/automation-framework/
-- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-test-generation/
+- **AI Test Generation**: https://dholman7.github.io/danholman-portfolio/ai-rulesets/
 - **Cloud Native App**: https://dholman7.github.io/danholman-portfolio/cloud-native-app/
 - **React Playwright Demo**: https://dholman7.github.io/danholman-portfolio/react-playwright-demo/
 
@@ -182,7 +182,7 @@ This portfolio demonstrates production-ready test failure diagnosis workflows:
 
 After running `make allure-serve-local`, access reports at:
 - **Automation Framework**: http://localhost:5050
-- **AI Test Generation**: http://localhost:5051  
+- **AI Rulesets**: http://localhost:5051  
 - **Cloud Native App**: http://localhost:5052
 - **React Playwright Demo**: http://localhost:5053
 
@@ -281,15 +281,16 @@ This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configurat
 - **[testing-guidelines.mdc](.cursor/rules/testing-guidelines.mdc)**: Comprehensive testing guidelines for pytest, Jest, and automation
 - **[git-workflow.mdc](.cursor/rules/git-workflow.mdc)**: Git workflow, pull request, and version control rules
 - **[ci-cd-infrastructure.mdc](.cursor/rules/ci-cd-infrastructure.mdc)**: CI/CD, infrastructure, and deployment rules
+- **[ai-rulesets](ai-rulesets/)**: Organizational AI rulesets and utilities for creating custom development standards
 
 ### AI-Assisted Testing
 
-The [AI Test Generation](./ai-test-generation) module demonstrates how AI can automate test creation:
+The [AI Rulesets](./ai-rulesets) module demonstrates how to create organizational AI standards:
 
-- **Test Case Generation**: Generate comprehensive test suites from API schemas
-- **Test Data Creation**: Automatically create realistic test data
-- **Test Maintenance**: Update tests when code changes
-- **Quality Assurance**: Ensure test coverage and quality
+- **Organizational Standards**: Pre-built rulesets for consistent development practices
+- **Custom Ruleset Generation**: Process company documentation into AI-compatible rulesets
+- **Multi-tool Integration**: Generate rulesets for Cursor, Copilot, and other AI tools
+- **Team Distribution**: Share and maintain standards across development teams
 
 ### Getting Started with AI Development
 
