@@ -95,7 +95,7 @@ tests/
 ```bash
 make test
 # or
-npm test
+yarn test
 ```
 
 ### By Type
@@ -110,7 +110,7 @@ make test-e2e         # Run E2E tests
 ```bash
 make test:coverage
 # or
-npm run test:coverage
+yarn test:coverage
 ```
 
 ## Test Configuration

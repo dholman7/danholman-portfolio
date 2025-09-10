@@ -9,8 +9,8 @@ install:
 	@if command -v yarn >/dev/null 2>&1; then \
 		yarn install; \
 	else \
-		echo "Yarn not found, using npm..."; \
-		npm install; \
+		echo "Yarn not found, please install yarn first: https://yarnpkg.com/getting-started/install"; \
+		exit 1; \
 	fi
 	@echo "Dependencies installed successfully."
 
@@ -86,7 +86,7 @@ allure-generate: allure-results ## Generate Allure HTML report
 		allure generate reports/allure-results --clean -o reports/allure-report; \
 		echo "Allure report generated in reports/allure-report/"; \
 	else \
-		echo "Allure command not found. Install with: npm install -g allure-commandline"; \
+		echo "Allure command not found. Install with: yarn global add allure-commandline"; \
 		echo "Or use Docker: docker run -v $(PWD)/reports/allure-results:/app/allure-results -v $(PWD)/reports/allure-report:/app/allure-report frankescobar/allure-docker-service:latest allure generate /app/allure-results /app/allure-report"; \
 	fi
 
@@ -94,7 +94,7 @@ allure-serve: allure-results ## Serve Allure report locally
 	@if command -v allure >/dev/null 2>&1; then \
 		allure serve reports/allure-results --port 5051; \
 	else \
-		echo "Allure command not found. Install with: npm install -g allure-commandline"; \
+		echo "Allure command not found. Install with: yarn global add allure-commandline"; \
 		echo "Or use Docker: docker run -p 5051:5050 -v $(PWD)/reports/allure-results:/app/allure-results frankescobar/allure-docker-service:latest"; \
 	fi
 

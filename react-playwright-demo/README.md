@@ -104,6 +104,7 @@ react-playwright-demo/
 
 ### Testing
 - **Playwright**: Cross-browser E2E testing
+- **Accessibility Testing**: WCAG 2.1 AA compliance testing with Axe
 - **Allure**: Comprehensive test reporting
 - **Jest**: Unit testing (if needed)
 
@@ -116,7 +117,7 @@ react-playwright-demo/
 
 ### Prerequisites
 - Node.js 20.19+
-- npm or yarn package manager
+- yarn package manager
 - Git
 
 #### Installing Node.js with nvm
@@ -242,6 +243,27 @@ yarn test:allure:open
 - **Registration Tests**: Form validation, user creation flow
 - **Login Tests**: Authentication flow, error handling
 - **UI Tests**: Component visibility, responsiveness, accessibility
+- **Accessibility Tests**: WCAG 2.1 AA compliance testing
+
+### Accessibility Testing
+```bash
+# Run accessibility tests
+yarn test:accessibility
+
+# Run accessibility tests in headed mode
+yarn test:accessibility:headed
+
+# Debug accessibility tests
+yarn test:accessibility:debug
+```
+
+**Accessibility Test Coverage:**
+- **WCAG 2.1 AA Compliance**: Full accessibility audit
+- **Form Accessibility**: Proper labels, ARIA attributes, keyboard navigation
+- **Navigation Accessibility**: Keyboard navigation, focus management
+- **Color Contrast**: WCAG color contrast standards
+- **Screen Reader Support**: Proper semantic HTML and ARIA labels
+- **Keyboard Navigation**: Tab order and focus management
 
 ### Test Coverage
 ```bash

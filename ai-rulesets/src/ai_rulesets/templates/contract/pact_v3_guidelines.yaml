@@ -1,0 +1,530 @@
+metadata:
+  name: "Pact v3 Contract Testing Guidelines"
+  version: "1.0.0"
+  description: "Comprehensive guidelines for implementing Pact v3 contract testing following best practices"
+  languages: ["python", "typescript", "javascript"]
+  frameworks: ["pact-python", "pact-js", "pact-jvm"]
+  categories: ["contract", "integration", "api", "testing"]
+  author: "Dan Holman"
+  license: "MIT"
+  last_updated: "2024-01-15"
+
+rules:
+  - name: "Pact v3 Setup and Configuration"
+    description: "Proper setup and configuration for Pact v3 contract testing"
+    content: |
+      # Pact v3 Setup and Configuration
+      
+      ## Prerequisites
+      Before starting contract testing, ensure you have:
+      - Pact v3+ setup completed in your repository
+      - Access to contract verification tools
+      - Identified the API interaction that needs contract testing
+      - Located the consumer code that makes API calls to the provider
+      - Understanding of the provider interface (endpoint, request/response structure)
+      
+      ## Python Setup
+      ```python
+      # requirements.txt
+      pact-python>=3.0.0
+      
+      # pyproject.toml
+      [project.optional-dependencies]
+      api = [
+          "pact-python>=3.0.0",
+      ]
+      ```
+      
+      ## TypeScript Setup
+      ```json
+      {
+        "dependencies": {
+          "@pact-foundation/pact": "^3.0.0"
+        }
+      }
+      ```
+
+  - name: "Test File Structure and Organization"
+    description: "Proper file structure and organization for contract tests"
+    content: |
+      # Test File Structure and Organization
+      
+      ## Directory Structure
+      ```
+      tests/
+      ├── contract/
+      │   ├── test_user_service_contract.py
+      │   ├── test_product_service_contract.py
+      │   └── test_payment_service_contract.py
+      src/
+      └── contract/
+          ├── pact_client.py
+          └── mock_external_service.py
+      pacts/
+      └── generated-pact-files/
+      ```
+      
+      ## File Naming Conventions
+      - **Python:** `test_[ENDPOINT_IN_SNAKE_CASE]_pact.py`
+      - **TypeScript:** `[ENDPOINT_IN_PASCAL_CASE]ContractTest.spec.ts`
+      
+      ## Test Class Organization
+      - Group tests by service/consumer
+      - Use descriptive test method names
+      - Include proper docstrings explaining the contract being tested
+
+  - name: "Pact v3 Client Implementation"
+    description: "Implementing a proper Pact v3 client for contract testing"
+    content: |
+      # Pact v3 Client Implementation
+      
+      ## Python Client
+      ```python
+      from pact.v3 import Pact, match
+      from typing import Dict, Any
+      
+      class PactClient:
+          def __init__(self, consumer_name: str, provider_name: str, pact_dir: str = "pacts"):
+              self.consumer_name = consumer_name
+              self.provider_name = provider_name
+              self.pact_dir = Path(pact_dir)
+              self.pact_dir.mkdir(exist_ok=True)
+              
+              # Initialize Pact v3 with V4 specification
+              self.pact = Pact(consumer_name, provider_name).with_specification("V4")
+              self.pact_dir = str(self.pact_dir)
+          
+          def setup_interaction(self, 
+                               description: str,
+                               provider_state: str,
+                               request: Dict[str, Any],
+                               response: Dict[str, Any]) -> None:
+              """Setup a contract interaction using Pact v3 API."""
+              (self.pact
+               .given(provider_state, parameters=request.get("parameters", {}))
+               .upon_receiving(description)
+               .with_request(
+                   method=request.get("method", "GET"),
+                   path=request.get("path", "/"),
+                   headers=request.get("headers", {}),
+                   body=request.get("body")
+               )
+               .will_respond_with(
+                   status=response.get("status", 200),
+                   headers=response.get("headers", {}),
+                   body=response.get("body")
+               ))
+      
+      ## TypeScript Client
+      ```typescript
+      import { PactV4 as Pact, MatchersV3 as Matchers } from '@pact-foundation/pact';
+      
+      const provider = new Pact({
+        consumer: 'ConsumerName',
+        provider: 'ProviderName',
+        dir: path.resolve(process.cwd(), 'pacts'),
+        logLevel: 'info' as LogLevel,
+        spec: SpecificationVersion.SPECIFICATION_VERSION_V4,
+      });
+      ```
+
+  - name: "Pact v3 Matchers and Data Validation"
+    description: "Using Pact v3 matchers for flexible and robust data validation"
+    content: |
+      # Pact v3 Matchers and Data Validation
+      
+      ## Python Matchers
+      ```python
+      from pact.v3 import match
+      
+      # Basic type matchers
+      "id": match.integer(1),
+      "name": match.string("John Doe"),
+      "email": match.string("john@example.com"),
+      "active": match.bool(True),
+      "price": match.decimal(99.99),
+      
+      # Advanced matchers
+      "uuid": match.uuid("550e8400-e29b-41d4-a716-446655440000"),
+      "date": match.date("yyyy-MM-dd", "1999-03-31"),
+      "audience": match.regex("PG-13", r"^(G|PG|PG-13|R)$"),
+      
+      # Collection matchers
+      "genres": match.each_like(match.string("Action"), min=1),
+      "users": match.each_like({
+          "id": match.integer(1),
+          "name": match.string("John Doe")
+      }, min=1)
+      ```
+      
+      ## TypeScript Matchers
+      ```typescript
+      import { MatchersV3 as Matchers } from '@pact-foundation/pact';
+      const { like, eachLike, regex, uuid, date, integer, string, boolean } = Matchers;
+      
+      const expectedResponse = {
+        id: integer(1),
+        name: string('John Doe'),
+        email: string('john@example.com'),
+        active: boolean(true),
+        uuid: uuid('550e8400-e29b-41d4-a716-446655440000'),
+        releaseDate: date('yyyy-MM-dd', '1999-03-31'),
+        audience: regex('^(G|PG|PG-13|R)$', 'PG-13'),
+        genres: eachLike(string('Action'), 1)
+      };
+      ```
+
+  - name: "Contract Test Implementation Patterns"
+    description: "Best practices for implementing contract tests with Pact v3"
+    content: |
+      # Contract Test Implementation Patterns
+      
+      ## Python Test Pattern
+      ```python
+      import pytest
+      from typing import Any, Dict, cast
+      from pact.v3 import Pact, match
+      
+      @pytest.fixture
+      def pact():
+          """Create Pact instance for testing."""
+          pact_instance = Pact("ConsumerName", "ProviderName").with_specification("V4")
+          yield pact_instance
+          pact_instance.write_file("pacts")
+      
+      def test_api_contract(pact):
+          """Test contract for API interaction."""
+          # Use static values for reproducibility
+          test_id = "550e8400-e29b-41d4-a716-446655440000"
+          token = "token123"
+          
+          # Expected response with matchers
+          expected = {
+              "data": {
+                  "id": match.uuid(test_id),
+                  "name": match.string("Test Name"),
+                  "active": match.bool(True)
+              }
+          }
+          
+          # Define interaction
+          (pact
+           .given("resource exists", parameters={"id": test_id})
+           .upon_receiving("request for resource")
+           .with_request("GET", f"/api/resources/{test_id}")
+           .with_header("Authorization", f"Bearer {token}")
+           .will_respond_with(200)
+           .with_body(expected))
+          
+          # Execute test with context manager
+          with pact.serve(port=8080) as server:
+              # Make actual request to mock service
+              response = requests.get(f"{server.url}/api/resources/{test_id}")
+              assert response.status_code == 200
+              data = response.json()
+              assert data["data"]["id"] == test_id
+      ```
+      
+      ## TypeScript Test Pattern
+      ```typescript
+      import { PactV4 as Pact } from '@pact-foundation/pact';
+      
+      describe('API Contract Tests', () => {
+        const provider = new Pact({
+          consumer: 'ConsumerName',
+          provider: 'ProviderName',
+          dir: path.resolve(process.cwd(), 'pacts'),
+          spec: SpecificationVersion.SPECIFICATION_VERSION_V4,
+        });
+        
+        it('should return expected data', async () => {
+          await provider
+            .addInteraction()
+            .given('resource exists', { id: testId })
+            .uponReceiving('request for resource')
+            .withRequest('GET', `/api/resources/${testId}`)
+            .willRespondWith(200, builder => {
+              builder.jsonBody(expectedResponse);
+            })
+            .executeTest(async (mockServer) => {
+              const response = await fetch(`${mockServer.url}/api/resources/${testId}`);
+              const data = await response.json();
+              expect(data.data.id).toBe(testId);
+            });
+        });
+      });
+      ```
+
+  - name: "Provider State Management"
+    description: "Effective use of provider states for contract testing"
+    content: |
+      # Provider State Management
+      
+      ## Provider State Best Practices
+      - Use descriptive, meaningful state names
+      - Include parameters for dynamic state setup
+      - Keep states focused on single responsibilities
+      - Use consistent naming conventions across tests
+      
+      ## Python Provider States
+      ```python
+      # Good provider state examples
+      .given("user exists with id", parameters={"user_id": "123"})
+      .given("product is in stock", parameters={"product_id": "456"})
+      .given("payment is processed", parameters={"payment_id": "789"})
+      
+      # Avoid vague states
+      .given("data exists")  # Too vague
+      .given("ready")        # Not descriptive
+      ```
+      
+      ## TypeScript Provider States
+      ```typescript
+      // Good provider state examples
+      .given('user exists', { userId: '123' })
+      .given('product is available', { productId: '456' })
+      .given('order is created', { orderId: '789' })
+      ```
+
+  - name: "Error Handling and Edge Cases"
+    description: "Testing error scenarios and edge cases in contract tests"
+    content: |
+      # Error Handling and Edge Cases
+      
+      ## Testing Error Responses
+      ```python
+      # Test 404 Not Found
+      (pact
+       .given("resource does not exist", parameters={"id": "nonexistent"})
+       .upon_receiving("request for non-existent resource")
+       .with_request("GET", "/api/resources/nonexistent")
+       .will_respond_with(404)
+       .with_body({
+           "error": match.string("Resource not found"),
+           "code": match.integer(404)
+       }))
+      
+      # Test 400 Bad Request
+      (pact
+       .given("invalid request data")
+       .upon_receiving("request with invalid data")
+       .with_request("POST", "/api/resources")
+       .with_body({"invalid": "data"})
+       .will_respond_with(400)
+       .with_body({
+           "error": match.string("Invalid request data"),
+           "code": match.integer(400)
+       }))
+      ```
+      
+      ## Testing Authentication Errors
+      ```python
+      # Test 401 Unauthorized
+      (pact
+       .given("invalid authentication")
+       .upon_receiving("request with invalid token")
+       .with_request("GET", "/api/protected")
+       .with_header("Authorization", "Bearer invalid_token")
+       .will_respond_with(401)
+       .with_body({
+           "error": match.string("Unauthorized"),
+           "code": match.integer(401)
+       }))
+      ```
+
+  - name: "Contract Test Execution and CI/CD"
+    description: "Running contract tests and integrating with CI/CD pipelines"
+    content: |
+      # Contract Test Execution and CI/CD
+      
+      ## Local Execution
+      ```bash
+      # Python
+      uv run pytest tests/contract -v
+      pytest tests/contract --pact-verification
+      
+      # TypeScript
+      yarn test --testPathPattern=contract
+      jest --testPathPattern=contract
+      ```
+      
+      ## CI/CD Integration
+      ```yaml
+      # GitHub Actions example
+      name: Contract Testing
+      
+      on:
+        push:
+          branches: [main]
+        pull_request:
+          branches: [main]
+      
+      jobs:
+        consumer-tests:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.11'
+            - name: Install dependencies
+              run: |
+                pip install -r requirements.txt
+            - name: Run contract tests
+              run: |
+                pytest tests/contract -v --junitxml=contract-results.xml
+            - name: Upload pact files
+              uses: actions/upload-artifact@v3
+              with:
+                name: pact-files
+                path: pacts/
+      
+        provider-verification:
+          runs-on: ubuntu-latest
+          needs: consumer-tests
+          steps:
+            - uses: actions/checkout@v3
+            - name: Download pact files
+              uses: actions/download-artifact@v3
+              with:
+                name: pact-files
+                path: pacts/
+            - name: Verify contracts
+              run: |
+                pact-verifier --provider-base-url=http://localhost:3000 \
+                              --pact-urls=./pacts/*.json
+      ```
+
+  - name: "Contract Validation and Quality Gates"
+    description: "Validating contracts and implementing quality gates"
+    content: |
+      # Contract Validation and Quality Gates
+      
+      ## Contract Validation Checklist
+      - ✅ Contract test runs and passes locally
+      - ✅ Generated Pact file contains clear, descriptive interactions
+      - ✅ Interaction accurately represents real-world service usage
+      - ✅ Provider state is meaningful and descriptive
+      - ✅ Request and response bodies are correct
+      - ✅ Matchers are appropriate for the data types
+      - ✅ Error scenarios are covered
+      - ✅ Authentication and authorization are tested
+      
+      ## Quality Gates
+      ```python
+      # Contract quality validation
+      def validate_contract_quality(pact_file_path: str) -> bool:
+          """Validate contract quality and completeness."""
+          with open(pact_file_path, 'r') as f:
+              pact_data = json.load(f)
+          
+          interactions = pact_data.get('interactions', [])
+          
+          # Check for required fields
+          for interaction in interactions:
+              assert 'description' in interaction, "Missing interaction description"
+              assert 'request' in interaction, "Missing request specification"
+              assert 'response' in interaction, "Missing response specification"
+              assert 'providerState' in interaction, "Missing provider state"
+          
+          # Check for meaningful descriptions
+          descriptions = [i['description'] for i in interactions]
+          assert all(len(desc) > 10 for desc in descriptions), "Descriptions too short"
+          
+          return True
+      ```
+
+  - name: "Troubleshooting and Debugging"
+    description: "Common issues and debugging techniques for Pact v3"
+    content: |
+      # Troubleshooting and Debugging
+      
+      ## Common Issues
+      
+      ### Port Conflicts
+      ```python
+      # Use different ports for different tests
+      with pact.serve(port=8080) as server:
+          # Test 1
+      
+      with pact.serve(port=8081) as server:
+          # Test 2
+      ```
+      
+      ### Matcher Mismatches
+      ```python
+      # Debug matcher issues
+      import logging
+      logging.basicConfig(level=logging.DEBUG)
+      
+      # Check if matchers are correctly applied
+      print(f"Expected: {expected_response}")
+      print(f"Actual: {actual_response}")
+      ```
+      
+      ### Provider State Issues
+      ```python
+      # Ensure provider states are unique and descriptive
+      .given("user exists with specific id", parameters={"user_id": "123"})
+      # Instead of
+      .given("user exists")
+      ```
+      
+      ## Debugging Tools
+      - Use Pact Broker UI for contract visualization
+      - Enable debug logging in Pact configuration
+      - Use Pact verification tools for provider testing
+      - Check generated pact files for accuracy
+      
+      ## Performance Optimization
+      - Use class-level fixtures for Pact instances
+      - Reuse mock services when possible
+      - Clean up resources properly
+      - Use appropriate timeouts for external calls
+
+  - name: "Documentation and Maintenance"
+    description: "Documenting and maintaining contract tests"
+    content: |
+      # Documentation and Maintenance
+      
+      ## Test Documentation
+      ```python
+      def test_user_creation_contract(pact):
+          """
+          Test contract for user creation API.
+          
+          This test verifies that the user creation endpoint:
+          - Accepts valid user data
+          - Returns created user with generated ID
+          - Handles validation errors appropriately
+          
+          Provider State: User service is ready to accept new users
+          Consumer: User Management Service
+          Provider: User API Service
+          """
+      ```
+      
+      ## Contract Documentation
+      - Document API changes in contract tests
+      - Include examples of request/response formats
+      - Maintain changelog for contract versions
+      - Document breaking changes and migration paths
+      
+      ## Maintenance Best Practices
+      - Review contracts regularly for accuracy
+      - Update matchers when API evolves
+      - Remove obsolete contract tests
+      - Keep provider states up to date
+      - Monitor contract test execution times
+      
+      ## Contract Versioning
+      ```python
+      # Use semantic versioning for contracts
+      pact = Pact("UserService", "UserAPI", version="1.2.0")
+      
+      # Document breaking changes
+      # v2.0.0 - BREAKING: Changed user ID format from integer to UUID
+      # v1.2.0 - Added email validation
+      # v1.1.0 - Added user roles
+      ```

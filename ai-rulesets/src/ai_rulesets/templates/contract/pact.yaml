@@ -382,11 +382,11 @@ rules:
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
-                node-version: '18'
+                node-version: '20'
             - name: Install dependencies
-              run: npm install
+              run: yarn install
             - name: Start provider
-              run: npm start &
+              run: yarn start &
             - name: Wait for provider
               run: npx wait-on http://localhost:3000/health
             - name: Verify contracts

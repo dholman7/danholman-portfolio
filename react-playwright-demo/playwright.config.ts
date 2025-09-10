@@ -5,7 +5,7 @@ import { allure } from 'allure-playwright';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './e2e/tests',
+  testDir: './tests/e2e/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -54,6 +54,18 @@ export default defineConfig({
       use: { ...devices['Pixel 5'] },
     },
 
+    /* Accessibility testing project */
+    {
+      name: 'accessibility',
+      use: { 
+        ...devices['Desktop Chrome'],
+        // Run accessibility tests with specific settings
+        trace: 'on-first-retry',
+        screenshot: 'only-on-failure',
+      },
+      testMatch: '**/accessibility.spec.ts',
+    },
+
     /* Test against branded browsers. */
     // {
     //   name: 'Microsoft Edge',
@@ -67,9 +79,11 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
+    command: 'yarn dev --port 5173',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    timeout: 300 * 1000, // 5 minutes
+    stdout: 'pipe',
+    stderr: 'pipe',
   },
 });

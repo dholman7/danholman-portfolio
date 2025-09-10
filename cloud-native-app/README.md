@@ -10,7 +10,7 @@ This application demonstrates production-ready CI/CD practices for cloud-native 
 - **Node.js Testing**: Comprehensive testing with Node.js 20
 - **Type Safety Validation**: Comprehensive TypeScript type checking
 - **Code Quality Gates**: ESLint, Prettier, and automated formatting
-- **Security Scanning**: npm audit and Snyk vulnerability detection
+- **Security Scanning**: yarn audit and Snyk vulnerability detection
 
 ### **Infrastructure as Code**
 - **CDK Synthesis**: Automated CloudFormation template generation
@@ -211,8 +211,7 @@ yarn --version
    make install
    # or manually with yarn
    yarn install
-   # or with npm (fallback)
-   npm install
+   # Note: This project uses Yarn as the package manager
    ```
 
 4. **Set up development environment**
@@ -345,7 +344,7 @@ make test
 
 ### Integration Tests
 ```bash
-npm run test -- --testPathPattern=integration
+yarn test --testPathPattern=integration
 ```
 
 ### Test Coverage

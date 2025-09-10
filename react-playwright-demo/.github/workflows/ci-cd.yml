@@ -306,7 +306,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install Allure
-        run: npm install -g allure-commandline
+        run: yarn global add allure-commandline
 
       - name: Generate Allure report
         run: yarn test:allure:generate

@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "install:ci": "npm ci || npm install",
+    "install:ci": "yarn install --frozen-lockfile || yarn install",
     "lint": "echo 'TODO: add ESLint/Prettier' && exit 0",
     "test": "echo 'TODO: add tests' && exit 0",
     "fmt": "echo 'TODO: add format' && exit 0"

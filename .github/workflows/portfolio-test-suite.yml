@@ -93,7 +93,7 @@ jobs:
         run: |
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
-            npm install -g allure-commandline
+            yarn global add allure-commandline
             echo "Generating Allure report for automation-framework..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"
@@ -163,7 +163,7 @@ jobs:
         run: |
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
-            npm install -g allure-commandline
+            yarn global add allure-commandline
             echo "Generating Allure report for ai-rulesets..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"
@@ -243,7 +243,7 @@ jobs:
         run: |
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
-            npm install -g allure-commandline
+            yarn global add allure-commandline
             echo "Generating Allure report for cloud-native-app..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"

@@ -48,7 +48,7 @@ fi
 
 # Install Allure commandline globally
 echo "📦 Installing Allure commandline..."
-npm install -g allure-commandline
+yarn global add allure-commandline
 
 # Verify installation
 if command -v allure &> /dev/null; then

@@ -117,7 +117,7 @@ allure-setup: ## Setup Allure commandline for local development
 		./scripts/setup-local-allure.sh; \
 	else \
 		echo "❌ Setup script not found. Installing Allure manually..."; \
-		npm install -g allure-commandline; \
+		yarn global add allure-commandline; \
 	fi
 
 allure-history: ## Copy Allure history for trend analysis

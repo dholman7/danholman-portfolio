@@ -198,7 +198,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install AWS CDK
-        run: npm install -g aws-cdk
+        run: yarn global add aws-cdk
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -243,7 +243,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install AWS CDK
-        run: npm install -g aws-cdk
+        run: yarn global add aws-cdk
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -289,7 +289,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install AWS CDK
-        run: npm install -g aws-cdk
+        run: yarn global add aws-cdk
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -335,7 +335,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install AWS CDK
-        run: npm install -g aws-cdk
+        run: yarn global add aws-cdk
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
