@@ -48,6 +48,7 @@ This framework includes a comprehensive CI/CD pipeline demonstrating production-
 - **Parallel Execution**: Built-in support for parallel test execution
 - **Comprehensive Reporting**: HTML, XML, and Allure reports
 - **CI/CD Ready**: Comprehensive GitHub Actions pipeline with parallel execution
+- **API Matrix Testing**: Advanced parallel API testing with GitHub Actions matrix strategy
 
 ### Testing Types Supported
 - **API Testing**: REST and GraphQL with retry logic and authentication
@@ -223,6 +224,42 @@ def test_create_user(api_client: APIClient):
     assert response.data["email"] == user_data["email"]
     assert response.response_time < 2.0
 ```
+
+### API Matrix Testing
+
+The framework includes advanced API matrix testing capabilities for comprehensive parallel API testing:
+
+```python
+import allure
+import pytest
+
+@allure.feature("Students API")
+@allure.story("List Students")
+@pytest.mark.api
+@pytest.mark.students
+@pytest.mark.list
+def test_list_students(self, api_client, test_data):
+    """Test listing all students"""
+    with allure.step("GET /api/v1/students"):
+        response = api_client.get('/api/v1/students')
+    
+    with allure.step(f"Verify response status is {EXPECTED_STATUS}"):
+        assert response.status_code == EXPECTED_STATUS
+```
+
+**Features:**
+- ✅ **Parallel Execution**: GitHub Actions matrix strategy for high-scale parallel testing
+- ✅ **Dynamic Test Filtering**: Configurable test execution based on API type, environment, and scenario
+- ✅ **Comprehensive Reporting**: HTML, JUnit XML, and Allure reports with artifact management
+- ✅ **Multi-Environment Support**: Dev, staging, and production environment testing
+- ✅ **CI/CD Integration**: Automated testing with PR integration and test result summaries
+
+**Supported API Types:**
+- **Students**: Complete CRUD operations for student management
+- **Courses**: Complete CRUD operations for course management
+- **Enrollments**: Student-course enrollment operations
+
+For detailed API Matrix Testing documentation, see [docs/api-matrix-testing.md](docs/api-matrix-testing.md).
 
 ### UI Testing
 

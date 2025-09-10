@@ -1,0 +1,146 @@
+[
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students",
+    "method": "GET",
+    "environment": "staging",
+    "test_scenario": "list_students",
+    "expected_status": 200,
+    "job_name": "students_api_list_staging"
+  },
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students",
+    "method": "POST",
+    "environment": "staging",
+    "test_scenario": "create_student",
+    "expected_status": 201,
+    "job_name": "students_api_create_staging"
+  },
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students/{id}",
+    "method": "GET",
+    "environment": "staging",
+    "test_scenario": "get_student_by_id",
+    "expected_status": 200,
+    "job_name": "students_api_get_by_id_staging"
+  },
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students/{id}",
+    "method": "PUT",
+    "environment": "staging",
+    "test_scenario": "update_student",
+    "expected_status": 200,
+    "job_name": "students_api_update_staging"
+  },
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students/{id}",
+    "method": "DELETE",
+    "environment": "staging",
+    "test_scenario": "delete_student",
+    "expected_status": 204,
+    "job_name": "students_api_delete_staging"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses",
+    "method": "GET",
+    "environment": "staging",
+    "test_scenario": "list_courses",
+    "expected_status": 200,
+    "job_name": "courses_api_list_staging"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses",
+    "method": "POST",
+    "environment": "staging",
+    "test_scenario": "create_course",
+    "expected_status": 201,
+    "job_name": "courses_api_create_staging"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses/{id}",
+    "method": "GET",
+    "environment": "staging",
+    "test_scenario": "get_course_by_id",
+    "expected_status": 200,
+    "job_name": "courses_api_get_by_id_staging"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses/{id}",
+    "method": "PUT",
+    "environment": "staging",
+    "test_scenario": "update_course",
+    "expected_status": 200,
+    "job_name": "courses_api_update_staging"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses/{id}",
+    "method": "DELETE",
+    "environment": "staging",
+    "test_scenario": "delete_course",
+    "expected_status": 204,
+    "job_name": "courses_api_delete_staging"
+  },
+  {
+    "api_type": "enrollments",
+    "endpoint": "/api/v1/students/{student_id}/courses",
+    "method": "GET",
+    "environment": "staging",
+    "test_scenario": "list_student_courses",
+    "expected_status": 200,
+    "job_name": "enrollments_api_list_student_courses_staging"
+  },
+  {
+    "api_type": "enrollments",
+    "endpoint": "/api/v1/students/{student_id}/courses",
+    "method": "POST",
+    "environment": "staging",
+    "test_scenario": "enroll_student_in_course",
+    "expected_status": 201,
+    "job_name": "enrollments_api_enroll_staging"
+  },
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students",
+    "method": "GET",
+    "environment": "production",
+    "test_scenario": "list_students",
+    "expected_status": 200,
+    "job_name": "students_api_list_production"
+  },
+  {
+    "api_type": "students",
+    "endpoint": "/api/v1/students",
+    "method": "POST",
+    "environment": "production",
+    "test_scenario": "create_student",
+    "expected_status": 201,
+    "job_name": "students_api_create_production"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses",
+    "method": "GET",
+    "environment": "production",
+    "test_scenario": "list_courses",
+    "expected_status": 200,
+    "job_name": "courses_api_list_production"
+  },
+  {
+    "api_type": "courses",
+    "endpoint": "/api/v1/courses",
+    "method": "POST",
+    "environment": "production",
+    "test_scenario": "create_course",
+    "expected_status": 201,
+    "job_name": "courses_api_create_production"
+  }
+]

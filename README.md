@@ -17,10 +17,11 @@ building automation frameworks, cloud-native solutions, and quality platforms at
 ## 📂 Projects
 
 ### 🔹 [Automation Framework](./automation-framework)
-A sample Python/TypeScript test automation framework showing:
+A comprehensive Python/TypeScript test automation framework showing:
 - Page Object design pattern
 - GraphQL & REST API testing
 - Contract testing with Pact
+- **API Matrix Testing**: Advanced parallel API testing with GitHub Actions matrix strategy
 - CI/CD integration with GitHub Actions
 
 ---
