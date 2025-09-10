@@ -1,8 +1,8 @@
-# Allure Integration for AI Test Generation
+# Allure Integration for AI Rulesets
 
 ## Overview
 
-This document provides specific guidance for integrating Allure reporting with the AI test generation module. It covers setup, configuration, and advanced usage patterns specific to AI-powered test generation.
+This document provides specific guidance for integrating Allure reporting with the AI Rulesets module. It covers setup, configuration, and advanced usage patterns specific to organizational standards and ruleset generation.
 
 ## Quick Start
 
