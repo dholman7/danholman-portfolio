@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+"""
+Portfolio Quality Checker
+
+This script uses the ai-rulesets package to run quality checks
+across the entire portfolio.
+"""
+
+import sys
+import subprocess
+from pathlib import Path
+
+def main():
+    """Run quality checks using ai-rulesets package."""
+    # Get the portfolio root directory
+    portfolio_root = Path(__file__).parent.absolute()
+    
+    print("🔍 Dan Holman Portfolio - Quality Checker")
+    print("=" * 60)
+    print(f"Using ai-rulesets package to check: {portfolio_root}")
+    print()
+    
+    # Run the quality checker from ai-rulesets
+    try:
+        # Try to run as installed package first
+        result = subprocess.run([
+            "quality-check", 
+            "--project-root", str(portfolio_root)
+        ] + sys.argv[1:], check=False)
+        sys.exit(result.returncode)
+    except FileNotFoundError:
+        # Fallback to running from source
+        ai_rulesets_dir = portfolio_root / "ai-rulesets"
+        quality_checker = ai_rulesets_dir / "src" / "ai_rulesets" / "cli" / "quality_checker.py"
+        
+        if quality_checker.exists():
+            result = subprocess.run([
+                sys.executable, str(quality_checker),
+                "--project-root", str(portfolio_root)
+            ] + sys.argv[1:], check=False)
+            sys.exit(result.returncode)
+        else:
+            print("❌ Error: ai-rulesets package not found")
+            print("Please install ai-rulesets or run from the correct directory")
+            sys.exit(1)
+
+if __name__ == "__main__":
+    main()

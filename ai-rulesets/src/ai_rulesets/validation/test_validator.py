@@ -5,18 +5,21 @@ import subprocess
 import json
 from pathlib import Path
 from typing import List, Dict, Optional
-from dataclasses import dataclass
-from .readme_validator import ValidationResult
+from .base import ValidationResult, BaseValidator
 
 
-class TestValidator:
+class TestValidator(BaseValidator):
     """Validates test execution and reporting across all modules."""
     
     def __init__(self, project_root: str = "."):
         """Initialize validator with project root."""
+        super().__init__(project_root)
         self.project_root = Path(project_root)
-        self.issues: List[ValidationResult] = []
         self.modules = ["automation-framework", "ai-rulesets", "cloud-native-app", "react-playwright-demo"]
+    
+    def validate(self) -> List[ValidationResult]:
+        """Validate test execution for all modules."""
+        return self.validate_all_tests()
     
     def validate_all_tests(self) -> List[ValidationResult]:
         """Validate test execution for all modules."""

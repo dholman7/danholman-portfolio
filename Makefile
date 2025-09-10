@@ -260,25 +260,25 @@ info: ## Show portfolio information
 # Quality Checks
 quality-check: ## Run comprehensive code quality checks for all modules
 	@echo "🔍 Running comprehensive code quality checks..."
-	python scripts/quality_checker.py
+	./quality-check
 
 quality-readmes: ## Check README files for accuracy across all modules
 	@echo "📚 Checking README files across all modules..."
-	python scripts/quality_checker.py --readmes-only
+	./quality-check --readmes-only
 
 quality-workflows: ## Check GitHub workflow files across all modules
 	@echo "⚙️ Checking workflow files across all modules..."
-	python scripts/quality_checker.py --workflows-only
+	./quality-check --workflows-only
 
 quality-tests: ## Check test execution and reporting across all modules
 	@echo "🧪 Checking test execution across all modules..."
-	python scripts/quality_checker.py --tests-only
+	./quality-check --tests-only
 
 quality-versions: ## Check version consistency across all modules
 	@echo "🔢 Checking version consistency across all modules..."
-	python scripts/quality_checker.py --versions-only
+	./quality-check --versions-only
 
 
 quality-fix: ## Automatically fix common quality issues
 	@echo "🔧 Running quality checks and applying automatic fixes..."
-	python scripts/quality_checker.py --fix
+	./quality-check --fix

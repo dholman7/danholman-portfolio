@@ -5,33 +5,35 @@ import re
 import glob
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional
-from dataclasses import dataclass
+from .base import ValidationResult, BaseValidator
 
 
-@dataclass
-class ValidationResult:
-    """Result of a validation check."""
-    is_valid: bool
-    message: str
-    file_path: Optional[str] = None
-    line_number: Optional[int] = None
-    severity: str = "error"  # error, warning, info
-
-
-class ReadmeValidator:
+class ReadmeValidator(BaseValidator):
     """Validates README files for accuracy and completeness."""
     
     def __init__(self, project_root: str = "."):
         """Initialize validator with project root."""
+        super().__init__(project_root)
         self.project_root = Path(project_root)
-        self.issues: List[ValidationResult] = []
+    
+    def validate(self) -> List[ValidationResult]:
+        """Validate all README files in the project."""
+        return self.validate_all_readmes()
     
     def validate_all_readmes(self) -> List[ValidationResult]:
         """Validate all README files in the project."""
         self.issues = []
         
-        # Find all README files
-        readme_files = list(self.project_root.rglob("README.md"))
+        # Find all README files, excluding certain directories
+        readme_files = []
+        for readme_file in self.project_root.rglob("README.md"):
+            # Skip README files in excluded directories
+            if any(excluded in str(readme_file) for excluded in [
+                "node_modules", ".git", ".venv", "__pycache__", 
+                "htmlcov", "reports", "dist", "build", ".next"
+            ]):
+                continue
+            readme_files.append(readme_file)
         
         for readme_file in readme_files:
             self._validate_readme_file(readme_file)
@@ -109,15 +111,27 @@ class ReadmeValidator:
             
             # Check internal links
             if link_url.startswith('./') or not link_url.startswith('/'):
-                # Relative link
-                target_path = file_path.parent / link_url
-                if not target_path.exists():
-                    self.issues.append(ValidationResult(
-                        is_valid=False,
-                        message=f"Broken internal link: {link_url}",
-                        file_path=str(file_path),
-                        severity="error"
-                    ))
+                # Skip anchor links (starting with #)
+                if link_url.startswith('#'):
+                    # Check if anchor exists in the same file
+                    anchor_name = link_url[1:].lower()
+                    if not re.search(rf'#+\s+{re.escape(anchor_name)}\b', content, re.IGNORECASE):
+                        self.issues.append(ValidationResult(
+                            is_valid=False,
+                            message=f"Broken internal link: {link_url}",
+                            file_path=str(file_path),
+                            severity="error"
+                        ))
+                else:
+                    # Relative file link
+                    target_path = file_path.parent / link_url
+                    if not target_path.exists():
+                        self.issues.append(ValidationResult(
+                            is_valid=False,
+                            message=f"Broken internal link: {link_url}",
+                            file_path=str(file_path),
+                            severity="error"
+                        ))
     
     def _check_outdated_references(self, file_path: Path, content: str) -> None:
         """Check for outdated references."""

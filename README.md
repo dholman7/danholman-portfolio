@@ -1,7 +1,7 @@
 # Dan Holman – Software Developer in Test Portfolio
 
 Welcome to my professional portfolio!
-I'm a **Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience 
+I'm a **Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience
 in building automation frameworks, cloud-native solutions, and quality platforms at scale.
 
 This repo highlights examples of my work in **test automation, AWS cloud development, and AI-powered testing**.
@@ -34,7 +34,7 @@ Organizational AI rulesets and utilities for creating custom development standar
 - Pre-built rulesets for Python, TypeScript, testing, CI/CD, and security
 - Document processing utilities to create custom rulesets from company standards
 - Cursor and GitHub Copilot integration for consistent AI assistance
-- **🔍 Comprehensive Code Quality Checker**: Automated validation of README files, GitHub workflows, test execution, and Allure reporting across all modules
+- **🔍 AI-Powered Quality Checker**: Comprehensive validation of README files, GitHub workflows, test execution, version consistency, and Allure reporting across all modules
 - Ruleset generation and validation tools for organizational standards
 
 ---

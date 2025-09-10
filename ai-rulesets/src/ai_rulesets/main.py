@@ -10,6 +10,7 @@ from .core import Ruleset, RulesetMetadata, RulesetItem, RulesetManager
 from .renderers import CursorRenderer, CopilotRenderer, GenericRenderer
 from .cli import generate_rulesets, generate_from_sources
 from .cli.quality import quality
+from .cli.quality_checker import main as quality_checker_main
 
 
 @click.group()
@@ -210,6 +211,7 @@ main.add_command(generate_from_sources, name="generate-from-sources")
 
 # Add quality commands
 main.add_command(quality, name="quality")
+main.add_command(quality_checker_main, name="quality-check")
 
 
 # Ruleset creators
