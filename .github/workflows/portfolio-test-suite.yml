@@ -342,8 +342,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.19.0'
-          cache: 'yarn'
-          cache-dependency-path: react-playwright-demo/yarn.lock
       - run: yarn install --frozen-lockfile
       - run: yarn type-check
       - run: yarn lint
