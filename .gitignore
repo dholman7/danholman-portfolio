@@ -26,6 +26,12 @@ coverage/
 **/allure-report/
 **/reports/
 **/htmlcov/
+**/playwright-report/
+**/test-results/
+**/coverage/
+**/coverage.xml
+**/junit.xml
+**/test-results.xml
 
 # CDK/CloudFormation
 cdk.out/

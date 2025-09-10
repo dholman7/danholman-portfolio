@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Test reports and results
+playwright-report/
+test-results/
+allure-results/
+allure-report/
+coverage/
+coverage.xml
+junit.xml
+test-results.xml
