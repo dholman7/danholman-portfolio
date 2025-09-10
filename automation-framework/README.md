@@ -633,7 +633,13 @@ pytest -m "not docker_integration"  # Run all tests except Docker integration te
 
 This framework includes comprehensive local testing capabilities with Allure reporting and history support for trend analysis.
 
+![Allure Report Dashboard](docs/images/allure-report-dashboard.png)
+
+*Example Allure report showing comprehensive test execution results with 95.51% pass rate across 163 test cases*
+
 ### **Quick Start**
+
+> **Note**: All required directories (`reports/`, `reports/allure-results/`, `reports/allure-report/`, etc.) are created automatically when you run the commands. No manual setup required!
 
 #### Option 1: Native Allure (requires Java)
 ```bash
