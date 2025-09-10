@@ -91,7 +91,7 @@ make quality-check
 
 # Check specific aspects
 make quality-readmes      # README validation
-make quality-workflows    # Workflow validation  
+make quality-workflows    # Workflow validation
 make quality-tests        # Test execution validation
 ```
 
@@ -255,7 +255,7 @@ rules:
       # Use Ruff for linting
       # Follow PEP 8 with 88-character line limit
       # Use type hints extensively
-      
+
   - name: "Testing Standards"
     description: "Python testing guidelines"
     content: |

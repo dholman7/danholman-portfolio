@@ -23,6 +23,7 @@ from quality_checker import QualityChecker
 from readme_validator import ReadmeValidator
 from workflow_validator import WorkflowValidator
 from test_validator import TestValidator
+from issue_fixer import IssueFixer
 
 
 def main():
@@ -31,6 +32,7 @@ def main():
     parser.add_argument("--readmes-only", action="store_true", help="Check only README files")
     parser.add_argument("--workflows-only", action="store_true", help="Check only GitHub workflows")
     parser.add_argument("--tests-only", action="store_true", help="Check only test execution")
+    parser.add_argument("--fix", action="store_true", help="Automatically fix issues where possible")
     parser.add_argument("--export", help="Export results to JSON file")
     parser.add_argument("--fail-on-error", action="store_true", help="Exit with error code if critical issues found")
     
@@ -68,6 +70,41 @@ def main():
     else:
         # Run all checks
         results = checker.run_all_checks()
+    
+    # Apply fixes if requested
+    if args.fix and checker.all_issues:
+        print("\n" + "=" * 60)
+        print("🔧 APPLYING AUTOMATIC FIXES")
+        print("=" * 60)
+        
+        fixer = IssueFixer(str(portfolio_root))
+        fix_results = fixer.fix_issues(checker.all_issues)
+        
+        print(f"\n{fixer.get_fix_summary()}")
+        
+        # Re-run validation to see remaining issues
+        if fix_results["fixed"] > 0:
+            print("\n🔄 Re-running validation after fixes...")
+            print("=" * 60)
+            
+            # Clear previous issues and re-run
+            checker.all_issues = []
+            if args.readmes_only:
+                issues = checker.readme_validator.validate_all_readmes()
+                checker.all_issues = issues
+                checker._print_validation_results("README", issues)
+            elif args.workflows_only:
+                issues = checker.workflow_validator.validate_all_workflows()
+                checker.all_issues = issues
+                checker._print_validation_results("Workflows", issues)
+            elif args.tests_only:
+                issues = checker.test_validator.validate_all_tests()
+                allure_issues = checker.test_validator.validate_allure_reporting()
+                checker.all_issues = issues + allure_issues
+                checker._print_validation_results("Tests", issues)
+                checker._print_validation_results("Allure", allure_issues)
+            else:
+                results = checker.run_all_checks()
     
     # Print summary
     checker._print_summary()

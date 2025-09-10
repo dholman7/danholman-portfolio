@@ -216,9 +216,9 @@ def test_create_user(api_client: APIClient):
         "last_name": "Doe",
         "email": "john.doe@example.com"
     }
-    
+
     response = api_client.post("/api/users", data=user_data)
-    
+
     assert response.status_code == 201
     assert response.data["email"] == user_data["email"]
     assert response.response_time < 2.0
@@ -233,11 +233,11 @@ from src.core.base_page import BasePage
 
 class LoginPage(BasePage):
     """Login page object."""
-    
+
     USERNAME_FIELD = (By.ID, "username")
     PASSWORD_FIELD = (By.ID, "password")
     LOGIN_BUTTON = (By.ID, "login-btn")
-    
+
     def login(self, username: str, password: str):
         """Perform login action."""
         self.send_keys(self.USERNAME_FIELD, username)
@@ -250,7 +250,7 @@ def test_user_login(web_driver, test_user):
     login_page = LoginPage(web_driver)
     login_page.navigate_to("/login")
     login_page.login(test_user["username"], test_user["password"])
-    
+
     assert "dashboard" in web_driver.current_url
 ```
 
@@ -283,16 +283,16 @@ from src.data.factories import UserFactory
 def test_concurrent_user_creation(api_client):
     """Test concurrent user creation performance."""
     users = UserFactory.create_users(50)
-    
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         futures = [executor.submit(api_client.post, "/api/users", data={
             "first_name": user.first_name,
             "last_name": user.last_name,
             "email": user.email
         }) for user in users]
-        
+
         results = [future.result() for future in concurrent.futures.as_completed(futures)]
-    
+
     successful_creations = [r for r in results if r.status_code == 201]
     assert len(successful_creations) == 50
 ```
@@ -626,7 +626,7 @@ allure serve allure-results
 ```
 
 **Example Features Demonstrated:**
-- **AI Test Generation**: Simulated AI-powered test case generation with detailed reporting
+- **AI Rulesets**: Simulated AI-powered test case generation with detailed reporting
 - **Template Processing**: Test template processing with step-by-step documentation
 - **YAML Configuration**: YAML configuration parsing and validation
 - **Prompt Engineering**: AI prompt generation and validation
@@ -701,18 +701,18 @@ jobs:
       matrix:
         python-version: [3.8, 3.9, 3.10, 3.11]
         browser: [chrome, firefox]
-    
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python $&#123;&#123; matrix.python-version &#125;&#125;
       uses: actions/setup-python@v4
       with:
         python-version: $&#123;&#123; matrix.python-version &#125;&#125;
-    
+
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-    
+
     - name: Run tests
       run: |
         pytest -m "not slow" --browser=$&#123;&#123; matrix.browser &#125;&#125; --headless
@@ -746,9 +746,9 @@ from selenium.webdriver.common.by import By
 
 class CustomPage(BasePage):
     """Custom page object."""
-    
+
     CUSTOM_ELEMENT = (By.CSS_SELECTOR, ".custom-element")
-    
+
     def custom_action(self):
         """Custom page action."""
         self.click_element(self.CUSTOM_ELEMENT)
@@ -762,7 +762,7 @@ from src.api.client import APIClient
 
 class CustomAPIClient(APIClient):
     """Custom API client with specific functionality."""
-    
+
     def custom_endpoint(self, data):
         """Custom endpoint method."""
         return self.post("/custom/endpoint", data=data)
@@ -782,7 +782,7 @@ class CustomData:
 
 class CustomFactory:
     """Custom data factory."""
-    
+
     @staticmethod
     def create_custom_data():
         """Create custom test data."""

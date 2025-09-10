@@ -1,5 +1,5 @@
 # Portfolio Makefile - Comprehensive development and testing commands
-.PHONY: help install test lint fmt ci allure-serve allure-generate allure-clean test-regression quality-check quality-readmes quality-workflows quality-tests
+.PHONY: help install test lint fmt ci allure-serve allure-generate allure-clean test-regression quality-check quality-readmes quality-workflows quality-tests quality-fix
 
 # Default target
 help: ## Show this help message
@@ -254,6 +254,7 @@ info: ## Show portfolio information
 	@echo "  make quality-readmes  - Check README files for accuracy"
 	@echo "  make quality-workflows - Check GitHub workflow files"
 	@echo "  make quality-tests    - Check test execution and reporting"
+	@echo "  make quality-fix      - Automatically fix common quality issues"
 
 # Quality Checks
 quality-check: ## Run comprehensive code quality checks for all modules
@@ -271,3 +272,7 @@ quality-workflows: ## Check GitHub workflow files across all modules
 quality-tests: ## Check test execution and reporting across all modules
 	@echo "🧪 Checking test execution across all modules..."
 	python scripts/quality_checker.py --tests-only
+
+quality-fix: ## Automatically fix common quality issues
+	@echo "🔧 Running quality checks and applying automatic fixes..."
+	python scripts/quality_checker.py --fix

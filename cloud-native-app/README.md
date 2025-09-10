@@ -156,7 +156,7 @@ node --version
 npm --version
 ```
 
-**Note**: 
+**Note**:
 - This project includes a `.nvmrc` file specifying Node.js version 20.19.0
 - npm comes bundled with Node.js, so no separate installation is needed
 - After installing nvm, you can simply run `nvm use` in the project directory to automatically use the correct Node.js version

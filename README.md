@@ -1,9 +1,9 @@
 # Dan Holman – Software Developer in Test Portfolio
 
-Welcome to my professional portfolio!  
+Welcome to my professional portfolio!
 I’m a **Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience in building automation frameworks, cloud-native solutions, and quality platforms at scale.
 
-This repo highlights examples of my work in **test automation, AWS cloud development, and AI-powered testing**.  
+This repo highlights examples of my work in **test automation, AWS cloud development, and AI-powered testing**.
 Each folder contains code samples or writeups demonstrating skills I use daily to improve developer velocity, reduce defects, and increase reliability.
 
 ---
@@ -53,18 +53,18 @@ Modern React/TypeScript frontend demo with comprehensive E2E testing:
 
 ### 🔹 [Case Studies](./case-studies)
 Technical writeups and lessons learned:
-- [Contract Testing Strategy](./case-studies/contract-testing.md)  
-- [Scaling Test Data with AWS Step Functions](./case-studies/test-data-at-scale.md)  
-- [Improving Reliability with CI/CD Quality Gates](./case-studies/ci-cd-quality-gates.md)  
+- [Contract Testing Strategy](./case-studies/contract-testing.md)
+- [Scaling Test Data with AWS Step Functions](./case-studies/test-data-at-scale.md)
+- [Improving Reliability with CI/CD Quality Gates](./case-studies/ci-cd-quality-gates.md)
 
 ---
 
 ## 🔧 Tech Stack
 
-- **Languages:** Python, TypeScript, GraphQL, JavaScript  
-- **Frontend:** React 18, Vite, Tailwind CSS, react-hook-form, Zod  
-- **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
-- **Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, requests, Allure, Coverage Reports  
+- **Languages:** Python, TypeScript, GraphQL, JavaScript
+- **Frontend:** React 18, Vite, Tailwind CSS, react-hook-form, Zod
+- **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog
+- **Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, requests, Allure, Coverage Reports
 - **Other:** Docker, SQL, Git
 
 ## 🚀 CI/CD Pipeline
@@ -89,7 +89,8 @@ This portfolio demonstrates production-ready CI/CD practices across all modules:
 - **Environment Management**: Proper secret and configuration management
 - **Monitoring Integration**: Test result aggregation and reporting
 
-📖 **[Detailed CI/CD Documentation](./docs/cicd-overview.md)** - Comprehensive overview of all CI/CD practices and patterns
+📖 **[Detailed CI/CD Documentation](./docs/cicd-overview.md)** -
+  Comprehensive overview of all CI/CD practices and patterns
 
 ## 🧪 Testing & Reporting Technologies
 
@@ -183,7 +184,7 @@ This portfolio demonstrates production-ready test failure diagnosis workflows:
 
 After running `make allure-serve-local`, access reports at:
 - **Automation Framework**: http://localhost:5050
-- **AI Rulesets**: http://localhost:5051  
+- **AI Rulesets**: http://localhost:5051
 - **Cloud Native App**: http://localhost:5052
 - **React Playwright Demo**: http://localhost:5053
 
@@ -214,7 +215,8 @@ make allure-serve-single MODULE=react-playwright-demo
 This portfolio includes a comprehensive CI/CD test suite that can be run manually or automatically:
 
 #### **Manual Test Execution**
-Visit the [GitHub Actions page](https://github.com/dholman7/danholman-portfolio/actions/workflows/portfolio-test-suite.yml) to run the complete test suite manually with custom options:
+Visit the [GitHub Actions page](https://github.com/dholman7/danholman-portfolio/actions/workflows/portfolio-test
+  -suite.yml) to run the complete test suite manually with custom options:
 
 - **Module Selection**: Choose specific modules or run all
 - **Test Type Filtering**: Unit, integration, E2E, or performance tests
@@ -251,15 +253,20 @@ make quality-check
 
 # Check specific aspects
 make quality-readmes      # README validation
-make quality-workflows    # Workflow validation  
+make quality-workflows    # Workflow validation
 make quality-tests        # Test execution validation
+
+# Automatically fix common issues
+make quality-fix          # Check and fix issues automatically
 
 # Or run directly
 python scripts/quality_checker.py
+python scripts/quality_checker.py --fix
 ```
 
 ### **Quality Checker Features**
 - **37 different validation checks** across all aspects of code quality
+- **Automatic fixing** of common issues like trailing whitespace, outdated references, and deprecated actions
 - **Severity levels**: Errors (critical), Warnings (should fix), Info (nice to have)
 - **CI/CD integration** with fail-on-error and JSON export options
 - **Detailed reporting** with file paths, line numbers, and actionable feedback
@@ -337,7 +344,7 @@ make allure-serve-single MODULE=react-playwright-demo
 
 ## 📫 Connect
 
-- 💼 [LinkedIn](https://linkedin.com/in/danxholman)  
+- 💼 [LinkedIn](https://linkedin.com/in/danxholman)
 - 📧 [danxholman@gmail.com](mailto:danxholman@gmail.com)
 
 ---

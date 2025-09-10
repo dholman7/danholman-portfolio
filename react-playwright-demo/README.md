@@ -139,7 +139,7 @@ node --version
 npm --version
 ```
 
-**Note**: 
+**Note**:
 - This project includes a `.nvmrc` file specifying Node.js version 20.19.0
 - npm comes bundled with Node.js, so no separate installation is needed
 - After installing nvm, you can simply run `nvm use` in the project directory to automatically use the correct Node.js version
@@ -288,7 +288,7 @@ The application uses mock API functions for demonstration:
 POST /api/register
 {
   "firstName": "John",
-  "lastName": "Doe", 
+  "lastName": "Doe",
   "email": "john@example.com",
   "password": "password123",
   "confirmPassword": "password123",

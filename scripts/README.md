@@ -25,6 +25,10 @@ python scripts/quality_checker.py --readmes-only
 python scripts/quality_checker.py --workflows-only
 python scripts/quality_checker.py --tests-only
 
+# Automatically fix common issues
+python scripts/quality_checker.py --fix
+python scripts/quality_checker.py --readmes-only --fix
+
 # Export results for CI/CD
 python scripts/quality_checker.py --export results.json
 
@@ -41,6 +45,9 @@ make quality-check
 make quality-readmes      # README validation
 make quality-workflows    # Workflow validation  
 make quality-tests        # Test execution validation
+
+# Automatically fix common issues
+make quality-fix          # Check and fix issues automatically
 ```
 
 ### **What Gets Validated**
@@ -71,6 +78,36 @@ make quality-tests        # Test execution validation
 - History support for trend analysis
 - Integration across all modules
 
+### **Automatic Fixing**
+
+The quality checker can automatically fix common issues:
+
+#### **Fixable Issues**
+- **Trailing whitespace**: Removes trailing spaces from lines
+- **Outdated references**: Updates old module names (AI Test Generation → AI Rulesets)
+- **Long lines**: Breaks long lines at logical points (bullet points, URLs, tables)
+- **Missing workflow triggers**: Adds basic GitHub Actions triggers
+- **Missing step names**: Adds generic names for workflow steps
+- **Deprecated actions**: Updates to current GitHub Actions versions
+
+#### **Fix Process**
+1. **Detection**: Identifies fixable issues during validation
+2. **Fixing**: Applies automatic corrections to files
+3. **Verification**: Re-runs validation to confirm fixes
+4. **Reporting**: Shows summary of successful and failed fixes
+
+#### **Usage**
+```bash
+# Fix all issues across all modules
+make quality-fix
+
+# Fix only README issues
+python scripts/quality_checker.py --readmes-only --fix
+
+# Fix and export results
+python scripts/quality_checker.py --fix --export results.json
+```
+
 ### **Results and Reporting**
 
 The quality checker provides detailed reporting with:
@@ -78,6 +115,7 @@ The quality checker provides detailed reporting with:
 - **File locations**: Exact file paths and line numbers
 - **Actionable feedback**: Specific steps to fix issues
 - **Summary statistics**: Total issues by severity level
+- **Fix results**: Number of issues fixed automatically
 - **CI/CD integration**: Exit codes and JSON export for automation
 
 ### **Example Output**
@@ -91,7 +129,7 @@ Checking quality across all modules in: /path/to/portfolio
 ❌ README: 107 issues found
   🔴 Errors: 8
     Broken internal link: LICENSE (README.md)
-    Outdated reference found: AI Test Generation (README.md)
+    Outdated reference found: AI Rulesets (README.md)
   🟡 Warnings: 66
     Line too long (over 120 characters) (README.md:4)
   🔵 Info: 33
