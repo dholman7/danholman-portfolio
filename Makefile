@@ -273,6 +273,7 @@ quality-tests: ## Check test execution and reporting across all modules
 	@echo "🧪 Checking test execution across all modules..."
 	python scripts/quality_checker.py --tests-only
 
+
 quality-fix: ## Automatically fix common quality issues
 	@echo "🔧 Running quality checks and applying automatic fixes..."
 	python scripts/quality_checker.py --fix

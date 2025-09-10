@@ -1,0 +1,130 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of quality check to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - readmes
+        - workflows
+        - tests
+        - fix
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    name: Code Quality Validation
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r scripts/requirements.txt || echo "No requirements.txt found in scripts/"
+        
+    - name: Install Node.js (for TypeScript projects)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'yarn'
+        
+    - name: Install project dependencies
+      run: |
+        # Install dependencies for each module that has package.json
+        for dir in */; do
+          if [ -f "$dir/package.json" ]; then
+            echo "Installing dependencies for $dir"
+            cd "$dir"
+            yarn install --frozen-lockfile
+            cd ..
+          fi
+        done
+        
+    - name: Run quality checks
+      run: |
+        case "${{ github.event.inputs.check_type || 'all' }}" in
+          "all")
+            python scripts/quality_checker.py
+            ;;
+          "readmes")
+            python scripts/quality_checker.py --readmes-only
+            ;;
+          "workflows")
+            python scripts/quality_checker.py --workflows-only
+            ;;
+          "tests")
+            python scripts/quality_checker.py --tests-only
+            ;;
+          "fix")
+            python scripts/quality_checker.py --fix
+            ;;
+        esac
+        
+    - name: Export results
+      if: always()
+      run: |
+        python scripts/quality_checker.py --export quality-results.json
+        
+    - name: Upload quality results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: quality-check-results
+        path: quality-results.json
+        retention-days: 30
+        
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request' && always()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          try {
+            const results = JSON.parse(fs.readFileSync('quality-results.json', 'utf8'));
+            const summary = results.summary || {};
+            const totalIssues = summary.total || 0;
+            const errors = summary.errors || 0;
+            const warnings = summary.warnings || 0;
+            
+            const comment = `## 🔍 Code Quality Check Results
+            
+            **Summary:**
+            - Total Issues: ${totalIssues}
+            - Errors: ${errors}
+            - Warnings: ${warnings}
+            
+            ${totalIssues === 0 ? '✅ No quality issues found!' : '⚠️ Quality issues detected. Please review the details below.'}
+            
+            <details>
+            <summary>View detailed results</summary>
+            
+            \`\`\`json
+            ${JSON.stringify(results, null, 2)}
+            \`\`\`
+            </details>`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          } catch (error) {
+            console.log('Could not parse quality results:', error);
+          }

@@ -23,6 +23,7 @@ from quality_checker import QualityChecker
 from readme_validator import ReadmeValidator
 from workflow_validator import WorkflowValidator
 from test_validator import TestValidator
+# Linting is handled separately in each module's CI/CD
 from issue_fixer import IssueFixer
 
 
@@ -68,8 +69,34 @@ def main():
         checker._print_validation_results("Tests", issues)
         checker._print_validation_results("Allure", allure_issues)
     else:
-        # Run all checks
-        results = checker.run_all_checks()
+        # Run all checks including linting
+        print("🔍 Running comprehensive quality checks...")
+        print("=" * 60)
+        
+        # Run README validation
+        print("\n📚 Validating README files...")
+        readme_issues = checker.readme_validator.validate_all_readmes()
+        checker.all_issues.extend(readme_issues)
+        checker._print_validation_results("README", readme_issues)
+        
+        # Run workflow validation
+        print("\n⚙️ Validating GitHub workflows...")
+        workflow_issues = checker.workflow_validator.validate_all_workflows()
+        checker.all_issues.extend(workflow_issues)
+        checker._print_validation_results("Workflows", workflow_issues)
+        
+        # Run test validation
+        print("\n🧪 Validating test execution...")
+        test_issues = checker.test_validator.validate_all_tests()
+        checker.all_issues.extend(test_issues)
+        checker._print_validation_results("Tests", test_issues)
+        
+        # Run Allure validation
+        print("\n📊 Validating Allure reporting...")
+        allure_issues = checker.test_validator.validate_allure_reporting()
+        checker.all_issues.extend(allure_issues)
+        checker._print_validation_results("Allure", allure_issues)
+        
     
     # Apply fixes if requested
     if args.fix and checker.all_issues:

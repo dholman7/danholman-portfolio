@@ -48,7 +48,15 @@ class IssueFixer:
             "Outdated reference found: AI Test Generation",
             "Missing required field: on",
             "Job.*step.*missing name or uses",
-            "Deprecated action used"
+            "Deprecated action used",
+            "Code formatting issue",
+            "Import sorting issue",
+            "Missing docstring",
+            "Unused import",
+            "Inconsistent quotes",
+            "Missing type hint",
+            "YAML.*indentation",
+            "Markdown.*formatting"
         ]
         
         return any(pattern in issue.message for pattern in fixable_patterns)
@@ -81,6 +89,22 @@ class IssueFixer:
             content = self._fix_missing_step_name(content, issue.line_number)
         elif "Deprecated action used" in issue.message:
             content = self._fix_deprecated_actions(content)
+        elif "Code formatting issue" in issue.message:
+            content = self._fix_code_formatting(content, file_path)
+        elif "Import sorting issue" in issue.message:
+            content = self._fix_import_sorting(content, file_path)
+        elif "Missing docstring" in issue.message:
+            content = self._fix_missing_docstring(content, issue.line_number)
+        elif "Unused import" in issue.message:
+            content = self._fix_unused_imports(content)
+        elif "Inconsistent quotes" in issue.message:
+            content = self._fix_quote_consistency(content)
+        elif "Missing type hint" in issue.message:
+            content = self._fix_missing_type_hints(content, issue.line_number)
+        elif "YAML" in issue.message and "indentation" in issue.message:
+            content = self._fix_yaml_indentation(content)
+        elif "Markdown" in issue.message and "formatting" in issue.message:
+            content = self._fix_markdown_formatting(content)
         
         # Write back if changed
         if content != original_content:
@@ -181,6 +205,166 @@ class IssueFixer:
             content = content.replace(old_action, new_action)
         
         return content
+    
+    def _fix_code_formatting(self, content: str, file_path: Path) -> str:
+        """Fix code formatting using Black."""
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["black", "--quiet", str(file_path)],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            if result.returncode == 0:
+                # Read the formatted file
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    return f.read()
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            pass
+        return content
+    
+    def _fix_import_sorting(self, content: str, file_path: Path) -> str:
+        """Fix import sorting using isort."""
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["isort", "--quiet", str(file_path)],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            if result.returncode == 0:
+                # Read the sorted file
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    return f.read()
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            pass
+        return content
+    
+    def _fix_missing_docstring(self, content: str, line_number: Optional[int]) -> str:
+        """Add basic docstrings to functions and classes."""
+        lines = content.split('\n')
+        
+        # Look for function/class definitions without docstrings
+        for i, line in enumerate(lines):
+            if (line.strip().startswith('def ') or line.strip().startswith('class ')) and i + 1 < len(lines):
+                next_line = lines[i + 1].strip()
+                if not next_line.startswith('"""') and not next_line.startswith("'''"):
+                    # Add a basic docstring
+                    indent = len(line) - len(line.lstrip())
+                    docstring = ' ' * (indent + 4) + '"""TODO: Add docstring."""'
+                    lines.insert(i + 1, docstring)
+        
+        return '\n'.join(lines)
+    
+    def _fix_unused_imports(self, content: str) -> str:
+        """Remove obviously unused imports."""
+        lines = content.split('\n')
+        new_lines = []
+        
+        for line in lines:
+            # Skip empty lines and comments
+            if not line.strip() or line.strip().startswith('#'):
+                new_lines.append(line)
+                continue
+            
+            # Check if it's an import line
+            if line.strip().startswith(('import ', 'from ')):
+                # Simple heuristic: if the imported name isn't used in the rest of the file
+                import_name = line.strip().split()[-1].split('.')[-1]
+                if import_name not in content.replace(line, ''):
+                    # Skip this import
+                    continue
+            
+            new_lines.append(line)
+        
+        return '\n'.join(new_lines)
+    
+    def _fix_quote_consistency(self, content: str) -> str:
+        """Standardize quote usage (prefer double quotes)."""
+        # Simple quote standardization
+        content = re.sub(r"'([^']*)'", r'"\1"', content)
+        return content
+    
+    def _fix_missing_type_hints(self, content: str, line_number: Optional[int]) -> str:
+        """Add basic type hints to function parameters."""
+        lines = content.split('\n')
+        
+        for i, line in enumerate(lines):
+            if line.strip().startswith('def ') and '->' not in line:
+                # Try to add basic return type hint
+                if 'return' in content[content.find(line):content.find(line) + 200]:
+                    if 'return None' in content[content.find(line):content.find(line) + 200]:
+                        lines[i] = line.rstrip() + ' -> None:'
+                    elif 'return True' in content[content.find(line):content.find(line) + 200] or 'return False' in content[content.find(line):content.find(line) + 200]:
+                        lines[i] = line.rstrip() + ' -> bool:'
+                    elif 'return ""' in content[content.find(line):content.find(line) + 200] or 'return str(' in content[content.find(line):content.find(line) + 200]:
+                        lines[i] = line.rstrip() + ' -> str:'
+                    elif 'return 0' in content[content.find(line):content.find(line) + 200] or 'return int(' in content[content.find(line):content.find(line) + 200]:
+                        lines[i] = line.rstrip() + ' -> int:'
+        
+        return '\n'.join(lines)
+    
+    def _fix_yaml_indentation(self, content: str) -> str:
+        """Fix YAML indentation issues."""
+        lines = content.split('\n')
+        fixed_lines = []
+        indent_stack = [0]
+        
+        for line in lines:
+            if not line.strip():
+                fixed_lines.append(line)
+                continue
+            
+            current_indent = len(line) - len(line.lstrip())
+            
+            # Determine expected indentation
+            if line.strip().startswith('- '):
+                # List item
+                expected_indent = indent_stack[-1]
+            elif line.strip().endswith(':'):
+                # Key with value
+                expected_indent = indent_stack[-1]
+                indent_stack.append(current_indent + 2)
+            else:
+                # Regular line
+                expected_indent = indent_stack[-1]
+            
+            # Fix indentation
+            if current_indent != expected_indent:
+                fixed_line = ' ' * expected_indent + line.lstrip()
+                fixed_lines.append(fixed_line)
+            else:
+                fixed_lines.append(line)
+        
+        return '\n'.join(fixed_lines)
+    
+    def _fix_markdown_formatting(self, content: str) -> str:
+        """Fix common Markdown formatting issues."""
+        lines = content.split('\n')
+        fixed_lines = []
+        
+        for i, line in enumerate(lines):
+            # Fix heading spacing
+            if line.startswith('#'):
+                # Ensure there's a space after #
+                if not line.startswith('# '):
+                    line = line.replace('#', '# ', 1)
+                fixed_lines.append(line)
+            # Fix list formatting
+            elif line.strip().startswith('- ') or line.strip().startswith('* '):
+                # Ensure consistent list markers
+                if line.strip().startswith('* '):
+                    line = line.replace('* ', '- ', 1)
+                fixed_lines.append(line)
+            # Fix code block formatting
+            elif line.strip().startswith('```'):
+                fixed_lines.append(line)
+            else:
+                fixed_lines.append(line)
+        
+        return '\n'.join(fixed_lines)
     
     def get_fix_summary(self) -> str:
         """Get a summary of fixes applied."""

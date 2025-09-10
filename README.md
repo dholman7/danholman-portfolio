@@ -39,8 +39,8 @@ Organizational AI rulesets and utilities for creating custom development standar
 ---
 
 ### 🔹 [React Playwright Demo](./react-playwright-demo)
-Modern React/TypeScript frontend demo with comprehensive E2E testing:
-- React 18 with TypeScript and Vite for modern development
+Modern React 19/TypeScript frontend demo with comprehensive E2E testing:
+- React 19 with TypeScript and Vite for modern development
 - Tailwind CSS for responsive, accessible UI design
 - Playwright E2E testing with interactive HTML reports (http://localhost:9323/)
 - Allure reporting integration for test analytics
