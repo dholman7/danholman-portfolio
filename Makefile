@@ -1,5 +1,5 @@
 # Portfolio Makefile - Comprehensive development and testing commands
-.PHONY: help install test lint fmt ci allure-serve allure-generate allure-clean test-regression
+.PHONY: help install test lint fmt ci allure-serve allure-generate allure-clean test-regression quality-check quality-readmes quality-workflows quality-tests
 
 # Default target
 help: ## Show this help message
@@ -250,3 +250,28 @@ info: ## Show portfolio information
 	@echo "  make allure-serve     - Serve Allure reports locally"
 	@echo "  make allure-generate  - Generate Allure HTML reports"
 	@echo "  make test-allure      - Run tests and generate reports"
+	@echo "  make quality-check    - Run comprehensive code quality checks"
+	@echo "  make quality-readmes  - Check README files for accuracy"
+	@echo "  make quality-workflows - Check GitHub workflow files"
+	@echo "  make quality-tests    - Check test execution and reporting"
+
+# Quality Checks
+quality-check: ## Run comprehensive code quality checks for all modules
+	@echo "🔍 Running comprehensive code quality checks..."
+	$(MAKE) -C ai-rulesets quality-check || true
+	@echo "✅ Quality checks completed"
+
+quality-readmes: ## Check README files for accuracy across all modules
+	@echo "📚 Checking README files across all modules..."
+	$(MAKE) -C ai-rulesets quality-readmes || true
+	@echo "✅ README checks completed"
+
+quality-workflows: ## Check GitHub workflow files across all modules
+	@echo "⚙️ Checking workflow files across all modules..."
+	$(MAKE) -C ai-rulesets quality-workflows || true
+	@echo "✅ Workflow checks completed"
+
+quality-tests: ## Check test execution and reporting across all modules
+	@echo "🧪 Checking test execution across all modules..."
+	$(MAKE) -C ai-rulesets quality-tests || true
+	@echo "✅ Test checks completed"

@@ -1,6 +1,8 @@
 README.md
 pyproject.toml
 src/ai_rulesets/__init__.py
+src/ai_rulesets/__main__.py
+src/ai_rulesets/cli.py
 src/ai_rulesets/core.py
 src/ai_rulesets/main.py
 src/ai_rulesets.egg-info/PKG-INFO
@@ -11,6 +13,7 @@ src/ai_rulesets.egg-info/requires.txt
 src/ai_rulesets.egg-info/top_level.txt
 src/ai_rulesets/cli/__init__.py
 src/ai_rulesets/cli/generate.py
+src/ai_rulesets/cli/quality.py
 src/ai_rulesets/renderers/__init__.py
 src/ai_rulesets/renderers/copilot.py
 src/ai_rulesets/renderers/cursor.py
@@ -24,9 +27,16 @@ src/ai_rulesets/rulesets/python/__init__.py
 src/ai_rulesets/rulesets/python/coding.py
 src/ai_rulesets/rulesets/python/security.py
 src/ai_rulesets/rulesets/python/testing.py
+src/ai_rulesets/rulesets/quality/__init__.py
+src/ai_rulesets/rulesets/quality/code_quality.py
 src/ai_rulesets/rulesets/typescript/__init__.py
 src/ai_rulesets/rulesets/typescript/coding.py
 src/ai_rulesets/rulesets/typescript/testing.py
 src/ai_rulesets/sources/processor.py
+src/ai_rulesets/validation/__init__.py
+src/ai_rulesets/validation/quality_checker.py
+src/ai_rulesets/validation/readme_validator.py
+src/ai_rulesets/validation/test_validator.py
+src/ai_rulesets/validation/workflow_validator.py
 tests/test_module_import.py
 tests/test_regression.py

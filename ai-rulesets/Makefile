@@ -1,7 +1,7 @@
 # AI Test Generation Makefile
 # Common development and testing tasks
 
-.PHONY: help install install-dev test test-unit test-component test-integration test-e2e clean lint format type-check coverage report-allure allure-results allure-generate allure-serve allure-open allure-history allure-clean allure-docker-serve allure-docker-generate report-comprehensive
+.PHONY: help install install-dev test test-unit test-component test-integration test-e2e clean lint format type-check coverage report-allure allure-results allure-generate allure-serve allure-open allure-history allure-clean allure-docker-serve allure-docker-generate report-comprehensive quality-check quality-readmes quality-workflows quality-tests
 
 # Read Python version from .python-version file
 PYTHON_VERSION := $(shell cat .python-version 2>/dev/null || echo "3.13")
@@ -169,3 +169,20 @@ quick-lint: ## Quick linting check
 
 quick-format: ## Quick code formatting
 	black src/ tests/ && isort src/ tests/
+
+# Quality Checks
+quality-check: ## Run comprehensive code quality checks
+	@echo "🔍 Running code quality checks..."
+	. .venv/bin/activate && python -m ai_rulesets quality check --project-root . --fail-on-error
+
+quality-readmes: ## Check README files for accuracy
+	@echo "📚 Checking README files..."
+	. .venv/bin/activate && python -m ai_rulesets quality readmes --project-root .
+
+quality-workflows: ## Check GitHub workflow files
+	@echo "⚙️ Checking workflow files..."
+	. .venv/bin/activate && python -m ai_rulesets quality workflows --project-root .
+
+quality-tests: ## Check test execution and reporting
+	@echo "🧪 Checking test execution..."
+	. .venv/bin/activate && python -m ai_rulesets quality tests --project-root .

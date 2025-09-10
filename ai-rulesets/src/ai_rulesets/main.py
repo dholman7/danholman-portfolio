@@ -9,6 +9,7 @@ from typing import List, Optional
 from .core import Ruleset, RulesetMetadata, RulesetItem, RulesetManager
 from .renderers import CursorRenderer, CopilotRenderer, GenericRenderer
 from .cli import generate_rulesets, generate_from_sources
+from .cli.quality import quality
 
 
 @click.group()
@@ -206,6 +207,9 @@ def list_rulesets(ruleset_types: List[str]):
 # Add generate commands
 main.add_command(generate_rulesets, name="generate-rulesets")
 main.add_command(generate_from_sources, name="generate-from-sources")
+
+# Add quality commands
+main.add_command(quality, name="quality")
 
 
 # Ruleset creators
