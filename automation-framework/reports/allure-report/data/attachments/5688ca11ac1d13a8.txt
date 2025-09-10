@@ -1,1 +1,0 @@
-Data generation time (100 samples): 0.094s

@@ -1,1 +1,0 @@
-[31m[1mERROR   [0m src.api.client:client.py:173 Request failed: GET /api/users/1 - Request timed out

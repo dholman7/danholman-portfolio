@@ -1,3 +1,0 @@
-test_user_api.py
-test_auth_api.py
-test_product_api.py

@@ -1,4 +1,0 @@
-def test_user_authentication():
-    """Test user authentication functionality"""
-    # Test implementation
-    assert user.is_authenticated

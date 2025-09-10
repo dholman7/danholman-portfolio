@@ -1,3 +1,0 @@
-def test_user_login():
-def test_user_registration():
-def test_password_reset():

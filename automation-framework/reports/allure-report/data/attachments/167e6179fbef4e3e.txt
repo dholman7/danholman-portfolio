@@ -1,1 +1,0 @@
-[31m[1mERROR   [0m test_regression:test_regression.py:160 Test error message

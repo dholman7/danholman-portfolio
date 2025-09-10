@@ -21,6 +21,15 @@ __pycache__/
 coverage/
 *.log
 
+# Test reports and results
+**/allure-results/
+**/allure-report/
+**/reports/allure-results/
+**/reports/allure-report/
+**/test-results/
+**/playwright-report/
+**/coverage/
+
 # CDK/CloudFormation
 cdk.out/
 

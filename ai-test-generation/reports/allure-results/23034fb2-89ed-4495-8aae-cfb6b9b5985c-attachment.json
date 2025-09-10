@@ -1,5 +1,0 @@
-{
-  "test_name": "user_authentication",
-  "test_description": "Test user authentication functionality",
-  "assertion": "user.is_authenticated"
-}
