@@ -33,6 +33,7 @@ Organizational AI rulesets and utilities for creating custom development standar
 - Pre-built rulesets for Python, TypeScript, testing, CI/CD, and security
 - Document processing utilities to create custom rulesets from company standards
 - Cursor and GitHub Copilot integration for consistent AI assistance
+- **🔍 Comprehensive Code Quality Checker**: Automated validation of README files, GitHub workflows, test execution, and Allure reporting across all modules
 - Ruleset generation and validation tools for organizational standards
 
 ---
@@ -234,6 +235,32 @@ make install-dev          # Install dependencies
 make test-allure-local    # Run tests with Allure
 make allure-serve-local   # View reports with history
 ```
+
+## 🔍 Code Quality Validation
+
+This portfolio includes a **comprehensive code quality checker** that automates the validation of:
+- **README files**: Accuracy, broken links, outdated references, and structure
+- **GitHub workflows**: YAML syntax, required fields, and best practices
+- **Test execution**: Coverage, reporting, and integration across all modules
+- **Allure reporting**: Configuration and report generation validation
+
+### **Quick Quality Check**
+```bash
+# Run comprehensive quality validation
+make quality-check
+
+# Check specific aspects
+make quality-readmes      # README validation
+make quality-workflows    # Workflow validation  
+make quality-tests        # Test execution validation
+```
+
+### **Quality Checker Features**
+- **37 different validation checks** across all aspects of code quality
+- **Severity levels**: Errors (critical), Warnings (should fix), Info (nice to have)
+- **CI/CD integration** with fail-on-error and JSON export options
+- **Detailed reporting** with file paths, line numbers, and actionable feedback
+- **Extensible design** for custom validation rules and organizational standards
 
 ## 🚀 Running All Tests
 

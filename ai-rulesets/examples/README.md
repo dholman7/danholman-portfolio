@@ -1,6 +1,6 @@
-# AI Test Generation Framework - Examples
+# AI Rulesets - Examples and Quality Checker
 
-This directory contains comprehensive examples showing how to use the AI Test Generation Framework to create custom guidance templates and generate tests.
+This directory contains comprehensive examples showing how to use the AI Rulesets package to create custom guidance templates, generate rulesets, and validate code quality across all modules.
 
 ## 📁 Files Overview
 
@@ -8,6 +8,7 @@ This directory contains comprehensive examples showing how to use the AI Test Ge
 - **[create-custom-guidance.md](create-custom-guidance.md)** - Complete step-by-step guide for creating custom guidance templates
 - **[cursor-rules-example.md](cursor-rules-example.md)** - Example of using generated Cursor rules
 - **[copilot-instructions-example.md](copilot-instructions-example.md)** - Example of using generated GitHub Copilot instructions
+- **[quality-checker.md](../docs/quality-checker.md)** - Comprehensive code quality validation system
 
 ### **Working Examples**
 - **[create_fastapi_guidance.py](create_fastapi_guidance.py)** - Script that creates a FastAPI testing guidance template
@@ -18,6 +19,46 @@ This directory contains comprehensive examples showing how to use the AI Test Ge
 - **[fastapi-testing-guidance.yaml](fastapi-testing-guidance.yaml)** - YAML guidance template
 - **.cursor/rules/fastapi-testing-guidance.mdc** - Cursor guidance file
 - **.github/instructions/fastapi-testing-guidance.instructions.md** - GitHub Copilot guidance file
+
+## 🔍 Code Quality Checker
+
+The AI Rulesets package includes a comprehensive code quality checker that automates validation of:
+- **README files**: Content accuracy, broken links, outdated references
+- **GitHub workflows**: YAML syntax, required fields, best practices  
+- **Test execution**: Coverage, reporting, and integration
+- **Allure reporting**: Configuration and report generation
+
+### **Quick Quality Check**
+```bash
+# Run comprehensive quality validation
+make quality-check
+
+# Check specific aspects
+make quality-readmes      # README validation
+make quality-workflows    # Workflow validation  
+make quality-tests        # Test execution validation
+```
+
+### **CLI Quality Commands**
+```bash
+# Comprehensive quality check
+ai-rulesets quality check --project-root . --fail-on-error
+
+# Specific validations
+ai-rulesets quality readmes --project-root .
+ai-rulesets quality workflows --project-root .
+ai-rulesets quality tests --project-root .
+
+# Export results for CI/CD
+ai-rulesets quality check --export results.json
+```
+
+### **Quality Check Features**
+- **37 different validation checks** across all aspects of code quality
+- **Severity levels**: Errors (critical), Warnings (should fix), Info (nice to have)
+- **CI/CD integration** with fail-on-error and JSON export options
+- **Detailed reporting** with file paths, line numbers, and actionable feedback
+- **Extensible design** for custom validation rules and organizational standards
 
 ## 🚀 Quick Start
 
