@@ -21,7 +21,7 @@ const registerSchema = z.object({
 type RegisterFormData = z.infer<typeof registerSchema>
 
 // Mock API functions
-const mockRegister = async (_data: RegisterFormData) => {
+const mockRegister = async (data: RegisterFormData) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
   
@@ -33,7 +33,7 @@ const mockRegister = async (_data: RegisterFormData) => {
   }
 }
 
-const mockLogin = async (_email: string, _password: string) => {
+const mockLogin = async (email: string, password: string) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
   
@@ -102,7 +102,7 @@ function App() {
           sessionStorage.setItem('user', JSON.stringify(userData))
         }
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })
     } finally {
       setIsLoading(false)

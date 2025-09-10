@@ -1,5 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-import { allure } from 'allure-playwright';
 
 /**
  * @see https://playwright.dev/docs/test-configuration

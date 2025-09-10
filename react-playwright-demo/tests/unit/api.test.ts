@@ -1,5 +1,5 @@
 // Mock API functions for testing
-const mockRegister = async (_data: any) => {
+const mockRegister = async (data: Record<string, unknown>) => {
   await new Promise(resolve => setTimeout(resolve, 100));
   
   if (Math.random() > 0.1) {
@@ -9,7 +9,7 @@ const mockRegister = async (_data: any) => {
   }
 };
 
-const mockLogin = async (_email: string, _password: string) => {
+const mockLogin = async (email: string, password: string) => {
   await new Promise(resolve => setTimeout(resolve, 100));
   
   if (Math.random() > 0.2) {
