@@ -36,6 +36,7 @@ on:
         options:
           - all
           - unit
+          - component
           - integration
           - e2e
           - performance
@@ -75,9 +76,27 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Run tests with proper pytest configuration
-          echo "Running pytest with Allure reporting..."
-          pytest --alluredir=reports/allure-results -v --tb=short || true
+          # Run tests based on test_type input
+          echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
+          if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "Running all tests..."
+            make test || true
+          elif [ "${{ github.event.inputs.test_type }}" = "unit" ]; then
+            echo "Running unit tests..."
+            make test-unit || true
+          elif [ "${{ github.event.inputs.test_type }}" = "component" ]; then
+            echo "Running component tests..."
+            make test-component || true
+          elif [ "${{ github.event.inputs.test_type }}" = "integration" ]; then
+            echo "Running integration tests..."
+            make test-integration || true
+          elif [ "${{ github.event.inputs.test_type }}" = "e2e" ]; then
+            echo "Running e2e tests..."
+            make test-e2e || true
+          elif [ "${{ github.event.inputs.test_type }}" = "performance" ]; then
+            echo "Running performance tests..."
+            make test-performance || true
+          fi
           
           # List generated files for debugging
           echo "Allure results directory contents:"
@@ -145,9 +164,27 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Run tests with proper pytest configuration
-          echo "Running pytest with Allure reporting..."
-          pytest --alluredir=reports/allure-results -v --tb=short || true
+          # Run tests based on test_type input
+          echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
+          if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "Running all tests..."
+            make test || true
+          elif [ "${{ github.event.inputs.test_type }}" = "unit" ]; then
+            echo "Running unit tests..."
+            make test-unit || true
+          elif [ "${{ github.event.inputs.test_type }}" = "component" ]; then
+            echo "Running component tests..."
+            make test-component || true
+          elif [ "${{ github.event.inputs.test_type }}" = "integration" ]; then
+            echo "Running integration tests..."
+            make test-integration || true
+          elif [ "${{ github.event.inputs.test_type }}" = "e2e" ]; then
+            echo "Running e2e tests..."
+            make test-e2e || true
+          elif [ "${{ github.event.inputs.test_type }}" = "performance" ]; then
+            echo "Running performance tests..."
+            make test-performance || true
+          fi
           
           # List generated files for debugging
           echo "Allure results directory contents:"
@@ -290,9 +327,24 @@ jobs:
       - name: Run Unit Tests
         if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'unit' || github.event_name != 'workflow_dispatch' }}
         run: yarn test:coverage
+      - name: Run Component Tests
+        if: ${{ github.event.inputs.test_type == 'component' }}
+        run: |
+          echo "Component tests not yet implemented for react-playwright-demo"
+          echo "Available test types: unit, integration, e2e"
+          exit 0
+      - name: Run Integration Tests
+        if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'integration' || github.event_name != 'workflow_dispatch' }}
+        run: yarn test:integration
       - name: Run Playwright Tests
         if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event_name != 'workflow_dispatch' }}
         run: yarn test:e2e
+      - name: Run Performance Tests
+        if: ${{ github.event.inputs.test_type == 'performance' }}
+        run: |
+          echo "Performance tests not yet implemented for react-playwright-demo"
+          echo "Available test types: unit, integration, e2e"
+          exit 0
       - name: Generate Allure Report
         if: ${{ github.event.inputs.include_allure != false }}
         run: yarn test:allure:generate
