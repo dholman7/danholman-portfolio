@@ -37,53 +37,38 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        # Install the ai-rulesets package which contains the quality checker
+        pip install -e ai-rulesets/
+        # Install any additional dependencies if needed
         pip install -r scripts/requirements.txt || echo "No requirements.txt found in scripts/"
-        
-    - name: Install Node.js (for TypeScript projects)
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'yarn'
-        
-    - name: Install project dependencies
-      run: |
-        # Install dependencies for each module that has package.json
-        for dir in */; do
-          if [ -f "$dir/package.json" ]; then
-            echo "Installing dependencies for $dir"
-            cd "$dir"
-            yarn install --frozen-lockfile
-            cd ..
-          fi
-        done
         
     - name: Run quality checks
       run: |
         case "${{ github.event.inputs.check_type || 'all' }}" in
           "all")
-            python scripts/quality_checker.py
+            quality-check
             ;;
           "readmes")
-            python scripts/quality_checker.py --readmes-only
+            quality-check --readmes-only
             ;;
           "workflows")
-            python scripts/quality_checker.py --workflows-only
+            quality-check --workflows-only
             ;;
           "tests")
-            python scripts/quality_checker.py --tests-only
+            quality-check --tests-only
             ;;
           "versions")
-            python scripts/quality_checker.py --versions-only
+            quality-check --versions-only
             ;;
           "fix")
-            python scripts/quality_checker.py --fix
+            quality-check --fix
             ;;
         esac
         
     - name: Export results
       if: always()
       run: |
-        python scripts/quality_checker.py --export quality-results.json
+        quality-check --export quality-results.json
         
     - name: Upload quality results
       if: always()
