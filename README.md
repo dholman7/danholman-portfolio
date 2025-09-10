@@ -1,12 +1,13 @@
 # Dan Holman – Software Developer in Test Portfolio
 
-**Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience building automation frameworks, cloud-native solutions, and quality platforms at scale.
+**Senior Software Developer in Test (SDET) & Automation Architect** with 10+ years of experience
+building automation frameworks, cloud-native solutions, and quality platforms at scale.
 
 ## 🧪 **[Live Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)**
 
 **Comprehensive test results, Allure reports, and coverage analysis:**
 - **Combined Allure Reports**: Unified test analytics across all modules
-- **Individual Module Reports**: Detailed test results for each project  
+- **Individual Module Reports**: Detailed test results for each project
 - **Playwright Reports**: Interactive E2E test results with screenshots and videos
 - **Coverage Reports**: Code coverage analysis and visualization
 - **Real-time Updates**: Automatically updated on every CI/CD run
@@ -38,7 +39,8 @@ Organizational AI rulesets and utilities for creating custom development standar
 - Pre-built rulesets for Python, TypeScript, testing, CI/CD, and security
 - Document processing utilities to create custom rulesets from company standards
 - Cursor and GitHub Copilot integration for consistent AI assistance
-- **🔍 AI-Powered Quality Checker**: Comprehensive validation of README files, GitHub workflows, test execution, version consistency, and Allure reporting across all modules
+- **🔍 AI-Powered Quality Checker**: Comprehensive validation of README files, GitHub workflows,
+  test execution, version consistency, and Allure reporting across all modules
 - Ruleset generation and validation tools for organizational standards
 
 ---
@@ -69,9 +71,9 @@ Technical writeups and lessons learned:
 
 ## 🔧 Tech Stack
 
-**Languages:** Python, TypeScript, GraphQL, JavaScript  
-**Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
-**Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, Allure, Coverage Reports  
+**Languages:** Python, TypeScript, GraphQL, JavaScript
+**Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog
+**Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, Allure, Coverage Reports
 **Frontend:** React 19, Vite, Tailwind CSS, react-hook-form, Zod
 
 ## 🚀 CI/CD Pipeline
@@ -112,14 +114,22 @@ This portfolio showcases comprehensive testing strategies with multiple reportin
 
 ### **Live Reporting URLs**
 
-#### **🎯 [GitHub Pages Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)** (CI/CD Generated - Updated on every push)
-- **📊 [Combined Allure Reports](https://dholman7.github.io/danholman-portfolio/combined-allure/)**: Unified test analytics across all modules
-- **🤖 [Automation Framework](https://dholman7.github.io/danholman-portfolio/automation-framework/)**: Python/TypeScript test automation results
-- **🧠 [AI Rulesets](https://dholman7.github.io/danholman-portfolio/ai-rulesets/)**: AI rulesets and quality checker results
-- **☁️ [Cloud Native App](https://dholman7.github.io/danholman-portfolio/cloud-native-app/)**: AWS serverless testing results
-- **⚛️ [React Playwright Demo](https://dholman7.github.io/danholman-portfolio/react-playwright-demo/)**: E2E testing with Playwright reports
-- **🎬 [Playwright Reports](https://dholman7.github.io/danholman-portfolio/playwright-reports/)**: Interactive test results with screenshots and videos
-- **📈 [Coverage Reports](https://dholman7.github.io/danholman-portfolio/coverage-reports/)**: Code coverage analysis and visualization
+#### **🎯 [GitHub Pages Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)**
+(CI/CD Generated - Updated on every push)
+- **📊 [Combined Allure Reports](https://dholman7.github.io/danholman-portfolio/combined-allure/)**:
+  Unified test analytics across all modules
+- **🤖 [Automation Framework](https://dholman7.github.io/danholman-portfolio/automation-framework/)**:
+  Python/TypeScript test automation results
+- **🧠 [AI Rulesets](https://dholman7.github.io/danholman-portfolio/ai-rulesets/)**:
+  AI rulesets and quality checker results
+- **☁️ [Cloud Native App](https://dholman7.github.io/danholman-portfolio/cloud-native-app/)**:
+  AWS serverless testing results
+- **⚛️ [React Playwright Demo](https://dholman7.github.io/danholman-portfolio/react-playwright-demo/)**:
+  E2E testing with Playwright reports
+- **🎬 [Playwright Reports](https://dholman7.github.io/danholman-portfolio/playwright-reports/)**:
+  Interactive test results with screenshots and videos
+- **📈 [Coverage Reports](https://dholman7.github.io/danholman-portfolio/coverage-reports/)**:
+  Code coverage analysis and visualization
 
 #### **Local Development Reports** (Interactive testing during development)
 - **Playwright Reports**: http://localhost:9323/ (interactive test results with screenshots/videos)

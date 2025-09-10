@@ -2,7 +2,7 @@
 
 ## 🎯 About This Repository
 
-**Dan Holman's professional portfolio** showcasing 13+ years of experience as a Senior Software Developer in Test (SDET) & Automation Architect.
+**Dan Holman's professional portfolio** showcasing 10+ years of experience as a Senior Software Developer in Test (SDET) & Automation Architect.
 
 ## 📋 Contribution Policy
 

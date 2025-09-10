@@ -379,7 +379,7 @@ def test_user_service_contract(pact_client, mock_service):
     """Test contract for User Service API."""
     # Setup contract interaction
     endpoint_config = mock_service.get_user_endpoints()["GET:/api/users"]
-    
+
     pact_client.setup_interaction(
         description="Get all users",
         provider_state="users exist",
@@ -390,11 +390,11 @@ def test_user_service_contract(pact_client, mock_service):
         },
         response=endpoint_config["response"]
     )
-    
+
     # Start mock service and write contract
     pact_client.start_service(port=0)
     verification_result = pact_client.verify_contract()
-    
+
     assert verification_result, "Contract verification failed"
     pact_client.write_pact()
 ```
@@ -420,7 +420,7 @@ The react-playwright-demo includes:
 - ✅ Integration with Playwright for browser testing
 - ✅ CI/CD pipeline integration
 
-For accessibility testing, please refer to the [react-playwright-demo accessibility documentation](../react-playwright-demo/README.md#accessibility-testing).
+For accessibility testing, please refer to the [react-playwright-demo accessibility documentation](../react-playwright-demo/README.md).
 - `ui` - UI-related tests (e2e with browser combinations)
 
 **Matrix Dimensions:**
@@ -872,7 +872,7 @@ class CustomFactory:
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

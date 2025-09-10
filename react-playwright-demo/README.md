@@ -245,7 +245,7 @@ yarn test:allure:open
 - **UI Tests**: Component visibility, responsiveness, accessibility
 - **Accessibility Tests**: WCAG 2.1 AA compliance testing
 
-### Accessibility Testing
+### Accessibility Testing {#accessibility-testing}
 ```bash
 # Run accessibility tests
 yarn test:accessibility
@@ -422,7 +422,7 @@ No environment variables required for local development.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 
 ## 👨‍💻 Author
 

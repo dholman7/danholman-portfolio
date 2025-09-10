@@ -1,2 +1,3 @@
 [console_scripts]
 ai-rulesets = ai_rulesets.main:main
+quality-check = ai_rulesets.cli.quality_checker:main

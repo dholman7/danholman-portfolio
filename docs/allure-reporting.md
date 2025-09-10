@@ -20,7 +20,7 @@ This document provides comprehensive guidance on using Allure reporting in the D
 ### Prerequisites
 
 - Python 3.11+ (for automation-framework)
-- Python 3.13+ (for ai-test-generation)
+- Python 3.13+ (for ai-rulesets)
 - Node.js 18+ (for Allure commandline)
 
 ### Install Allure Dependencies
@@ -32,8 +32,8 @@ The Allure dependencies are already included in the project requirements:
 cd automation-framework
 pip install -e ".[test]"
 
-# For ai-test-generation
-cd ai-test-generation
+# For ai-rulesets
+cd ai-rulesets
 pip install -e ".[dev]"
 ```
 
@@ -57,7 +57,7 @@ docker run -p 5050:5050 frankescobar/allure-docker-service:latest
 Each module has its own `allure.properties` file:
 
 - `automation-framework/allure.properties`
-- `ai-test-generation/allure.properties`
+- `ai-rulesets/allure.properties`
 
 These files configure:
 - Report directories
@@ -85,8 +85,8 @@ Test failures are automatically categorized using `allure-categories.json`:
 cd automation-framework
 make allure-results
 
-# Generate results for ai-test-generation
-cd ai-test-generation
+# Generate results for ai-rulesets
+cd ai-rulesets
 make allure-results
 ```
 
@@ -466,7 +466,7 @@ make allure-clean
 make report-comprehensive
 ```
 
-### AI Test Generation
+### AI Rulesets
 
 ```bash
 # Generate Allure results
@@ -493,7 +493,7 @@ make report-comprehensive
 The Allure reporting system integrates seamlessly with the existing project structure:
 
 - **Automation Framework**: Full integration with pytest configuration
-- **AI Test Generation**: Integrated with test generation pipeline
+- **AI Rulesets**: Integrated with quality checking pipeline
 - **CI/CD**: Automated report generation and deployment
 - **Documentation**: Comprehensive examples and best practices
 

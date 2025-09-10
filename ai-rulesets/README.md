@@ -381,7 +381,7 @@ ai-rulesets generate-from-docs \
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details on:
+We welcome contributions! Please see our [Contributing Guide](../CONTRIBUTING.md) for details on:
 
 - Adding new standard rulesets
 - Improving existing rulesets
@@ -390,7 +390,7 @@ We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](../LICENSE) for details.
 
 ## 🔗 Related Projects
 

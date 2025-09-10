@@ -8,17 +8,109 @@ help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 # Installation
-install:
-	$(MAKE) -C automation-framework install || true
-	$(MAKE) -C cloud-native-app install || true
-	$(MAKE) -C ai-rulesets install || true
-	$(MAKE) -C react-playwright-demo install || true
+install: ## Install all dependencies (Python + Node.js) for all modules
+	@echo "🚀 Installing all dependencies for Dan Holman Portfolio..."
+	@echo ""
+	@echo "⚠️  WARNING: This will create a virtual environment in ./venv/"
+	@echo "   This is safe and isolated from your system Python."
+	@echo ""
+	@echo "📦 Installing Python dependencies..."
+	@echo "  - Setting up virtual environment in ./venv/..."
+	@python3 -m venv venv
+	@. venv/bin/activate && pip install -U pip
+	@echo "  - Installing ai-rulesets package..."
+	@. venv/bin/activate && cd ai-rulesets && pip install -e .
+	@echo "  - Installing automation-framework dependencies..."
+	@. venv/bin/activate && cd automation-framework && pip install -r requirements.txt
+	@echo ""
+	@echo "📦 Installing Node.js dependencies..."
+	@echo "  - Installing cloud-native-app dependencies..."
+	@cd cloud-native-app && yarn install
+	@echo "  - Installing react-playwright-demo dependencies..."
+	@cd react-playwright-demo && yarn install
+	@echo ""
+	@echo "✅ All dependencies installed successfully!"
+	@echo ""
+	@echo "💡 Next steps:"
+	@echo "  - Activate virtual environment: . venv/bin/activate"
+	@echo "  - Run 'make test' to run all tests"
+	@echo "  - Run 'make quality-check' to check code quality"
+	@echo "  - Run 'make allure-serve' to view test reports"
 
-install-dev:
-	$(MAKE) -C automation-framework install-dev || true
-	$(MAKE) -C cloud-native-app install-dev || true
-	$(MAKE) -C ai-rulesets install-dev || true
-	$(MAKE) -C react-playwright-demo install-dev || true
+install-dev: ## Install development dependencies for all modules
+	@echo "🚀 Installing development dependencies for Dan Holman Portfolio..."
+	@echo ""
+	@echo "📦 Installing Python development dependencies..."
+	@echo "  - Setting up virtual environment..."
+	@python3 -m venv venv
+	@. venv/bin/activate && pip install -U pip
+	@echo "  - Installing ai-rulesets with dev dependencies..."
+	@. venv/bin/activate && cd ai-rulesets && pip install -e ".[dev]"
+	@echo "  - Installing automation-framework with dev dependencies..."
+	@. venv/bin/activate && cd automation-framework && pip install -e ".[dev,test,api,web,performance]"
+	@echo ""
+	@echo "📦 Installing Node.js development dependencies..."
+	@echo "  - Installing cloud-native-app dependencies..."
+	@cd cloud-native-app && yarn install
+	@echo "  - Installing react-playwright-demo dependencies..."
+	@cd react-playwright-demo && yarn install
+	@echo ""
+	@echo "✅ All development dependencies installed successfully!"
+
+install-quick: ## Quick install (assumes venv exists, just installs packages)
+	@echo "⚡ Quick install (updating existing packages)..."
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && cd ai-rulesets && pip install -e .
+	@. venv/bin/activate && cd automation-framework && pip install -r requirements.txt
+	@cd cloud-native-app && yarn install
+	@cd react-playwright-demo && yarn install
+	@echo "✅ Quick install completed!"
+
+setup: ## Complete setup with explicit instructions
+	@echo "🚀 Dan Holman Portfolio - Complete Setup"
+	@echo "========================================"
+	@echo ""
+	@echo "This will set up everything you need to run the portfolio:"
+	@echo "  ✅ Python virtual environment (isolated from system)"
+	@echo "  ✅ All Python dependencies"
+	@echo "  ✅ All Node.js dependencies"
+	@echo "  ✅ Quality checker ready to use"
+	@echo ""
+	@echo "⚠️  This creates a virtual environment in ./venv/ (safe and isolated)"
+	@echo ""
+	@read -p "Continue? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
+	@echo ""
+	@echo "📦 Step 1: Installing Python dependencies..."
+	@python3 -m venv venv
+	@. venv/bin/activate && pip install -U pip
+	@. venv/bin/activate && cd ai-rulesets && pip install -e .
+	@. venv/bin/activate && cd automation-framework && pip install -r requirements.txt
+	@echo "✅ Python dependencies installed!"
+	@echo ""
+	@echo "📦 Step 2: Installing Node.js dependencies..."
+	@cd cloud-native-app && yarn install
+	@cd react-playwright-demo && yarn install
+	@echo "✅ Node.js dependencies installed!"
+	@echo ""
+	@echo "🎉 Setup complete! Here's what you can do now:"
+	@echo ""
+	@echo "1. Activate the virtual environment:"
+	@echo "   . venv/bin/activate"
+	@echo ""
+	@echo "2. Run quality checks:"
+	@echo "   make quality-check"
+	@echo ""
+	@echo "3. Run tests:"
+	@echo "   make test"
+	@echo ""
+	@echo "4. View test reports:"
+	@echo "   make allure-serve"
+	@echo ""
+	@echo "💡 The virtual environment is isolated and safe - it won't affect your system Python!"
 
 # Code Quality
 lint:
@@ -246,6 +338,10 @@ info: ## Show portfolio information
 	@echo "  - react-playwright-demo: Modern React demo with E2E testing"
 	@echo ""
 	@echo "Available Commands:"
+	@echo "  make setup            - Complete setup with explicit instructions (RECOMMENDED)"
+	@echo "  make install          - Install all dependencies (Python + Node.js)"
+	@echo "  make install-dev      - Install development dependencies"
+	@echo "  make install-quick    - Quick install (assumes venv exists)"
 	@echo "  make test-regression  - Run comprehensive regression tests"
 	@echo "  make allure-serve     - Serve Allure reports locally"
 	@echo "  make allure-generate  - Generate Allure HTML reports"
@@ -260,25 +356,60 @@ info: ## Show portfolio information
 # Quality Checks
 quality-check: ## Run comprehensive code quality checks for all modules
 	@echo "🔍 Running comprehensive code quality checks..."
-	./quality-check
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		echo "Then activate it with: . venv/bin/activate"; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && ./quality-check
 
 quality-readmes: ## Check README files for accuracy across all modules
 	@echo "📚 Checking README files across all modules..."
-	./quality-check --readmes-only
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		echo "Then activate it with: . venv/bin/activate"; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && ./quality-check --readmes-only
 
 quality-workflows: ## Check GitHub workflow files across all modules
 	@echo "⚙️ Checking workflow files across all modules..."
-	./quality-check --workflows-only
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		echo "Then activate it with: . venv/bin/activate"; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && ./quality-check --workflows-only
 
 quality-tests: ## Check test execution and reporting across all modules
 	@echo "🧪 Checking test execution across all modules..."
-	./quality-check --tests-only
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		echo "Then activate it with: . venv/bin/activate"; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && ./quality-check --tests-only
 
 quality-versions: ## Check version consistency across all modules
 	@echo "🔢 Checking version consistency across all modules..."
-	./quality-check --versions-only
-
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		echo "Then activate it with: . venv/bin/activate"; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && ./quality-check --versions-only
 
 quality-fix: ## Automatically fix common quality issues
 	@echo "🔧 Running quality checks and applying automatic fixes..."
-	./quality-check --fix
+	@if [ ! -d "venv" ]; then \
+		echo "❌ Error: Virtual environment not found!"; \
+		echo "Please run 'make install' first to create the virtual environment."; \
+		echo "Then activate it with: . venv/bin/activate"; \
+		exit 1; \
+	fi
+	@. venv/bin/activate && ./quality-check --fix

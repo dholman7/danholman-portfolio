@@ -57,6 +57,13 @@ This package serves two primary functions:
 - **Multi-format Support**: Generate rulesets for Cursor, Copilot, and other AI tools
 - **Validation**: Ensure rulesets are properly formatted and complete
 
+### **Code Quality Validation**
+- **Comprehensive Checker**: Automated validation of README files, GitHub workflows, test execution, and Allure reporting
+- **37 Validation Checks**: Covers content accuracy, broken links, outdated references, syntax validation, and best practices
+- **Severity Levels**: Errors (critical), Warnings (should fix), Info (nice to have) with detailed reporting
+- **CI/CD Integration**: Fail-on-error, JSON export, and automated quality gates
+- **Extensible Design**: Custom validation rules and organizational standards
+
 ### **CI/CD Integration**
 - **Automated Generation**: Generate rulesets as part of your CI/CD pipeline
 - **Version Management**: Track and version your organizational standards
@@ -106,6 +113,71 @@ make test
 # Generate example rulesets
 make examples
 ```
+
+## 🔍 Code Quality Validation
+
+The AI Rulesets package includes a comprehensive code quality checker that automates the validation of documentation, workflows, tests, and reporting across all modules.
+
+### **Quick Quality Check**
+```bash
+# Run comprehensive quality validation
+make quality-check
+
+# Check specific aspects
+make quality-readmes      # README validation
+make quality-workflows    # Workflow validation
+make quality-tests        # Test execution validation
+```
+
+### **CLI Quality Commands**
+```bash
+# Comprehensive quality check
+ai-rulesets quality check --project-root . --fail-on-error
+
+# Specific validations
+ai-rulesets quality readmes --project-root .
+ai-rulesets quality workflows --project-root .
+ai-rulesets quality tests --project-root .
+
+# Export results for CI/CD
+ai-rulesets quality check --export results.json
+```
+
+### **What Gets Validated**
+
+#### **📚 README Validation**
+- Content accuracy and up-to-date information
+- Broken internal and external links
+- Outdated references and module names
+- Code example syntax (Python, bash, YAML)
+- Structure and formatting consistency
+
+#### **⚙️ Workflow Validation**
+- YAML syntax and required fields
+- Job names, step names, and environment variables
+- Deprecated GitHub Actions usage
+- Security issues and best practices
+- Naming conventions (ci-cd.yml vs ci.yaml)
+
+#### **🧪 Test Validation**
+- Test coverage and execution across all modules
+- Test command availability and functionality
+- Allure reporting configuration and generation
+- Module integration and dependency resolution
+
+#### **📊 Allure Reporting Validation**
+- Configuration file presence and correctness
+- Report generation and accessibility
+- History support for trend analysis
+- Integration across all modules
+
+### **Quality Check Results**
+The quality checker provides detailed reporting with:
+- **Severity levels**: Errors (critical), Warnings (should fix), Info (nice to have)
+- **File locations**: Exact file paths and line numbers
+- **Actionable feedback**: Specific steps to fix issues
+- **Summary statistics**: Total issues by severity level
+- **CI/CD integration**: Exit codes and JSON export for automation
 
 ## 🚀 Quick Start
 
@@ -217,7 +289,7 @@ rules:
       # Use Ruff for linting
       # Follow PEP 8 with 88-character line limit
       # Use type hints extensively
-      
+
   - name: "Testing Standards"
     description: "Python testing guidelines"
     content: |
@@ -343,7 +415,7 @@ ai-rulesets generate-from-docs \
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details on:
 
 - Adding new standard rulesets
 - Improving existing rulesets
