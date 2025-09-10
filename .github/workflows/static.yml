@@ -43,6 +43,20 @@ jobs:
           merge-multiple: true
         continue-on-error: true
           
+      - name: Debug Downloaded Artifacts
+        run: |
+          echo "=== Downloaded Allure Reports ==="
+          if [ -d "allure-reports" ]; then
+            echo "allure-reports directory exists"
+            ls -la allure-reports/
+            echo "Subdirectories:"
+            find allure-reports/ -type d -maxdepth 2
+            echo "Files:"
+            find allure-reports/ -type f | head -20
+          else
+            echo "allure-reports directory does not exist"
+          fi
+          
       - name: Download Playwright Reports
         uses: actions/download-artifact@v4
         with:
@@ -121,40 +135,48 @@ jobs:
           fi
           
           # Copy individual module reports
+          echo "=== Copying Module Reports ==="
           if [ -d "allure-reports/automation-framework-allure-report" ]; then
-            echo "Copying automation-framework report..."
+            echo "Found automation-framework report, copying..."
             cp -r allure-reports/automation-framework-allure-report gh-pages-deploy/automation-framework
+            echo "Automation framework report copied successfully"
+            ls -la gh-pages-deploy/automation-framework/
           else
-            echo "Creating placeholder for automation-framework..."
+            echo "Automation framework report not found, creating placeholder..."
+            echo "Available allure-reports:"
+            ls -la allure-reports/ || echo "No allure-reports directory"
             mkdir -p gh-pages-deploy/automation-framework
-            echo "<!DOCTYPE html><html><head><title>Allure Reports - Automation Framework</title></head><body><h1>Allure Test Reports - Automation Framework</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/automation-framework/index.html
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - Automation Framework</title></head><body><h1>Allure Test Reports - Automation Framework</h1><p>Reports will be available after test execution.</p><p>Debug: No automation-framework-allure-report directory found in allure-reports/</p></body></html>" > gh-pages-deploy/automation-framework/index.html
           fi
           
           if [ -d "allure-reports/ai-rulesets-allure-report" ]; then
-            echo "Copying ai-rulesets report..."
+            echo "Found ai-rulesets report, copying..."
             cp -r allure-reports/ai-rulesets-allure-report gh-pages-deploy/ai-rulesets
+            echo "AI rulesets report copied successfully"
           else
-            echo "Creating placeholder for ai-rulesets..."
+            echo "AI rulesets report not found, creating placeholder..."
             mkdir -p gh-pages-deploy/ai-rulesets
-            echo "<!DOCTYPE html><html><head><title>Allure Reports - AI Rulesets</title></head><body><h1>Allure Test Reports - AI Rulesets</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/ai-rulesets/index.html
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - AI Rulesets</title></head><body><h1>Allure Test Reports - AI Rulesets</h1><p>Reports will be available after test execution.</p><p>Debug: No ai-rulesets-allure-report directory found in allure-reports/</p></body></html>" > gh-pages-deploy/ai-rulesets/index.html
           fi
           
           if [ -d "allure-reports/cloud-native-app-allure-report" ]; then
-            echo "Copying cloud-native-app report..."
+            echo "Found cloud-native-app report, copying..."
             cp -r allure-reports/cloud-native-app-allure-report gh-pages-deploy/cloud-native-app
+            echo "Cloud native app report copied successfully"
           else
-            echo "Creating placeholder for cloud-native-app..."
+            echo "Cloud native app report not found, creating placeholder..."
             mkdir -p gh-pages-deploy/cloud-native-app
-            echo "<!DOCTYPE html><html><head><title>Allure Reports - Cloud Native App</title></head><body><h1>Allure Test Reports - Cloud Native App</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/cloud-native-app/index.html
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - Cloud Native App</title></head><body><h1>Allure Test Reports - Cloud Native App</h1><p>Reports will be available after test execution.</p><p>Debug: No cloud-native-app-allure-report directory found in allure-reports/</p></body></html>" > gh-pages-deploy/cloud-native-app/index.html
           fi
           
           if [ -d "allure-reports/react-playwright-demo-allure-report" ]; then
-            echo "Copying react-playwright-demo report..."
+            echo "Found react-playwright-demo report, copying..."
             cp -r allure-reports/react-playwright-demo-allure-report gh-pages-deploy/react-playwright-demo
+            echo "React playwright demo report copied successfully"
           else
-            echo "Creating placeholder for react-playwright-demo..."
+            echo "React playwright demo report not found, creating placeholder..."
             mkdir -p gh-pages-deploy/react-playwright-demo
-            echo "<!DOCTYPE html><html><head><title>Allure Reports - React Playwright Demo</title></head><body><h1>Allure Test Reports - React Playwright Demo</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/react-playwright-demo/index.html
+            echo "<!DOCTYPE html><html><head><title>Allure Reports - React Playwright Demo</title></head><body><h1>Allure Test Reports - React Playwright Demo</h1><p>Reports will be available after test execution.</p><p>Debug: No react-playwright-demo-allure-report directory found in allure-reports/</p></body></html>" > gh-pages-deploy/react-playwright-demo/index.html
           fi
           
           # Copy Playwright reports

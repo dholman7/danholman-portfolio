@@ -112,10 +112,18 @@ jobs:
         run: |
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
-            yarn global add allure-commandline
+            # Install Allure using npm (more reliable than yarn global)
+            npm install -g allure-commandline
             echo "Generating Allure report for automation-framework..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"
+            # Verify the report was created
+            if [ -d "reports/allure-report" ]; then
+              echo "Allure report directory created successfully"
+              ls -la reports/allure-report/
+            else
+              echo "ERROR: Allure report directory was not created"
+            fi
           else
             echo "No Allure results found for automation-framework"
           fi
@@ -200,10 +208,18 @@ jobs:
         run: |
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
-            yarn global add allure-commandline
+            # Install Allure using npm (more reliable than yarn global)
+            npm install -g allure-commandline
             echo "Generating Allure report for ai-rulesets..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"
+            # Verify the report was created
+            if [ -d "reports/allure-report" ]; then
+              echo "Allure report directory created successfully"
+              ls -la reports/allure-report/
+            else
+              echo "ERROR: Allure report directory was not created"
+            fi
           else
             echo "No Allure results found for ai-rulesets"
           fi
@@ -280,10 +296,18 @@ jobs:
         run: |
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
-            yarn global add allure-commandline
+            # Install Allure using npm (more reliable than yarn global)
+            npm install -g allure-commandline
             echo "Generating Allure report for cloud-native-app..."
             allure generate reports/allure-results --clean -o reports/allure-report
             echo "Allure report generated successfully"
+            # Verify the report was created
+            if [ -d "reports/allure-report" ]; then
+              echo "Allure report directory created successfully"
+              ls -la reports/allure-report/
+            else
+              echo "ERROR: Allure report directory was not created"
+            fi
           else
             echo "No Allure results found for cloud-native-app"
           fi
