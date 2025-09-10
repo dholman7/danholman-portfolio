@@ -21,10 +21,12 @@ const registerSchema = z.object({
 type RegisterFormData = z.infer<typeof registerSchema>
 
 // Mock API functions
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockRegister = async (data: RegisterFormData) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
+  
+  // Log the registration attempt (using the data parameter)
+  console.log('Registration attempt for:', data.email)
   
   // Simulate random success/failure for demo
   if (Math.random() > 0.1) {
@@ -34,10 +36,12 @@ const mockRegister = async (data: RegisterFormData) => {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockLogin = async (email: string, password: string) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
+  
+  // Log the login attempt (using the parameters)
+  console.log('Login attempt for:', email, 'with password length:', password.length)
   
   // Simulate random success/failure for demo
   if (Math.random() > 0.2) {

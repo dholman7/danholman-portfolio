@@ -1,7 +1,9 @@
 // Mock API functions for testing
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockRegister = async (data: Record<string, unknown>) => {
   await new Promise(resolve => setTimeout(resolve, 100));
+  
+  // Use the data parameter to avoid unused variable warning
+  const hasData = Object.keys(data).length > 0;
   
   if (Math.random() > 0.1) {
     return { success: true, message: 'Account created successfully!' };
@@ -10,9 +12,12 @@ const mockRegister = async (data: Record<string, unknown>) => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockLogin = async (email: string, password: string) => {
   await new Promise(resolve => setTimeout(resolve, 100));
+  
+  // Use the parameters to avoid unused variable warnings
+  const isValidEmail = email.includes('@');
+  const hasPassword = password.length > 0;
   
   if (Math.random() > 0.2) {
     return { success: true, message: 'Login successful!' };
