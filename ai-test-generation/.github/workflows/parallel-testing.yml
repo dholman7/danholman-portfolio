@@ -44,7 +44,7 @@ jobs:
       - name: Generate test matrix
         id: generate-matrix
         run: |
-          python scripts/generate_test_matrix.py \
+          python ../automation-framework/scripts/generate_test_matrix.py \
             --scope "${{ github.event.inputs.test_scope || 'all' }}" \
             --output test_matrix.json
       
@@ -216,12 +216,12 @@ jobs:
           done
           
           # Create a simple aggregated report
-          python scripts/merge_junit_reports.py downloaded_artifacts merged_reports/parallel_test_results.xml
+          python ../automation-framework/scripts/merge_junit_reports.py downloaded_artifacts merged_reports/parallel_test_results.xml
         if: always()
       
       - name: Generate summary report
         run: |
-          python scripts/generate_test_summary.py \
+          python ../automation-framework/scripts/generate_test_summary.py \
             --input-dir downloaded_artifacts \
             --output merged_reports/test_summary.md
         if: always()

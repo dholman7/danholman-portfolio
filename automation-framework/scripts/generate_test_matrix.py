@@ -1,108 +1,186 @@
 #!/usr/bin/env python3
 """
-Test Matrix Generator for Parallel Testing
+Generate test matrix for parallel testing in GitHub Actions.
 
-This script generates test matrices for parallel execution in GitHub Actions.
-It demonstrates how to dynamically create test configurations based on
-available tests and desired scope.
-
-Usage:
-    python scripts/generate_test_matrix.py --scope all --output test_matrix.json
-    python scripts/generate_test_matrix.py --scope unit --output unit_matrix.json
-    python scripts/generate_test_matrix.py --scope e2e --output e2e_matrix.json
+This script creates a dynamic test matrix based on available test configurations,
+similar to the plans_matrix.yaml approach but for AI test generation framework.
 """
 
-import argparse
 import json
-import sys
+import argparse
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import List, Dict, Any
 
-# Add the project root to the Python path
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
 
-from tests.parallel_testing_example import ParallelTestMatrixGenerator
+def generate_test_matrix(scope: str = "all") -> List[Dict[str, Any]]:
+    """
+    Generate test matrix based on scope and available test configurations.
+    
+    Args:
+        scope: Test scope (all, python, typescript, api, contract)
+        
+    Returns:
+        List of test configurations for matrix strategy
+    """
+    # Base test configurations
+    test_configs = []
+    
+    # Python testing configurations
+    if scope in ["all", "python"]:
+        python_configs = [
+            {
+                "type": "unit",
+                "framework": "pytest",
+                "language": "python",
+                "category": "core",
+                "test_path": "tests/unit",
+                "markers": ["unit", "python"]
+            },
+            {
+                "type": "component",
+                "framework": "pytest", 
+                "language": "python",
+                "category": "integration",
+                "test_path": "tests/component",
+                "markers": ["component", "python"]
+            },
+            {
+                "type": "integration",
+                "framework": "pytest",
+                "language": "python", 
+                "category": "api",
+                "test_path": "tests/integration",
+                "markers": ["integration", "api", "python"]
+            },
+            {
+                "type": "e2e",
+                "framework": "pytest",
+                "language": "python",
+                "category": "end-to-end",
+                "test_path": "tests/e2e",
+                "markers": ["e2e", "python"]
+            }
+        ]
+        test_configs.extend(python_configs)
+    
+    # TypeScript/JavaScript testing configurations
+    if scope in ["all", "typescript"]:
+        typescript_configs = [
+            {
+                "type": "unit",
+                "framework": "jest",
+                "language": "typescript",
+                "category": "core",
+                "test_path": "tests/unit",
+                "markers": ["unit", "typescript"]
+            },
+            {
+                "type": "integration",
+                "framework": "jest",
+                "language": "typescript",
+                "category": "api",
+                "test_path": "tests/integration", 
+                "markers": ["integration", "api", "typescript"]
+            }
+        ]
+        test_configs.extend(typescript_configs)
+    
+    # API testing configurations
+    if scope in ["all", "api"]:
+        api_configs = [
+            {
+                "type": "api",
+                "framework": "pytest",
+                "language": "python",
+                "category": "rest",
+                "test_path": "tests/integration",
+                "markers": ["api", "rest", "python"]
+            },
+            {
+                "type": "api",
+                "framework": "pytest", 
+                "language": "python",
+                "category": "graphql",
+                "test_path": "tests/integration",
+                "markers": ["api", "graphql", "python"]
+            }
+        ]
+        test_configs.extend(api_configs)
+    
+    # Contract testing configurations
+    if scope in ["all", "contract"]:
+        contract_configs = [
+            {
+                "type": "contract",
+                "framework": "pytest",
+                "language": "python",
+                "category": "pact",
+                "test_path": "tests/integration",
+                "markers": ["contract", "pact", "python"]
+            }
+        ]
+        test_configs.extend(contract_configs)
+    
+    # Add environment-specific configurations
+    environments = ["staging", "production"]
+    expanded_configs = []
+    
+    for config in test_configs:
+        for env in environments:
+            expanded_config = config.copy()
+            expanded_config["environment"] = env
+            expanded_config["job_name"] = f"{config['type']}_{config['framework']}_{config['language']}_{config['category']}_{env}"
+            expanded_configs.append(expanded_config)
+    
+    return expanded_configs
 
 
 def main():
-    """Main function to generate test matrix."""
-    parser = argparse.ArgumentParser(description='Generate test matrix for parallel execution')
+    """Main function to generate and save test matrix."""
+    parser = argparse.ArgumentParser(description="Generate test matrix for parallel testing")
     parser.add_argument(
-        '--scope',
-        choices=['all', 'unit', 'integration', 'e2e', 'performance', 'api', 'ui'],
-        default='all',
-        help='Test scope to include in matrix'
+        "--scope",
+        default="all",
+        choices=["all", "python", "typescript", "api", "contract"],
+        help="Test scope to include in matrix"
     )
     parser.add_argument(
-        '--output',
-        default='test_matrix.json',
-        help='Output file for the test matrix'
+        "--output",
+        default="test_matrix.json",
+        help="Output file for test matrix JSON"
     )
     parser.add_argument(
-        '--base-path',
-        default='tests',
-        help='Base path to search for tests'
-    )
-    parser.add_argument(
-        '--verbose',
-        action='store_true',
-        help='Enable verbose output'
+        "--max-jobs",
+        type=int,
+        default=20,
+        help="Maximum number of parallel jobs"
     )
     
     args = parser.parse_args()
     
-    if args.verbose:
-        print(f"Generating test matrix for scope: {args.scope}")
-        print(f"Base path: {args.base_path}")
-        print(f"Output file: {args.output}")
+    # Generate test matrix
+    matrix = generate_test_matrix(args.scope)
     
-    # Create generator and discover tests
-    generator = ParallelTestMatrixGenerator(args.base_path)
-    generator.discover_tests()
+    # Limit number of jobs if specified
+    if len(matrix) > args.max_jobs:
+        print(f"Warning: Generated {len(matrix)} jobs, limiting to {args.max_jobs}")
+        matrix = matrix[:args.max_jobs]
     
-    # Generate and save matrix
-    generator.save_matrix(args.output, args.scope)
+    # Save matrix to file
+    output_path = Path(args.output)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     
-    # Load and display summary
-    with open(args.output, 'r') as f:
-        matrix = json.load(f)
+    with open(output_path, 'w') as f:
+        json.dump(matrix, f, indent=2)
     
-    print(f"\n✅ Generated test matrix with {len(matrix)} configurations")
-    print(f"📁 Saved to: {args.output}")
+    print(f"Generated test matrix with {len(matrix)} configurations:")
+    for i, config in enumerate(matrix[:5]):  # Show first 5
+        print(f"  {i+1}. {config['job_name']}")
     
-    if args.verbose:
-        print("\n📋 Matrix Summary:")
-        test_types = {}
-        frameworks = {}
-        environments = {}
-        
-        for config in matrix:
-            test_type = config['test_type']
-            framework = config['framework']
-            environment = config['environment']
-            
-            test_types[test_type] = test_types.get(test_type, 0) + 1
-            frameworks[framework] = frameworks.get(framework, 0) + 1
-            environments[environment] = environments.get(environment, 0) + 1
-        
-        print(f"  Test Types: {dict(test_types)}")
-        print(f"  Frameworks: {dict(frameworks)}")
-        print(f"  Environments: {dict(environments)}")
-        
-        if args.scope == 'e2e':
-            browsers = {}
-            devices = {}
-            for config in matrix:
-                if config.get('browser'):
-                    browsers[config['browser']] = browsers.get(config['browser'], 0) + 1
-                if config.get('device'):
-                    devices[config['device']] = devices.get(config['device'], 0) + 1
-            
-            if browsers:
-                print(f"  Browsers: {dict(browsers)}")
-            if devices:
-                print(f"  Devices: {dict(devices)}")
+    if len(matrix) > 5:
+        print(f"  ... and {len(matrix) - 5} more")
+    
+    print(f"Matrix saved to: {output_path.absolute()}")
 
 
 if __name__ == "__main__":

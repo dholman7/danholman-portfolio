@@ -343,7 +343,7 @@ jobs:
       
       - name: Aggregate test results
         run: |
-          python scripts/aggregate_results.py artifacts/ reports/
+          python scripts/generate_test_summary.py --input-dir artifacts/ --output reports/test_summary.md
       
       - name: Upload aggregated results
         uses: actions/upload-artifact@v4

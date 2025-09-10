@@ -373,6 +373,35 @@ python scripts/demo_parallel_testing.py --workflow-only
 
 For detailed parallel testing documentation, see [docs/parallel-testing.md](docs/parallel-testing.md).
 
+### Utility Scripts
+
+The framework includes several utility scripts for test management and reporting:
+
+```bash
+# Generate test matrix for parallel execution
+python scripts/generate_test_matrix.py --scope all --output test_matrix.json
+
+# Generate comprehensive test summary
+python scripts/generate_test_summary.py --input-dir test_results --output summary.md
+
+# Merge JUnit XML reports from multiple test runs
+python scripts/merge_junit_reports.py test_results/ merged_reports/combined_results.xml
+
+# Redact sensitive information from test reports
+python scripts/redact.py --input test_report.html --output clean_report.html
+
+# Run parallel testing demo
+python scripts/parallel_testing_demo.py
+```
+
+**Available Scripts:**
+- **`generate_test_matrix.py`** - Creates test execution matrices for parallel testing
+- **`generate_test_summary.py`** - Generates comprehensive test execution summaries
+- **`merge_junit_reports.py`** - Combines multiple JUnit XML reports into single report
+- **`redact.py`** - Removes sensitive information from test reports and logs
+- **`parallel_testing_demo.py`** - Demonstrates parallel testing matrix generation
+- **`demo_parallel_testing.py`** - Interactive demo of parallel testing capabilities
+
 ## ⚙️ Configuration
 
 ### Environment Variables
