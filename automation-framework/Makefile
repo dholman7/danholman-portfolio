@@ -212,7 +212,6 @@ generate-test-data: ## Generate test data using factories
 
 clean-test-data: ## Clean generated test data
 	rm -rf test_data/generated/
-	rm -rf fixtures/generated/
 
 # Database Operations
 db-migrate: ## Run database migrations

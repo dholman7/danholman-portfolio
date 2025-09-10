@@ -94,7 +94,6 @@ automation-framework/
 │   ├── test_ui_examples.py      # UI test examples
 │   └── test_performance.py      # Performance test examples
 ├── test_data/                    # Test data files
-├── fixtures/                     # Test fixtures
 ├── reports/                      # Test reports
 ├── conftest.py                  # Pytest configuration
 ├── pytest.ini                  # Pytest settings
