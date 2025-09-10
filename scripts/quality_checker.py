@@ -23,6 +23,7 @@ from quality_checker import QualityChecker
 from readme_validator import ReadmeValidator
 from workflow_validator import WorkflowValidator
 from test_validator import TestValidator
+from version_validator import VersionValidator
 # Linting is handled separately in each module's CI/CD
 from issue_fixer import IssueFixer
 
@@ -33,6 +34,7 @@ def main():
     parser.add_argument("--readmes-only", action="store_true", help="Check only README files")
     parser.add_argument("--workflows-only", action="store_true", help="Check only GitHub workflows")
     parser.add_argument("--tests-only", action="store_true", help="Check only test execution")
+    parser.add_argument("--versions-only", action="store_true", help="Check only version consistency")
     parser.add_argument("--fix", action="store_true", help="Automatically fix issues where possible")
     parser.add_argument("--export", help="Export results to JSON file")
     parser.add_argument("--fail-on-error", action="store_true", help="Exit with error code if critical issues found")
@@ -68,6 +70,12 @@ def main():
         checker.all_issues = issues + allure_issues
         checker._print_validation_results("Tests", issues)
         checker._print_validation_results("Allure", allure_issues)
+    elif args.versions_only:
+        print("🔢 Validating version consistency...")
+        version_validator = VersionValidator(str(portfolio_root))
+        issues = version_validator.validate_all_versions()
+        checker.all_issues = issues
+        checker._print_validation_results("Versions", issues)
     else:
         # Run all checks including linting
         print("🔍 Running comprehensive quality checks...")
@@ -96,6 +104,13 @@ def main():
         allure_issues = checker.test_validator.validate_allure_reporting()
         checker.all_issues.extend(allure_issues)
         checker._print_validation_results("Allure", allure_issues)
+        
+        # Run version validation
+        print("\n🔢 Validating version consistency...")
+        version_validator = VersionValidator(str(portfolio_root))
+        version_issues = version_validator.validate_all_versions()
+        checker.all_issues.extend(version_issues)
+        checker._print_validation_results("Versions", version_issues)
         
     
     # Apply fixes if requested

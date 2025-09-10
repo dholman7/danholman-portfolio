@@ -17,6 +17,7 @@ on:
         - readmes
         - workflows
         - tests
+        - versions
         - fix
 
 jobs:
@@ -70,6 +71,9 @@ jobs:
             ;;
           "tests")
             python scripts/quality_checker.py --tests-only
+            ;;
+          "versions")
+            python scripts/quality_checker.py --versions-only
             ;;
           "fix")
             python scripts/quality_checker.py --fix
