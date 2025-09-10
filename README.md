@@ -1,17 +1,12 @@
 # Dan Holman – Software Developer in Test Portfolio
 
-Welcome to my professional portfolio!
-I'm a **Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience
-in building automation frameworks, cloud-native solutions, and quality platforms at scale.
-
-This repo highlights examples of my work in **test automation, AWS cloud development, and AI-powered testing**.
-Each folder contains code samples or writeups demonstrating skills I use daily to improve developer velocity, reduce defects, and increase reliability.
+**Senior Software Developer in Test (SDET) & Automation Architect** with 13+ years of experience building automation frameworks, cloud-native solutions, and quality platforms at scale.
 
 ## 🧪 **[Live Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)**
 
-**View comprehensive test results, Allure reports, and coverage analysis from all modules:**
+**Comprehensive test results, Allure reports, and coverage analysis:**
 - **Combined Allure Reports**: Unified test analytics across all modules
-- **Individual Module Reports**: Detailed test results for each project
+- **Individual Module Reports**: Detailed test results for each project  
 - **Playwright Reports**: Interactive E2E test results with screenshots and videos
 - **Coverage Reports**: Code coverage analysis and visualization
 - **Real-time Updates**: Automatically updated on every CI/CD run
@@ -74,11 +69,10 @@ Technical writeups and lessons learned:
 
 ## 🔧 Tech Stack
 
-- **Languages:** Python, TypeScript, GraphQL, JavaScript
-- **Frontend:** React 18, Vite, Tailwind CSS, react-hook-form, Zod
-- **Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog
-- **Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, requests, Allure, Coverage Reports
-- **Other:** Docker, SQL, Git
+**Languages:** Python, TypeScript, GraphQL, JavaScript  
+**Cloud & DevOps:** AWS (Lambda, S3, CloudFormation, Step Functions, RDS), GitHub Actions, Jenkins, TeamCity, Datadog  
+**Testing Tools:** pytest, Playwright, Selenium, Pact, Jest, Allure, Coverage Reports  
+**Frontend:** React 19, Vite, Tailwind CSS, react-hook-form, Zod
 
 ## 🚀 CI/CD Pipeline
 
