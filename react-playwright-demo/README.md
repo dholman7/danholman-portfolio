@@ -176,15 +176,11 @@ nvm use 20.19.0
 
 3. **Install dependencies**
    ```bash
-   npm install
-   # or with yarn
    yarn install
    ```
 
 4. **Start development server**
    ```bash
-   npm run dev
-   # or with yarn
    yarn dev
    ```
 
@@ -195,22 +191,22 @@ nvm use 20.19.0
 
 1. **Run type checking**
    ```bash
-   npm run type-check
+   yarn type-check
    ```
 
 2. **Run linting**
    ```bash
-   npm run lint
+   yarn lint
    ```
 
 3. **Run tests**
    ```bash
-   npm run test
+   yarn test
    ```
 
 4. **Build the project**
    ```bash
-   npm run build
+   yarn build
    ```
 
 ## 🧪 Testing
@@ -218,28 +214,28 @@ nvm use 20.19.0
 ### E2E Tests with Playwright
 ```bash
 # Run all E2E tests
-npm run test
+yarn test
 
 # Run tests with UI mode
-npm run test:ui
+yarn test:ui
 
 # Run tests in headed mode (see browser)
-npm run test:headed
+yarn test:headed
 
 # Debug tests
-npm run test:debug
+yarn test:debug
 ```
 
 ### Allure Reporting
 ```bash
 # Run tests and generate Allure report
-npm run test:allure
+yarn test:allure
 
 # Generate Allure report only
-npm run test:allure:generate
+yarn test:allure:generate
 
 # Open Allure report
-npm run test:allure:open
+yarn test:allure:open
 ```
 
 ### Test Structure
@@ -250,7 +246,7 @@ npm run test:allure:open
 ### Test Coverage
 ```bash
 # Run tests with coverage
-npm run test:coverage
+yarn test:coverage
 ```
 
 ### Test Types
@@ -273,10 +269,10 @@ The application automatically deploys to a preview environment on every pull req
 ### Manual Deployment
 ```bash
 # Build the application
-npm run build
+yarn build
 
 # Preview the build locally
-npm run preview
+yarn preview
 
 # Deploy to your hosting platform
 # (e.g., Vercel, Netlify, AWS S3, etc.)

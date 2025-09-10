@@ -18,36 +18,36 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: 'react-playwright-demo/package-lock.json'
+        cache: 'yarn'
+        cache-dependency-path: 'react-playwright-demo/yarn.lock'
         
     - name: Install dependencies
       working-directory: ./react-playwright-demo
-      run: npm ci
+      run: yarn install --frozen-lockfile
       
     - name: Type check
       working-directory: ./react-playwright-demo
-      run: npm run type-check
+      run: yarn type-check
       
     - name: Lint code
       working-directory: ./react-playwright-demo
-      run: npm run lint
+      run: yarn lint
       
     - name: Build application
       working-directory: ./react-playwright-demo
-      run: npm run build
+      run: yarn build
       
     - name: Run unit tests
       working-directory: ./react-playwright-demo
-      run: npm run test:coverage
+      run: yarn test:coverage
       
     - name: Run Playwright tests
       working-directory: ./react-playwright-demo
-      run: npm run test:e2e
+      run: yarn test:e2e
       
     - name: Generate Allure report
       working-directory: ./react-playwright-demo
-      run: npm run test:allure:generate
+      run: yarn test:allure:generate
       
     - name: Upload Playwright HTML report
       uses: actions/upload-artifact@v4
@@ -73,36 +73,15 @@ jobs:
         path: react-playwright-demo/coverage/
         retention-days: 30
       
-    - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: ./react-playwright-demo
-        scope: ${{ secrets.VERCEL_ORG_ID }}
-        
-    - name: Comment PR with preview URL
+    - name: Comment PR with build status
       uses: actions/github-script@v7
-      if: success()
+      if: always()
       with:
         script: |
-          const { data: comments } = await github.rest.issues.listComments({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-          });
+          const status = '${{ job.status }}' === 'success' ? '✅' : '❌';
+          const commentBody = `## ${status} **React Playwright Demo Build Status**
           
-          const botComment = comments.find(comment => 
-            comment.user.type === 'Bot' && 
-            comment.body.includes('🚀 **React Playwright Demo Preview**')
-          );
-          
-          const previewUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'Preview URL will be available shortly';
-          
-          const commentBody = `## 🚀 **React Playwright Demo Preview**
-          
-          **Preview URL:** ${previewUrl}
+          **Status:** ${status === '✅' ? 'Build successful' : 'Build failed'}
           
           ### 📋 **What's Changed**
           - React Playwright Demo application updated
@@ -120,22 +99,11 @@ jobs:
           - [Playwright Test Examples](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/react-playwright-demo/README.md#playwright-testing)
           
           ---
-          *This preview is automatically generated for PR #${context.issue.number}*`;
+          *This build status is automatically generated for PR #${context.issue.number}*`;
           
-          if (botComment) {
-            await github.rest.issues.updateComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: botComment.id,
-              body: commentBody
-            });
-          } else {
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: commentBody
-            });
-          }
-      env:
-        VERCEL_URL: ${{ steps.deploy.outputs.preview-url }}
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: commentBody
+          });

@@ -281,21 +281,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.19.0'
-          cache: 'npm'
-          cache-dependency-path: react-playwright-demo/package-lock.json
-      - run: npm ci
-      - run: npm run type-check
-      - run: npm run lint
-      - run: npm run build
+          cache: 'yarn'
+          cache-dependency-path: react-playwright-demo/yarn.lock
+      - run: yarn install --frozen-lockfile
+      - run: yarn type-check
+      - run: yarn lint
+      - run: yarn build
       - name: Run Unit Tests
         if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'unit' || github.event_name != 'workflow_dispatch' }}
-        run: npm run test:coverage
+        run: yarn test:coverage
       - name: Run Playwright Tests
         if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event_name != 'workflow_dispatch' }}
-        run: npm run test:e2e
+        run: yarn test:e2e
       - name: Generate Allure Report
         if: ${{ github.event.inputs.include_allure != false }}
-        run: npm run test:allure:generate
+        run: yarn test:allure:generate
       - name: Upload Playwright HTML Report
         if: always()
         uses: actions/upload-artifact@v4
