@@ -450,7 +450,7 @@ allure serve reports/allure-results --debug
 
 ## Examples
 
-See `tests/test_allure_example.py` for comprehensive examples of Allure integration with the AI test generation module.
+See `automation-framework/tests/test_allure_example.py` for comprehensive examples of Allure integration with the automation framework.
 
 ## Conclusion
 

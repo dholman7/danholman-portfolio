@@ -199,7 +199,6 @@ The local setup maintains test execution history for trend analysis:
 ```bash
 # Test specific modules
 make -C automation-framework test-allure
-make -C ai-test-generation test-allure  
 make -C cloud-native-app test-allure
 make -C react-playwright-demo test-allure
 

@@ -584,6 +584,37 @@ make allure-docker-serve
 | `make allure-docker-generate` | Generate Allure reports using Docker |
 | `make allure-docker-clean` | Clean Docker-based Allure containers |
 
+### Allure Example Tests
+
+The framework includes comprehensive Allure example tests demonstrating advanced reporting capabilities:
+
+```bash
+# Run Allure example tests
+pytest tests/test_allure_example.py -v --allure-results-dir=allure-results
+
+# Generate Allure report from examples
+allure generate allure-results --clean -o allure-report
+allure serve allure-results
+```
+
+**Example Features Demonstrated:**
+- **AI Test Generation**: Simulated AI-powered test case generation with detailed reporting
+- **Template Processing**: Test template processing with step-by-step documentation
+- **YAML Configuration**: YAML configuration parsing and validation
+- **Prompt Engineering**: AI prompt generation and validation
+- **Performance Testing**: Generation performance metrics and memory usage
+- **Error Handling**: Comprehensive error handling and validation
+- **Integration Testing**: Full pipeline testing with end-to-end validation
+- **Custom Markers**: Custom pytest markers for test categorization
+
+**Allure Features Showcased:**
+- **Epics, Features, Stories**: Hierarchical test organization
+- **Steps and Attachments**: Detailed step documentation with file attachments
+- **Severity Levels**: Critical, Normal, Trivial test prioritization
+- **Tags and Markers**: Flexible test categorization and filtering
+- **JSON/YAML Attachments**: Rich data visualization in reports
+- **Performance Metrics**: Execution time and memory usage tracking
+
 ## 🚀 Running Tests
 
 ### Basic Test Execution

@@ -236,6 +236,17 @@ markers = [
     "low: Low priority tests",
     "docker_integration: Docker-based integration tests",
     "expect_failure: Tests that are expected to fail for demonstration purposes",
+    "ai_generated: AI-generated test cases",
+    "test_generation: Test generation functionality",
+    "ai: AI-related tests",
+    "generation: Test generation tests",
+    "templates: Template processing tests",
+    "yaml: YAML configuration tests",
+    "prompts: Prompt engineering tests",
+    "validation: Test validation tests",
+    "error_handling: Error handling tests",
+    "pipeline: Full pipeline tests",
+    "custom_markers: Custom marker tests",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

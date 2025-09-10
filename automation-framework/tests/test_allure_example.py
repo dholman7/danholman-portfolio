@@ -1,284 +1,347 @@
 """
-Example test file demonstrating Allure reporting capabilities.
-This file showcases various Allure features and annotations.
+Example test file demonstrating Allure reporting capabilities for AI Test Generation.
+This file showcases various Allure features specific to AI test generation.
 """
 
 import pytest
 import allure
-from typing import Dict, Any
+from typing import Dict, Any, List
 import time
 import random
+import json
 
 
-@allure.epic("Test Automation Framework")
+@allure.epic("AI Test Generation")
 @allure.feature("Allure Reporting")
-class TestAllureExample:
-    """Example test class demonstrating Allure reporting features."""
+class TestAllureAIExample:
+    """Example test class demonstrating Allure reporting features for AI test generation."""
 
-    @allure.story("Basic Test Reporting")
-    @allure.title("Simple passing test")
-    @allure.description("This test demonstrates basic Allure reporting with a simple assertion.")
+    @allure.story("AI Test Generation")
+    @allure.title("Generate test cases using AI")
+    @allure.description("This test demonstrates AI-powered test case generation with Allure reporting.")
     @allure.severity(allure.severity_level.CRITICAL)
-    @allure.tag("smoke", "regression")
-    def test_simple_passing(self):
-        """Test that demonstrates basic Allure reporting."""
-        with allure.step("Verify basic assertion"):
-            assert 1 + 1 == 2
+    @allure.tag("ai", "generation", "smoke")
+    def test_ai_test_generation(self):
+        """Test that demonstrates AI test generation."""
+        with allure.step("Initialize AI test generator"):
+            generator_config = {
+                "model": "gpt-4",
+                "temperature": 0.7,
+                "max_tokens": 1000
+            }
+            allure.attach(json.dumps(generator_config, indent=2), 
+                         "Generator Configuration", allure.attachment_type.JSON)
 
-    @allure.story("Test with Steps")
-    @allure.title("Test with multiple steps")
-    @allure.description("This test demonstrates how to use Allure steps for better test organization.")
+        with allure.step("Generate test cases"):
+            # Simulate AI test generation
+            generated_tests = [
+                "def test_user_login():",
+                "def test_user_registration():",
+                "def test_password_reset():"
+            ]
+            allure.attach("\n".join(generated_tests), 
+                         "Generated Test Cases", allure.attachment_type.TEXT)
+
+        with allure.step("Validate generated tests"):
+            assert len(generated_tests) > 0
+            assert all("def test_" in test for test in generated_tests)
+
+    @allure.story("Template Processing")
+    @allure.title("Process test templates")
+    @allure.description("This test demonstrates template processing with Allure reporting.")
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("functional")
-    def test_with_steps(self):
-        """Test that demonstrates Allure steps."""
-        with allure.step("Setup test data"):
-            data = {"user_id": 123, "username": "testuser"}
-            allure.attach(str(data), "Test Data", allure.attachment_type.JSON)
+    @allure.tag("templates", "processing")
+    def test_template_processing(self):
+        """Test that demonstrates template processing."""
+        with allure.step("Load template file"):
+            template_content = """
+def test_{{test_name}}():
+    \"\"\"{{test_description}}\"\"\"
+    # Test implementation
+    assert {{assertion}}
+            """.strip()
+            allure.attach(template_content, "Template Content", allure.attachment_type.TEXT)
 
-        with allure.step("Validate user data"):
-            assert data["user_id"] == 123
-            assert data["username"] == "testuser"
+        with allure.step("Process template with data"):
+            template_data = {
+                "test_name": "user_authentication",
+                "test_description": "Test user authentication functionality",
+                "assertion": "user.is_authenticated"
+            }
+            allure.attach(json.dumps(template_data, indent=2), 
+                         "Template Data", allure.attachment_type.JSON)
 
-        with allure.step("Cleanup test data"):
-            data.clear()
+        with allure.step("Generate final test"):
+            processed_test = template_content.replace("{{test_name}}", template_data["test_name"])
+            processed_test = processed_test.replace("{{test_description}}", template_data["test_description"])
+            processed_test = processed_test.replace("{{assertion}}", template_data["assertion"])
+            
+            allure.attach(processed_test, "Processed Test", allure.attachment_type.TEXT)
 
-    @allure.story("Test with Attachments")
-    @allure.title("Test with various attachments")
-    @allure.description("This test demonstrates different types of attachments in Allure reports.")
+        assert "def test_user_authentication" in processed_test
+
+    @allure.story("YAML Configuration")
+    @allure.title("Process YAML configuration files")
+    @allure.description("This test demonstrates YAML configuration processing with Allure reporting.")
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("reporting")
-    def test_with_attachments(self):
-        """Test that demonstrates various attachment types."""
-        # Text attachment
-        allure.attach("This is a text attachment", "Text Content", allure.attachment_type.TEXT)
+    @allure.tag("yaml", "configuration")
+    def test_yaml_processing(self):
+        """Test that demonstrates YAML processing."""
+        with allure.step("Load YAML configuration"):
+            yaml_config = """
+test_suite:
+  name: "API Tests"
+  description: "Generated API test suite"
+  tests:
+    - name: "test_get_users"
+      method: "GET"
+      endpoint: "/api/users"
+      expected_status: 200
+    - name: "test_create_user"
+      method: "POST"
+      endpoint: "/api/users"
+      expected_status: 201
+            """.strip()
+            allure.attach(yaml_config, "YAML Configuration", allure.attachment_type.YAML)
 
-        # JSON attachment
-        json_data = {"key": "value", "number": 42, "boolean": True}
-        allure.attach(str(json_data), "JSON Data", allure.attachment_type.JSON)
+        with allure.step("Parse YAML configuration"):
+            # Simulate YAML parsing
+            parsed_config = {
+                "test_suite": {
+                    "name": "API Tests",
+                    "description": "Generated API test suite",
+                    "tests": [
+                        {"name": "test_get_users", "method": "GET", "endpoint": "/api/users", "expected_status": 200},
+                        {"name": "test_create_user", "method": "POST", "endpoint": "/api/users", "expected_status": 201}
+                    ]
+                }
+            }
+            allure.attach(json.dumps(parsed_config, indent=2), 
+                         "Parsed Configuration", allure.attachment_type.JSON)
 
-        # HTML attachment
-        html_content = "<h1>Test Report</h1><p>This is HTML content</p>"
-        allure.attach(html_content, "HTML Content", allure.attachment_type.HTML)
+        with allure.step("Validate configuration"):
+            assert "test_suite" in parsed_config
+            assert len(parsed_config["test_suite"]["tests"]) == 2
 
-        # CSV attachment
-        csv_content = "Name,Age,City\nJohn,25,New York\nJane,30,London"
-        allure.attach(csv_content, "CSV Data", allure.attachment_type.CSV)
-
-        assert True
-
-    @allure.story("Test with Parameters")
-    @allure.title("Parameterized test")
-    @allure.description("This test demonstrates parameterized testing with Allure.")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("parameterized")
-    @pytest.mark.parametrize("input_value,expected", [
-        (1, 2),
-        (2, 4),
-        (3, 6),
-        (4, 8),
-        (5, 10)
-    ])
-    def test_parameterized(self, input_value: int, expected: int):
-        """Test that demonstrates parameterized testing."""
-        with allure.step(f"Calculate result for input {input_value}"):
-            result = input_value * 2
-            allure.attach(f"Input: {input_value}, Result: {result}, Expected: {expected}", 
-                         "Calculation Details", allure.attachment_type.TEXT)
-
-        with allure.step("Verify result"):
-            assert result == expected
-
-    @allure.story("Test with Dynamic Title")
-    @allure.title("Dynamic test title based on environment")
-    @allure.description("This test demonstrates dynamic test titles.")
-    @allure.severity(allure.severity_level.TRIVIAL)
-    @allure.tag("dynamic")
-    def test_dynamic_title(self):
-        """Test with dynamic title based on environment."""
-        import os
-        environment = os.getenv("TEST_ENVIRONMENT", "local")
-        
-        # Update test title dynamically
-        allure.dynamic.title(f"Test in {environment} environment")
-        
-        with allure.step(f"Verify environment is {environment}"):
-            assert environment in ["local", "dev", "staging", "prod"]
-
-    @allure.story("Test with Links")
-    @allure.title("Test with external links")
-    @allure.description("This test demonstrates how to add links to Allure reports.")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("links")
-    def test_with_links(self):
-        """Test that demonstrates external links in Allure reports."""
-        # Add issue link
-        allure.link("https://github.com/danholman/danholman-portfolio/issues/1",
-                   "Related Issue", "issue")
-        
-        # Add TMS link
-        allure.link("https://github.com/danholman/danholman-portfolio/issues/2", 
-                   "Test Management System", "tms")
-        
-        # Add custom link
-        allure.link("https://github.com/danholman/danholman-portfolio", 
-                   "Repository", "link")
-
-        assert True
-
-    @allure.story("Test with Categories")
-    @allure.title("Test that will be categorized")
-    @allure.description("This test demonstrates how tests are categorized in Allure reports.")
+    @allure.story("Prompt Engineering")
+    @allure.title("Generate prompts for AI")
+    @allure.description("This test demonstrates prompt engineering with Allure reporting.")
     @allure.severity(allure.severity_level.CRITICAL)
-    @allure.tag("categorization")
-    def test_with_categories(self):
-        """Test that demonstrates categorization."""
-        with allure.step("Perform test operation"):
-            # Simulate a test operation that should pass
-            result = True  # Make it deterministic for CI
-            
-            # Add some realistic test logic
-            test_data = {"status": "success", "count": 42}
-            assert test_data["status"] == "success"
-            assert test_data["count"] > 0
+    @allure.tag("prompts", "ai")
+    def test_prompt_generation(self):
+        """Test that demonstrates prompt generation."""
+        with allure.step("Create base prompt template"):
+            prompt_template = """
+Generate test cases for the following API endpoint:
+- Method: {{method}}
+- Endpoint: {{endpoint}}
+- Description: {{description}}
 
-        assert result
+Requirements:
+- Include positive and negative test cases
+- Use pytest framework
+- Include proper assertions
+- Add docstrings
+            """.strip()
+            allure.attach(prompt_template, "Prompt Template", allure.attachment_type.TEXT)
 
-    @allure.story("Performance Test")
-    @allure.title("Test with performance metrics")
-    @allure.description("This test demonstrates performance testing with Allure.")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("performance")
-    def test_performance(self):
-        """Test that demonstrates performance metrics."""
-        with allure.step("Measure execution time"):
-            start_time = time.time()
-            
-            # Simulate some work
-            time.sleep(0.1)
-            
-            end_time = time.time()
-            execution_time = end_time - start_time
-            
-            allure.attach(f"Execution time: {execution_time:.3f} seconds", 
-                         "Performance Metrics", allure.attachment_type.TEXT)
-
-        with allure.step("Verify performance requirements"):
-            assert execution_time < 1.0  # Should complete within 1 second
-
-    @allure.story("Test with Environment Info")
-    @allure.title("Test with environment information")
-    @allure.description("This test demonstrates environment information in Allure reports.")
-    @allure.severity(allure.severity_level.TRIVIAL)
-    @allure.tag("environment")
-    def test_environment_info(self):
-        """Test that demonstrates environment information."""
-        import platform
-        import sys
-        
-        with allure.step("Collect environment information"):
-            env_info = {
-                "Python Version": sys.version,
-                "Platform": platform.platform(),
-                "Architecture": platform.architecture(),
-                "Machine": platform.machine(),
-                "Processor": platform.processor()
+        with allure.step("Fill prompt with data"):
+            prompt_data = {
+                "method": "POST",
+                "endpoint": "/api/users",
+                "description": "Create a new user account"
             }
             
-            allure.attach(str(env_info), "Environment Information", allure.attachment_type.JSON)
+            filled_prompt = prompt_template.replace("{{method}}", prompt_data["method"])
+            filled_prompt = filled_prompt.replace("{{endpoint}}", prompt_data["endpoint"])
+            filled_prompt = filled_prompt.replace("{{description}}", prompt_data["description"])
+            
+            allure.attach(filled_prompt, "Filled Prompt", allure.attachment_type.TEXT)
 
+        with allure.step("Validate prompt"):
+            assert "POST" in filled_prompt
+            assert "/api/users" in filled_prompt
+            assert "Create a new user account" in filled_prompt
+
+    @allure.story("Test Validation")
+    @allure.title("Validate generated tests")
+    @allure.description("This test demonstrates test validation with Allure reporting.")
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("validation", "quality")
+    def test_validation(self):
+        """Test that demonstrates test validation."""
+        with allure.step("Generate test for validation"):
+            generated_test = """
+def test_create_user_success():
+    \"\"\"Test successful user creation.\"\"\"
+    user_data = {
+        "username": "testuser",
+        "email": "test@example.com",
+        "password": "securepassword"
+    }
+    
+    response = create_user(user_data)
+    
+    assert response.status_code == 201
+    assert response.json()["username"] == "testuser"
+    assert "id" in response.json()
+            """.strip()
+            allure.attach(generated_test, "Generated Test", allure.attachment_type.TEXT)
+
+        with allure.step("Validate test structure"):
+            validation_results = {
+                "has_function_def": "def test_" in generated_test,
+                "has_docstring": '"""' in generated_test,
+                "has_assertions": "assert" in generated_test,
+                "has_test_data": "user_data" in generated_test,
+                "has_api_call": "create_user" in generated_test
+            }
+            allure.attach(json.dumps(validation_results, indent=2), 
+                         "Validation Results", allure.attachment_type.JSON)
+
+        with allure.step("Check validation results"):
+            assert all(validation_results.values())
+
+    @allure.story("Performance Testing")
+    @allure.title("Test generation performance")
+    @allure.description("This test demonstrates performance testing for AI test generation.")
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("performance", "ai")
+    def test_generation_performance(self):
+        """Test that demonstrates performance metrics for AI generation."""
+        with allure.step("Measure generation time"):
+            start_time = time.time()
+            
+            # Simulate AI test generation
+            time.sleep(0.2)  # Simulate processing time
+            
+            end_time = time.time()
+            generation_time = end_time - start_time
+            
+            allure.attach(f"Generation time: {generation_time:.3f} seconds", 
+                         "Performance Metrics", allure.attachment_type.TEXT)
+
+        with allure.step("Measure memory usage"):
+            try:
+                import psutil
+                memory_usage = psutil.Process().memory_info().rss / 1024 / 1024  # MB
+                allure.attach(f"Memory usage: {memory_usage:.2f} MB", 
+                             "Memory Metrics", allure.attachment_type.TEXT)
+            except ImportError:
+                memory_usage = 0  # Fallback when psutil is not available
+                allure.attach("Memory usage: psutil not available", 
+                             "Memory Metrics", allure.attachment_type.TEXT)
+
+        with allure.step("Validate performance requirements"):
+            assert generation_time < 5.0  # Should complete within 5 seconds
+            if memory_usage > 0:  # Only check memory if psutil is available
+                assert memory_usage < 100  # Should use less than 100 MB
+
+    @allure.story("Error Handling")
+    @allure.title("Test error handling in generation")
+    @allure.description("This test demonstrates error handling in AI test generation.")
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.tag("error_handling", "robustness")
+    def test_error_handling(self):
+        """Test that demonstrates error handling."""
+        with allure.step("Test with invalid input"):
+            try:
+                # Simulate invalid input
+                invalid_input = None
+                if invalid_input is None:
+                    raise ValueError("Invalid input provided")
+            except ValueError as e:
+                allure.attach(str(e), "Error Message", allure.attachment_type.TEXT)
+                allure.attach("Error handling test passed", 
+                             "Test Result", allure.attachment_type.TEXT)
+
+        with allure.step("Test with malformed template"):
+            try:
+                # Simulate malformed template
+                malformed_template = "{{unclosed_template"
+                if "{{unclosed_template" in malformed_template:
+                    raise SyntaxError("Malformed template syntax")
+            except SyntaxError as e:
+                allure.attach(str(e), "Syntax Error", allure.attachment_type.TEXT)
+
+        # Test should pass as we're testing error handling
         assert True
 
-    @allure.story("Test with Screenshots")
-    @allure.title("Test with screenshot simulation")
-    @allure.description("This test demonstrates how to attach screenshots to Allure reports.")
+    @allure.story("Integration Testing")
+    @allure.title("Test full generation pipeline")
+    @allure.description("This test demonstrates the full AI test generation pipeline.")
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.tag("integration", "pipeline")
+    def test_full_pipeline(self):
+        """Test that demonstrates the full generation pipeline."""
+        with allure.step("Load configuration"):
+            config = {
+                "framework": "pytest",
+                "language": "python",
+                "test_type": "api",
+                "output_dir": "generated_tests"
+            }
+            allure.attach(json.dumps(config, indent=2), 
+                         "Pipeline Configuration", allure.attachment_type.JSON)
+
+        with allure.step("Generate test cases"):
+            # Simulate full pipeline
+            generated_files = [
+                "test_user_api.py",
+                "test_auth_api.py",
+                "test_product_api.py"
+            ]
+            allure.attach("\n".join(generated_files), 
+                         "Generated Files", allure.attachment_type.TEXT)
+
+        with allure.step("Validate output"):
+            assert len(generated_files) > 0
+            assert all(file.endswith(".py") for file in generated_files)
+
+    @allure.story("Custom Markers")
+    @allure.title("Test with custom AI markers")
+    @allure.description("This test demonstrates custom markers for AI test generation.")
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("screenshots")
-    def test_with_screenshots(self):
-        """Test that demonstrates screenshot attachments."""
-        with allure.step("Take screenshot before action"):
-            # Simulate screenshot data
-            screenshot_data = b"fake_screenshot_data"
-            allure.attach(screenshot_data, "Screenshot Before", allure.attachment_type.PNG)
-
-        with allure.step("Perform action"):
-            # Simulate some action
-            pass
-
-        with allure.step("Take screenshot after action"):
-            # Simulate screenshot data
-            screenshot_data = b"fake_screenshot_data_after"
-            allure.attach(screenshot_data, "Screenshot After", allure.attachment_type.PNG)
-
-        assert True
-
-    @allure.story("Test with Retry")
-    @allure.title("Test that demonstrates retry mechanism")
-    @allure.description("This test demonstrates retry mechanism with Allure reporting.")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("retry")
-    @pytest.mark.flaky(reruns=3, reruns_delay=1)
-    def test_with_retry(self):
-        """Test that demonstrates retry mechanism."""
-        with allure.step("Attempt test operation"):
-            # Simulate flaky test
-            success_rate = 0.7
-            if random.random() > success_rate:
-                raise AssertionError("Test failed, will be retried")
-
-        assert True
-
-    @allure.story("Test with Custom Markers")
-    @allure.title("Test with custom pytest markers")
-    @allure.description("This test demonstrates custom pytest markers with Allure.")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("markers")
-    @pytest.mark.smoke
-    @pytest.mark.regression
-    @pytest.mark.api
-    def test_with_custom_markers(self):
-        """Test that demonstrates custom pytest markers."""
-        with allure.step("Verify test markers"):
-            # This test has multiple markers: smoke, regression, api
+    @allure.tag("ai_generation", "custom_markers")
+    @pytest.mark.ai_generated
+    @pytest.mark.test_generation
+    def test_custom_markers(self):
+        """Test that demonstrates custom markers."""
+        with allure.step("Verify custom markers"):
+            # This test has custom markers: ai_generated, test_generation
             assert True
 
-    @allure.story("Test with Fixtures")
-    @allure.title("Test with pytest fixtures")
-    @allure.description("This test demonstrates pytest fixtures with Allure reporting.")
-    @allure.severity(allure.severity_level.NORMAL)
-    @allure.tag("fixtures")
-    def test_with_fixtures(self, sample_data: Dict[str, Any]):
-        """Test that demonstrates pytest fixtures."""
-        with allure.step("Use fixture data"):
-            allure.attach(str(sample_data), "Fixture Data", allure.attachment_type.JSON)
-            assert "key" in sample_data
-            assert sample_data["key"] == "value"
 
-
-@pytest.fixture
-def sample_data() -> Dict[str, Any]:
-    """Sample fixture for testing."""
-    return {"key": "value", "number": 42, "boolean": True}
-
-
-@allure.epic("Test Automation Framework")
+@allure.epic("AI Test Generation")
 @allure.feature("Allure Reporting")
 @allure.story("Test Suite Organization")
-class TestAllureSuite:
-    """Test suite demonstrating Allure organization features."""
+class TestAllureAISuite:
+    """Test suite demonstrating Allure organization features for AI test generation."""
 
-    @allure.title("Suite setup test")
-    @allure.description("This test demonstrates suite-level setup.")
+    @allure.title("AI Suite setup test")
+    @allure.description("This test demonstrates suite-level setup for AI tests.")
     @allure.severity(allure.severity_level.TRIVIAL)
-    def test_suite_setup(self):
-        """Test that demonstrates suite setup."""
-        with allure.step("Initialize suite"):
-            pass
+    def test_ai_suite_setup(self):
+        """Test that demonstrates AI suite setup."""
+        with allure.step("Initialize AI suite"):
+            ai_config = {
+                "model_loaded": True,
+                "templates_ready": True,
+                "generators_initialized": True
+            }
+            allure.attach(json.dumps(ai_config, indent=2), 
+                         "AI Suite Configuration", allure.attachment_type.JSON)
 
-    @allure.title("Suite teardown test")
-    @allure.description("This test demonstrates suite-level teardown.")
+    @allure.title("AI Suite teardown test")
+    @allure.description("This test demonstrates suite-level teardown for AI tests.")
     @allure.severity(allure.severity_level.TRIVIAL)
-    def test_suite_teardown(self):
-        """Test that demonstrates suite teardown."""
-        with allure.step("Cleanup suite"):
-            pass
+    def test_ai_suite_teardown(self):
+        """Test that demonstrates AI suite teardown."""
+        with allure.step("Cleanup AI suite"):
+            cleanup_results = {
+                "models_unloaded": True,
+                "templates_cleared": True,
+                "generators_stopped": True
+            }
+            allure.attach(json.dumps(cleanup_results, indent=2), 
+                         "Cleanup Results", allure.attachment_type.JSON)
