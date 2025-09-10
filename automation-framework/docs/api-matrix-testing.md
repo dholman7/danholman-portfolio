@@ -81,6 +81,39 @@ The test matrix (`students_courses_test_matrix.json`) defines test scenarios wit
 5. **Artifact Management**: Uploads and consolidates test results
 6. **PR Integration**: Comments on PRs with test results summary
 
+### Parallel Execution Strategy
+
+**Important Note**: This solution uses GitHub Actions matrix strategy for parallel execution, not pytest-xdist.
+
+#### Why Not pytest-xdist?
+
+- **GitHub Actions Limitation**: pytest-xdist does not work reliably in GitHub Actions environments
+- **Matrix Strategy**: GitHub Actions matrix provides better parallelization for CI/CD
+- **Resource Management**: Matrix jobs run on separate runners, providing better isolation
+- **Scalability**: Matrix strategy scales better for large test suites
+
+#### Parallel Execution Approach
+
+1. **GitHub Actions Matrix**: Each test configuration runs in a separate job
+2. **Concurrent Jobs**: Up to 10 jobs can run simultaneously (configurable)
+3. **Resource Isolation**: Each job has its own runner and environment
+4. **Independent Execution**: Jobs can fail independently without affecting others
+
+#### Local Development
+
+For local development, you can still use pytest-xdist:
+
+```bash
+# Install pytest-xdist for local parallel execution
+pip install pytest-xdist
+
+# Run tests in parallel locally
+pytest tests/api/test_students_courses_api.py -n auto
+
+# Run specific tests in parallel
+pytest tests/api/test_students_courses_api.py -m "students and list" -n 4
+```
+
 ### Manual Workflow Dispatch
 
 You can manually trigger the workflow with these parameters:

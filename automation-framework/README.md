@@ -248,7 +248,7 @@ def test_list_students(self, api_client, test_data):
 ```
 
 **Features:**
-- ✅ **Parallel Execution**: GitHub Actions matrix strategy for high-scale parallel testing
+- ✅ **Parallel Execution**: GitHub Actions matrix strategy for high-scale parallel testing (note: pytest-xdist doesn't work in GitHub Actions)
 - ✅ **Dynamic Test Filtering**: Configurable test execution based on API type, environment, and scenario
 - ✅ **Comprehensive Reporting**: HTML, JUnit XML, and Allure reports with artifact management
 - ✅ **Multi-Environment Support**: Dev, staging, and production environment testing

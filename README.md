@@ -21,7 +21,7 @@ A comprehensive Python/TypeScript test automation framework showing:
 - Page Object design pattern
 - GraphQL & REST API testing
 - Contract testing with Pact
-- **API Matrix Testing**: Advanced parallel API testing with GitHub Actions matrix strategy
+- **API Matrix Testing**: Advanced parallel API testing with GitHub Actions matrix strategy (pytest-xdist alternative for CI/CD)
 - CI/CD integration with GitHub Actions
 
 ---
