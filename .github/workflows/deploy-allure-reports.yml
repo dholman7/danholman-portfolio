@@ -91,12 +91,16 @@ jobs:
               # Handle different artifact structures
               if [ -d "allure-reports/${module}-allure-report/${module}/reports/allure-report" ]; then
                 echo "Using nested structure: ${module}/reports/allure-report"
+                mkdir -p "processed-allure-reports/${module}"
                 cp -r "allure-reports/${module}-allure-report/${module}/reports/allure-report" "processed-allure-reports/${module}"
               elif [ -d "allure-reports/${module}-allure-report/reports/allure-report" ]; then
                 echo "Using reports structure: reports/allure-report"
+                mkdir -p "processed-allure-reports/${module}"
                 cp -r "allure-reports/${module}-allure-report/reports/allure-report" "processed-allure-reports/${module}"
               else
                 echo "Using direct structure: artifact contents"
+                # Create the target directory first
+                mkdir -p "processed-allure-reports/${module}"
                 # Copy all files from the artifact
                 find "allure-reports/${module}-allure-report" -name "*.html" -exec cp {} "processed-allure-reports/${module}/" \;
                 find "allure-reports/${module}-allure-report" -name "*.css" -exec cp {} "processed-allure-reports/${module}/" \;
