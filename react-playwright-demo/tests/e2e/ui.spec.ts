@@ -12,6 +12,15 @@ test.describe('UI Components and Responsiveness', () => {
     await allure.story('Element Visibility');
     await allure.severity('high');
     
+    // Ensure we're in registration mode (not login mode)
+    const loginToggle = page.locator('[data-testid="login-toggle"]');
+    if (await loginToggle.isVisible()) {
+      await loginToggle.click();
+    }
+    
+    // Wait for the form to be in registration mode
+    await page.waitForSelector('h1:has-text("Get started with HolmanTech")', { timeout: 5000 });
+    
     // Check main branding elements
     await expect(page.locator('h1:has-text("Get started with HolmanTech")')).toBeVisible();
     await expect(page.locator('text=Get started with HolmanTech')).toBeVisible();

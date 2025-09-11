@@ -12,6 +12,15 @@ test.describe('User Registration', () => {
     await allure.story('Registration Form Display');
     await allure.severity('critical');
     
+    // Ensure we're in registration mode (not login mode)
+    const loginToggle = page.locator('[data-testid="login-toggle"]');
+    if (await loginToggle.isVisible()) {
+      await loginToggle.click();
+    }
+    
+    // Wait for the form to be in registration mode
+    await page.waitForSelector('h2:has-text("Create your account")', { timeout: 5000 });
+    
     // Check if we're on the registration form - new UI uses h2 for form title
     await expect(page.locator('h2')).toContainText('Create your account');
     await expect(page.locator('[data-testid="first-name-input"]')).toBeVisible();
