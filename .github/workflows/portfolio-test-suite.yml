@@ -124,6 +124,7 @@ jobs:
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
+        id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
@@ -137,6 +138,7 @@ jobs:
           Ensure all tests can be collected and executed successfully."
           
       - name: Fix CI/CD Issues with Cursor
+        id: cursor-cicd-fixes
         if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
         timeout-minutes: 5
         env:
@@ -161,7 +163,7 @@ jobs:
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
           Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
-        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
+        if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
@@ -295,6 +297,7 @@ jobs:
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
+        id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
@@ -308,6 +311,7 @@ jobs:
           Ensure all tests can be collected and executed successfully."
           
       - name: Fix CI/CD Issues with Cursor
+        id: cursor-cicd-fixes
         if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
         timeout-minutes: 5
         env:
@@ -332,7 +336,7 @@ jobs:
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
           Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
-        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
+        if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
@@ -459,6 +463,7 @@ jobs:
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
+        id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
@@ -472,6 +477,7 @@ jobs:
           Ensure all tests can be collected and executed successfully."
           
       - name: Fix CI/CD Issues with Cursor
+        id: cursor-cicd-fixes
         if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
         timeout-minutes: 5
         env:
@@ -497,7 +503,7 @@ jobs:
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
           Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
-        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
+        if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           pytest --alluredir=reports/allure-results --cov=lambda --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v --tb=short || true
@@ -598,6 +604,7 @@ jobs:
           echo "Available test types: unit, integration, e2e"
           exit 0
       - name: Fix Test Failures with Cursor
+        id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         timeout-minutes: 5
         env:
@@ -612,6 +619,7 @@ jobs:
           Ensure all tests can be collected and executed successfully." || echo "Cursor CLI timeout or error - continuing workflow"
           
       - name: Fix CI/CD Issues with Cursor
+        id: cursor-cicd-fixes
         if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
         timeout-minutes: 5
         env:
@@ -637,7 +645,7 @@ jobs:
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
           Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
-        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
+        if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           yarn test:coverage || true
@@ -681,3 +689,24 @@ jobs:
           path: react-playwright-demo/coverage/
           retention-days: 30
           if-no-files-found: warn
+
+  deploy-reports:
+    name: Deploy Test Reports
+    runs-on: ubuntu-latest
+    needs: [automation-framework, ai-rulesets, cloud-native-app, react-playwright-demo]
+    if: always() && (needs.automation-framework.result == 'success' || needs.ai-rulesets.result == 'success' || needs.cloud-native-app.result == 'success' || needs.react-playwright-demo.result == 'success')
+    steps:
+      - name: Trigger Deploy Workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy-allure-reports.yml',
+              ref: 'main',
+              inputs: {
+                module: 'all'
+              }
+            });
+            console.log('Deploy workflow triggered successfully');

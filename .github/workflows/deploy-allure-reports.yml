@@ -43,7 +43,127 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download Allure Reports
+      - name: Download Allure Reports from Workflow Run
+        if: github.event_name == 'workflow_run'
+        run: |
+          echo "Downloading artifacts from workflow run: ${{ github.event.workflow_run.id }}"
+          
+          # Get workflow run artifacts
+          ARTIFACTS=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts")
+          
+          echo "Available artifacts:"
+          echo "$ARTIFACTS" | jq -r '.artifacts[] | "\(.name) - \(.size_in_bytes) bytes"'
+          
+          # Check if we have any artifacts
+          ARTIFACT_COUNT=$(echo "$ARTIFACTS" | jq '.artifacts | length')
+          echo "Found $ARTIFACT_COUNT artifacts"
+          
+          if [ "$ARTIFACT_COUNT" -eq 0 ]; then
+            echo "No artifacts found in workflow run. This might be because:"
+            echo "1. The workflow run failed before artifacts were uploaded"
+            echo "2. The artifacts have expired (default retention is 90 days)"
+            echo "3. The workflow run is still in progress"
+            echo "4. There's an issue with artifact upload in the source workflow"
+            echo "5. The workflow_run event doesn't have access to artifacts from the triggering workflow"
+            echo ""
+            echo "Creating placeholder directories and continuing with deployment..."
+            mkdir -p allure-reports coverage-reports playwright-reports
+            echo "Placeholder directories created"
+            exit 0
+          fi
+          
+          # Download allure report artifacts
+          mkdir -p allure-reports
+          ALLURE_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("allure-report")) | .name')
+          if [ -n "$ALLURE_ARTIFACTS" ]; then
+            echo "Found Allure report artifacts: $ALLURE_ARTIFACTS"
+            for artifact in $ALLURE_ARTIFACTS; do
+              echo "Downloading artifact: $artifact"
+              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
+              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
+                -o "$artifact.zip"
+              
+              # Extract artifact
+              unzip -q "$artifact.zip" -d "allure-reports/$artifact"
+              rm "$artifact.zip"
+              echo "Extracted $artifact to allure-reports/$artifact"
+            done
+          else
+            echo "No Allure report artifacts found"
+          fi
+          
+          # Download allure results artifacts
+          mkdir -p allure-results
+          ALLURE_RESULTS_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("allure-results")) | .name')
+          if [ -n "$ALLURE_RESULTS_ARTIFACTS" ]; then
+            echo "Found Allure results artifacts: $ALLURE_RESULTS_ARTIFACTS"
+            for artifact in $ALLURE_RESULTS_ARTIFACTS; do
+              echo "Downloading artifact: $artifact"
+              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
+              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
+                -o "$artifact.zip"
+              
+              # Extract artifact
+              unzip -q "$artifact.zip" -d "allure-results/$artifact"
+              rm "$artifact.zip"
+              echo "Extracted $artifact to allure-results/$artifact"
+            done
+          else
+            echo "No Allure results artifacts found"
+          fi
+          
+          # Download coverage report artifacts
+          mkdir -p coverage-reports
+          COVERAGE_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("coverage-report")) | .name')
+          if [ -n "$COVERAGE_ARTIFACTS" ]; then
+            echo "Found Coverage report artifacts: $COVERAGE_ARTIFACTS"
+            for artifact in $COVERAGE_ARTIFACTS; do
+              echo "Downloading artifact: $artifact"
+              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
+              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
+                -o "$artifact.zip"
+              
+              # Extract artifact
+              unzip -q "$artifact.zip" -d "coverage-reports/$artifact"
+              rm "$artifact.zip"
+              echo "Extracted $artifact to coverage-reports/$artifact"
+            done
+          else
+            echo "No Coverage report artifacts found"
+          fi
+          
+          # Download playwright report artifacts
+          mkdir -p playwright-reports
+          PLAYWRIGHT_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("playwright-report")) | .name')
+          if [ -n "$PLAYWRIGHT_ARTIFACTS" ]; then
+            echo "Found Playwright report artifacts: $PLAYWRIGHT_ARTIFACTS"
+            for artifact in $PLAYWRIGHT_ARTIFACTS; do
+              echo "Downloading artifact: $artifact"
+              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
+              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
+                -o "$artifact.zip"
+              
+              # Extract artifact
+              unzip -q "$artifact.zip" -d "playwright-reports/$artifact"
+              rm "$artifact.zip"
+              echo "Extracted $artifact to playwright-reports/$artifact"
+            done
+          else
+            echo "No Playwright report artifacts found"
+          fi
+
+      - name: Download Allure Reports (Manual/API Trigger)
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/download-artifact@v4
         with:
           pattern: "*-allure-report"
@@ -90,7 +210,8 @@ jobs:
           echo "=== All Downloaded Artifacts ==="
           find . -name "*.zip" -o -name "*allure*" -o -name "*coverage*" | head -20
           
-      - name: Download Playwright Reports
+      - name: Download Playwright Reports (Manual/API Trigger)
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/download-artifact@v4
         with:
           pattern: "*-playwright-report"
@@ -155,7 +276,8 @@ jobs:
             fi
           done
           
-      - name: Download Coverage Reports
+      - name: Download Coverage Reports (Manual/API Trigger)
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/download-artifact@v4
         with:
           pattern: "*-coverage-report"
@@ -246,56 +368,184 @@ jobs:
           <html>
           <head>
               <title>Test Results Dashboard</title>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
               <style>
-                  body { font-family: Arial, sans-serif; margin: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-                  .container { max-width: 800px; margin: 0 auto; text-align: center; }
-                  .module { margin: 20px 0; padding: 20px; background: white; color: #333; border-radius: 10px; }
-                  .module h2 { color: #2c3e50; }
-                  .module a { color: #007bff; text-decoration: none; padding: 10px 20px; background: #007bff; color: white; border-radius: 5px; display: inline-block; margin: 5px; }
-                  .module a:hover { background: #0056b3; }
+                  * { box-sizing: border-box; }
+                  body { 
+                      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+                      margin: 0; 
+                      padding: 0;
+                      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%); 
+                      color: #ffffff; 
+                      min-height: 100vh;
+                      line-height: 1.6;
+                  }
+                  .container { 
+                      max-width: 1200px; 
+                      margin: 0 auto; 
+                      padding: 2rem 1rem; 
+                      text-align: center; 
+                  }
+                  .header {
+                      margin-bottom: 3rem;
+                  }
+                  .header h1 { 
+                      font-size: 3rem; 
+                      font-weight: 700; 
+                      margin: 0 0 1rem 0;
+                      background: linear-gradient(45deg, #ffffff, #e0f2fe);
+                      -webkit-background-clip: text;
+                      -webkit-text-fill-color: transparent;
+                      background-clip: text;
+                  }
+                  .header p { 
+                      font-size: 1.25rem; 
+                      font-weight: 400; 
+                      opacity: 0.9;
+                      margin: 0;
+                  }
+                  .modules-grid {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                      gap: 2rem;
+                      margin-bottom: 3rem;
+                  }
+                  .module { 
+                      background: rgba(255, 255, 255, 0.95); 
+                      color: #1f2937; 
+                      border-radius: 16px; 
+                      padding: 2rem;
+                      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                      backdrop-filter: blur(10px);
+                      border: 1px solid rgba(255, 255, 255, 0.2);
+                      transition: all 0.3s ease;
+                  }
+                  .module:hover {
+                      transform: translateY(-5px);
+                      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                  }
+                  .module h2 { 
+                      color: #1e40af; 
+                      font-size: 1.5rem;
+                      font-weight: 600;
+                      margin: 0 0 1rem 0;
+                      display: flex;
+                      align-items: center;
+                      gap: 0.5rem;
+                  }
+                  .module p { 
+                      color: #6b7280; 
+                      margin: 0 0 1.5rem 0;
+                      font-size: 1rem;
+                  }
+                  .module-links {
+                      display: flex;
+                      flex-wrap: wrap;
+                      gap: 0.75rem;
+                      justify-content: center;
+                  }
+                  .module a { 
+                      color: #ffffff; 
+                      text-decoration: none; 
+                      padding: 0.75rem 1.5rem; 
+                      background: linear-gradient(135deg, #3b82f6, #2563eb);
+                      border-radius: 8px; 
+                      display: inline-block; 
+                      font-weight: 500;
+                      font-size: 0.875rem;
+                      transition: all 0.2s ease;
+                      border: none;
+                      cursor: pointer;
+                  }
+                  .module a:hover { 
+                      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                      transform: translateY(-1px);
+                      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+                  }
+                  .module a:active {
+                      transform: translateY(0);
+                  }
+                  .footer {
+                      margin-top: 3rem;
+                      padding: 2rem;
+                      background: rgba(255, 255, 255, 0.1);
+                      border-radius: 12px;
+                      backdrop-filter: blur(10px);
+                  }
+                  .footer p {
+                      margin: 0;
+                      opacity: 0.8;
+                      font-size: 0.875rem;
+                  }
+                  @media (max-width: 768px) {
+                      .container { padding: 1rem; }
+                      .header h1 { font-size: 2rem; }
+                      .header p { font-size: 1rem; }
+                      .modules-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+                      .module { padding: 1.5rem; }
+                      .module-links { flex-direction: column; align-items: center; }
+                      .module a { width: 100%; max-width: 200px; }
+                  }
               </style>
           </head>
           <body>
               <div class="container">
-                  <h1>🧪 Test Results Dashboard</h1>
-                  <p>Comprehensive test automation portfolio showcasing 10+ years of SDET expertise</p>
-                  
-                  <div class="module">
-                      <h2>📊 Combined Test Results</h2>
-                      <p>Unified Allure reports from all modules</p>
-                      <a href="combined-allure/">View Combined Allure Report</a>
+                  <div class="header">
+                      <h1>🧪 Test Results Dashboard</h1>
+                      <p>Comprehensive test automation portfolio showcasing 10+ years of SDET expertise</p>
                   </div>
                   
-                  <div class="module">
-                      <h2>🤖 Automation Framework</h2>
-                      <p>Python/TypeScript test automation framework</p>
-                      <a href="automation-framework/">View Allure Report</a>
-                      <a href="automation-framework/coverage/">View Coverage Report</a>
+                  <div class="modules-grid">
+                      <div class="module">
+                          <h2>📊 Combined Test Results</h2>
+                          <p>Unified Allure reports from all modules</p>
+                          <div class="module-links">
+                              <a href="combined-allure/">View Combined Allure Report</a>
+                          </div>
+                      </div>
+                      
+                      <div class="module">
+                          <h2>🤖 Automation Framework</h2>
+                          <p>Python/TypeScript test automation framework</p>
+                          <div class="module-links">
+                              <a href="automation-framework/">View Allure Report</a>
+                              <a href="automation-framework/coverage/">View Coverage Report</a>
+                          </div>
+                      </div>
+                      
+                      <div class="module">
+                          <h2>🧠 AI Rulesets</h2>
+                          <p>AI-powered development standards and quality tools</p>
+                          <div class="module-links">
+                              <a href="ai-rulesets/">View Allure Report</a>
+                              <a href="ai-rulesets/coverage/">View Coverage Report</a>
+                          </div>
+                      </div>
+                      
+                      <div class="module">
+                          <h2>☁️ Cloud Native App</h2>
+                          <p>AWS serverless demo with Lambda and DynamoDB</p>
+                          <div class="module-links">
+                              <a href="cloud-native-app/">View Allure Report</a>
+                              <a href="cloud-native-app/coverage/">View Coverage Report</a>
+                          </div>
+                      </div>
+                      
+                      <div class="module">
+                          <h2>⚛️ React Playwright Demo</h2>
+                          <p>Modern React/TypeScript frontend with E2E testing</p>
+                          <div class="module-links">
+                              <a href="react-playwright-demo/">View Allure Report</a>
+                              <a href="react-playwright-demo/playwright/">View Playwright Report</a>
+                              <a href="react-playwright-demo/coverage/">View Coverage Report</a>
+                          </div>
+                      </div>
                   </div>
                   
-                  <div class="module">
-                      <h2>🧠 AI Rulesets</h2>
-                      <p>AI-powered development standards and quality tools</p>
-                      <a href="ai-rulesets/">View Allure Report</a>
-                      <a href="ai-rulesets/coverage/">View Coverage Report</a>
+                  <div class="footer">
+                      <p>Reports are automatically updated on every successful build of the main branch.</p>
                   </div>
-                  
-                  <div class="module">
-                      <h2>☁️ Cloud Native App</h2>
-                      <p>AWS serverless demo with Lambda and DynamoDB</p>
-                      <a href="cloud-native-app/">View Allure Report</a>
-                      <a href="cloud-native-app/coverage/">View Coverage Report</a>
-                  </div>
-                  
-                  <div class="module">
-                      <h2>⚛️ React Playwright Demo</h2>
-                      <p>Modern React/TypeScript frontend with E2E testing</p>
-                      <a href="react-playwright-demo/">View Allure Report</a>
-                      <a href="react-playwright-demo/playwright/">View Playwright Report</a>
-                      <a href="react-playwright-demo/coverage/">View Coverage Report</a>
-                  </div>
-                  
-                  <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
               </div>
           </body>
           </html>
