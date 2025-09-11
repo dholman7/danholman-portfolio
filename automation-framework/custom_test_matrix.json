@@ -3,14 +3,15 @@
     "type": "smoke",
     "framework": "pytest",
     "language": "python",
-    "category": "critical",
+    "category": "student_critical",
     "environment": "production",
-    "job_name": "smoke_pytest_python_critical_production",
+    "job_name": "smoke_pytest_python_student_critical_production",
     "test_path": "tests/smoke",
     "markers": [
       "smoke",
       "critical",
-      "production"
+      "production",
+      "student"
     ],
     "timeout": 300,
     "retries": 2
@@ -19,16 +20,51 @@
     "type": "performance",
     "framework": "pytest",
     "language": "python",
-    "category": "load",
+    "category": "student_load",
     "environment": "staging",
-    "job_name": "performance_pytest_python_load_staging",
+    "job_name": "performance_pytest_python_student_load_staging",
     "test_path": "tests/performance",
     "markers": [
       "performance",
       "load",
-      "staging"
+      "staging",
+      "student"
     ],
     "timeout": 1800,
+    "retries": 1
+  },
+  {
+    "type": "security",
+    "framework": "pytest",
+    "language": "python",
+    "category": "student_auth",
+    "environment": "staging",
+    "job_name": "security_pytest_python_student_auth_staging",
+    "test_path": "tests/security",
+    "markers": [
+      "security",
+      "auth",
+      "staging",
+      "student"
+    ],
+    "timeout": 600,
+    "retries": 1
+  },
+  {
+    "type": "accessibility",
+    "framework": "pytest",
+    "language": "python",
+    "category": "student_ui",
+    "environment": "staging",
+    "job_name": "accessibility_pytest_python_student_ui_staging",
+    "test_path": "tests/accessibility",
+    "markers": [
+      "accessibility",
+      "ui",
+      "staging",
+      "student"
+    ],
+    "timeout": 900,
     "retries": 1
   }
 ]

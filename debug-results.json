@@ -1,0 +1,2376 @@
+{
+  "summary": {
+    "total": 338,
+    "errors": 1,
+    "warnings": 285,
+    "info": 52
+  },
+  "issues": [
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "docs/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "docs/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Trailing whitespace",
+      "file_path": "docs/README.md",
+      "line_number": 172,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Trailing whitespace",
+      "file_path": "docs/README.md",
+      "line_number": 173,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "case-studies/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "case-studies/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "case-studies/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "case-studies/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "case-studies/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "case-studies/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "scripts/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "scripts/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "scripts/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "scripts/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "scripts/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "automation-framework/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "error",
+      "message": "Broken internal link: docs/parallel-testing.md",
+      "file_path": "automation-framework/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Trailing whitespace",
+      "file_path": "automation-framework/README.md",
+      "line_number": 245,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "ai-rulesets/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "ai-rulesets/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "ai-rulesets/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "ai-rulesets/evals/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "ai-rulesets/evals/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "ai-rulesets/evals/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "ai-rulesets/evals/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "ai-rulesets/evals/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "ai-rulesets/evals/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "ai-rulesets/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "ai-rulesets/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "ai-rulesets/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "ai-rulesets/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "ai-rulesets/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "ai-rulesets/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "ai-rulesets/examples/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "ai-rulesets/examples/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "automation-framework/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "automation-framework/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "automation-framework/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "automation-framework/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "automation-framework/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "automation-framework/.pytest_cache/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "README should start with a title (# heading)",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": 1,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/zmq/backend/cffi/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\ude80",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/flask/sansio/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udee0\ufe0f",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/flask/sansio/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcc1",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/flask/sansio/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83e\uddea",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/flask/sansio/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udcda",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/flask/sansio/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "info",
+      "message": "README missing essential section: ## \ud83d\udd27",
+      "file_path": "automation-framework/venv/lib/python3.13/site-packages/flask/sansio/README.md",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "pytest not available for automation-framework",
+      "file_path": "automation-framework",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "pytest not available for ai-rulesets",
+      "file_path": "ai-rulesets",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Error running Node.js tests for cloud-native-app: 'CompletedProcess' object has no attribute 'command'",
+      "file_path": "cloud-native-app",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Error running Node.js tests for react-playwright-demo: 'CompletedProcess' object has no attribute 'command'",
+      "file_path": "react-playwright-demo",
+      "line_number": null,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": ".github/workflows/deploy-allure-reports.yml",
+      "line_number": 73,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": ".github/workflows/static.yml",
+      "line_number": 108,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/requirements.txt",
+      "line_number": 37,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/README.md",
+      "line_number": 10,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/README.md",
+      "line_number": 110,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/README.md",
+      "line_number": 112,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/README.md",
+      "line_number": 117,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.11 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/README.md",
+      "line_number": 120,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 2.3 found, but 3.13 is used elsewhere",
+      "file_path": "automation-framework/requirements.txt",
+      "line_number": 76,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.9 found, but 3.13 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-s3-deployment/README.md",
+      "line_number": 555,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.9 found, but 3.13 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-s3-deployment/README.md",
+      "line_number": 560,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.9 found, but 3.13 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/custom-resources/README.md",
+      "line_number": 938,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.6 found, but 3.13 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-lambda/README.md",
+      "line_number": 1140,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: python 3.12 found, but 3.13 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-lambda/README.md",
+      "line_number": 1160,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 18 found, but 10 is used elsewhere",
+      "file_path": ".github/workflows/portfolio-test-suite.yml",
+      "line_number": 274,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 18 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-lambda-nodejs/README.md",
+      "line_number": 415,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": ".github/workflows/portfolio-test-suite.yml",
+      "line_number": 359,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": ".github/workflows/react-playwright-demo.yml",
+      "line_number": 24,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/README.md",
+      "line_number": 10,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/README.md",
+      "line_number": 114,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/README.md",
+      "line_number": 133,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/README.md",
+      "line_number": 10,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 20 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/README.md",
+      "line_number": 119,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 22 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/reusify/.github/workflows/ci.yml",
+      "line_number": 67,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 22 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/reusify/.github/workflows/ci.yml",
+      "line_number": 88,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 22 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/reusify/.github/workflows/ci.yml",
+      "line_number": 67,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 22 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/reusify/.github/workflows/ci.yml",
+      "line_number": 88,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 16 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fastq/.github/workflows/ci.yml",
+      "line_number": 67,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 16 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fastq/.github/workflows/ci.yml",
+      "line_number": 67,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 14 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/json-schema-traverse/.github/workflows/publish.yml",
+      "line_number": 14,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 14 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/junit-report-builder/README.md",
+      "line_number": 95,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 24 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/fast-uri/.github/workflows/ci.yml",
+      "line_number": 75,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 8 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/lodash/README.md",
+      "line_number": 38,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/path-is-absolute/README.md",
+      "line_number": 3,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/exit-x/README.md",
+      "line_number": 11,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ajv/README.md",
+      "line_number": 172,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/junit-report-builder/README.md",
+      "line_number": 128,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/path-is-absolute/README.md",
+      "line_number": 3,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/exit/README.md",
+      "line_number": 9,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/ajv/README.md",
+      "line_number": 172,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 0 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/buffer/README.md",
+      "line_number": 112,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fast-json-stable-stringify/README.md",
+      "line_number": 102,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/safer-buffer/README.md",
+      "line_number": 71,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fast-deep-equal/README.md",
+      "line_number": 73,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fast-json-stable-stringify/README.md",
+      "line_number": 102,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fast-deep-equal/README.md",
+      "line_number": 73,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/yaml/README.md",
+      "line_number": 5,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 6 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/fast-deep-equal/README.md",
+      "line_number": 73,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 4 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/object-assign/README.md",
+      "line_number": 8,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 4 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/symbol-tree/README.md",
+      "line_number": 9,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 4 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/junit-report-builder/README.md",
+      "line_number": 119,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 7 found, but 10 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ajv/README.md",
+      "line_number": 620,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 7 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/ajv/README.md",
+      "line_number": 620,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 12 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/uuid/README.md",
+      "line_number": 13,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 1 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-appmesh/README.md",
+      "line_number": 371,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 2 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-appmesh/README.md",
+      "line_number": 388,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: node 2 found, but 10 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/aws-appmesh/README.md",
+      "line_number": 390,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/reusify/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/lru-cache/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/allure-js-commons/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/axe-core/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/jackspeak/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/allure-playwright/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/dedent/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@humanfs/core/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@humanfs/node/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/reusify/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/dedent/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.9.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/tinyglobby/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.9.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/rollup/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/tldts/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/agent-base/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/tldts-core/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/https-proxy-agent/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/http-proxy-agent/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fastq/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fastq/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/jest-config/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/jiti/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/typescript/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/yaml/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/csstype/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ts-api-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/flatted/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@adobe/css-tools/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@eslint/eslintrc/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/flatted/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.7.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/typescript/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/sucrase/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/eslint-scope/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/pure-rand/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.7.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/commander/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.7 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ts-interface-checker/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/signal-exit/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/foreground-child/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@eslint-community/regexpp/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@eslint-community/regexpp/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@sinclair/typebox/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/y18n/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/yargs-parser/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/cliui/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@isaacs/cliui/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/y18n/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/yargs-parser/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/cliui/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/typescript-eslint/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/project-service/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/tsconfig-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/types/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/typescript-estree/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/parser/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/type-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/scope-manager/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/eslint-plugin/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/visitor-keys/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/types/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/typescript-estree/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/parser/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/type-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/scope-manager/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/eslint-plugin/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript * found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/visitor-keys/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.1.6 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ignore/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.1.6 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/package-json-from-dist/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.1.6 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/jest-dom/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.1.6 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/ignore/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.1.6 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/ignore/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.5.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/pure-rand/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.5.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/tough-cookie/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.4.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/chokidar/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/eslint-visitor-keys/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@standard-schema/utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/eslint-plugin/node_modules/ignore/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/eslint-plugin-react-hooks/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/path-scurry/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/hasown/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/define-data-property/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/is-typed-array/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/es-errors/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/possible-typed-array-names/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/math-intrinsics/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/has-tostringtag/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/call-bind-apply-helpers/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/is-generator-function/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/es-define-property/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/call-bound/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/dunder-proto/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/hasown/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/has-symbols/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/set-function-length/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/safe-regex-test/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/get-proto/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/gopd/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/for-each/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/which-typed-array/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/is-arguments/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript next found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/es-object-atoms/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/deepmerge/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/deepmerge/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/axe-playwright/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk/lib/init-templates/lib/typescript/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk/lib/init-templates/app/typescript/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.6.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk/lib/init-templates/sample-app/typescript/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/esprima/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/esprima/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 46,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 59,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 72,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 85,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.x found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/bs-logger/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.x found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/bs-logger/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fdir/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/readdirp/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/postcss-selector-parser/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/axe-html-reporter/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.3.3333 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/get-caller-file/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.3.3333 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/get-caller-file/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.4.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/saxes/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.5.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/lines-and-columns/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.5.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/lines-and-columns/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.5.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/table/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/graphemer/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/yargs/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/graphemer/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.0.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/yargs/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.4.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/handlebars/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.4.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/handlebars/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.6.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/xmlchars/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.3.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/lilconfig/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.3.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/eslint/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.3.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/ajv/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.8.1 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/uri-js/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.8.1 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/uri-js/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fast-glob/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@eslint-community/eslint-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fast-glob/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@eslint-community/eslint-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@aws-cdk/asset-node-proxy-agent-v6/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.3.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/dom-accessibility-api/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ajv/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/fast-deep-equal/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/ajv/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fast-deep-equal/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/fast-deep-equal/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/junit-report-builder/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@eslint/object-schema/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/ts-api-utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.6.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@eslint-community/eslint-utils/node_modules/eslint-visitor-keys/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.6.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/eslint-visitor-keys/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.5.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@jridgewell/resolve-uri/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.5.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@jridgewell/resolve-uri/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.1.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/dom/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.1.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/react/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.1.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/globals/node_modules/type-fest/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/user-event/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/glob/node_modules/minimatch/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.0.0 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/jest-dom/node_modules/dom-accessibility-api/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.8.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@sinonjs/commons/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.8.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@sinonjs/commons/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.1.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/ansi-escapes/node_modules/type-fest/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.1.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/node_modules/yaml/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.1.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/ansi-escapes/node_modules/type-fest/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@humanwhocodes/retry/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.7.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@humanwhocodes/module-importer/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.7.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@humanwhocodes/module-importer/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.8.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@hookform/resolvers/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.2.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/mnemonist/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.3.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/eslint-scope/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.6.3 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/commander/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/fast-xml-parser/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@aws-cdk/asset-awscli-v1/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 2.0.8 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-sdk/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 4.9.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/resolve.exports/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.x found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/constructs/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.7.5 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/obliterator/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.8.0-dev.20241129 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/is-regex/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.5.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk-lib/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.8 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/aws-cdk/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.8 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/@aws-cdk/cloud-assembly-schema/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 5.4.0-dev.20240131 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/available-typed-arrays/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 40,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 53,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 66,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.9.2 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 79,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.8.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 43,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.8.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 56,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.8.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 69,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: typescript 3.8.4 found, but 5.8.3 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/tslib/README.md",
+      "line_number": 82,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19.1.1 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19.1.1 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@vitejs/plugin-react/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19.1.0 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/react-hook-form/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 18.2.0 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/lucide-react/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 18.3.1 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/pretty-format/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 18.0.0 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/user-event/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19.0.0 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/react/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19.0.0 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@hookform/resolvers/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react * found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@testing-library/dom/node_modules/pretty-format/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 17.0.2 found, but 16.12.0 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/pretty-format/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19 found, but 16.12.0 is used elsewhere",
+      "file_path": "README.md",
+      "line_number": 50,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19 found, but 16.12.0 is used elsewhere",
+      "file_path": "README.md",
+      "line_number": 54,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19 found, but 16.12.0 is used elsewhere",
+      "file_path": "README.md",
+      "line_number": 78,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/README.md",
+      "line_number": 44,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 19 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/README.md",
+      "line_number": 98,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: react 17 found, but 16.12.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/sucrase/README.md",
+      "line_number": 144,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: playwright 1.17.1 found, but 1.55.0 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/handlebars/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: playwright 1.17.1 found, but 1.55.0 is used elsewhere",
+      "file_path": "cloud-native-app/node_modules/handlebars/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: vite 6.0.3 found, but 7.1.2 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/jiti/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: vite 6.3.4 found, but 7.1.2 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/lucide-react/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: vite 7.1.4 found, but 7.1.2 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/rollup/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: vite 5.4.8 found, but 7.1.2 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@standard-schema/utils/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: vite 6.3.5 found, but 7.1.2 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@asamuzakjp/css-color/package.json",
+      "line_number": 0,
+      "rule": null
+    },
+    {
+      "severity": "warning",
+      "message": "Version inconsistency: vite 6.2.2 found, but 7.1.2 is used elsewhere",
+      "file_path": "react-playwright-demo/node_modules/@hookform/resolvers/package.json",
+      "line_number": 0,
+      "rule": null
+    }
+  ]
+}

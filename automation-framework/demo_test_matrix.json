@@ -3,244 +3,262 @@
     "type": "unit",
     "framework": "pytest",
     "language": "python",
-    "category": "core",
+    "category": "student_management",
     "test_path": "tests/unit",
     "markers": [
       "unit",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "unit_pytest_python_core_staging"
+    "job_name": "unit_pytest_python_student_management_staging"
   },
   {
     "type": "unit",
     "framework": "pytest",
     "language": "python",
-    "category": "core",
+    "category": "student_management",
     "test_path": "tests/unit",
     "markers": [
       "unit",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "production",
-    "job_name": "unit_pytest_python_core_production"
+    "job_name": "unit_pytest_python_student_management_production"
   },
   {
     "type": "component",
     "framework": "pytest",
     "language": "python",
-    "category": "integration",
+    "category": "course_enrollment",
     "test_path": "tests/component",
     "markers": [
       "component",
-      "python"
+      "python",
+      "enrollment"
     ],
     "environment": "staging",
-    "job_name": "component_pytest_python_integration_staging"
+    "job_name": "component_pytest_python_course_enrollment_staging"
   },
   {
     "type": "component",
     "framework": "pytest",
     "language": "python",
-    "category": "integration",
+    "category": "course_enrollment",
     "test_path": "tests/component",
     "markers": [
       "component",
-      "python"
+      "python",
+      "enrollment"
     ],
     "environment": "production",
-    "job_name": "component_pytest_python_integration_production"
+    "job_name": "component_pytest_python_course_enrollment_production"
   },
   {
     "type": "integration",
     "framework": "pytest",
     "language": "python",
-    "category": "api",
+    "category": "student_api",
     "test_path": "tests/integration",
     "markers": [
       "integration",
       "api",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "integration_pytest_python_api_staging"
+    "job_name": "integration_pytest_python_student_api_staging"
   },
   {
     "type": "integration",
     "framework": "pytest",
     "language": "python",
-    "category": "api",
+    "category": "student_api",
     "test_path": "tests/integration",
     "markers": [
       "integration",
       "api",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "production",
-    "job_name": "integration_pytest_python_api_production"
+    "job_name": "integration_pytest_python_student_api_production"
   },
   {
     "type": "e2e",
     "framework": "pytest",
     "language": "python",
-    "category": "end-to-end",
+    "category": "student_workflow",
     "test_path": "tests/e2e",
     "markers": [
       "e2e",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "e2e_pytest_python_end-to-end_staging"
+    "job_name": "e2e_pytest_python_student_workflow_staging"
   },
   {
     "type": "e2e",
     "framework": "pytest",
     "language": "python",
-    "category": "end-to-end",
+    "category": "student_workflow",
     "test_path": "tests/e2e",
     "markers": [
       "e2e",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "production",
-    "job_name": "e2e_pytest_python_end-to-end_production"
+    "job_name": "e2e_pytest_python_student_workflow_production"
   },
   {
     "type": "unit",
     "framework": "jest",
     "language": "typescript",
-    "category": "core",
+    "category": "student_ui",
     "test_path": "tests/unit",
     "markers": [
       "unit",
-      "typescript"
+      "typescript",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "unit_jest_typescript_core_staging"
+    "job_name": "unit_jest_typescript_student_ui_staging"
   },
   {
     "type": "unit",
     "framework": "jest",
     "language": "typescript",
-    "category": "core",
+    "category": "student_ui",
     "test_path": "tests/unit",
     "markers": [
       "unit",
-      "typescript"
+      "typescript",
+      "student"
     ],
     "environment": "production",
-    "job_name": "unit_jest_typescript_core_production"
+    "job_name": "unit_jest_typescript_student_ui_production"
   },
   {
     "type": "integration",
     "framework": "jest",
     "language": "typescript",
-    "category": "api",
+    "category": "student_api",
     "test_path": "tests/integration",
     "markers": [
       "integration",
       "api",
-      "typescript"
+      "typescript",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "integration_jest_typescript_api_staging"
+    "job_name": "integration_jest_typescript_student_api_staging"
   },
   {
     "type": "integration",
     "framework": "jest",
     "language": "typescript",
-    "category": "api",
+    "category": "student_api",
     "test_path": "tests/integration",
     "markers": [
       "integration",
       "api",
-      "typescript"
+      "typescript",
+      "student"
     ],
     "environment": "production",
-    "job_name": "integration_jest_typescript_api_production"
+    "job_name": "integration_jest_typescript_student_api_production"
   },
   {
     "type": "api",
     "framework": "pytest",
     "language": "python",
-    "category": "rest",
+    "category": "student_rest",
     "test_path": "tests/integration",
     "markers": [
       "api",
       "rest",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "api_pytest_python_rest_staging"
+    "job_name": "api_pytest_python_student_rest_staging"
   },
   {
     "type": "api",
     "framework": "pytest",
     "language": "python",
-    "category": "rest",
+    "category": "student_rest",
     "test_path": "tests/integration",
     "markers": [
       "api",
       "rest",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "production",
-    "job_name": "api_pytest_python_rest_production"
+    "job_name": "api_pytest_python_student_rest_production"
   },
   {
     "type": "api",
     "framework": "pytest",
     "language": "python",
-    "category": "graphql",
+    "category": "student_graphql",
     "test_path": "tests/integration",
     "markers": [
       "api",
       "graphql",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "api_pytest_python_graphql_staging"
+    "job_name": "api_pytest_python_student_graphql_staging"
   },
   {
     "type": "api",
     "framework": "pytest",
     "language": "python",
-    "category": "graphql",
+    "category": "student_graphql",
     "test_path": "tests/integration",
     "markers": [
       "api",
       "graphql",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "production",
-    "job_name": "api_pytest_python_graphql_production"
+    "job_name": "api_pytest_python_student_graphql_production"
   },
   {
     "type": "contract",
     "framework": "pytest",
     "language": "python",
-    "category": "pact",
+    "category": "student_contract",
     "test_path": "tests/integration",
     "markers": [
       "contract",
       "pact",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "staging",
-    "job_name": "contract_pytest_python_pact_staging"
+    "job_name": "contract_pytest_python_student_contract_staging"
   },
   {
     "type": "contract",
     "framework": "pytest",
     "language": "python",
-    "category": "pact",
+    "category": "student_contract",
     "test_path": "tests/integration",
     "markers": [
       "contract",
       "pact",
-      "python"
+      "python",
+      "student"
     ],
     "environment": "production",
-    "job_name": "contract_pytest_python_pact_production"
+    "job_name": "contract_pytest_python_student_contract_production"
   }
 ]

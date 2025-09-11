@@ -19,7 +19,7 @@ This document provides comprehensive guidance on using Allure reporting in the D
 
 ### Prerequisites
 
-- Python 3.11+ (for automation-framework)
+- Python 3.13+ (for automation-framework)
 - Python 3.13+ (for ai-rulesets)
 - Node.js 18+ (for Allure commandline)
 

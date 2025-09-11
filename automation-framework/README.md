@@ -7,7 +7,7 @@ A scalable, production-ready test automation framework built with pytest, demons
 This framework includes a comprehensive CI/CD pipeline demonstrating production-ready testing practices:
 
 ### **Automated Testing Pipeline**
-- **Python Testing**: Comprehensive testing with Python 3.11
+- **Python Testing**: Comprehensive testing with Python 3.13
 - **Parallel Test Execution**: Matrix strategy for efficient test distribution
 - **Code Quality Gates**: Automated linting, formatting, type checking, and security scanning
 - **Comprehensive Test Coverage**: Unit, integration, API, UI, performance, and contract tests
@@ -107,18 +107,18 @@ automation-framework/
 
 ### Prerequisites
 
-This framework requires Python 3.11+ and Docker for integration testing. We recommend using pyenv to manage Python versions. The project includes a `.python-version` file that specifies the required Python version.
+This framework requires Python 3.13+ and Docker for integration testing. We recommend using pyenv to manage Python versions. The project includes a `.python-version` file that specifies the required Python version.
 
-**Python 3.11+ Installation:**
+**Python 3.13+ Installation:**
 ```bash
 # Install pyenv (if not already installed)
 curl https://pyenv.run | bash
 
-# Install Python 3.11
-pyenv install 3.11
+# Install Python 3.13
+pyenv install 3.13
 
-# Set Python 3.11 as the local version for this project
-pyenv local 3.11
+# Set Python 3.13 as the local version for this project
+pyenv local 3.13
 ```
 
 **Docker Installation (Required for Integration Tests):**
@@ -188,7 +188,7 @@ docker-compose --version
 
 ### Python Version Management
 
-This project uses pyenv for Python version management. The `.python-version` file specifies the required Python version (3.11).
+This project uses pyenv for Python version management. The `.python-version` file specifies the required Python version (3.13).
 
 **Benefits of using pyenv:**
 - Consistent Python versions across development environments
@@ -242,7 +242,7 @@ def test_list_students(self, api_client, test_data):
     """Test listing all students"""
     with allure.step("GET /api/v1/students"):
         response = api_client.get('/api/v1/students')
-    
+
     with allure.step(f"Verify response status is {EXPECTED_STATUS}"):
         assert response.status_code == EXPECTED_STATUS
 ```
@@ -801,7 +801,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12, 3.13]
         browser: [chrome, firefox]
 
     steps:

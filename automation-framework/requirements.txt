@@ -34,7 +34,7 @@ pyyaml>=6.0.1
 
 # Logging and reporting
 structlog>=23.1.0
-# allure-pytest>=2.15.0  # Temporarily disabled due to Python 3.11 compatibility issues
+# allure-pytest>=2.15.0  # Temporarily disabled due to compatibility issues
 
 # Database testing
 sqlalchemy>=2.0.0

@@ -169,6 +169,6 @@ Architectural Decision Record for the initial project structure:
 
 ---
 
-**Last Updated**: December 2024  
-**Maintainer**: Dan Holman  
+**Last Updated**: December 2024
+**Maintainer**: Dan Holman
 **Contact**: [danxholman@gmail.com](mailto:danxholman@gmail.com)

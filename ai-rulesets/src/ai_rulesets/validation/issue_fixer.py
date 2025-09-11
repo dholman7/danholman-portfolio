@@ -56,9 +56,14 @@ class IssueFixer:
             "Inconsistent quotes",
             "Missing type hint",
             "YAML.*indentation",
-            "Markdown.*formatting"
+            "Markdown.*formatting",
+            "Version inconsistency",
+            "README should start with a title",
+            "pytest not available",
+            "Error running Node.js tests"
         ]
         
+        # Fix both errors and warnings
         return any(pattern in issue.message for pattern in fixable_patterns)
     
     def _fix_issue(self, issue: ValidationResult) -> bool:
@@ -106,6 +111,16 @@ class IssueFixer:
             content = self._fix_yaml_indentation(content)
         elif "Markdown" in issue.message and "formatting" in issue.message:
             content = self._fix_markdown_formatting(content)
+        elif "Version inconsistency" in issue.message:
+            content = self._fix_version_inconsistency(content, issue.message)
+        elif "README should start with a title" in issue.message:
+            content = self._fix_readme_title(content)
+        elif "pytest not available" in issue.message:
+            # Skip pytest warnings - these are expected in some environments
+            return False
+        elif "Error running Node.js tests" in issue.message:
+            # Skip Node.js test errors - these are environment-specific
+            return False
         
         # Write back if changed
         if content != original_content:
@@ -366,6 +381,28 @@ class IssueFixer:
                 fixed_lines.append(line)
         
         return '\n'.join(fixed_lines)
+    
+    def _fix_version_inconsistency(self, content: str, message: str) -> str:
+        """Fix Python version inconsistencies by updating to 3.13."""
+        # Extract the old version from the message
+        import re
+        version_match = re.search(r'python (\d+\.\d+) found', message)
+        if version_match:
+            old_version = version_match.group(1)
+            # Replace old version with 3.13
+            content = content.replace(f"python-version: '{old_version}'", "python-version: '3.13'")
+            content = content.replace(f"python-version: {old_version}", "python-version: 3.13")
+            content = content.replace(f"Python {old_version}", "Python 3.13")
+            content = content.replace(f"python {old_version}", "python 3.13")
+        return content
+    
+    def _fix_readme_title(self, content: str) -> str:
+        """Fix README files that don't start with a title."""
+        lines = content.split('\n')
+        if lines and not lines[0].startswith('#'):
+            # Add a title if the first line doesn't start with #
+            lines.insert(0, '# README')
+        return '\n'.join(lines)
     
     def get_fix_summary(self) -> str:
         """Get a summary of fixes applied."""
