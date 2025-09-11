@@ -23,7 +23,7 @@ jobs:
   deploy-allure-reports:
     name: Deploy Allure Reports to GitHub Pages
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion != null || github.event_name == 'workflow_dispatch'
+    if: (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') || github.event_name == 'workflow_dispatch'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -50,8 +50,29 @@ jobs:
           path: allure-reports/
           merge-multiple: true
           
+      - name: Debug artifact download
+        run: |
+          echo "=== Artifact Download Debug ==="
+          echo "Allure reports directory after download:"
+          ls -la allure-reports/ || echo "No allure-reports directory found"
+          echo "Looking for specific artifacts:"
+          for artifact in automation-framework-allure-report ai-rulesets-allure-report cloud-native-app-allure-report react-playwright-demo-allure-report; do
+            echo "--- Looking for $artifact ---"
+            if [ -d "allure-reports/$artifact" ]; then
+              echo "Found $artifact directory"
+              ls -la "allure-reports/$artifact/"
+            else
+              echo "NOT FOUND: $artifact"
+            fi
+          done
+          
       - name: Debug downloaded artifacts
         run: |
+          echo "=== Workflow Run Info ==="
+          echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Workflow run status: ${{ github.event.workflow_run.status }}"
+          echo "Event name: ${{ github.event_name }}"
+          
           echo "=== Downloaded Allure Reports Structure ==="
           find allure-reports/ -type f -name "*.html" | head -10 || echo "No HTML files found"
           echo "=== Allure Reports Directory Contents ==="
@@ -60,7 +81,14 @@ jobs:
           for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
             echo "--- $module ---"
             ls -la allure-reports/${module}-allure-report/ 2>/dev/null || echo "No ${module}-allure-report directory found"
+            if [ -d "allure-reports/${module}-allure-report" ]; then
+              echo "Contents of ${module}-allure-report:"
+              find allure-reports/${module}-allure-report -type f | head -10
+            fi
           done
+          
+          echo "=== All Downloaded Artifacts ==="
+          find . -name "*.zip" -o -name "*allure*" -o -name "*coverage*" | head -20
           
       - name: Download Playwright Reports
         uses: actions/download-artifact@v4

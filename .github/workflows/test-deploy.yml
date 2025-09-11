@@ -1,0 +1,49 @@
+name: Test Deploy Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        type: string
+        required: true
+        description: 'Run ID of the portfolio test suite to download artifacts from'
+
+jobs:
+  test-deploy:
+    name: Test Deploy Workflow
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Allure Reports from specific run
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-allure-report"
+          path: allure-reports/
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.inputs.run_id }}
+
+      - name: Debug downloaded artifacts
+        run: |
+          echo "=== Downloaded Artifacts Debug ==="
+          echo "Allure reports directory:"
+          ls -la allure-reports/ || echo "No allure-reports directory"
+          
+          echo "=== Individual Artifacts ==="
+          for artifact in automation-framework-allure-report ai-rulesets-allure-report cloud-native-app-allure-report react-playwright-demo-allure-report; do
+            echo "--- $artifact ---"
+            if [ -d "allure-reports/$artifact" ]; then
+              echo "Found $artifact"
+              ls -la "allure-reports/$artifact/"
+              echo "Contents:"
+              find "allure-reports/$artifact" -type f | head -10
+            else
+              echo "NOT FOUND: $artifact"
+            fi
+          done
+          
+          echo "=== All files in allure-reports ==="
+          find allure-reports/ -type f | head -20
