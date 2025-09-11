@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan Holman Portfolio - Test Results Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #f1f5f9 100%);
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 4rem;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #3b82f6;
+        }
+        
+        .card h2 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .card-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #ee82f0, #f3455a);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(45deg, #3d8bfe, #00e6fe);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .combined-reports {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .combined-reports h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        
+        .last-updated {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Test Results Dashboard</h1>
+            <p>Comprehensive test automation portfolio showcasing 10+ years of SDET expertise</p>
+        </div>
+        
+        <div class="combined-reports">
+            <h2>📊 Combined Test Results</h2>
+            <p>Unified Allure reports from all modules with comprehensive test execution analysis, coverage metrics, and detailed failure analysis.</p>
+            <div class="card-links">
+                <a href="combined-allure/" class="btn">
+                    🎯 View Combined Allure Report
+                </a>
+                <a href="combined-coverage/" class="btn btn-success">
+                    📈 View Combined Coverage Report
+                </a>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2>
+                    <span class="card-icon">🤖</span>
+                    Automation Framework
+                </h2>
+                <p>Python/TypeScript test automation framework with Page Object pattern, GraphQL/REST API testing, and Pact contract testing.</p>
+                <div class="card-links">
+                    <a href="automation-framework/" class="btn">Allure Report</a>
+                    <a href="automation-framework/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span class="card-icon">🧠</span>
+                    AI Rulesets
+                </h2>
+                <p>Organizational AI rulesets and utilities for creating custom development standards and guidelines.</p>
+                <div class="card-links">
+                    <a href="ai-rulesets/" class="btn">Allure Report</a>
+                    <a href="ai-rulesets/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span class="card-icon">☁️</span>
+                    Cloud Native App
+                </h2>
+                <p>AWS serverless demo with Lambda, API Gateway, DynamoDB, and Infrastructure as Code.</p>
+                <div class="card-links">
+                    <a href="cloud-native-app/" class="btn">Allure Report</a>
+                    <a href="cloud-native-app/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span class="card-icon">⚛️</span>
+                    React Playwright Demo
+                </h2>
+                <p>Modern React/TypeScript frontend with comprehensive E2E testing and form validation.</p>
+                <div class="card-links">
+                    <a href="react-playwright-demo/" class="btn">Allure Report</a>
+                    <a href="react-playwright-demo/playwright/" class="btn btn-success">Playwright Report</a>
+                    <a href="react-playwright-demo/coverage/" class="btn btn-secondary">Coverage Report</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="combined-reports">
+            <h2>🔗 Additional Resources</h2>
+            <div class="card-links">
+                <a href="https://github.com/dholman7/danholman-portfolio" class="btn btn-secondary" target="_blank">
+                    📁 View Source Code
+                </a>
+                <a href="https://github.com/dholman7/danholman-portfolio/actions" class="btn btn-secondary" target="_blank">
+                    🔄 View CI/CD Pipeline
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Dan Holman - Senior Software Developer in Test (SDET) & Automation Architect</p>
+            <p class="last-updated">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+    </div>
+    
+    <script>
+        // Update last updated time
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        
+        // Add status badges based on report availability (this would be populated by the deployment script)
+        // For now, we'll add a simple status indicator
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const statusBadge = document.createElement('span');
+            statusBadge.className = 'status-badge status-success';
+            statusBadge.textContent = 'Available';
+            card.querySelector('h2').appendChild(statusBadge);
+        });
+    </script>
+</body>
+</html>
