@@ -1,4 +1,4 @@
-name: Portfolio Test Suite with Coverage
+name: Portfolio Test Suite
 
 on:
   push:
@@ -72,40 +72,38 @@ jobs:
           # Install additional test dependencies
           pip install pytest-cov pytest-html
           # Create reports directory
-          mkdir -p reports/allure-results reports/coverage
+          mkdir -p reports/allure-results
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
-      - name: Run Tests with Allure Results and Coverage
+      - name: Run Tests with Allure Results
         if: always()
         run: |
-          # Run tests based on test_type input with Allure reporting and coverage
+          # Run tests based on test_type input with Allure reporting
           echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
           if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-            echo "Running all tests with Allure reporting and coverage..."
-            pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
+            echo "Running all tests with Allure reporting..."
+            pytest --alluredir=reports/allure-results -v || true
           elif [ "${{ github.event.inputs.test_type }}" = "unit" ]; then
-            echo "Running unit tests with Allure reporting and coverage..."
-            pytest tests/unit/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running unit tests with Allure reporting..."
+            pytest tests/unit/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "component" ]; then
-            echo "Running component tests with Allure reporting and coverage..."
-            pytest tests/component/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running component tests with Allure reporting..."
+            pytest tests/component/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "integration" ]; then
-            echo "Running integration tests with Allure reporting and coverage..."
-            pytest tests/integration/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running integration tests with Allure reporting..."
+            pytest tests/integration/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "e2e" ]; then
-            echo "Running e2e tests with Allure reporting and coverage..."
-            pytest tests/e2e/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running e2e tests with Allure reporting..."
+            pytest tests/e2e/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "performance" ]; then
-            echo "Running performance tests with Allure reporting and coverage..."
-            pytest tests/performance/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running performance tests with Allure reporting..."
+            pytest tests/performance/ -v --alluredir=reports/allure-results || true
           fi
           
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
-          echo "Coverage reports directory contents:"
-          ls -la reports/coverage/ || echo "No coverage reports generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
           echo "Allure results file count:"
@@ -127,7 +125,7 @@ jobs:
         if: github.event.inputs.enable_cursor_fixes != false
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
-          pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
+          pytest --alluredir=reports/allure-results -v || true
       - name: Generate Allure Report
         if: always()
         run: |
@@ -167,15 +165,6 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
-      - name: Upload Coverage Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: automation-framework-coverage-report
-          path: automation-framework/reports/coverage/
-          retention-days: 30
-          if-no-files-found: warn
-
   ai-rulesets:
     name: AI Rulesets (Python)
     runs-on: ubuntu-latest
@@ -206,40 +195,38 @@ jobs:
           # Install additional test dependencies
           pip install pytest-cov pytest-html
           # Create reports directory
-          mkdir -p reports/allure-results reports/coverage
+          mkdir -p reports/allure-results
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
-      - name: Run Tests with Allure Results and Coverage
+      - name: Run Tests with Allure Results
         if: always()
         run: |
-          # Run tests based on test_type input with Allure reporting and coverage
+          # Run tests based on test_type input with Allure reporting
           echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
           if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-            echo "Running all tests with Allure reporting and coverage..."
-            pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
+            echo "Running all tests with Allure reporting..."
+            pytest --alluredir=reports/allure-results -v || true
           elif [ "${{ github.event.inputs.test_type }}" = "unit" ]; then
-            echo "Running unit tests with Allure reporting and coverage..."
-            pytest tests/unit/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running unit tests with Allure reporting..."
+            pytest tests/unit/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "component" ]; then
-            echo "Running component tests with Allure reporting and coverage..."
-            pytest tests/component/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running component tests with Allure reporting..."
+            pytest tests/component/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "integration" ]; then
-            echo "Running integration tests with Allure reporting and coverage..."
-            pytest tests/integration/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running integration tests with Allure reporting..."
+            pytest tests/integration/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "e2e" ]; then
-            echo "Running e2e tests with Allure reporting and coverage..."
-            pytest tests/e2e/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running e2e tests with Allure reporting..."
+            pytest tests/e2e/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "performance" ]; then
-            echo "Running performance tests with Allure reporting and coverage..."
-            pytest tests/performance/ -v --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml || true
+            echo "Running performance tests with Allure reporting..."
+            pytest tests/performance/ -v --alluredir=reports/allure-results || true
           fi
           
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
-          echo "Coverage reports directory contents:"
-          ls -la reports/coverage/ || echo "No coverage reports generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
           echo "Allure results file count:"
@@ -261,7 +248,7 @@ jobs:
         if: github.event.inputs.enable_cursor_fixes != false
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
-          pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
+          pytest --alluredir=reports/allure-results -v || true
       - name: Generate Allure Report
         if: always()
         run: |
@@ -301,15 +288,6 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
-      - name: Upload Coverage Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ai-rulesets-coverage-report
-          path: ai-rulesets/reports/coverage/
-          retention-days: 30
-          if-no-files-found: warn
-
   cloud-native-app:
     name: Cloud Native App (TypeScript/Python)
     runs-on: ubuntu-latest
@@ -337,19 +315,19 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest allure-pytest allure-python-commons pytest-cov pytest-html
           # Create reports directory
-          mkdir -p reports/allure-results reports/coverage
+          mkdir -p reports/allure-results
       - run: |
           if command -v yarn >/dev/null 2>&1; then yarn lint || true; fi
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
-      - name: Run Tests with Allure Results and Coverage
+      - name: Run Tests with Allure Results
         if: always()
         run: |
           # Create reports directory
-          mkdir -p reports/allure-results reports/coverage
+          mkdir -p reports/allure-results
           
-          # Run Python tests with proper pytest configuration and coverage
-          echo "Running pytest with Allure reporting and coverage..."
-          pytest --alluredir=reports/allure-results --cov=lambda --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v --tb=short || true
+          # Run Python tests with proper pytest configuration
+          echo "Running pytest with Allure reporting..."
+          pytest --alluredir=reports/allure-results -v --tb=short || true
           
           # Run TypeScript/Jest tests (without Allure for now)
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
@@ -360,8 +338,6 @@ jobs:
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
-          echo "Coverage reports directory contents:"
-          ls -la reports/coverage/ || echo "No coverage reports generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
           echo "Allure results file count:"
@@ -404,15 +380,6 @@ jobs:
         with:
           name: cloud-native-app-allure-report
           path: cloud-native-app/reports/allure-report/
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Upload Coverage Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cloud-native-app-coverage-report
-          path: cloud-native-app/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
@@ -481,3 +448,4 @@ jobs:
           path: react-playwright-demo/coverage/
           retention-days: 30
           if-no-files-found: warn
+

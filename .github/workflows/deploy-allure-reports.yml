@@ -111,7 +111,22 @@ jobs:
                   <div class="module">
                       <h2>🤖 Automation Framework</h2>
                       <p>Python/TypeScript test automation framework</p>
-                      <a href="automation-framework/">View Report</a>
+                      <a href="automation-framework/">View Allure Report</a>
+                      <a href="automation-framework/coverage/">View Coverage Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>🧠 AI Rulesets</h2>
+                      <p>AI-powered development standards and quality tools</p>
+                      <a href="ai-rulesets/">View Allure Report</a>
+                      <a href="ai-rulesets/coverage/">View Coverage Report</a>
+                  </div>
+                  
+                  <div class="module">
+                      <h2>☁️ Cloud Native App</h2>
+                      <p>AWS serverless demo with Lambda and DynamoDB</p>
+                      <a href="cloud-native-app/">View Allure Report</a>
+                      <a href="cloud-native-app/coverage/">View Coverage Report</a>
                   </div>
                   
                   <div class="module">
@@ -119,6 +134,7 @@ jobs:
                       <p>Modern React/TypeScript frontend with E2E testing</p>
                       <a href="react-playwright-demo/">View Allure Report</a>
                       <a href="react-playwright-demo/playwright/">View Playwright Report</a>
+                      <a href="react-playwright-demo/coverage/">View Coverage Report</a>
                   </div>
                   
                   <p><small>Reports are automatically updated on every successful build of the main branch.</small></p>
@@ -189,12 +205,22 @@ jobs:
               if [ -d "coverage-reports/${module}-coverage-report" ]; then
                 mkdir -p gh-pages-deploy/${module}/coverage
                 cp -r coverage-reports/${module}-coverage-report/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+                echo "Copied coverage report for ${module}"
+              else
+                echo "No coverage report found for ${module}, creating placeholder..."
+                mkdir -p gh-pages-deploy/${module}/coverage
+                echo "<!DOCTYPE html><html><head><title>Coverage Reports - ${module}</title></head><body><h1>Code Coverage Reports - ${module}</h1><p>Coverage reports will be available after test execution.</p></body></html>" > gh-pages-deploy/${module}/coverage/index.html
               fi
             done
           else
             echo "Creating placeholder for Coverage reports..."
             mkdir -p gh-pages-deploy/coverage-reports
             echo "<!DOCTYPE html><html><head><title>Coverage Reports</title></head><body><h1>Code Coverage Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/coverage-reports/index.html
+            # Create placeholders for each module
+            for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+              mkdir -p gh-pages-deploy/${module}/coverage
+              echo "<!DOCTYPE html><html><head><title>Coverage Reports - ${module}</title></head><body><h1>Code Coverage Reports - ${module}</h1><p>Coverage reports will be available after test execution.</p></body></html>" > gh-pages-deploy/${module}/coverage/index.html
+            done
           fi
           
           # Create combined Allure report
