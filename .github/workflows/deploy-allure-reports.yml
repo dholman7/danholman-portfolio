@@ -8,10 +8,6 @@ on:
         required: true
         default: all
         description: Module to deploy Allure report for
-  workflow_run:
-    workflows: ["Portfolio Test Suite with Coverage", "React Playwright Demo"]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
     inputs:
       module:
@@ -30,7 +26,7 @@ jobs:
   deploy-allure-reports:
     name: Generate & Deploy Test Dashboard
     runs-on: ubuntu-latest
-    if: (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
     permissions:
       contents: read
     
@@ -39,9 +35,6 @@ jobs:
         run: |
           echo "=== DEPLOY WORKFLOW DEBUG ==="
           echo "Workflow event: ${{ github.event_name }}"
-          echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
-          echo "Workflow run name: ${{ github.event.workflow_run.name }}"
-          echo "Workflow run status: ${{ github.event.workflow_run.status }}"
           echo "Input module: ${{ inputs.module }}"
           echo "GitHub ref: ${{ github.ref }}"
           echo "GitHub sha: ${{ github.sha }}"
@@ -67,124 +60,6 @@ jobs:
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
 
-      - name: Download Allure Reports from Workflow Run
-        if: github.event_name == 'workflow_run'
-        run: |
-          echo "Downloading artifacts from workflow run: ${{ github.event.workflow_run.id }}"
-          
-          # Get workflow run artifacts
-          ARTIFACTS=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts")
-          
-          echo "Available artifacts:"
-          echo "$ARTIFACTS" | jq -r '.artifacts[] | "\(.name) - \(.size_in_bytes) bytes"'
-          
-          # Check if we have any artifacts
-          ARTIFACT_COUNT=$(echo "$ARTIFACTS" | jq '.artifacts | length')
-          echo "Found $ARTIFACT_COUNT artifacts"
-          
-          if [ "$ARTIFACT_COUNT" -eq 0 ]; then
-            echo "No artifacts found in workflow run. This might be because:"
-            echo "1. The workflow run failed before artifacts were uploaded"
-            echo "2. The artifacts have expired (default retention is 90 days)"
-            echo "3. The workflow run is still in progress"
-            echo "4. There's an issue with artifact upload in the source workflow"
-            echo "5. The workflow_run event doesn't have access to artifacts from the triggering workflow"
-            echo ""
-            echo "Creating placeholder directories and continuing with deployment..."
-            mkdir -p allure-reports coverage-reports playwright-reports
-            echo "Placeholder directories created"
-            exit 0
-          fi
-          
-          # Download allure report artifacts
-          mkdir -p allure-reports
-          ALLURE_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("allure-report")) | .name')
-          if [ -n "$ALLURE_ARTIFACTS" ]; then
-            echo "Found Allure report artifacts: $ALLURE_ARTIFACTS"
-            for artifact in $ALLURE_ARTIFACTS; do
-              echo "Downloading artifact: $artifact"
-              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
-              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
-                -o "$artifact.zip"
-              
-              # Extract artifact
-              unzip -q "$artifact.zip" -d "allure-reports/$artifact"
-              rm "$artifact.zip"
-              echo "Extracted $artifact to allure-reports/$artifact"
-            done
-          else
-            echo "No Allure report artifacts found"
-          fi
-          
-          # Download allure results artifacts
-          mkdir -p allure-results
-          ALLURE_RESULTS_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("allure-results")) | .name')
-          if [ -n "$ALLURE_RESULTS_ARTIFACTS" ]; then
-            echo "Found Allure results artifacts: $ALLURE_RESULTS_ARTIFACTS"
-            for artifact in $ALLURE_RESULTS_ARTIFACTS; do
-              echo "Downloading artifact: $artifact"
-              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
-              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
-                -o "$artifact.zip"
-              
-              # Extract artifact
-              unzip -q "$artifact.zip" -d "allure-results/$artifact"
-              rm "$artifact.zip"
-              echo "Extracted $artifact to allure-results/$artifact"
-            done
-          else
-            echo "No Allure results artifacts found"
-          fi
-          
-          # Download coverage report artifacts
-          mkdir -p coverage-reports
-          COVERAGE_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("coverage-report")) | .name')
-          if [ -n "$COVERAGE_ARTIFACTS" ]; then
-            echo "Found Coverage report artifacts: $COVERAGE_ARTIFACTS"
-            for artifact in $COVERAGE_ARTIFACTS; do
-              echo "Downloading artifact: $artifact"
-              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
-              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
-                -o "$artifact.zip"
-              
-              # Extract artifact
-              unzip -q "$artifact.zip" -d "coverage-reports/$artifact"
-              rm "$artifact.zip"
-              echo "Extracted $artifact to coverage-reports/$artifact"
-            done
-          else
-            echo "No Coverage report artifacts found"
-          fi
-          
-          # Download playwright report artifacts
-          mkdir -p playwright-reports
-          PLAYWRIGHT_ARTIFACTS=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("playwright-report")) | .name')
-          if [ -n "$PLAYWRIGHT_ARTIFACTS" ]; then
-            echo "Found Playwright report artifacts: $PLAYWRIGHT_ARTIFACTS"
-            for artifact in $PLAYWRIGHT_ARTIFACTS; do
-              echo "Downloading artifact: $artifact"
-              ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r --arg name "$artifact" '.artifacts[] | select(.name == $name) | .id')
-              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts/$ARTIFACT_ID/zip" \
-                -o "$artifact.zip"
-              
-              # Extract artifact
-              unzip -q "$artifact.zip" -d "playwright-reports/$artifact"
-              rm "$artifact.zip"
-              echo "Extracted $artifact to playwright-reports/$artifact"
-            done
-          else
-            echo "No Playwright report artifacts found"
-          fi
 
       - name: Download Allure Reports (Manual/API/Call Trigger)
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
@@ -213,8 +88,6 @@ jobs:
       - name: Debug downloaded artifacts
         run: |
           echo "=== Workflow Run Info ==="
-          echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
-          echo "Workflow run status: ${{ github.event.workflow_run.status }}"
           echo "Event name: ${{ github.event_name }}"
           
           echo "=== Downloaded Allure Reports Structure ==="
