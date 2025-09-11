@@ -562,7 +562,7 @@ jobs:
           mkdir -p reports/allure-results reports/coverage
       - run: |
           if command -v yarn >/dev/null 2>&1; then yarn lint || true; fi
-      - name: Run Tests with Coverage
+      - name: Run Tests with Allure Results and Coverage
         if: always()
         run: |
           # Create reports directory
@@ -571,18 +571,24 @@ jobs:
           # Run Jest tests with coverage
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running Jest tests with coverage..."
-            yarn test --coverage --watchAll=false || true
+            yarn test:coverage || true
           fi
           
-          # Run Playwright tests
+          # Run Playwright tests with Allure reporting
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
-            echo "Running Playwright tests..."
+            echo "Running Playwright tests with Allure reporting..."
             yarn test:e2e || true
           fi
           
           # List generated files for debugging
+          echo "Allure results directory contents:"
+          ls -la reports/allure-results/ || echo "No Allure results generated"
           echo "Coverage reports directory contents:"
           ls -la reports/coverage/ || echo "No coverage reports generated"
+          echo "Allure results file count:"
+          find reports/allure-results/ -name "*.json" | wc -l || echo "0"
+          echo "Sample Allure result files:"
+          find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
       - name: Fix Test Failures with Cursor
         id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
@@ -601,9 +607,47 @@ jobs:
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
-            yarn test --coverage --watchAll=false || true
+            yarn test:coverage || true
             yarn test:e2e || true
           fi
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
+            echo "Installing Allure commandline..."
+            # Install Allure using npm (more reliable than yarn global)
+            npm install -g allure-commandline
+            echo "Generating Allure report for react-playwright-demo..."
+            allure generate reports/allure-results --clean -o reports/allure-report
+            echo "Allure report generated successfully"
+            # Verify the report was created
+            if [ -d "reports/allure-report" ]; then
+              echo "Allure report directory created successfully"
+              ls -la reports/allure-report/
+            else
+              echo "ERROR: Allure report directory was not created"
+            fi
+          else
+            echo "No Allure results found for react-playwright-demo"
+          fi
+      - name: Upload Allure Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-playwright-demo-allure-results
+          path: reports/allure-results/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-playwright-demo-allure-report
+          path: reports/allure-report/
+          retention-days: 30
+          if-no-files-found: warn
+
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
