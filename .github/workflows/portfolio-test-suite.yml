@@ -463,6 +463,8 @@ jobs:
           node-version: '20.19.0'
       - run: yarn install --frozen-lockfile
       - run: yarn playwright install --with-deps
+      - name: Install Allure
+        run: yarn global add allure-commandline
       - run: yarn type-check
       - run: yarn lint
       - run: yarn build
@@ -489,13 +491,25 @@ jobs:
           exit 0
       - name: Generate Allure Report
         if: ${{ github.event.inputs.include_allure != false }}
-        run: yarn test:allure:generate
+        run: |
+          # Ensure Playwright tests run first to generate allure-results
+          yarn test:e2e || true
+          # Generate Allure report
+          yarn test:allure:generate || true
       - name: Upload Playwright HTML Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: react-playwright-demo-playwright-report
           path: react-playwright-demo/playwright-report/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Upload Allure Results
+        if: always() && ${{ github.event.inputs.include_allure != false }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-playwright-demo-allure-results
+          path: react-playwright-demo/allure-results/
           retention-days: 30
           if-no-files-found: warn
       - name: Upload Allure Report
