@@ -35,6 +35,11 @@ on:
         required: false
         default: true
         description: Generate Allure reports
+      enable_cursor_fixes:
+        type: boolean
+        required: false
+        default: true
+        description: Enable Cursor CLI to automatically fix test failures
 
 jobs:
   automation-framework:
@@ -54,6 +59,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Install Cursor CLI
+        if: ${{ github.event.inputs.enable_cursor_fixes != false }}
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install -e ".[test]"; fi
@@ -100,6 +110,22 @@ jobs:
           find reports/allure-results/ -name "*.json" | wc -l || echo "0"
           echo "Sample Allure result files:"
           find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
+      - name: Fix Test Failures with Cursor
+        if: failure() && github.event.inputs.enable_cursor_fixes != false
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the test failures in this CI run and fix the Python test files in the automation-framework module. 
+          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Ensure all tests can be collected and executed successfully."
+      - name: Re-run Tests After Cursor Fixes
+        if: github.event.inputs.enable_cursor_fixes != false
+        run: |
+          echo "🔄 Re-running tests after Cursor fixes..."
+          pytest --alluredir=reports/allure-results -v || true
       - name: Generate Allure Report
         if: always()
         run: |
@@ -156,6 +182,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Install Cursor CLI
+        if: ${{ github.event.inputs.enable_cursor_fixes != false }}
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
@@ -202,6 +233,22 @@ jobs:
           find reports/allure-results/ -name "*.json" | wc -l || echo "0"
           echo "Sample Allure result files:"
           find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
+      - name: Fix Test Failures with Cursor
+        if: failure() && github.event.inputs.enable_cursor_fixes != false
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the test failures in this CI run and fix the Python test files in the ai-rulesets module. 
+          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Ensure all tests can be collected and executed successfully."
+      - name: Re-run Tests After Cursor Fixes
+        if: github.event.inputs.enable_cursor_fixes != false
+        run: |
+          echo "🔄 Re-running tests after Cursor fixes..."
+          pytest --alluredir=reports/allure-results -v || true
       - name: Generate Allure Report
         if: always()
         run: |
