@@ -692,7 +692,6 @@ jobs:
 
   deploy-test-reports:
     name: Deploy Test Reports to GitHub Pages
-    runs-on: ubuntu-latest
     needs: [automation-framework, ai-rulesets, cloud-native-app, react-playwright-demo]
     if: always() && (needs.automation-framework.result == 'success' || needs.ai-rulesets.result == 'success' || needs.cloud-native-app.result == 'success' || needs.react-playwright-demo.result == 'success')
     uses: ./.github/workflows/deploy-allure-reports.yml
