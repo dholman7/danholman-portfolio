@@ -89,6 +89,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
         
         .card-icon {
@@ -156,6 +157,7 @@
             font-size: 0.8rem;
             font-weight: 500;
             margin-left: 10px;
+            white-space: nowrap;
         }
         
         .status-success {
@@ -311,10 +313,14 @@
         // For now, we'll add a simple status indicator
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
-            const statusBadge = document.createElement('span');
-            statusBadge.className = 'status-badge status-success';
-            statusBadge.textContent = 'Available';
-            card.querySelector('h2').appendChild(statusBadge);
+            const h2 = card.querySelector('h2');
+            // Only add status badge if one doesn't already exist
+            if (!h2.querySelector('.status-badge')) {
+                const statusBadge = document.createElement('span');
+                statusBadge.className = 'status-badge status-success';
+                statusBadge.textContent = 'Available';
+                h2.appendChild(statusBadge);
+            }
         });
     </script>
 </body>
