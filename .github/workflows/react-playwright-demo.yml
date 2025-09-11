@@ -23,6 +23,12 @@ jobs:
       with:
         node-version: '20.19.0'
         
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
     - name: Install dependencies
       working-directory: ./react-playwright-demo
       run: yarn install --frozen-lockfile
