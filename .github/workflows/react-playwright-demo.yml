@@ -1,6 +1,10 @@
-name: React Playwright Demo - PR Preview
+name: React Playwright Demo
 
 on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'react-playwright-demo/**'
   pull_request:
     paths:
       - 'react-playwright-demo/**'

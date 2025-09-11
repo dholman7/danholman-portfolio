@@ -40,7 +40,7 @@ const mockLogin = async (email: string, password: string) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000))
   
-  // Log the login attempt (using the parameters)
+  // Log the login attempt (using the parameters but not the password)
   console.log('Login attempt for:', email, 'with password length:', password.length)
   
   // Simulate random success/failure for demo
