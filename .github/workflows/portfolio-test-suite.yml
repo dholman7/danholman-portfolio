@@ -358,6 +358,7 @@ jobs:
         with:
           node-version: '20.19.0'
       - run: yarn install --frozen-lockfile
+      - run: yarn playwright install --with-deps
       - run: yarn type-check
       - run: yarn lint
       - run: yarn build

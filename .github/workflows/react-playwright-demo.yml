@@ -33,6 +33,10 @@ jobs:
       working-directory: ./react-playwright-demo
       run: yarn install --frozen-lockfile
       
+    - name: Install Playwright browsers
+      working-directory: ./react-playwright-demo
+      run: yarn playwright install --with-deps
+      
     - name: Type check
       working-directory: ./react-playwright-demo
       run: yarn type-check
