@@ -97,19 +97,59 @@ jobs:
           path: playwright-reports/
           merge-multiple: true
           
-      - name: Debug Playwright Artifacts
+      - name: Debug All Downloaded Artifacts
         run: |
-          echo "=== DEBUG: Downloaded Playwright Artifacts ==="
-          echo "Playwright reports directory after download:"
+          echo "=== COMPREHENSIVE ARTIFACT DEBUG ==="
+          echo "Current working directory: $(pwd)"
+          echo "All files and directories in root:"
+          ls -la
+          
+          echo "=== ALLURE REPORTS DEBUG ==="
+          echo "Allure reports directory:"
+          ls -la allure-reports/ || echo "No allure-reports directory found"
+          if [ -d "allure-reports" ]; then
+            echo "Allure reports contents:"
+            find allure-reports -type f | head -20
+            echo "Allure reports directory structure:"
+            find allure-reports -type d | head -20
+          fi
+          
+          echo "=== PLAYWRIGHT REPORTS DEBUG ==="
+          echo "Playwright reports directory:"
           ls -la playwright-reports/ || echo "No playwright-reports directory found"
-          echo "Looking for specific Playwright artifacts:"
-          for artifact in react-playwright-demo-playwright-report; do
-            echo "--- Looking for $artifact ---"
-            if [ -d "playwright-reports/$artifact" ]; then
-              echo "Found $artifact directory"
+          if [ -d "playwright-reports" ]; then
+            echo "Playwright reports contents:"
+            find playwright-reports -type f | head -20
+            echo "Playwright reports directory structure:"
+            find playwright-reports -type d | head -20
+          fi
+          
+          echo "=== COVERAGE REPORTS DEBUG ==="
+          echo "Coverage reports directory:"
+          ls -la coverage-reports/ || echo "No coverage-reports directory found"
+          if [ -d "coverage-reports" ]; then
+            echo "Coverage reports contents:"
+            find coverage-reports -type f | head -20
+            echo "Coverage reports directory structure:"
+            find coverage-reports -type d | head -20
+          fi
+          
+          echo "=== ALL DOWNLOADED ARTIFACTS ==="
+          echo "Searching for all artifact-related files:"
+          find . -name "*allure*" -o -name "*playwright*" -o -name "*coverage*" -o -name "*.html" -o -name "*.zip" | head -30
+          
+          echo "=== SPECIFIC ARTIFACT DIRECTORIES ==="
+          for artifact in automation-framework-allure-report ai-rulesets-allure-report cloud-native-app-allure-report react-playwright-demo-allure-report react-playwright-demo-playwright-report; do
+            echo "--- Checking for $artifact ---"
+            if [ -d "allure-reports/$artifact" ]; then
+              echo "Found in allure-reports: $artifact"
+              ls -la "allure-reports/$artifact/"
+            elif [ -d "playwright-reports/$artifact" ]; then
+              echo "Found in playwright-reports: $artifact"
               ls -la "playwright-reports/$artifact/"
-              echo "Contents of $artifact:"
-              find "playwright-reports/$artifact" -type f | head -10
+            elif [ -d "coverage-reports/$artifact" ]; then
+              echo "Found in coverage-reports: $artifact"
+              ls -la "coverage-reports/$artifact/"
             else
               echo "NOT FOUND: $artifact"
             fi
@@ -121,6 +161,30 @@ jobs:
           pattern: "*-coverage-report"
           path: coverage-reports/
           merge-multiple: true
+          
+      - name: Final Artifact State Debug
+        run: |
+          echo "=== FINAL ARTIFACT STATE AFTER ALL DOWNLOADS ==="
+          echo "Current working directory: $(pwd)"
+          echo "All directories in root:"
+          ls -la
+          
+          echo "=== COMPLETE FILE TREE ==="
+          echo "All files and directories (first 50):"
+          find . -type f | head -50
+          echo "All directories (first 30):"
+          find . -type d | head -30
+          
+          echo "=== ARTIFACT SUMMARY ==="
+          echo "Allure reports: $(find allure-reports -type f 2>/dev/null | wc -l) files"
+          echo "Playwright reports: $(find playwright-reports -type f 2>/dev/null | wc -l) files"
+          echo "Coverage reports: $(find coverage-reports -type f 2>/dev/null | wc -l) files"
+          
+          echo "=== HTML FILES FOUND ==="
+          find . -name "*.html" | head -20
+          
+          echo "=== ZIP FILES FOUND ==="
+          find . -name "*.zip" | head -10
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -134,6 +198,14 @@ jobs:
         run: |
           # Create deployment directory
           mkdir -p gh-pages-deploy
+          
+          echo "=== PRE-DEPLOYMENT DEBUG ==="
+          echo "About to copy artifacts to gh-pages-deploy/"
+          echo "Current working directory: $(pwd)"
+          echo "Source directories that exist:"
+          ls -la allure-reports/ playwright-reports/ coverage-reports/ 2>/dev/null || echo "Some directories missing"
+          echo "Target deployment directory:"
+          ls -la gh-pages-deploy/ || echo "Deployment directory not created yet"
           
           # Copy the main landing page
           if [ -f "docs/index.html" ]; then
@@ -482,6 +554,27 @@ jobs:
           echo "Creating combined coverage report..."
           mkdir -p gh-pages-deploy/combined-coverage
           echo "<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p></body></html>" > gh-pages-deploy/combined-coverage/index.html
+
+      - name: Post-Deployment Debug
+        run: |
+          echo "=== POST-DEPLOYMENT DEBUG ==="
+          echo "Final deployment directory structure:"
+          find gh-pages-deploy -type f | head -50
+          echo "Deployment directory size:"
+          du -sh gh-pages-deploy/
+          echo "Key directories in deployment:"
+          ls -la gh-pages-deploy/
+          echo "Module-specific directories:"
+          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+            echo "--- $module ---"
+            ls -la gh-pages-deploy/$module/ 2>/dev/null || echo "No $module directory"
+          done
+          echo "Playwright reports in deployment:"
+          ls -la gh-pages-deploy/playwright-reports/ 2>/dev/null || echo "No playwright-reports directory"
+          echo "Coverage reports in deployment:"
+          ls -la gh-pages-deploy/coverage-reports/ 2>/dev/null || echo "No coverage-reports directory"
+          echo "HTML files in deployment:"
+          find gh-pages-deploy -name "*.html" | head -20
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
