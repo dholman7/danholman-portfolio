@@ -397,8 +397,8 @@ jobs:
                       font-family: 'Inter', system-ui, -apple-system, sans-serif; 
                       margin: 0; 
                       padding: 0;
-                      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%); 
-                      color: #ffffff; 
+                      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%); 
+                      color: #0f172a; 
                       min-height: 100vh;
                       line-height: 1.6;
                   }
@@ -415,7 +415,7 @@ jobs:
                       font-size: 3rem; 
                       font-weight: 700; 
                       margin: 0 0 1rem 0;
-                      background: linear-gradient(45deg, #ffffff, #e0f2fe);
+                      background: linear-gradient(45deg, #0f172a, #334155);
                       -webkit-background-clip: text;
                       -webkit-text-fill-color: transparent;
                       background-clip: text;
@@ -423,7 +423,7 @@ jobs:
                   .header p { 
                       font-size: 1.25rem; 
                       font-weight: 400; 
-                      opacity: 0.9;
+                      color: #64748b;
                       margin: 0;
                   }
                   .modules-grid {
@@ -433,18 +433,18 @@ jobs:
                       margin-bottom: 3rem;
                   }
                   .module { 
-                      background: rgba(255, 255, 255, 0.95); 
-                      color: #1f2937; 
-                      border-radius: 16px; 
+                      background: #ffffff; 
+                      color: #0f172a; 
+                      border-radius: 24px; 
                       padding: 2rem;
-                      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-                      backdrop-filter: blur(10px);
-                      border: 1px solid rgba(255, 255, 255, 0.2);
+                      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+                      border: 1px solid #e2e8f0;
                       transition: all 0.3s ease;
                   }
                   .module:hover {
                       transform: translateY(-5px);
-                      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+                      border-color: #cbd5e1;
                   }
                   .module h2 { 
                       color: #1e40af; 
@@ -456,7 +456,7 @@ jobs:
                       gap: 0.5rem;
                   }
                   .module p { 
-                      color: #6b7280; 
+                      color: #64748b; 
                       margin: 0 0 1.5rem 0;
                       font-size: 1rem;
                   }
@@ -471,7 +471,7 @@ jobs:
                       text-decoration: none; 
                       padding: 0.75rem 1.5rem; 
                       background: linear-gradient(135deg, #3b82f6, #2563eb);
-                      border-radius: 8px; 
+                      border-radius: 12px; 
                       display: inline-block; 
                       font-weight: 500;
                       font-size: 0.875rem;
@@ -490,13 +490,13 @@ jobs:
                   .footer {
                       margin-top: 3rem;
                       padding: 2rem;
-                      background: rgba(255, 255, 255, 0.1);
-                      border-radius: 12px;
-                      backdrop-filter: blur(10px);
+                      background: #f8fafc;
+                      border-radius: 16px;
+                      border: 1px solid #e2e8f0;
                   }
                   .footer p {
                       margin: 0;
-                      opacity: 0.8;
+                      color: #64748b;
                       font-size: 0.875rem;
                   }
                   @media (max-width: 768px) {
