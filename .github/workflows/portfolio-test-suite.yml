@@ -559,9 +559,9 @@ jobs:
           if-no-files-found: warn
 
   react-playwright-demo:
-    name: React Playwright Demo (TypeScript/React) - SKIPPED
+    name: React Playwright Demo (TypeScript/React)
     runs-on: ubuntu-latest
-    if: false  # Temporarily disabled for troubleshooting
+    if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'react-playwright-demo' || github.event_name != 'workflow_dispatch' }}
     defaults:
       run:
         working-directory: react-playwright-demo

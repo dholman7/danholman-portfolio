@@ -31,9 +31,6 @@ jobs:
     name: Deploy Allure Reports to GitHub Pages
     runs-on: ubuntu-latest
     if: (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
-    # environment:
-    #   name: github-pages
-    #   url: ${{ steps.deployment.outputs.page_url }}
     permissions:
       contents: read
     
@@ -857,18 +854,11 @@ jobs:
           echo "HTML files in deployment:"
           find gh-pages-deploy -name "*.html" | head -20
 
-      - name: Upload Deployment Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports-dashboard
-          path: gh-pages-deploy/
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Deploy Summary
+      - name: Deploy to GitHub Pages
+        if: always()
         id: deployment
-        run: |
-          echo "Deployment artifacts uploaded successfully"
-          echo "Dashboard files prepared in gh-pages-deploy/"
-          echo "Total files: $(find gh-pages-deploy -type f | wc -l)"
-          echo "Dashboard size: $(du -sh gh-pages-deploy/ | cut -f1)"
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: ./gh-pages-deploy
