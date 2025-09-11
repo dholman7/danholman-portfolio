@@ -123,127 +123,193 @@ jobs:
             echo "Creating basic landing page..."
             cat > gh-pages-deploy/index.html << 'EOF'
           <!DOCTYPE html>
-          <html>
+          <html lang="en">
           <head>
-              <title>Test Results Dashboard</title>
+              <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Test Results Dashboard</title>
               <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
               <style>
-                  * { box-sizing: border-box; }
-                  body { 
-                      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-                      margin: 0; 
+                  * {
+                      box-sizing: border-box;
+                      margin: 0;
                       padding: 0;
-                      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%); 
-                      color: #0f172a; 
-                      min-height: 100vh;
+                  }
+                  
+                  body {
+                      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #f1f5f9 100%);
+                      color: #1e293b;
                       line-height: 1.6;
+                      min-height: 100vh;
                   }
-                  .container { 
-                      max-width: 1200px; 
-                      margin: 0 auto; 
-                      padding: 2rem 1rem; 
-                      text-align: center; 
+                  
+                  .container {
+                      max-width: 1280px;
+                      margin: 0 auto;
+                      padding: 2rem;
+                      text-align: center;
                   }
+                  
                   .header {
-                      margin-bottom: 3rem;
+                      margin-bottom: 4rem;
                   }
-                  .header h1 { 
-                      font-size: 3rem; 
-                      font-weight: 700; 
-                      margin: 0 0 1rem 0;
-                      background: linear-gradient(45deg, #0f172a, #334155);
+                  
+                  .header h1 {
+                      font-size: 3.5rem;
+                      font-weight: 700;
+                      margin-bottom: 1rem;
+                      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
                       -webkit-background-clip: text;
                       -webkit-text-fill-color: transparent;
                       background-clip: text;
                   }
-                  .header p { 
-                      font-size: 1.25rem; 
-                      font-weight: 400; 
+                  
+                  .header p {
+                      font-size: 1.25rem;
                       color: #64748b;
-                      margin: 0;
+                      font-weight: 400;
                   }
+                  
                   .modules-grid {
                       display: grid;
-                      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                       gap: 2rem;
-                      margin-bottom: 3rem;
+                      margin-bottom: 4rem;
                   }
-                  .module { 
-                      background: #ffffff; 
-                      color: #0f172a; 
-                      border-radius: 24px; 
+                  
+                  .module {
+                      background: #ffffff;
+                      border-radius: 16px;
                       padding: 2rem;
-                      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
                       border: 1px solid #e2e8f0;
-                      transition: all 0.3s ease;
+                      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      position: relative;
+                      overflow: hidden;
                   }
+                  
+                  .module::before {
+                      content: '';
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      right: 0;
+                      height: 4px;
+                      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+                  }
+                  
                   .module:hover {
-                      transform: translateY(-5px);
-                      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-                      border-color: #cbd5e1;
+                      transform: translateY(-4px);
+                      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                      border-color: #3b82f6;
                   }
-                  .module h2 { 
-                      color: #1e40af; 
+                  
+                  .module h2 {
+                      color: #1e293b;
                       font-size: 1.5rem;
                       font-weight: 600;
-                      margin: 0 0 1rem 0;
+                      margin-bottom: 0.75rem;
                       display: flex;
                       align-items: center;
                       gap: 0.5rem;
                   }
-                  .module p { 
-                      color: #64748b; 
-                      margin: 0 0 1.5rem 0;
-                      font-size: 1rem;
+                  
+                  .module p {
+                      color: #64748b;
+                      margin-bottom: 1.5rem;
+                      font-size: 0.95rem;
                   }
+                  
                   .module-links {
                       display: flex;
                       flex-wrap: wrap;
                       gap: 0.75rem;
                       justify-content: center;
                   }
-                  .module a { 
-                      color: #ffffff; 
-                      text-decoration: none; 
-                      padding: 0.75rem 1.5rem; 
+                  
+                  .module a {
+                      color: #ffffff;
+                      text-decoration: none;
+                      padding: 0.75rem 1.5rem;
                       background: linear-gradient(135deg, #3b82f6, #2563eb);
-                      border-radius: 12px; 
-                      display: inline-block; 
+                      border-radius: 8px;
                       font-weight: 500;
                       font-size: 0.875rem;
                       transition: all 0.2s ease;
                       border: none;
                       cursor: pointer;
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 0.5rem;
                   }
-                  .module a:hover { 
+                  
+                  .module a:hover {
                       background: linear-gradient(135deg, #2563eb, #1d4ed8);
                       transform: translateY(-1px);
                       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
                   }
+                  
                   .module a:active {
                       transform: translateY(0);
                   }
+                  
                   .footer {
-                      margin-top: 3rem;
+                      margin-top: 4rem;
                       padding: 2rem;
                       background: #f8fafc;
-                      border-radius: 16px;
+                      border-radius: 12px;
                       border: 1px solid #e2e8f0;
                   }
+                  
                   .footer p {
-                      margin: 0;
                       color: #64748b;
                       font-size: 0.875rem;
                   }
+                  
+                  .status-badge {
+                      display: inline-block;
+                      padding: 0.25rem 0.75rem;
+                      background: #dcfce7;
+                      color: #166534;
+                      border-radius: 9999px;
+                      font-size: 0.75rem;
+                      font-weight: 500;
+                      margin-left: 0.5rem;
+                  }
+                  
                   @media (max-width: 768px) {
-                      .container { padding: 1rem; }
-                      .header h1 { font-size: 2rem; }
-                      .header p { font-size: 1rem; }
-                      .modules-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-                      .module { padding: 1.5rem; }
-                      .module-links { flex-direction: column; align-items: center; }
-                      .module a { width: 100%; max-width: 200px; }
+                      .container {
+                          padding: 1rem;
+                      }
+                      
+                      .header h1 {
+                          font-size: 2.5rem;
+                      }
+                      
+                      .header p {
+                          font-size: 1rem;
+                      }
+                      
+                      .modules-grid {
+                          grid-template-columns: 1fr;
+                          gap: 1.5rem;
+                      }
+                      
+                      .module {
+                          padding: 1.5rem;
+                      }
+                      
+                      .module-links {
+                          flex-direction: column;
+                          align-items: center;
+                      }
+                      
+                      .module a {
+                          width: 100%;
+                          max-width: 200px;
+                          justify-content: center;
+                      }
                   }
               </style>
           </head>
@@ -251,7 +317,7 @@ jobs:
               <div class="container">
                   <div class="header">
                       <h1>🧪 Test Results Dashboard</h1>
-                      <p>Comprehensive test automation portfolio showcasing 10+ years of SDET expertise</p>
+                      <p>Comprehensive test automation portfolio showcasing modern SDET expertise</p>
                   </div>
                   
                   <div class="modules-grid">
@@ -259,7 +325,7 @@ jobs:
                           <h2>📊 Combined Test Results</h2>
                           <p>Unified Allure reports from all modules</p>
                           <div class="module-links">
-                              <a href="combined-allure/">View Combined Allure Report</a>
+                              <a href="combined-allure/">View Combined Report</a>
                           </div>
                       </div>
                       
@@ -268,7 +334,7 @@ jobs:
                           <p>Python/TypeScript test automation framework</p>
                           <div class="module-links">
                               <a href="automation-framework/">View Allure Report</a>
-                              <a href="automation-framework/coverage/">View Coverage Report</a>
+                              <a href="automation-framework/coverage/">View Coverage</a>
                           </div>
                       </div>
                       
@@ -277,7 +343,7 @@ jobs:
                           <p>AI-powered development standards and quality tools</p>
                           <div class="module-links">
                               <a href="ai-rulesets/">View Allure Report</a>
-                              <a href="ai-rulesets/coverage/">View Coverage Report</a>
+                              <a href="ai-rulesets/coverage/">View Coverage</a>
                           </div>
                       </div>
                       
@@ -286,7 +352,7 @@ jobs:
                           <p>AWS serverless demo with Lambda and DynamoDB</p>
                           <div class="module-links">
                               <a href="cloud-native-app/">View Allure Report</a>
-                              <a href="cloud-native-app/coverage/">View Coverage Report</a>
+                              <a href="cloud-native-app/coverage/">View Coverage</a>
                           </div>
                       </div>
                       
@@ -295,8 +361,8 @@ jobs:
                           <p>Modern React/TypeScript frontend with E2E testing</p>
                           <div class="module-links">
                               <a href="react-playwright-demo/">View Allure Report</a>
-                              <a href="react-playwright-demo/playwright/">View Playwright Report</a>
-                              <a href="react-playwright-demo/coverage/">View Coverage Report</a>
+                              <a href="react-playwright-demo/playwright/">View Playwright</a>
+                              <a href="react-playwright-demo/coverage/">View Coverage</a>
                           </div>
                       </div>
                   </div>
