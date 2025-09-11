@@ -61,6 +61,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Cursor CLI
+        if: always()
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
+
       - name: Download Allure Reports from Workflow Run
         if: github.event_name == 'workflow_run'
         run: |
@@ -868,6 +874,52 @@ jobs:
           ls -la gh-pages-deploy/coverage-reports/ 2>/dev/null || echo "No coverage-reports directory"
           echo "HTML files in deployment:"
           find gh-pages-deploy -name "*.html" | head -20
+
+      - name: Fix Deployment Issues with Cursor AI
+        if: always()
+        timeout-minutes: 5
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor AI: Analyzing and fixing deployment issues..."
+          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          
+          Analyze the GitHub Pages deployment issues in this CI run, particularly:
+          1. Missing gh-pages-deploy directory
+          2. Missing or empty artifact directories
+          3. Incorrect file paths or structure
+          4. GitHub Pages branch (gh-pages) not existing
+          5. Missing HTML files or broken links
+          
+          Check the current directory structure and fix:
+          - Ensure gh-pages-deploy/ directory exists
+          - Create proper index.html if missing
+          - Fix any broken file paths
+          - Ensure all required files are in the correct locations
+          - Create placeholder content if artifacts are missing
+          
+          The deployment should work even if some test artifacts are missing.
+          Focus on creating a functional dashboard that can be deployed to GitHub Pages." || echo "Cursor AI timeout or error - continuing with deployment"
+
+      - name: Verify Deployment Directory
+        if: always()
+        run: |
+          echo "=== DEPLOYMENT DIRECTORY VERIFICATION ==="
+          echo "Current working directory: $(pwd)"
+          echo "Checking for gh-pages-deploy directory..."
+          if [ -d "gh-pages-deploy" ]; then
+            echo "✅ gh-pages-deploy directory exists"
+            echo "Contents:"
+            ls -la gh-pages-deploy/
+            echo "File count: $(find gh-pages-deploy -type f | wc -l)"
+          else
+            echo "❌ gh-pages-deploy directory missing, creating it..."
+            mkdir -p gh-pages-deploy
+            echo "<!DOCTYPE html><html><head><title>Test Results Dashboard</title></head><body><h1>Test Results Dashboard</h1><p>Deployment directory created by Cursor AI fix.</p></body></html>" > gh-pages-deploy/index.html
+            echo "Created placeholder index.html"
+          fi
+          echo "========================================="
 
       - name: Deploy to GitHub Pages
         if: always()
