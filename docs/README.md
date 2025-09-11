@@ -60,17 +60,17 @@ Architectural Decision Record for the initial project structure:
 ### For Developers
 1. Start with [Local Testing Guide](./local-testing-guide.md)
 2. Review [Architecture Overview](./architecture.md)
-3. Explore [API Matrix Testing - Quick Start](./api-matrix-quick-start.md)
+3. Explore [Allure Reporting](./allure-reporting.md)
 
 ### For Testers
-1. Begin with [API Matrix Testing](./api-matrix-testing.md)
-2. Review [Allure Reporting](./allure-reporting.md)
-3. Explore [API Matrix Testing - Examples](./api-matrix-examples.md)
+1. Begin with [Allure Reporting](./allure-reporting.md)
+2. Review [Local Testing Guide](./local-testing-guide.md)
+3. Explore [CI/CD Overview](./cicd-overview.md)
 
 ### For DevOps Engineers
 1. Start with [CI/CD Overview](./cicd-overview.md)
 2. Review [Architecture Overview](./architecture.md)
-3. Explore [API Matrix Testing](./api-matrix-testing.md)
+3. Explore [Allure Reporting](./allure-reporting.md)
 
 ## 📖 Documentation Standards
 
@@ -98,16 +98,16 @@ Architectural Decision Record for the initial project structure:
 ## 🔍 Finding Information
 
 ### By Topic
-- **Testing**: [API Matrix Testing](./api-matrix-testing.md), [Allure Reporting](./allure-reporting.md)
+- **Testing**: [Allure Reporting](./allure-reporting.md), [Local Testing Guide](./local-testing-guide.md)
 - **Development**: [Local Testing Guide](./local-testing-guide.md), [Cursor Demo](./cursor-demo.md)
 - **Architecture**: [Architecture Overview](./architecture.md), [CI/CD Overview](./cicd-overview.md)
-- **Examples**: [API Matrix Testing - Examples](./api-matrix-examples.md)
+- **Examples**: [Allure Reporting](./allure-reporting.md)
 
 ### By Audience
 - **Developers**: [Local Testing Guide](./local-testing-guide.md), [Architecture Overview](./architecture.md)
-- **Testers**: [API Matrix Testing](./api-matrix-testing.md), [Allure Reporting](./allure-reporting.md)
+- **Testers**: [Allure Reporting](./allure-reporting.md), [Local Testing Guide](./local-testing-guide.md)
 - **DevOps**: [CI/CD Overview](./cicd-overview.md), [Architecture Overview](./architecture.md)
-- **Beginners**: [API Matrix Testing - Quick Start](./api-matrix-quick-start.md)
+- **Beginners**: [Local Testing Guide](./local-testing-guide.md)
 
 ## 📞 Getting Help
 

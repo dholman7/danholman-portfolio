@@ -1,6 +1,6 @@
 # ADR-0001: Initial Repository Structure
 
-Date: $(date +%Y-%m-%d)
+Date: 2024-12-01
 
 ## Status
 Proposed

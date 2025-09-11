@@ -81,13 +81,13 @@ make clean                 # Clean all generated files
 danholman-portfolio/
 ├── allure-history/                    # Allure history storage
 │   ├── automation-framework/
-│   ├── ai-test-generation/
+│   ├── ai-rulesets/
 │   └── cloud-native-app/
 ├── automation-framework/
 │   └── reports/
 │       ├── allure-results/           # Raw Allure results
 │       └── allure-report/            # Generated HTML reports
-├── ai-test-generation/
+├── ai-rulesets/
 │   └── reports/
 │       ├── allure-results/
 │       └── allure-report/
@@ -117,10 +117,10 @@ make test-allure           # All tests with Allure
 make allure-serve          # Serve reports locally
 ```
 
-### AI Test Generation
+### AI Rulesets
 ```bash
 # Navigate to module
-cd ai-test-generation
+cd ai-rulesets
 
 # Run specific test types
 make test-unit              # Unit tests only
@@ -168,7 +168,7 @@ make allure-clean
 ### Accessing Reports
 After running `make allure-serve-local`, access reports at:
 - **Automation Framework**: http://localhost:5050
-- **AI Test Generation**: http://localhost:5051
+- **AI Rulesets**: http://localhost:5051
 - **Cloud Native App**: http://localhost:5052
 
 ### Report Features

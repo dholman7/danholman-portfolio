@@ -26,10 +26,10 @@ The portfolio demonstrates a multi-module CI/CD architecture with:
 - **Code Quality**: Black, isort, flake8, Ruff, and MyPy
 - **Docker Integration**: Isolated testing environment with mock services
 
-**Workflow**: `.github/workflows/ci.yml`
-- **Triggers**: Push to main/develop, pull requests
-- **Jobs**: Code quality, unit tests, API tests, UI tests, performance tests, contract tests
-- **Artifacts**: Test reports, coverage reports, security reports
+**Workflow**: `.github/workflows/portfolio-test-suite.yml`
+- **Triggers**: Push to main, pull requests, manual dispatch
+- **Jobs**: automation-framework, ai-rulesets, cloud-native-app, react-playwright-demo
+- **Artifacts**: Test reports, coverage reports, Allure reports
 
 ### 2. Cloud Native App (`cloud-native-app/`)
 
@@ -43,26 +43,25 @@ The portfolio demonstrates a multi-module CI/CD architecture with:
 - **Security Scanning**: npm audit and Snyk vulnerability detection
 - **Build Artifact Management**: Lambda function packaging
 
-**Workflow**: `.github/workflows/ci.yml`
-- **Triggers**: Push to main/develop, pull requests
-- **Jobs**: Lint/typecheck, unit tests, integration tests, build, security scan, CDK synth, deployment
-- **Artifacts**: Build artifacts, test reports, CDK templates
+**Workflow**: `.github/workflows/portfolio-test-suite.yml`
+- **Triggers**: Push to main, pull requests, manual dispatch
+- **Jobs**: cloud-native-app job with TypeScript/Python testing
+- **Artifacts**: Build artifacts, test reports, Allure reports
 
-### 3. AI Test Generation (`ai-test-generation/`)
+### 3. AI Rulesets (`ai-rulesets/`)
 
-**Pipeline Focus**: AI-powered testing framework and parallel execution
+**Pipeline Focus**: AI-powered development standards and quality tools
 
 **Key Features**:
-- **Parallel Test Execution**: High-scale parallel testing with GitHub Actions matrix
-- **Dynamic Matrix Generation**: Automated test matrix creation
+- **Quality Standards**: AI-powered development standards and guidelines
 - **Template Validation**: AI guidance template validation
 - **Package Publishing**: Automated PyPI package publishing
 - **Multi-Framework Support**: pytest, Jest, and other frameworks
+- **Development Tools**: Quality checking and validation tools
 
 **Workflows**:
-- **`test.yml`**: Standard testing pipeline
-- **`build.yml`**: Package building and publishing
-- **`parallel-testing.yml`**: Advanced parallel testing demonstration
+- **`portfolio-test-suite.yml`**: Integrated testing pipeline
+- **`quality-check.yml`**: Code quality validation
 
 ## 🔧 CI/CD Best Practices Demonstrated
 
@@ -73,7 +72,8 @@ on:
     paths:
       - 'automation-framework/**'
       - 'cloud-native-app/**'
-      - 'ai-test-generation/**'
+      - 'ai-rulesets/**'
+      - 'react-playwright-demo/**'
 ```
 
 ### 2. **Matrix Strategies**
@@ -114,9 +114,9 @@ env:
 ## 🚀 Advanced CI/CD Patterns
 
 ### 1. **Parallel Test Execution**
-The AI test generation module demonstrates advanced parallel testing:
+The portfolio test suite demonstrates advanced parallel testing:
 
-- **Dynamic Matrix Generation**: Creates test matrices based on available configurations
+- **Module-based Parallel Execution**: All modules run in parallel for faster CI
 - **Artifact Merging**: Combines results from parallel test execution
 - **Comprehensive Reporting**: Generates detailed test summaries and insights
 
