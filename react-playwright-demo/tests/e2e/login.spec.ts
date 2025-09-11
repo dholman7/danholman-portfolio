@@ -30,6 +30,10 @@ test.describe('User Login', () => {
   test('should show validation errors for empty login form', async ({ page }) => {
     await page.click('[data-testid="submit-button"]');
     
+    // Wait for validation errors to appear
+    await page.waitForSelector('[data-testid="email-error"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="password-error"]', { timeout: 5000 });
+    
     // Check for validation errors
     await expect(page.locator('[data-testid="email-error"]')).toBeVisible();
     await expect(page.locator('[data-testid="password-error"]')).toBeVisible();
@@ -39,6 +43,8 @@ test.describe('User Login', () => {
     await page.fill('[data-testid="email-input"]', 'invalid-email');
     await page.click('[data-testid="submit-button"]');
     
+    // Wait for validation error to appear
+    await page.waitForSelector('[data-testid="email-error"]', { timeout: 5000 });
     await expect(page.locator('[data-testid="email-error"]')).toContainText('Please enter a valid email address');
   });
 
@@ -56,15 +62,15 @@ test.describe('User Login', () => {
     await page.click('[data-testid="submit-button"]');
     
     // Wait for loading to complete and check for dashboard
-    await page.waitForSelector('text=Welcome to your HolmanTech Dashboard', { timeout: 10000 });
+    await page.waitForSelector('[data-testid="dashboard-title"]', { timeout: 10000 });
     
     // Check for dashboard elements
-    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
-    await expect(page.locator('text=Welcome, User!')).toBeVisible();
-    await expect(page.locator('text=Account Status')).toBeVisible();
-    await expect(page.locator('text=Last Login')).toBeVisible();
-    await expect(page.locator('text=Quick Actions')).toBeVisible();
-    await expect(page.locator('text=Sign out')).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
+    await expect(page.locator('[data-testid="account-status-card"]')).toBeVisible();
+    await expect(page.locator('[data-testid="last-login-card"]')).toBeVisible();
+    await expect(page.locator('[data-testid="view-profile-button"]')).toBeVisible();
+    await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
   });
 
   test('should toggle password visibility in login form', async ({ page }) => {

@@ -1,0 +1,101 @@
+# Dan Holman Portfolio - Cursor Rules
+
+## Version Management Rules
+
+### Python Version Management
+- **MANDATORY**: Always use Python versions from `.python-version` files
+- **MANDATORY**: Check for `.python-version` files at both root and module level
+- **MANDATORY**: All Python references must use the version specified in `.python-version`
+- **MANDATORY**: GitHub Actions workflows must read `.python-version` for setup-python action
+- **MANDATORY**: AWS CloudFormation/CDK templates must reference `.python-version` for Lambda runtime
+- **MANDATORY**: All documentation must reference the correct Python version from `.python-version`
+
+### Node.js Version Management
+- **MANDATORY**: Always use Node.js versions from `.nvmrc` files
+- **MANDATORY**: Check for `.nvmrc` files at both root and module level
+- **MANDATORY**: All Node.js references must use the version specified in `.nvmrc`
+- **MANDATORY**: GitHub Actions workflows must use the Node.js version from `.nvmrc`
+- **MANDATORY**: All documentation must reference the correct Node.js version from `.nvmrc`
+- **MANDATORY**: Package.json engines field must match `.nvmrc` version
+
+### Version Consistency Rules
+- **MANDATORY**: All version references across the repository must be consistent
+- **MANDATORY**: No hardcoded version numbers - always reference from version files
+- **MANDATORY**: When updating versions, update both the version file and all references
+- **MANDATORY**: Quality checks must validate version consistency
+
+## File Structure Rules
+
+### Required Version Files
+- **Root level**: `.python-version` and `.nvmrc` files must exist
+- **Module level**: Each module should have its own `.python-version` and `.nvmrc` if different from root
+- **Documentation**: All README files must reference the correct versions from version files
+
+### Version File Format
+- **`.python-version`**: Single line with Python version (e.g., `3.13`)
+- **`.nvmrc`**: Single line with Node.js version (e.g., `20.19.0`)
+
+## Quality Assurance Rules
+
+### Version Validation
+- **MANDATORY**: Quality checker must validate version consistency
+- **MANDATORY**: All workflows must use version files for setup
+- **MANDATORY**: No version mismatches allowed in CI/CD
+
+### Documentation Rules
+- **MANDATORY**: All installation instructions must reference version files
+- **MANDATORY**: All README files must include version requirements section
+- **MANDATORY**: All code examples must use correct versions
+
+## Enforcement Rules
+
+### Pre-commit Hooks
+- **MANDATORY**: Validate version consistency before commits
+- **MANDATORY**: Check that all references match version files
+- **MANDATORY**: Fail if version mismatches are detected
+
+### CI/CD Rules
+- **MANDATORY**: All workflows must read from version files
+- **MANDATORY**: Version consistency checks must pass
+- **MANDATORY**: No hardcoded versions in workflow files
+
+## Current Versions
+- **Python**: 3.13 (from .python-version files)
+- **Node.js**: 20.19.0 (from .nvmrc files)
+
+## Examples
+
+### Correct Usage
+```yaml
+# GitHub Actions workflow
+- name: Setup Python
+  uses: actions/setup-python@v4
+  with:
+    python-version: $(cat .python-version)
+
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: $(cat .nvmrc)
+```
+
+### Incorrect Usage
+```yaml
+# DON'T DO THIS - hardcoded versions
+- name: Setup Python
+  uses: actions/setup-python@v4
+  with:
+    python-version: '3.13'  # WRONG - should read from .python-version
+
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: '20.19.0'  # WRONG - should read from .nvmrc
+```
+
+## Violations
+Any violation of these rules should result in:
+1. Immediate correction of the violation
+2. Update of all related references
+3. Verification that version consistency is maintained
+4. Documentation update if necessary

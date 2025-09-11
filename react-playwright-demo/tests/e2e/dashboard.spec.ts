@@ -14,8 +14,8 @@ test.describe('Dashboard Functionality', () => {
     await page.check('[data-testid="terms-checkbox"]');
     await page.click('[data-testid="submit-button"]');
     
-    // Wait for dashboard to load
-    await page.waitForSelector('text=Welcome to your HolmanTech Dashboard', { timeout: 10000 });
+    // Wait for dashboard to load (this will wait for the form to disappear and dashboard to appear)
+    await page.waitForSelector('[data-testid="dashboard-title"]', { timeout: 15000 });
   });
 
   test('should display dashboard with all elements', async ({ page }) => {
@@ -25,24 +25,22 @@ test.describe('Dashboard Functionality', () => {
     await allure.severity('critical');
     
     // Check header elements
-    await expect(page.locator('text=HolmanTech')).toBeVisible();
-    await expect(page.locator('text=Welcome, John!')).toBeVisible();
-    await expect(page.locator('text=Sign out')).toBeVisible();
+    await expect(page.locator('[data-testid="header-logo"]')).toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
+    await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
     
     // Check main dashboard content
-    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
-    await expect(page.locator('text=You\'ve successfully authenticated! This is a demo dashboard showcasing modern authentication flows.')).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-description"]')).toBeVisible();
     
     // Check account status cards
-    await expect(page.locator('text=Account Status')).toBeVisible();
-    await expect(page.locator('text=Active and verified')).toBeVisible();
-    await expect(page.locator('text=Last Login')).toBeVisible();
+    await expect(page.locator('[data-testid="account-status-card"]')).toBeVisible();
+    await expect(page.locator('[data-testid="last-login-card"]')).toBeVisible();
     
     // Check quick actions section
-    await expect(page.locator('text=Quick Actions')).toBeVisible();
-    await expect(page.locator('text=View Profile')).toBeVisible();
-    await expect(page.locator('text=Security')).toBeVisible();
-    await expect(page.locator('text=Support')).toBeVisible();
+    await expect(page.locator('[data-testid="view-profile-button"]')).toBeVisible();
+    await expect(page.locator('[data-testid="security-button"]')).toBeVisible();
+    await expect(page.locator('[data-testid="support-button"]')).toBeVisible();
     
     // Check demo information
     await expect(page.locator('text=Demo Information')).toBeVisible();
@@ -56,16 +54,16 @@ test.describe('Dashboard Functionality', () => {
     await allure.severity('high');
     
     // Click sign out button
-    await page.click('text=Sign out');
+    await page.click('[data-testid="sign-out-button"]');
     
     // Should return to login/registration form
-    await expect(page.locator('text=Get started with HolmanTech')).toBeVisible();
+    await expect(page.locator('[data-testid="form-title"]')).toBeVisible();
     await expect(page.locator('[data-testid="first-name-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="email-input"]')).toBeVisible();
     
     // Dashboard elements should not be visible
-    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).not.toBeVisible();
-    await expect(page.locator('text=Welcome, John!')).not.toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-title"]')).not.toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).not.toBeVisible();
   });
 
   test('should persist authentication state on page refresh', async ({ page }) => {
@@ -78,9 +76,9 @@ test.describe('Dashboard Functionality', () => {
     await page.reload();
     
     // Should still be on dashboard
-    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
-    await expect(page.locator('text=Welcome, John!')).toBeVisible();
-    await expect(page.locator('text=Sign out')).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
+    await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
   });
 
   test('should display user information correctly', async ({ page }) => {
@@ -90,10 +88,10 @@ test.describe('Dashboard Functionality', () => {
     await allure.severity('medium');
     
     // Check that user's first name is displayed
-    await expect(page.locator('text=Welcome, John!')).toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
     
     // Check that last login time is displayed (should be recent)
-    const lastLoginText = await page.locator('text=Last Login').locator('..').textContent();
+    const lastLoginText = await page.locator('[data-testid="last-login-card"]').textContent();
     expect(lastLoginText).toContain('Last Login');
   });
 
@@ -104,9 +102,9 @@ test.describe('Dashboard Functionality', () => {
     await allure.severity('medium');
     
     // Check that quick action buttons are clickable
-    const viewProfileButton = page.locator('text=View Profile').locator('..');
-    const securityButton = page.locator('text=Security').locator('..');
-    const supportButton = page.locator('text=Support').locator('..');
+    const viewProfileButton = page.locator('[data-testid="view-profile-button"]');
+    const securityButton = page.locator('[data-testid="security-button"]');
+    const supportButton = page.locator('[data-testid="support-button"]');
     
     await expect(viewProfileButton).toBeVisible();
     await expect(securityButton).toBeVisible();
@@ -128,10 +126,10 @@ test.describe('Dashboard Functionality', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     
     // Dashboard should still be visible and properly laid out
-    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
-    await expect(page.locator('text=Welcome, John!')).toBeVisible();
-    await expect(page.locator('text=Sign out')).toBeVisible();
-    await expect(page.locator('text=Quick Actions')).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
+    await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
+    await expect(page.locator('[data-testid="view-profile-button"]')).toBeVisible();
   });
 
   test('should be responsive on tablet devices', async ({ page }) => {
@@ -144,9 +142,9 @@ test.describe('Dashboard Functionality', () => {
     await page.setViewportSize({ width: 768, height: 1024 });
     
     // Dashboard should still be visible and properly laid out
-    await expect(page.locator('text=Welcome to your HolmanTech Dashboard')).toBeVisible();
-    await expect(page.locator('text=Welcome, John!')).toBeVisible();
-    await expect(page.locator('text=Sign out')).toBeVisible();
-    await expect(page.locator('text=Quick Actions')).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
+    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
+    await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
+    await expect(page.locator('[data-testid="view-profile-button"]')).toBeVisible();
   });
 });

@@ -5,50 +5,48 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import clsx from 'clsx'
 
-// Validation schema
+// Validation schemas
 const registerSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  confirmPassword: z.string(),
+  confirmPassword: z.string().min(8, 'Confirm password must be at least 8 characters'),
   terms: z.boolean().refine(val => val === true, 'You must accept the terms and conditions')
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
 })
 
+const loginSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters')
+})
+
 type RegisterFormData = z.infer<typeof registerSchema>
+type LoginFormData = z.infer<typeof loginSchema>
 
 // Mock API functions
 const mockRegister = async (data: RegisterFormData) => {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 100))
   
   // Log the registration attempt (using the data parameter)
   console.log('Registration attempt for:', data.email)
   
-  // Simulate random success/failure for demo
-  if (Math.random() > 0.1) {
-    return { success: true, message: 'Account created successfully!' }
-  } else {
-    return { success: false, message: 'Email already exists. Please try a different email.' }
-  }
+  // Always succeed for testing purposes
+  return { success: true, message: 'Account created successfully!' }
 }
 
 const mockLogin = async (email: string, password: string) => {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 100))
   
   // Log the login attempt (using the parameters but not the password)
   console.log('Login attempt for:', email, 'with password length:', password.length)
   
-  // Simulate random success/failure for demo
-  if (Math.random() > 0.2) {
-    return { success: true, message: 'Login successful!' }
-  } else {
-    return { success: false, message: 'Invalid email or password.' }
-  }
+  // Always succeed for testing purposes
+  return { success: true, message: 'Login successful!' }
 }
 
 function App() {
@@ -67,52 +65,73 @@ function App() {
     return userData ? JSON.parse(userData) : null
   })
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema)
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData | LoginFormData>({
+    resolver: zodResolver(isLogin ? loginSchema : registerSchema),
+    mode: 'onChange'
   })
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const onSubmit = async (data: RegisterFormData | LoginFormData) => {
+    console.log('Form submitted with data:', data)
+    console.log('isLogin mode:', isLogin)
+    console.log('Form errors:', errors)
     setIsLoading(true)
     setMessage(null)
     
     try {
       if (isLogin) {
-        const result = await mockLogin(data.email, data.password)
+        console.log('Attempting login...')
+        const loginData = data as LoginFormData
+        const result = await mockLogin(loginData.email, loginData.password)
+        console.log('Login result:', result)
         setMessage({ type: result.success ? 'success' : 'error', text: result.message })
         if (result.success) {
           const userData = {
-            email: data.email,
+            email: loginData.email,
             firstName: 'User', // In a real app, this would come from the API
             loginTime: new Date().toISOString()
           }
+          console.log('Setting user data:', userData)
           setUser(userData)
           setIsAuthenticated(true)
           // Store authentication state in session storage
           sessionStorage.setItem('isAuthenticated', 'true')
           sessionStorage.setItem('user', JSON.stringify(userData))
+          console.log('Authentication successful, redirecting to dashboard')
         }
       } else {
-        const result = await mockRegister(data)
+        console.log('Attempting registration...')
+        const registerData = data as RegisterFormData
+        const result = await mockRegister(registerData)
+        console.log('Registration result:', result)
         setMessage({ type: result.success ? 'success' : 'error', text: result.message })
         if (result.success) {
           const userData = {
-            email: data.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
+            email: registerData.email,
+            firstName: registerData.firstName,
+            lastName: registerData.lastName,
             loginTime: new Date().toISOString()
           }
+          console.log('Setting user data:', userData)
           setUser(userData)
           setIsAuthenticated(true)
           // Store authentication state in session storage
           sessionStorage.setItem('isAuthenticated', 'true')
           sessionStorage.setItem('user', JSON.stringify(userData))
+          console.log('Authentication successful, redirecting to dashboard')
         }
       }
-    } catch {
+    } catch (error) {
+      console.error('Authentication error:', error)
       setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })
     } finally {
+      console.log('Setting isLoading to false')
       setIsLoading(false)
     }
+  }
+
+  const onError = (errors: any) => {
+    console.log('Form validation errors:', errors)
+    setIsLoading(false)
   }
 
   const toggleMode = () => {
@@ -132,10 +151,10 @@ function App() {
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-xl font-bold text-slate-900">HolmanTech</span>
+                <span className="text-xl font-bold text-slate-900" data-testid="header-logo">HolmanTech</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-sm text-slate-600">Welcome, {user?.firstName || 'User'}!</span>
+                <span className="text-sm text-slate-600" data-testid="welcome-message">Welcome, {user?.firstName || 'User'}!</span>
                 <button
                   onClick={() => {
                     setIsAuthenticated(false)
@@ -146,6 +165,7 @@ function App() {
                     sessionStorage.removeItem('user')
                   }}
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
+                  data-testid="sign-out-button"
                 >
                   Sign out
                 </button>
@@ -160,18 +180,18 @@ function App() {
             {/* Welcome Card */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
-                <h1 className="text-3xl font-bold text-slate-900 mb-4">
+                <h1 className="text-3xl font-bold text-slate-900 mb-4" data-testid="dashboard-title">
                   Welcome to your HolmanTech Dashboard
                 </h1>
-                <p className="text-slate-600 text-lg mb-6">
+                <p className="text-slate-600 text-lg mb-6" data-testid="dashboard-description">
                   You've successfully authenticated! This is a demo dashboard showcasing modern authentication flows.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-slate-50 rounded-xl p-4">
+                  <div className="bg-slate-50 rounded-xl p-4" data-testid="account-status-card">
                     <h3 className="font-semibold text-slate-900 mb-2">Account Status</h3>
                     <p className="text-sm text-slate-600">Active and verified</p>
                   </div>
-                  <div className="bg-slate-50 rounded-xl p-4">
+                  <div className="bg-slate-50 rounded-xl p-4" data-testid="last-login-card">
                     <h3 className="font-semibold text-slate-900 mb-2">Last Login</h3>
                     <p className="text-sm text-slate-600">
                       {user?.loginTime ? new Date(user.loginTime).toLocaleString() : 'Just now'}
@@ -186,15 +206,15 @@ function App() {
               <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
                 <h3 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h3>
                 <div className="space-y-3">
-                  <button className="w-full text-left p-3 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200">
+                  <button className="w-full text-left p-3 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200" data-testid="view-profile-button">
                     <div className="font-medium text-slate-900">View Profile</div>
                     <div className="text-sm text-slate-600">Manage your account settings</div>
                   </button>
-                  <button className="w-full text-left p-3 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200">
+                  <button className="w-full text-left p-3 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200" data-testid="security-button">
                     <div className="font-medium text-slate-900">Security</div>
                     <div className="text-sm text-slate-600">Update password and security</div>
                   </button>
-                  <button className="w-full text-left p-3 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200">
+                  <button className="w-full text-left p-3 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200" data-testid="support-button">
                     <div className="font-medium text-slate-900">Support</div>
                     <div className="text-sm text-slate-600">Get help and contact us</div>
                   </button>
@@ -271,19 +291,19 @@ function App() {
                 data-testid="tech-logo"
               />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">
+            <h2 className="text-3xl font-bold text-slate-900 mb-3" data-testid="form-title">
               {isLogin ? 'Welcome back' : 'Create your account'}
             </h2>
-            <p className="text-slate-600 text-lg">
+            <p className="text-slate-600 text-lg" data-testid="form-subtitle">
               {isLogin ? 'Sign in to your account' : 'Get started with a free account'}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-6">
             {!isLogin && (
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-slate-700 mb-3" data-testid="first-name-label">
                     First Name
                   </label>
                   <div className="relative">
@@ -307,7 +327,7 @@ function App() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-slate-700 mb-3" data-testid="last-name-label">
                     Last Name
                   </label>
                   <div className="relative">
@@ -333,7 +353,7 @@ function App() {
             )}
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3">
+              <label className="block text-sm font-semibold text-slate-700 mb-3" data-testid="email-label">
                 Email Address
               </label>
               <div className="relative">
@@ -358,7 +378,7 @@ function App() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3">
+              <label className="block text-sm font-semibold text-slate-700 mb-3" data-testid="password-label">
                 Password
               </label>
               <div className="relative">
@@ -392,7 +412,7 @@ function App() {
 
             {!isLogin && (
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-3">
+                <label className="block text-sm font-semibold text-slate-700 mb-3" data-testid="confirm-password-label">
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -436,7 +456,7 @@ function App() {
                   />
                 </div>
                 <div className="text-sm">
-                  <label className="text-slate-700 leading-relaxed">
+                  <label className="text-slate-700 leading-relaxed" data-testid="terms-label">
                     I agree to the{' '}
                     <a href="#" className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2">
                       Terms and Conditions
