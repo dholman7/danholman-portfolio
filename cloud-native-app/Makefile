@@ -71,14 +71,14 @@ test-e2e:
 # Run regression tests
 test-regression:
 	@echo "Running regression tests..."
-	python -m pytest tests/test_regression.py --alluredir=reports/allure-results -v
+	yarn test
 	@echo "Regression tests completed."
 
 # Allure Reporting
 allure-results: ## Generate Allure test results
 	@echo "Generating Allure results..."
 	mkdir -p reports/allure-results
-	python -m pytest tests/test_regression.py --alluredir=reports/allure-results -v
+	yarn test
 	@echo "Allure results generated in reports/allure-results/"
 
 allure-generate: allure-results ## Generate Allure HTML report

@@ -104,11 +104,56 @@ jobs:
       - name: Run integration tests
         run: yarn test --testPathPattern=integration
 
+  # Allure Report Generation
+  allure-reports:
+    name: Generate Allure Reports
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    defaults:
+      run:
+        working-directory: ./cloud-native-app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          cache-dependency-path: './cloud-native-app/yarn.lock'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Allure
+        run: yarn global add allure-commandline
+
+      - name: Generate Allure results and report
+        run: yarn test:allure:generate
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cloud-native-app-allure-results
+          path: ./cloud-native-app/reports/allure-results/
+          retention-days: 7
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cloud-native-app-allure-report
+          path: ./cloud-native-app/reports/allure-report/
+          retention-days: 7
+
   # Build and Package
   build-and-package:
     name: Build and Package
     runs-on: ubuntu-latest
-    needs: [lint-and-typecheck, unit-tests]
+    needs: [lint-and-typecheck, unit-tests, allure-reports]
     defaults:
       run:
         working-directory: ./cloud-native-app
