@@ -212,7 +212,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: automation-framework-coverage-report
-          path: reports/coverage/
+          path: automation-framework/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
@@ -380,7 +380,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-rulesets-coverage-report
-          path: reports/coverage/
+          path: ai-rulesets/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
