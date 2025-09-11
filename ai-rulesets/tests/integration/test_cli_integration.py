@@ -119,8 +119,6 @@ class TestFileSystemIntegration:
                 name="Integration Test Template",
                 version="1.0.0",
                 description="Template for integration testing",
-                languages=["python"],
-                frameworks=["pytest"],
                 categories=["unit", "integration"]
             )
             
@@ -158,8 +156,6 @@ class TestFileSystemIntegration:
             name="File Output Test",
             version="1.0.0",
             description="Template for file output testing",
-            languages=["python"],
-            frameworks=["pytest"],
             categories=["unit"]
         )
         
@@ -208,11 +204,9 @@ metadata:
   name: "YAML Test Template"
   version: "1.0.0"
   description: "Template loaded from YAML"
-  languages: ["python"]
-  frameworks: ["pytest"]
   categories: ["unit"]
 
-guidance:
+rules:
   - name: "YAML Test Guidance"
     description: "Test guidance from YAML"
     content: "# YAML test guidance"
@@ -223,13 +217,13 @@ guidance:
             f.flush()
             
             try:
-                template = Ruleset.load_from_file(f.name)
+                template = Ruleset.from_file(f.name)
                 
                 assert template.metadata.name == "YAML Test Template"
                 assert template.metadata.version == "1.0.0"
-                assert len(template.guidance) == 1
-                assert template.guidance[0].name == "YAML Test Guidance"
-                assert template.guidance[0].content == "# YAML test guidance"
+                assert len(template.rules) == 1
+                assert template.rules[0].name == "YAML Test Guidance"
+                assert template.rules[0].content == "# YAML test guidance"
             finally:
                 Path(f.name).unlink()
 
@@ -238,7 +232,7 @@ guidance:
         nonexistent_path = Path("/nonexistent/path/template.yaml")
         
         with pytest.raises(FileNotFoundError):
-            Ruleset.load_from_file(nonexistent_path)
+            Ruleset.from_file(nonexistent_path)
 
     def test_load_invalid_yaml_file(self):
         """Test loading from invalid YAML file."""

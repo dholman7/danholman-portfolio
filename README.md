@@ -409,7 +409,37 @@ This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configurat
 - **[testing-guidelines.mdc](.cursor/rules/testing-guidelines.mdc)**: Comprehensive testing guidelines for pytest, Jest, and automation
 - **[git-workflow.mdc](.cursor/rules/git-workflow.mdc)**: Git workflow, pull request, and version control rules
 - **[ci-cd-infrastructure.mdc](.cursor/rules/ci-cd-infrastructure.mdc)**: CI/CD, infrastructure, and deployment rules
+- **[makefile-best-practices.mdc](.cursor/rules/makefile-best-practices.mdc)**: Best practices for Python virtual environment management in Makefiles
 - **[ai-rulesets](ai-rulesets/)**: Organizational AI rulesets and utilities for creating custom development standards
+
+**Cursor CLI in GitHub Actions**
+This portfolio demonstrates advanced AI integration in CI/CD pipelines using [Cursor CLI](https://docs.cursor.com/en/cli/github-actions):
+
+- **Automated Test Fixes**: Cursor CLI automatically analyzes and fixes test failures in CI
+- **Intelligent Code Analysis**: AI-powered diagnosis of import errors, API compatibility issues, and test logic problems
+- **Restricted Autonomy**: Safe AI integration that modifies files without committing or pushing changes
+- **Multi-language Support**: Works with Python, TypeScript, and React test suites
+- **Configurable Integration**: Optional Cursor CLI fixes can be enabled/disabled per workflow run
+
+**Setup Requirements:**
+1. **API Key**: Add `CURSOR_API_KEY` to your GitHub repository secrets
+2. **Workflow**: Use `portfolio-test-suite-with-cursor.yml` for AI-enhanced testing
+3. **Configuration**: Cursor CLI uses the repository's `.cursor/rules/` for context-aware fixes
+
+**Example Workflow Integration:**
+```yaml
+- name: Fix Test Failures with Cursor
+  if: failure() && github.event.inputs.enable_cursor_fixes != false
+  env:
+    CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+  run: |
+    cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+    Only modify files in the working directory. 
+    Analyze test failures and fix Python/TypeScript test files. 
+    Focus on import errors, method mismatches, and API compatibility issues."
+```
+
+> **Learn More**: See the [official Cursor CLI documentation](https://docs.cursor.com/en/cli/github-actions) for advanced configuration and autonomy levels.
 
 ### AI-Assisted Testing
 

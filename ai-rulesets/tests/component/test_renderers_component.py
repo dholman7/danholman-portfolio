@@ -49,7 +49,7 @@ class TestCursorRendererComponent:
         """Test successful rendering to file."""
         output_path = Path("test_output.mdc")
         
-        cursor_renderer.render_to_file(sample_template, output_path)
+        cursor_renderer.render_file(sample_template, output_path)
         
         # Verify file was opened for writing
         mock_file.assert_called_once_with(output_path, 'w', encoding='utf-8')
@@ -66,7 +66,7 @@ class TestCursorRendererComponent:
 
     def test_render_to_string(self, cursor_renderer, sample_template):
         """Test rendering to string."""
-        result = cursor_renderer.render(sample_template)
+        result = cursor_renderer.render_ruleset(sample_template)
         
         assert isinstance(result, str)
         assert "Test Template" in result
@@ -80,10 +80,10 @@ class TestCursorRendererComponent:
         assert cursor_renderer._sanitize_filename("test-template") == "test-template"
         
         # Test filename with spaces
-        assert cursor_renderer._sanitize_filename("test template") == "test_template"
+        assert cursor_renderer._sanitize_filename("test template") == "test-template"
         
         # Test filename with special characters
-        assert cursor_renderer._sanitize_filename("test@template#1") == "test_template_1"
+        assert cursor_renderer._sanitize_filename("test@template#1") == "test-template-1"
         
         # Test empty filename
         assert cursor_renderer._sanitize_filename("") == "untitled"
@@ -98,7 +98,7 @@ class TestCursorRendererComponent:
         )
         
         template = Ruleset(metadata=metadata)
-        result = cursor_renderer.render(template)
+        result = cursor_renderer.render_ruleset(template)
         
         assert "Empty Template" in result
         assert "python" in result
@@ -141,7 +141,7 @@ class TestCopilotRendererComponent:
         """Test successful rendering to file."""
         output_path = Path("test_output.instructions.md")
         
-        copilot_renderer.render_to_file(sample_template, output_path)
+        copilot_renderer.render_file(sample_template, output_path)
         
         # Verify file was opened for writing
         mock_file.assert_called_once_with(output_path, 'w', encoding='utf-8')
@@ -158,7 +158,7 @@ class TestCopilotRendererComponent:
 
     def test_render_to_string(self, copilot_renderer, sample_template):
         """Test rendering to string."""
-        result = copilot_renderer.render(sample_template)
+        result = copilot_renderer.render_ruleset(sample_template)
         
         assert isinstance(result, str)
         assert "Test Template" in result
@@ -172,10 +172,10 @@ class TestCopilotRendererComponent:
         assert copilot_renderer._sanitize_filename("test-template") == "test-template"
         
         # Test filename with spaces
-        assert copilot_renderer._sanitize_filename("test template") == "test_template"
+        assert copilot_renderer._sanitize_filename("test template") == "test-template"
         
         # Test filename with special characters
-        assert copilot_renderer._sanitize_filename("test@template#1") == "test_template_1"
+        assert copilot_renderer._sanitize_filename("test@template#1") == "test-template-1"
         
         # Test empty filename
         assert copilot_renderer._sanitize_filename("") == "untitled"
@@ -190,7 +190,7 @@ class TestCopilotRendererComponent:
         )
         
         template = Ruleset(metadata=metadata)
-        result = copilot_renderer.render(template)
+        result = copilot_renderer.render_ruleset(template)
         
         assert "Empty Template" in result
         assert "python" in result
@@ -207,8 +207,6 @@ class TestRendererIntegration:
             name="Compatibility Test",
             version="1.0.0",
             description="Test template for compatibility",
-            languages=["python", "typescript"],
-            frameworks=["pytest", "jest"],
             categories=["unit", "integration", "e2e"]
         )
         

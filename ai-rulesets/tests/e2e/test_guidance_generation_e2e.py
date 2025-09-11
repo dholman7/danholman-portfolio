@@ -29,8 +29,6 @@ class TestGuidanceGenerationE2E:
                 name="E2E Test Template",
                 version="1.0.0",
                 description="Comprehensive template for E2E testing",
-                languages=["python", "typescript"],
-                frameworks=["pytest", "jest", "playwright"],
                 categories=["unit", "integration", "e2e"],
                 author="Test Author",
                 license="MIT"
@@ -200,8 +198,6 @@ class TestGuidanceGenerationE2E:
                 name="Multi-Language Template",
                 version="2.0.0",
                 description="Template supporting multiple languages",
-                languages=["python", "typescript", "java", "go"],
-                frameworks=["pytest", "jest", "junit", "testing"],
                 categories=["unit", "integration", "performance"],
                 author="Multi-Lang Author",
                 license="Apache-2.0"
@@ -289,8 +285,6 @@ class TestGuidanceGenerationE2E:
                 name="",  # Empty name should be handled
                 version="1.0.0",
                 description="Template with invalid data",
-                languages=[],  # Empty languages list
-                frameworks=[],  # Empty frameworks list
                 categories=[],  # Empty categories list
             )
             
