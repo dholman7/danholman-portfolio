@@ -60,7 +60,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Install Cursor CLI
-        if: ${{ github.event.inputs.enable_cursor_fixes != false }}
+        if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
         run: |
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
@@ -124,7 +124,7 @@ jobs:
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
-        if: failure() && github.event.inputs.enable_cursor_fixes != false
+        if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
@@ -135,7 +135,7 @@ jobs:
           Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
           Ensure all tests can be collected and executed successfully."
       - name: Re-run Tests After Cursor Fixes
-        if: github.event.inputs.enable_cursor_fixes != false
+        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
@@ -205,7 +205,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Install Cursor CLI
-        if: ${{ github.event.inputs.enable_cursor_fixes != false }}
+        if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
         run: |
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
@@ -269,7 +269,7 @@ jobs:
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
-        if: failure() && github.event.inputs.enable_cursor_fixes != false
+        if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
@@ -280,7 +280,7 @@ jobs:
           Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
           Ensure all tests can be collected and executed successfully."
       - name: Re-run Tests After Cursor Fixes
-        if: github.event.inputs.enable_cursor_fixes != false
+        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
           pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
