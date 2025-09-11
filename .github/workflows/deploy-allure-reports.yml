@@ -185,6 +185,34 @@ jobs:
           
           echo "=== ZIP FILES FOUND ==="
           find . -name "*.zip" | head -10
+          
+          echo "=== EXACT ARTIFACT LOCATIONS ==="
+          echo "Looking for specific artifact directories:"
+          for artifact in automation-framework-allure-report ai-rulesets-allure-report cloud-native-app-allure-report react-playwright-demo-allure-report react-playwright-demo-playwright-report; do
+            echo "--- $artifact ---"
+            if [ -d "allure-reports/$artifact" ]; then
+              echo "LOCATION: allure-reports/$artifact"
+              echo "CONTENTS:"
+              ls -la "allure-reports/$artifact/"
+              echo "FILES:"
+              find "allure-reports/$artifact" -type f | head -10
+            elif [ -d "playwright-reports/$artifact" ]; then
+              echo "LOCATION: playwright-reports/$artifact"
+              echo "CONTENTS:"
+              ls -la "playwright-reports/$artifact/"
+              echo "FILES:"
+              find "playwright-reports/$artifact" -type f | head -10
+            elif [ -d "coverage-reports/$artifact" ]; then
+              echo "LOCATION: coverage-reports/$artifact"
+              echo "CONTENTS:"
+              ls -la "coverage-reports/$artifact/"
+              echo "FILES:"
+              find "coverage-reports/$artifact" -type f | head -10
+            else
+              echo "NOT FOUND: $artifact"
+            fi
+            echo ""
+          done
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
