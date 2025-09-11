@@ -561,7 +561,7 @@ jobs:
   deploy-test-reports:
     name: Deploy Test Reports to GitHub Pages
     needs: [automation-framework, ai-rulesets, cloud-native-app]
-    if: always() && (needs.automation-framework.result == 'success' || needs.ai-rulesets.result == 'success' || needs.cloud-native-app.result == 'success')
+    if: always()
     uses: ./.github/workflows/deploy-allure-reports.yml
     with:
       module: all

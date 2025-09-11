@@ -37,11 +37,26 @@ jobs:
     steps:
       - name: Debug workflow run info
         run: |
+          echo "=== DEPLOY WORKFLOW DEBUG ==="
           echo "Workflow event: ${{ github.event_name }}"
           echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
           echo "Workflow run name: ${{ github.event.workflow_run.name }}"
           echo "Workflow run status: ${{ github.event.workflow_run.status }}"
           echo "Input module: ${{ inputs.module }}"
+          echo "GitHub ref: ${{ github.ref }}"
+          echo "GitHub sha: ${{ github.sha }}"
+          echo "GitHub actor: ${{ github.actor }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "==============================="
+          
+      - name: Check Job Status from Calling Workflow
+        if: github.event_name == 'workflow_call'
+        run: |
+          echo "=== CALLING WORKFLOW JOB STATUS ==="
+          echo "This deploy job was called from the portfolio test suite"
+          echo "The deploy job should run regardless of individual test job results"
+          echo "This allows us to deploy whatever artifacts were generated"
+          echo "===================================="
           
       - name: Checkout code
         uses: actions/checkout@v4
