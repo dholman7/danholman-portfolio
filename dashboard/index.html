@@ -88,8 +88,15 @@
             margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: space-between;
             flex-wrap: wrap;
+        }
+        
+        .card h2 .title-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
         }
         
         .card-icon {
@@ -316,6 +323,19 @@
             const h2 = card.querySelector('h2');
             // Only add status badge if one doesn't already exist
             if (!h2.querySelector('.status-badge')) {
+                // Wrap existing content in title-content div
+                const titleContent = document.createElement('div');
+                titleContent.className = 'title-content';
+                
+                // Move all existing child nodes to title-content
+                while (h2.firstChild) {
+                    titleContent.appendChild(h2.firstChild);
+                }
+                
+                // Add title-content back to h2
+                h2.appendChild(titleContent);
+                
+                // Add status badge
                 const statusBadge = document.createElement('span');
                 statusBadge.className = 'status-badge status-success';
                 statusBadge.textContent = 'Available';
