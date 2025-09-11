@@ -2,7 +2,7 @@ name: Deploy Allure Reports to GitHub Pages
 
 on:
   workflow_run:
-    workflows: ["Portfolio Test Suite", "React Playwright Demo"]
+    workflows: ["Portfolio Test Suite with Coverage", "React Playwright Demo"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
