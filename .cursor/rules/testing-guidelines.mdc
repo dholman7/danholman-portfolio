@@ -6,6 +6,17 @@ alwaysApply: true
 
 # Testing Guidelines
 
+## MANDATORY Local Testing Before Committing
+- **ALWAYS** run tests locally before committing any changes
+- **MANDATORY**: Run `yarn lint && yarn test && yarn build` for React/TypeScript projects
+- **MANDATORY**: Run `pytest` for Python projects before committing
+- **MANDATORY**: Run `make test` for automation framework before committing
+- **NEVER** commit changes that fail local testing
+- **ALWAYS** verify CI will pass by running the same commands locally
+- Test workflow changes by running the same commands locally
+- Verify Allure reports are generated correctly
+- Ensure GitHub Pages deployment will work
+
 ## General Testing Principles
 - Write tests that are fast, independent, repeatable, and self-validating
 - Use the Arrange-Act-Assert pattern for test structure
