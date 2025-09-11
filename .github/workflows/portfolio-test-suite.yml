@@ -548,7 +548,14 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
+  process-allure-reports:
+    name: Process Allure Reports
+    if: always()
+    uses: ./.github/workflows/deploy-allure-reports.yml
+    needs: [automation-framework, ai-rulesets, cloud-native-app]
+
   deploy-reports:
     name: Deploy to GitHub Pages
     if: always()
     uses: ./.github/workflows/static.yml
+    needs: [process-allure-reports]

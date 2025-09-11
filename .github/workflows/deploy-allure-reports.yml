@@ -103,9 +103,59 @@ jobs:
           echo "=== Final Processed Reports ==="
           ls -la processed-allure-reports/
 
-      - name: Upload Processed Allure Reports
+      - name: Deploy Processed Allure Reports to Static Location
+        run: |
+          echo "=== Deploying Processed Allure Reports ==="
+          
+          # Create static reports directory
+          mkdir -p static-reports/allure-reports
+          
+          # Copy processed reports to static location
+          if [ -d "processed-allure-reports" ]; then
+            echo "Copying processed reports to static location..."
+            cp -r processed-allure-reports/* static-reports/allure-reports/
+            
+            # Create index file for easy access
+            cat > static-reports/allure-reports/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Allure Reports - Static Location</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  h1 { color: #333; }
+                  .module { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                  .module a { color: #0066cc; text-decoration: none; }
+                  .module a:hover { text-decoration: underline; }
+              </style>
+          </head>
+          <body>
+              <h1>Allure Reports - Static Location</h1>
+              <p>This directory contains processed Allure reports from all modules.</p>
+              <div class="module">
+                  <h2>Available Reports:</h2>
+                  <ul>
+                      <li><a href="automation-framework/">Automation Framework</a></li>
+                      <li><a href="ai-rulesets/">AI Rulesets</a></li>
+                      <li><a href="cloud-native-app/">Cloud Native App</a></li>
+                      <li><a href="react-playwright-demo/">React Playwright Demo</a></li>
+                  </ul>
+              </div>
+          </body>
+          </html>
+          EOF
+            
+            echo "Static reports deployed successfully"
+            ls -la static-reports/allure-reports/
+          else
+            echo "No processed reports found"
+          fi
+
+      - name: Upload Static Allure Reports
         uses: actions/upload-artifact@v4
         with:
-          name: processed-allure-reports
-          path: processed-allure-reports/
+          name: static-allure-reports
+          path: static-reports/
           retention-days: 30
