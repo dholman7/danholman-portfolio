@@ -22,77 +22,103 @@ check-python: ## Check if correct Python version is active
 		echo "Please run: pyenv install $(PYTHON_VERSION) && pyenv local $(PYTHON_VERSION)"; \
 	fi
 
+# Virtual environment setup
+venv: check-python ## Create virtual environment
+	@if [ ! -d ".venv" ]; then \
+		echo "Creating virtual environment..."; \
+		python -m venv .venv; \
+		.venv/bin/pip install -U pip; \
+	else \
+		echo "Virtual environment already exists"; \
+	fi
+
 # Installation
-install: check-python ## Install production dependencies
-	pyenv exec python -m venv .venv && . .venv/bin/activate && pip install -U pip && pip install -r requirements.txt
+install: venv ## Install production dependencies
+	.venv/bin/pip install -r requirements.txt
 
-install-dev: check-python ## Install development dependencies
-	pyenv exec python -m venv .venv && . .venv/bin/activate && pip install -U pip && pip install -e ".[dev,test,api,web,performance]"
+install-dev: venv ## Install development dependencies
+	.venv/bin/pip install -e ".[dev,test,api,web,performance]"
 
-install-all: check-python ## Install all dependencies including optional extras
-	pyenv exec python -m venv .venv && . .venv/bin/activate && pip install -U pip && pip install -e ".[all]"
+install-all: venv ## Install all dependencies including optional extras
+	.venv/bin/pip install -e ".[all]"
 
-# Testing
-test: ## Run all tests
-	. .venv/bin/activate && pytest
+# Testing (local development - uses virtual environment)
+test: install-dev ## Run all tests
+	.venv/bin/pytest
 
-test-unit: ## Run unit tests only
-	. .venv/bin/activate && pytest tests/unit/ -v
+test-unit: install-dev ## Run unit tests only
+	.venv/bin/pytest tests/unit/ -v
 
-test-component: ## Run component tests only
-	. .venv/bin/activate && pytest tests/component/ -v
+test-component: install-dev ## Run component tests only
+	.venv/bin/pytest tests/component/ -v
 
-test-integration: ## Run integration tests only
-	. .venv/bin/activate && pytest tests/integration/ -v
+test-integration: install-dev ## Run integration tests only
+	.venv/bin/pytest tests/integration/ -v
 
-test-e2e: ## Run end-to-end tests only
-	. .venv/bin/activate && pytest tests/e2e/ -v
+test-e2e: install-dev ## Run end-to-end tests only
+	.venv/bin/pytest tests/e2e/ -v
+
+# CI/CD testing (uses system Python directly)
+test-ci: ## Run tests for CI/CD (uses system Python)
+	pytest --alluredir=reports/allure-results -v
+
+test-ci-unit: ## Run unit tests for CI/CD
+	pytest tests/unit/ -v --alluredir=reports/allure-results
+
+test-ci-component: ## Run component tests for CI/CD
+	pytest tests/component/ -v --alluredir=reports/allure-results
+
+test-ci-integration: ## Run integration tests for CI/CD
+	pytest tests/integration/ -v --alluredir=reports/allure-results
+
+test-ci-e2e: ## Run e2e tests for CI/CD
+	pytest tests/e2e/ -v --alluredir=reports/allure-results
 
 test-api: ## Run API tests only
-	. .venv/bin/activate && pytest -m "api"
+	.venv/bin/pytest -m "api"
 
 test-ui: ## Run UI tests only
-	. .venv/bin/activate && pytest -m "ui"
+	.venv/bin/pytest -m "ui"
 
 test-performance: ## Run performance tests only
-	. .venv/bin/activate && pytest -m "performance"
+	.venv/bin/pytest -m "performance"
 
 test-smoke: ## Run smoke tests only
-	. .venv/bin/activate && pytest -m "smoke"
+	.venv/bin/pytest -m "smoke"
 
 test-regression: ## Run regression tests only
-	. .venv/bin/activate && pytest -m "regression"
+	.venv/bin/pytest -m "regression"
 
 test-parallel: ## Run tests in parallel (4 workers)
-	. .venv/bin/activate && pytest -n 4
+	.venv/bin/pytest -n 4
 
 test-parallel-max: ## Run tests in parallel with maximum workers
-	. .venv/bin/activate && pytest -n auto
+	.venv/bin/pytest -n auto
 
 test-chrome: ## Run tests with Chrome browser
-	. .venv/bin/activate && pytest --browser=chrome
+	.venv/bin/pytest --browser=chrome
 
 test-firefox: ## Run tests with Firefox browser
-	. .venv/bin/activate && pytest --browser=firefox
+	.venv/bin/pytest --browser=firefox
 
 test-headless: ## Run tests in headless mode
-	. .venv/bin/activate && pytest --headless
+	.venv/bin/pytest --headless
 
 test-slow: ## Run slow tests (requires --runslow flag)
-	. .venv/bin/activate && pytest --runslow
+	.venv/bin/pytest --runslow
 
 test-flaky: ## Run flaky tests (requires --runflaky flag)
-	. .venv/bin/activate && pytest --runflaky
+	.venv/bin/pytest --runflaky
 
 # Test execution with different configurations
 test-dev: ## Run tests against dev environment
-	. .venv/bin/activate && TEST_ENVIRONMENT=dev pytest
+	.venv/bin/TEST_ENVIRONMENT=dev pytest
 
 test-staging: ## Run tests against staging environment
-	. .venv/bin/activate && TEST_ENVIRONMENT=staging pytest
+	.venv/bin/TEST_ENVIRONMENT=staging pytest
 
 test-prod: ## Run tests against production environment
-	. .venv/bin/activate && TEST_ENVIRONMENT=prod pytest
+	.venv/bin/TEST_ENVIRONMENT=prod pytest
 
 # Code Quality
 lint: ## Run all linting tools
@@ -122,22 +148,22 @@ security-check: ## Run security checks
 
 # Coverage
 coverage: ## Run tests with coverage reporting
-	. .venv/bin/activate && pytest --cov=src --cov-report=html --cov-report=xml --cov-report=term-missing
+	.venv/bin/pytest --cov=src --cov-report=html --cov-report=xml --cov-report=term-missing
 
 coverage-html: ## Generate HTML coverage report
-	. .venv/bin/activate && pytest --cov=src --cov-report=html
+	.venv/bin/pytest --cov=src --cov-report=html
 	@echo "Coverage report generated in htmlcov/"
 
 coverage-xml: ## Generate XML coverage report
-	. .venv/bin/activate && pytest --cov=src --cov-report=xml
+	.venv/bin/pytest --cov=src --cov-report=xml
 
 # Reporting
 report: ## Generate comprehensive test reports
-	. .venv/bin/activate && pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --cov=src --cov-report=html
+	.venv/bin/pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --cov=src --cov-report=html
 
 # Allure Reporting
 allure-results: ## Generate Allure test results
-	. .venv/bin/activate && pytest --alluredir=reports/allure-results
+	.venv/bin/pytest --alluredir=reports/allure-results
 	@echo "Allure results generated in reports/allure-results/"
 
 allure-generate: allure-results ## Generate Allure HTML report
@@ -194,7 +220,7 @@ report-allure: allure-generate ## Generate comprehensive Allure report
 	@echo "Run 'make allure-serve' to view the report locally"
 
 report-comprehensive: ## Generate all types of reports (HTML, JUnit, Coverage, Allure)
-	. .venv/bin/activate && pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --cov=src --cov-report=html --cov-report=xml --alluredir=reports/allure-results
+	.venv/bin/pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --cov=src --cov-report=html --cov-report=xml --alluredir=reports/allure-results
 	@if command -v allure >/dev/null 2>&1; then \
 		allure generate reports/allure-results --clean -o reports/allure-report; \
 		echo "Comprehensive reports generated:"; \
@@ -303,10 +329,10 @@ docs-serve: ## Serve documentation locally
 
 # Performance Analysis
 profile: ## Run performance profiling
-	. .venv/bin/activate && pytest --profile --profile-svg
+	.venv/bin/pytest --profile --profile-svg
 
 benchmark: ## Run benchmark tests
-	. .venv/bin/activate && pytest --benchmark-only --benchmark-sort=mean
+	.venv/bin/pytest --benchmark-only --benchmark-sort=mean
 
 # Test Data Generation
 data-users: ## Generate user test data
@@ -328,7 +354,7 @@ logs: ## View test logs
 
 # CI/CD Helpers
 ci-test: ## Run tests for CI environment
-	. .venv/bin/activate && pytest --html=reports/ci-report.html --self-contained-html --junitxml=reports/ci-junit.xml --cov=src --cov-report=xml
+	.venv/bin/pytest --html=reports/ci-report.html --self-contained-html --junitxml=reports/ci-junit.xml --cov=src --cov-report=xml
 
 ci-lint: ## Run linting for CI environment
 	black --check src/ tests/
@@ -367,7 +393,7 @@ dev-full: clean install-dev format lint type-check security-check test coverage 
 
 # Quick Commands
 quick-test: ## Quick test run (smoke tests only)
-	. .venv/bin/activate && pytest -m "smoke" -v
+	.venv/bin/pytest -m "smoke" -v
 
 quick-lint: ## Quick linting check
 	ruff check src/ tests/
