@@ -526,10 +526,17 @@ This repository includes a modular [`.cursor/rules/`](.cursor/rules/) configurat
 This portfolio demonstrates advanced AI integration in CI/CD pipelines using [Cursor CLI](https://docs.cursor.com/en/cli/github-actions):
 
 - **Automated Test Fixes**: Cursor CLI automatically analyzes and fixes test failures in CI
+- **CI/CD Issue Debugging**: AI-powered diagnosis and fixing of complex CI/CD problems like artifact path resolution
 - **Intelligent Code Analysis**: AI-powered diagnosis of import errors, API compatibility issues, and test logic problems
 - **Restricted Autonomy**: Safe AI integration that modifies files without committing or pushing changes
 - **Multi-language Support**: Works with Python, TypeScript, and React test suites
 - **Configurable Integration**: Optional Cursor CLI fixes can be enabled/disabled per workflow run
+
+**Advanced CI/CD Debugging Capabilities:**
+- **Artifact Path Resolution**: AI automatically fixes complex nested directory structure issues
+- **Report Generation Issues**: AI diagnoses and fixes Allure, coverage, and other report generation problems
+- **Deployment Problems**: AI identifies and resolves GitHub Pages deployment issues
+- **Multi-Module Understanding**: AI understands relationships between different modules and their CI/CD requirements
 
 **Setup Requirements:**
 1. **API Key**: Add `CURSOR_API_KEY` to your GitHub repository secrets
