@@ -25,6 +25,11 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
         
+    - name: Install Cursor CLI
+      run: |
+        curl https://cursor.com/install -fsS | bash
+        echo "$HOME/.cursor/bin" >> $GITHUB_PATH
+        
     - name: Install dependencies
       run: yarn install --frozen-lockfile
       
@@ -45,6 +50,24 @@ jobs:
       
     - name: Run Playwright tests
       run: yarn test:e2e || true
+      
+    - name: Fix Test Failures with Cursor
+      if: failure()
+      env:
+        CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+      run: |
+        echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+        cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+        Only modify files in the working directory. 
+        Analyze the test failures in this CI run and fix the TypeScript/React test files. 
+        Focus on fixing TypeScript errors, test logic problems, and Playwright test issues. 
+        Ensure all tests can be collected and executed successfully."
+        
+    - name: Re-run Tests After Cursor Fixes
+      run: |
+        echo "🔄 Re-running tests after Cursor fixes..."
+        yarn test:coverage || true
+        yarn test:e2e || true
       
     - name: Generate Allure report
       run: yarn test:allure:generate || true

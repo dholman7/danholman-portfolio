@@ -229,8 +229,8 @@ class TestRendererIntegration:
         cursor_renderer = CursorRenderer()
         copilot_renderer = CopilotRenderer()
         
-        cursor_result = cursor_renderer.render(template)
-        copilot_result = copilot_renderer.render(template)
+        cursor_result = cursor_renderer.render_ruleset(template)
+        copilot_result = copilot_renderer.render_ruleset(template)
         
         # Both should contain the template name
         assert "Compatibility Test" in cursor_result

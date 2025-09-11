@@ -130,6 +130,19 @@ jobs:
       ENVIRONMENT: ${{ matrix.test_config.environment }}
       JOB_NAME: ${{ matrix.test_config.job_name }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install Cursor CLI
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
+      
       - name: Debug Environment Variables
         run: |
           echo "API_BASE_URL: $API_BASE_URL"
@@ -178,6 +191,18 @@ jobs:
             --tb=short \
             --strict-markers \
             -m "api and ${API_TYPE} and ${TEST_SCENARIO}"
+      
+      - name: Fix Test Failures with Cursor
+        if: failure()
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the test failures in this CI run and fix the Python test files in the automation-framework module. 
+          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Ensure all tests can be collected and executed successfully."
         env:
           API_BASE_URL: ${{ env.API_BASE_URL }}
           API_TYPE: ${{ env.API_TYPE }}

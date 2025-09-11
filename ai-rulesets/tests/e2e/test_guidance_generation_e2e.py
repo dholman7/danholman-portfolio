@@ -63,7 +63,7 @@ class TestGuidanceGenerationE2E:
             
             # Step 2: Save template to file
             template_path = temp_path / "e2e_template.yaml"
-            template.save(template_path)
+            template.save_to_file(template_path)
             
             # Verify template was saved
             assert template_path.exists()
@@ -245,7 +245,7 @@ class TestGuidanceGenerationE2E:
             cursor_output = temp_path / "multi_lang_cursor.mdc"
             copilot_output = temp_path / "multi_lang_copilot.instructions.md"
             
-            cursor_renderer.render_to_file(template, cursor_output)
+            cursor_renderer.render_file(template, cursor_output)
             copilot_renderer.render_to_file(template, copilot_output)
             
             # Verify both files were created
@@ -307,7 +307,7 @@ class TestGuidanceGenerationE2E:
             copilot_output = temp_path / "error_test_copilot.instructions.md"
             
             # These should not raise exceptions
-            cursor_renderer.render_to_file(template, cursor_output)
+            cursor_renderer.render_file(template, cursor_output)
             copilot_renderer.render_to_file(template, copilot_output)
             
             # Files should still be created
