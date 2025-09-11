@@ -63,7 +63,13 @@ class QualityChecker:
         warnings = [i for i in issues if i.severity == "warning"]
         info = [i for i in issues if i.severity == "info"]
         
-        print(f"❌ {category}: {len(issues)} issues found")
+        # Choose appropriate symbol based on severity
+        if errors:
+            print(f"❌ {category}: {len(issues)} issues found")
+        elif warnings:
+            print(f"⚠️  {category}: {len(issues)} issues found")
+        else:
+            print(f"ℹ️  {category}: {len(issues)} issues found")
         
         if errors:
             print(f"  🔴 Errors: {len(errors)}")
