@@ -3,11 +3,7 @@ name: React Playwright Demo
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'react-playwright-demo/**'
   pull_request:
-    paths:
-      - 'react-playwright-demo/**'
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -30,35 +26,27 @@ jobs:
         java-version: '17'
         
     - name: Install dependencies
-      working-directory: ./react-playwright-demo
       run: yarn install --frozen-lockfile
       
     - name: Install Playwright browsers
-      working-directory: ./react-playwright-demo
       run: yarn playwright install --with-deps
       
     - name: Type check
-      working-directory: ./react-playwright-demo
       run: yarn type-check
       
     - name: Lint code
-      working-directory: ./react-playwright-demo
       run: yarn lint
       
     - name: Build application
-      working-directory: ./react-playwright-demo
       run: yarn build
       
     - name: Run unit tests
-      working-directory: ./react-playwright-demo
       run: yarn test:coverage
       
     - name: Run Playwright tests
-      working-directory: ./react-playwright-demo
       run: yarn test:e2e
       
     - name: Generate Allure report
-      working-directory: ./react-playwright-demo
       run: yarn test:allure:generate
       
     - name: Upload Playwright HTML report
@@ -66,7 +54,7 @@ jobs:
       if: always()
       with:
         name: react-playwright-demo-playwright-report
-        path: react-playwright-demo/playwright-report/
+        path: playwright-report/
         retention-days: 30
         
     - name: Upload Allure report
@@ -74,7 +62,7 @@ jobs:
       if: always()
       with:
         name: react-playwright-demo-allure-report
-        path: react-playwright-demo/allure-report/
+        path: allure-report/
         retention-days: 30
         
     - name: Upload coverage report
@@ -82,7 +70,7 @@ jobs:
       if: always()
       with:
         name: react-playwright-demo-coverage-report
-        path: react-playwright-demo/coverage/
+        path: coverage/
         retention-days: 30
       
     - name: Comment PR with build status

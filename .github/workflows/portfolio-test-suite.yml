@@ -3,21 +3,8 @@ name: Portfolio Test Suite
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'automation-framework/**'
-      - 'cloud-native-app/**'
-      - 'ai-rulesets/**'
-      - 'react-playwright-demo/**'
-      - '.github/workflows/**'
-      - 'Makefile'
   pull_request:
-    paths:
-      - 'automation-framework/**'
-      - 'cloud-native-app/**'
-      - 'ai-rulesets/**'
-      - 'react-playwright-demo/**'
-      - '.github/workflows/**'
-      - 'Makefile'
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       module:

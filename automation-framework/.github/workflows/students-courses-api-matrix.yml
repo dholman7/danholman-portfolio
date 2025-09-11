@@ -38,21 +38,20 @@ on:
   push:
     branches: [ main, develop ]
     paths:
-      - 'automation-framework/tests/api/**'
-      - 'automation-framework/src/api/**'
-      - 'automation-framework/students_courses_test_matrix.json'
-      - 'automation-framework/.github/workflows/students-courses-api-matrix.yml'
+      - 'tests/api/**'
+      - 'src/api/**'
+      - 'students_courses_test_matrix.json'
+      - '.github/workflows/students-courses-api-matrix.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'automation-framework/tests/api/**'
-      - 'automation-framework/src/api/**'
-      - 'automation-framework/students_courses_test_matrix.json'
-      - 'automation-framework/.github/workflows/students-courses-api-matrix.yml'
+      - 'tests/api/**'
+      - 'src/api/**'
+      - 'students_courses_test_matrix.json'
+      - '.github/workflows/students-courses-api-matrix.yml'
 
 env:
   PYTHON_VERSION: '3.13'
-  NODE_VERSION: '20'
 
 jobs:
   # Load and filter test matrix
@@ -158,21 +157,18 @@ jobs:
       
       - name: Install dependencies
         run: |
-          cd automation-framework
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest-html pytest-xdist allure-pytest
       
       - name: Create test directories
         run: |
-          cd automation-framework
           mkdir -p reports
           mkdir -p logs
           mkdir -p test_data
       
       - name: Run API Test
         run: |
-          cd automation-framework
           pytest tests/api/test_students_courses_api.py \
             --html=reports/${SANITIZED_NAME}.html \
             --self-contained-html \
@@ -193,7 +189,6 @@ jobs:
       
       - name: List test artifacts
         run: |
-          cd automation-framework
           echo "=== Reports Directory ==="
           ls -la reports/
           echo "=== Logs Directory ==="
@@ -206,10 +201,10 @@ jobs:
         with:
           name: ${{ env.SANITIZED_NAME }}_results
           path: |
-            automation-framework/reports/${SANITIZED_NAME}.html
-            automation-framework/reports/${SANITIZED_NAME}.xml
-            automation-framework/reports/allure-results/
-            automation-framework/logs/
+            reports/${SANITIZED_NAME}.html
+            reports/${SANITIZED_NAME}.xml
+            reports/allure-results/
+            logs/
           retention-days: 30
 
   # Merge and consolidate test results
