@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Mail, Lock, Eye, EyeOff, CheckCircle, AlertCircle, ArrowRight, Sparkles } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import type { FieldErrors } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import clsx from 'clsx'
@@ -70,6 +71,9 @@ function App() {
     mode: 'onChange'
   })
 
+  // Type guard to check if we're in registration mode
+  const isRegisterMode = !isLogin
+
   const onSubmit = async (data: RegisterFormData | LoginFormData) => {
     console.log('Form submitted with data:', data)
     console.log('isLogin mode:', isLogin)
@@ -129,7 +133,7 @@ function App() {
     }
   }
 
-  const onError = (errors: any) => {
+  const onError = (errors: FieldErrors<RegisterFormData | LoginFormData>) => {
     console.log('Form validation errors:', errors)
     setIsLoading(false)
   }
@@ -312,16 +316,16 @@ function App() {
                       type="text"
                       className={clsx(
                         'w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-50/50',
-                        errors.firstName ? 'border-red-300 bg-red-50/50' : 'border-slate-200 hover:border-slate-300'
+                        isRegisterMode && (errors as FieldErrors<RegisterFormData>).firstName ? 'border-red-300 bg-red-50/50' : 'border-slate-200 hover:border-slate-300'
                       )}
                       placeholder="John"
                       data-testid="first-name-input"
                     />
                   </div>
-                  {errors.firstName && (
+                  {isRegisterMode && (errors as FieldErrors<RegisterFormData>).firstName && (
                     <p className="mt-2 text-sm text-red-600 flex items-center gap-1" data-testid="first-name-error">
                       <AlertCircle className="w-4 h-4" />
-                      {errors.firstName.message}
+                      {(errors as FieldErrors<RegisterFormData>).firstName?.message}
                     </p>
                   )}
                 </div>
@@ -336,16 +340,16 @@ function App() {
                       type="text"
                       className={clsx(
                         'w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-50/50',
-                        errors.lastName ? 'border-red-300 bg-red-50/50' : 'border-slate-200 hover:border-slate-300'
+                        isRegisterMode && (errors as FieldErrors<RegisterFormData>).lastName ? 'border-red-300 bg-red-50/50' : 'border-slate-200 hover:border-slate-300'
                       )}
                       placeholder="Doe"
                       data-testid="last-name-input"
                     />
                   </div>
-                  {errors.lastName && (
+                  {isRegisterMode && (errors as FieldErrors<RegisterFormData>).lastName && (
                     <p className="mt-2 text-sm text-red-600 flex items-center gap-1" data-testid="last-name-error">
                       <AlertCircle className="w-4 h-4" />
-                      {errors.lastName.message}
+                      {(errors as FieldErrors<RegisterFormData>).lastName?.message}
                     </p>
                   )}
                 </div>
@@ -422,7 +426,7 @@ function App() {
                     type={showConfirmPassword ? 'text' : 'password'}
                     className={clsx(
                       'w-full pl-12 pr-14 py-4 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-50/50',
-                      errors.confirmPassword ? 'border-red-300 bg-red-50/50' : 'border-slate-200 hover:border-slate-300'
+                      isRegisterMode && (errors as FieldErrors<RegisterFormData>).confirmPassword ? 'border-red-300 bg-red-50/50' : 'border-slate-200 hover:border-slate-300'
                     )}
                     placeholder="Confirm your password"
                     data-testid="confirm-password-input"
@@ -436,10 +440,10 @@ function App() {
                     {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
-                {errors.confirmPassword && (
+                {isRegisterMode && (errors as FieldErrors<RegisterFormData>).confirmPassword && (
                   <p className="mt-2 text-sm text-red-600 flex items-center gap-1" data-testid="confirm-password-error">
                     <AlertCircle className="w-4 h-4" />
-                    {errors.confirmPassword.message}
+                    {(errors as FieldErrors<RegisterFormData>).confirmPassword?.message}
                   </p>
                 )}
               </div>
@@ -466,10 +470,10 @@ function App() {
                       Privacy Policy
                     </a>
                   </label>
-                  {errors.terms && (
+                  {isRegisterMode && (errors as FieldErrors<RegisterFormData>).terms && (
                     <p className="mt-2 text-sm text-red-600 flex items-center gap-1" data-testid="terms-error">
                       <AlertCircle className="w-4 h-4" />
-                      {errors.terms.message}
+                      {(errors as FieldErrors<RegisterFormData>).terms?.message}
                     </p>
                   )}
                 </div>

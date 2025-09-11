@@ -9,6 +9,9 @@ alwaysApply: true
 ## Language Features
 - Use TypeScript for all JavaScript development
 - Leverage strict type checking and strict mode
+- **Avoid using `any` type - TypeScript rules discourage it for good reason**
+- Use `unknown` instead of `any` when type is truly unknown
+- Use proper type assertions with `as` when necessary
 - Use modern ES6+ features: arrow functions, destructuring, template literals
 - Implement proper interfaces and type definitions
 - Use enums for constants and configuration
@@ -30,6 +33,18 @@ alwaysApply: true
 - Implement proper async/await error handling
 - Use Map and Set for appropriate use cases
 - Leverage array methods: map, filter, reduce, forEach
+
+## Type Safety Rules
+- **Avoid `any` type - TypeScript rules discourage it because it defeats type safety**
+- Use `unknown` type when the type is truly unknown and needs runtime checking
+- Use proper type guards and type narrowing instead of `any` when possible
+- Use generic types for reusable components and functions
+- Use union types for multiple possible types
+- Use intersection types for combining types
+- Use proper type assertions only when absolutely necessary
+- Always define return types for functions
+- Use strict null checks and handle undefined/null properly
+- Only use `any` in exceptional cases where no other type works
 
 ## Code Style and Patterns
 - Use ESLint and Prettier for code formatting

@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       port: 8081,
+      strictPort: false, // Allow fallback to next available port
       host: true
     },
     define: {

@@ -24,3 +24,11 @@ Professional portfolio showcasing test automation, cloud-native development, and
 - Use **kebab-case** for directory and file names
 - Organize tests alongside source code
 - Follow **semantic versioning** and **conventional commits**
+
+## MANDATORY Testing Requirements
+- **ALWAYS run tests before committing** - no exceptions
+- **Server sanity check** before E2E tests (verify `yarn dev` works)
+- **Complete test suite** must pass before considering work "done"
+- **Automatic testing** - Cursor should run tests automatically
+- **No commits** if any test fails or server doesn't start
+- **Lint, test, build** - all must pass before any commit

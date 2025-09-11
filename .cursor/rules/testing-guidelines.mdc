@@ -17,6 +17,15 @@ alwaysApply: true
 - Verify Allure reports are generated correctly
 - Ensure GitHub Pages deployment will work
 
+## MANDATORY Pre-Commit Testing Workflow
+- **BEFORE ANY COMMIT**: Run the complete test suite for the affected module
+- **SERVER SANITY CHECK**: For React/Node.js projects, run `yarn dev` and verify server starts successfully
+- **E2E TESTING**: For React projects, run `yarn test:e2e` and verify all Playwright tests pass
+- **LINTING**: Always run `yarn lint` and fix any issues before committing
+- **BUILD VERIFICATION**: Run `yarn build` to ensure production build works
+- **NO EXCEPTIONS**: Do not commit if any test fails or server doesn't start
+- **AUTOMATIC TESTING**: Cursor should automatically run tests before considering work "done"
+
 ## General Testing Principles
 - Write tests that are fast, independent, repeatable, and self-validating
 - Use the Arrange-Act-Assert pattern for test structure
@@ -67,3 +76,12 @@ alwaysApply: true
 - Implement proper test data management
 - Use proper test result reporting
 - Implement proper test maintenance strategies
+
+## Server Sanity Checks
+- **BEFORE E2E TESTS**: Always verify the development server starts successfully
+- **COMMAND**: Run `yarn dev` and check for successful startup (port 5173)
+- **TIMEOUT**: Wait up to 30 seconds for server to be ready
+- **VERIFICATION**: Check that `http://localhost:5173` responds with 200 status
+- **AUTOMATIC**: Cursor should run server sanity check before E2E test suite
+- **FAILURE HANDLING**: If server doesn't start, fix issues before running tests
+- **CLEANUP**: Always stop the dev server after testing is complete

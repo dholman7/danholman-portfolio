@@ -5,6 +5,8 @@ import App from '../../src/App';
 
 describe('Form Integration Tests', () => {
   beforeEach(() => {
+    // Clear session storage to ensure clean state
+    sessionStorage.clear();
     render(<App />);
   });
 
