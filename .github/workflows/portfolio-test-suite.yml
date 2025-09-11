@@ -526,7 +526,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-allure-results
-          path: cloud-native-app/reports/allure-results/
+          path: reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -535,7 +535,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-allure-report
-          path: cloud-native-app/reports/allure-report/
+          path: reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
@@ -544,7 +544,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-coverage-report
-          path: cloud-native-app/reports/coverage/
+          path: reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
