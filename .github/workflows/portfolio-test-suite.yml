@@ -690,23 +690,11 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
-  deploy-reports:
-    name: Deploy Test Reports
+  deploy-test-reports:
+    name: Deploy Test Reports to GitHub Pages
     runs-on: ubuntu-latest
     needs: [automation-framework, ai-rulesets, cloud-native-app, react-playwright-demo]
     if: always() && (needs.automation-framework.result == 'success' || needs.ai-rulesets.result == 'success' || needs.cloud-native-app.result == 'success' || needs.react-playwright-demo.result == 'success')
-    steps:
-      - name: Trigger Deploy Workflow
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'deploy-allure-reports.yml',
-              ref: 'main',
-              inputs: {
-                module: 'all'
-              }
-            });
-            console.log('Deploy workflow triggered successfully');
+    uses: ./.github/workflows/deploy-allure-reports.yml
+    with:
+      module: all

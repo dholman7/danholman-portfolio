@@ -1,6 +1,13 @@
 name: Deploy Allure Reports to GitHub Pages
 
 on:
+  workflow_call:
+    inputs:
+      module:
+        type: string
+        required: true
+        default: all
+        description: Module to deploy Allure report for
   workflow_run:
     workflows: ["Portfolio Test Suite with Coverage", "React Playwright Demo"]
     types: [completed]
@@ -23,7 +30,7 @@ jobs:
   deploy-allure-reports:
     name: Deploy Allure Reports to GitHub Pages
     runs-on: ubuntu-latest
-    if: (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') || github.event_name == 'workflow_dispatch'
+    if: (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -35,10 +42,11 @@ jobs:
     steps:
       - name: Debug workflow run info
         run: |
-          echo "Workflow run event: ${{ github.event_name }}"
+          echo "Workflow event: ${{ github.event_name }}"
           echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
           echo "Workflow run name: ${{ github.event.workflow_run.name }}"
           echo "Workflow run status: ${{ github.event.workflow_run.status }}"
+          echo "Input module: ${{ inputs.module }}"
           
       - name: Checkout code
         uses: actions/checkout@v4
@@ -162,8 +170,8 @@ jobs:
             echo "No Playwright report artifacts found"
           fi
 
-      - name: Download Allure Reports (Manual/API Trigger)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Download Allure Reports (Manual/API/Call Trigger)
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
         uses: actions/download-artifact@v4
         with:
           pattern: "*-allure-report"
@@ -210,8 +218,8 @@ jobs:
           echo "=== All Downloaded Artifacts ==="
           find . -name "*.zip" -o -name "*allure*" -o -name "*coverage*" | head -20
           
-      - name: Download Playwright Reports (Manual/API Trigger)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Download Playwright Reports (Manual/API/Call Trigger)
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
         uses: actions/download-artifact@v4
         with:
           pattern: "*-playwright-report"
@@ -276,8 +284,8 @@ jobs:
             fi
           done
           
-      - name: Download Coverage Reports (Manual/API Trigger)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Download Coverage Reports (Manual/API/Call Trigger)
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
         uses: actions/download-artifact@v4
         with:
           pattern: "*-coverage-report"
