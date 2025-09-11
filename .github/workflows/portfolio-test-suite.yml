@@ -40,6 +40,12 @@ on:
         default: true
         description: Enable Cursor CLI to automatically fix test failures
 
+# Sets permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   automation-framework:
     name: Automation Framework (Python)
