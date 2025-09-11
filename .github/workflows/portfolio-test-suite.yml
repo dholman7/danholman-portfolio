@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: $(cat automation-framework/.python-version)
+          python-version: '3.13'
       - name: Install Cursor CLI
         if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
         run: |
@@ -227,7 +227,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: $(cat ai-rulesets/.python-version)
+          python-version: '3.13'
       - name: Install Cursor CLI
         if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
         run: |
@@ -395,7 +395,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: $(cat cloud-native-app/.nvmrc)
+          node-version: '20.19.0'
       - name: Install Cursor CLI
         if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
         run: |
@@ -550,7 +550,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: $(cat react-playwright-demo/.nvmrc)
+          node-version: '20.19.0'
       - name: Install Cursor CLI
         if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
         run: |
