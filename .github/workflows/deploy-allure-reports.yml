@@ -97,6 +97,24 @@ jobs:
           path: playwright-reports/
           merge-multiple: true
           
+      - name: Debug Playwright Artifacts
+        run: |
+          echo "=== DEBUG: Downloaded Playwright Artifacts ==="
+          echo "Playwright reports directory after download:"
+          ls -la playwright-reports/ || echo "No playwright-reports directory found"
+          echo "Looking for specific Playwright artifacts:"
+          for artifact in react-playwright-demo-playwright-report; do
+            echo "--- Looking for $artifact ---"
+            if [ -d "playwright-reports/$artifact" ]; then
+              echo "Found $artifact directory"
+              ls -la "playwright-reports/$artifact/"
+              echo "Contents of $artifact:"
+              find "playwright-reports/$artifact" -type f | head -10
+            else
+              echo "NOT FOUND: $artifact"
+            fi
+          done
+          
       - name: Download Coverage Reports
         uses: actions/download-artifact@v4
         with:
@@ -358,18 +376,37 @@ jobs:
           fi
           
           # Copy Playwright reports
+          echo "=== DEBUG: Playwright reports structure ==="
+          ls -la playwright-reports/ || echo "No playwright-reports directory found"
           if [ -d "playwright-reports" ]; then
+            echo "Found playwright-reports directory"
+            find playwright-reports -type f | head -10
             echo "Copying Playwright reports..."
-            cp -r playwright-reports gh-pages-deploy/playwright-reports
-            # Also copy to react-playwright-demo/playwright for direct access
-            mkdir -p gh-pages-deploy/react-playwright-demo/playwright
-            cp -r playwright-reports/* gh-pages-deploy/react-playwright-demo/playwright/ 2>/dev/null || true
+            
+            # Check for specific artifact structure
+            if [ -d "playwright-reports/react-playwright-demo-playwright-report" ]; then
+              echo "Using nested artifact structure: playwright-reports/react-playwright-demo-playwright-report"
+              cp -r playwright-reports/react-playwright-demo-playwright-report/* gh-pages-deploy/playwright-reports/ 2>/dev/null || true
+              # Also copy to react-playwright-demo/playwright for direct access
+              mkdir -p gh-pages-deploy/react-playwright-demo/playwright
+              cp -r playwright-reports/react-playwright-demo-playwright-report/* gh-pages-deploy/react-playwright-demo/playwright/ 2>/dev/null || true
+            else
+              echo "Using direct artifact structure: playwright-reports/"
+              cp -r playwright-reports/* gh-pages-deploy/playwright-reports/ 2>/dev/null || true
+              # Also copy to react-playwright-demo/playwright for direct access
+              mkdir -p gh-pages-deploy/react-playwright-demo/playwright
+              cp -r playwright-reports/* gh-pages-deploy/react-playwright-demo/playwright/ 2>/dev/null || true
+            fi
+            
+            echo "=== DEBUG: Copied Playwright reports ==="
+            ls -la gh-pages-deploy/playwright-reports/
+            ls -la gh-pages-deploy/react-playwright-demo/playwright/
           else
             echo "Creating placeholder for Playwright reports..."
             mkdir -p gh-pages-deploy/playwright-reports
             mkdir -p gh-pages-deploy/react-playwright-demo/playwright
-            echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/playwright-reports/index.html
-            echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/react-playwright-demo/playwright/index.html
+            echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p><p>Debug: No playwright-reports directory found</p></body></html>" > gh-pages-deploy/playwright-reports/index.html
+            echo "<!DOCTYPE html><html><head><title>Playwright Reports</title></head><body><h1>Playwright Test Reports</h1><p>Reports will be available after test execution.</p><p>Debug: No playwright-reports directory found</p></body></html>" > gh-pages-deploy/react-playwright-demo/playwright/index.html
           fi
           
           # Copy Coverage reports
