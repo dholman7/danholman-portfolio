@@ -552,6 +552,8 @@ jobs:
     name: Process Allure Reports
     if: always()
     uses: ./.github/workflows/deploy-allure-reports.yml
+    with:
+      module: all
     needs: [automation-framework, ai-rulesets, cloud-native-app]
 
   deploy-reports:
