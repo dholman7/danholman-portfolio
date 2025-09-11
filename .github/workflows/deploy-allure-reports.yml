@@ -1,4 +1,4 @@
-name: Deploy Allure Reports to GitHub Pages
+name: Prepare Allure Reports for GitHub Pages
 
 on:
   workflow_call:
@@ -23,8 +23,8 @@ on:
         description: Module to deploy Allure report for
 
 jobs:
-  deploy-allure-reports:
-    name: Generate & Deploy Test Dashboard
+  prepare-allure-reports:
+    name: Prepare Test Dashboard for Deployment
     runs-on: ubuntu-latest
     if: always()
     permissions:
@@ -794,11 +794,10 @@ jobs:
           fi
           echo "========================================="
 
-      - name: Deploy to GitHub Pages
+      - name: Upload Deployment Artifact
         if: always()
-        id: deployment
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ./gh-pages-deploy
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh-pages-deploy
+          path: gh-pages-deploy/
+          retention-days: 1
