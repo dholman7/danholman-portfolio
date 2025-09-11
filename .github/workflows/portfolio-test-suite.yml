@@ -112,6 +112,17 @@ jobs:
           find reports/allure-results/ -name "*.json" | wc -l || echo "0"
           echo "Sample Allure result files:"
           find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
+      - name: Ensure Coverage Report Generation
+        if: always()
+        run: |
+          echo "Ensuring coverage report is generated..."
+          # If coverage directory doesn't exist or is empty, generate it from unit tests
+          if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
+            echo "Coverage directory missing or empty, generating from unit tests..."
+            pytest tests/unit/ --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || echo "Unit test coverage generation failed"
+          fi
+          echo "Final coverage directory contents:"
+          ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
         if: failure() && github.event.inputs.enable_cursor_fixes != false
         env:
@@ -246,6 +257,17 @@ jobs:
           find reports/allure-results/ -name "*.json" | wc -l || echo "0"
           echo "Sample Allure result files:"
           find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
+      - name: Ensure Coverage Report Generation
+        if: always()
+        run: |
+          echo "Ensuring coverage report is generated..."
+          # If coverage directory doesn't exist or is empty, generate it from unit tests
+          if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
+            echo "Coverage directory missing or empty, generating from unit tests..."
+            pytest tests/unit/ --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || echo "Unit test coverage generation failed"
+          fi
+          echo "Final coverage directory contents:"
+          ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Fix Test Failures with Cursor
         if: failure() && github.event.inputs.enable_cursor_fixes != false
         env:
@@ -368,6 +390,17 @@ jobs:
           find reports/allure-results/ -name "*.json" | wc -l || echo "0"
           echo "Sample Allure result files:"
           find reports/allure-results/ -name "*.json" | head -5 || echo "No Allure JSON files found"
+      - name: Ensure Coverage Report Generation
+        if: always()
+        run: |
+          echo "Ensuring coverage report is generated for cloud-native-app..."
+          # If coverage directory doesn't exist or is empty, generate it from unit tests
+          if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
+            echo "Coverage directory missing or empty, generating from unit tests..."
+            pytest tests/unit/ --cov=lambda --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || echo "Unit test coverage generation failed"
+          fi
+          echo "Final coverage directory contents:"
+          ls -la reports/coverage/ || echo "No coverage directory found"
       - name: Generate Allure Report
         if: always()
         run: |
