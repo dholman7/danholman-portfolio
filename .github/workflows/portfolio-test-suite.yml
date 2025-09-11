@@ -131,8 +131,9 @@ jobs:
           echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
           cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
-          Analyze the test failures in this CI run and fix the Python test files in the automation-framework module. 
-          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Analyze the test failures in this CI run and fix the test files in the automation-framework module. 
+          This module uses Python with pytest, selenium, and API testing frameworks.
+          Focus on fixing import errors, method name mismatches, API compatibility issues, test logic problems, and pytest configuration issues. 
           Ensure all tests can be collected and executed successfully."
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
@@ -276,8 +277,9 @@ jobs:
           echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
           cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
-          Analyze the test failures in this CI run and fix the Python test files in the ai-rulesets module. 
-          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Analyze the test failures in this CI run and fix the test files in the ai-rulesets module. 
+          This module uses Python with pytest, ruff, black, and mypy for code quality and testing.
+          Focus on fixing import errors, method name mismatches, API compatibility issues, test logic problems, and pytest configuration issues. 
           Ensure all tests can be collected and executed successfully."
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
@@ -414,8 +416,9 @@ jobs:
           echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
           cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
-          Analyze the test failures in this CI run and fix the TypeScript/Python test files in the cloud-native-app module. 
-          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Analyze the test failures in this CI run and fix the test files in the cloud-native-app module. 
+          This module uses TypeScript/Node.js with Jest for testing and Python with pytest for regression tests.
+          Focus on fixing TypeScript errors, Jest configuration issues, import errors, method name mismatches, API compatibility issues, and test logic problems. 
           Ensure all tests can be collected and executed successfully."
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
@@ -526,8 +529,9 @@ jobs:
           echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
           cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
-          Analyze the test failures in this CI run and fix the TypeScript/React test files in the react-playwright-demo module. 
-          Focus on fixing TypeScript errors, test logic problems, and Playwright test issues. 
+          Analyze the test failures in this CI run and fix the test files in the react-playwright-demo module. 
+          This module uses TypeScript/React with Jest for unit tests and Playwright for E2E tests.
+          Focus on fixing TypeScript errors, Jest configuration issues, React component test problems, Playwright test issues, and test logic problems. 
           Ensure all tests can be collected and executed successfully."
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
