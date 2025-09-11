@@ -187,16 +187,31 @@ jobs:
           # Copy individual module reports
           if [ -d "allure-reports/automation-framework-allure-report" ]; then
             echo "Copying automation-framework report..."
+            echo "=== DEBUG: automation-framework artifact structure ==="
+            find allure-reports/automation-framework-allure-report -type f | head -20
+            echo "=== DEBUG: Looking for specific paths ==="
+            echo "Path 1: allure-reports/automation-framework-allure-report/automation-framework/reports/allure-report"
+            ls -la allure-reports/automation-framework-allure-report/automation-framework/reports/allure-report/ 2>/dev/null || echo "Path 1 not found"
+            echo "Path 2: allure-reports/automation-framework-allure-report/reports/allure-report"
+            ls -la allure-reports/automation-framework-allure-report/reports/allure-report/ 2>/dev/null || echo "Path 2 not found"
+            
             # The artifact contains the full path structure, so we need to find the actual report files
             if [ -d "allure-reports/automation-framework-allure-report/automation-framework/reports/allure-report" ]; then
+              echo "Using Path 1: automation-framework/reports/allure-report"
               cp -r allure-reports/automation-framework-allure-report/automation-framework/reports/allure-report/* gh-pages-deploy/automation-framework/
             elif [ -d "allure-reports/automation-framework-allure-report/reports/allure-report" ]; then
+              echo "Using Path 2: reports/allure-report"
               cp -r allure-reports/automation-framework-allure-report/reports/allure-report/* gh-pages-deploy/automation-framework/
             else
+              echo "Neither path found, searching for HTML files..."
               # Try to find any HTML files in the artifact
               find allure-reports/automation-framework-allure-report -name "*.html" -exec cp {} gh-pages-deploy/automation-framework/ \;
+              echo "Found HTML files:"
+              find allure-reports/automation-framework-allure-report -name "*.html"
             fi
             echo "Automation framework report copied successfully"
+            echo "=== DEBUG: Final automation-framework directory ==="
+            ls -la gh-pages-deploy/automation-framework/
           else
             echo "Creating placeholder for automation-framework..."
             mkdir -p gh-pages-deploy/automation-framework
@@ -205,16 +220,31 @@ jobs:
           
           if [ -d "allure-reports/ai-rulesets-allure-report" ]; then
             echo "Copying ai-rulesets report..."
+            echo "=== DEBUG: ai-rulesets artifact structure ==="
+            find allure-reports/ai-rulesets-allure-report -type f | head -20
+            echo "=== DEBUG: Looking for specific paths ==="
+            echo "Path 1: allure-reports/ai-rulesets-allure-report/ai-rulesets/reports/allure-report"
+            ls -la allure-reports/ai-rulesets-allure-report/ai-rulesets/reports/allure-report/ 2>/dev/null || echo "Path 1 not found"
+            echo "Path 2: allure-reports/ai-rulesets-allure-report/reports/allure-report"
+            ls -la allure-reports/ai-rulesets-allure-report/reports/allure-report/ 2>/dev/null || echo "Path 2 not found"
+            
             # The artifact contains the full path structure, so we need to find the actual report files
             if [ -d "allure-reports/ai-rulesets-allure-report/ai-rulesets/reports/allure-report" ]; then
+              echo "Using Path 1: ai-rulesets/reports/allure-report"
               cp -r allure-reports/ai-rulesets-allure-report/ai-rulesets/reports/allure-report/* gh-pages-deploy/ai-rulesets/
             elif [ -d "allure-reports/ai-rulesets-allure-report/reports/allure-report" ]; then
+              echo "Using Path 2: reports/allure-report"
               cp -r allure-reports/ai-rulesets-allure-report/reports/allure-report/* gh-pages-deploy/ai-rulesets/
             else
+              echo "Neither path found, searching for HTML files..."
               # Try to find any HTML files in the artifact
               find allure-reports/ai-rulesets-allure-report -name "*.html" -exec cp {} gh-pages-deploy/ai-rulesets/ \;
+              echo "Found HTML files:"
+              find allure-reports/ai-rulesets-allure-report -name "*.html"
             fi
             echo "AI rulesets report copied successfully"
+            echo "=== DEBUG: Final ai-rulesets directory ==="
+            ls -la gh-pages-deploy/ai-rulesets/
           else
             echo "Creating placeholder for ai-rulesets..."
             mkdir -p gh-pages-deploy/ai-rulesets
