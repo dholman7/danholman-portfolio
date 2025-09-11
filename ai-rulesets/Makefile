@@ -39,21 +39,21 @@ install: venv ## Install production dependencies
 install-dev: venv ## Install development dependencies
 	.venv/bin/pip install -e ".[dev]"
 
-# Testing (local development - uses virtual environment)
-test: install-dev ## Run all tests
-	.venv/bin/pytest
+# Testing (assumes user is in virtual environment)
+test: ## Run all tests
+	pytest
 
-test-unit: install-dev ## Run unit tests only
-	.venv/bin/pytest tests/unit/ -v
+test-unit: ## Run unit tests only
+	pytest tests/unit/ -v
 
-test-component: install-dev ## Run component tests only
-	.venv/bin/pytest tests/component/ -v
+test-component: ## Run component tests only
+	pytest tests/component/ -v
 
-test-integration: install-dev ## Run integration tests only
-	.venv/bin/pytest tests/integration/ -v
+test-integration: ## Run integration tests only
+	pytest tests/integration/ -v
 
-test-e2e: install-dev ## Run end-to-end tests only
-	.venv/bin/pytest tests/e2e/ -v
+test-e2e: ## Run end-to-end tests only
+	pytest tests/e2e/ -v
 
 # CI/CD testing (uses system Python directly)
 test-ci: ## Run tests for CI/CD (uses system Python)
@@ -72,37 +72,37 @@ test-ci-e2e: ## Run e2e tests for CI/CD
 	pytest tests/e2e/ -v --alluredir=reports/allure-results
 
 # Code Quality
-lint: install-dev ## Run all linting tools
+lint: ## Run all linting tools
 	@echo "Running Black (code formatting)..."
-	.venv/bin/black --check src/ tests/
+	black --check src/ tests/
 	@echo "Running isort (import sorting)..."
-	.venv/bin/isort --check-only src/ tests/
+	isort --check-only src/ tests/
 	@echo "Running Ruff (fast linting)..."
-	.venv/bin/ruff check src/ tests/
+	ruff check src/ tests/
 
-format: install-dev ## Format code with Black and isort
+format: ## Format code with Black and isort
 	@echo "Formatting with Black..."
-	.venv/bin/black src/ tests/
+	black src/ tests/
 	@echo "Sorting imports with isort..."
-	.venv/bin/isort src/ tests/
+	isort src/ tests/
 
-type-check: install-dev ## Run type checking with MyPy
-	.venv/bin/mypy src/
+type-check: ## Run type checking with MyPy
+	mypy src/
 
 # Coverage
-coverage: install-dev ## Run tests with coverage reporting
-	.venv/bin/pytest --cov=ai_rulesets --cov-report=html --cov-report=xml --cov-report=term-missing
+coverage: ## Run tests with coverage reporting
+	pytest --cov=ai_rulesets --cov-report=html --cov-report=xml --cov-report=term-missing
 
-coverage-html: install-dev ## Generate HTML coverage report
-	.venv/bin/pytest --cov=ai_rulesets --cov-report=html
+coverage-html: ## Generate HTML coverage report
+	pytest --cov=ai_rulesets --cov-report=html
 	@echo "Coverage report generated in htmlcov/"
 
-coverage-xml: install-dev ## Generate XML coverage report
-	.venv/bin/pytest --cov=ai_rulesets --cov-report=xml
+coverage-xml: ## Generate XML coverage report
+	pytest --cov=ai_rulesets --cov-report=xml
 
 # Allure Reporting (local development)
-allure-results: install-dev ## Generate Allure test results
-	.venv/bin/pytest --alluredir=reports/allure-results
+allure-results: ## Generate Allure test results
+	pytest --alluredir=reports/allure-results
 	@echo "Allure results generated in reports/allure-results/"
 
 allure-generate: allure-results ## Generate Allure HTML report
@@ -158,8 +158,8 @@ report-allure: allure-generate ## Generate comprehensive Allure report
 	@echo "Allure report generated in reports/allure-report/"
 	@echo "Run 'make allure-serve' to view the report locally"
 
-report-comprehensive: install-dev ## Generate all types of reports (Coverage, Allure)
-	.venv/bin/pytest --cov=ai_rulesets --cov-report=html --cov-report=xml --alluredir=reports/allure-results
+report-comprehensive: ## Generate all types of reports (Coverage, Allure)
+	pytest --cov=ai_rulesets --cov-report=html --cov-report=xml --alluredir=reports/allure-results
 	@if command -v allure >/dev/null 2>&1; then \
 		allure generate reports/allure-results --clean -o reports/allure-report; \
 		echo "Comprehensive reports generated:"; \
@@ -187,28 +187,28 @@ dev-test: format lint type-check test ## Complete development test workflow
 dev-full: clean install-dev format lint type-check test coverage ## Complete development workflow
 
 # Quick Commands
-quick-test: install-dev ## Quick test run
-	.venv/bin/pytest -v
+quick-test: ## Quick test run
+	pytest -v
 
-quick-lint: install-dev ## Quick linting check
-	.venv/bin/ruff check src/ tests/
+quick-lint: ## Quick linting check
+	ruff check src/ tests/
 
-quick-format: install-dev ## Quick code formatting
-	.venv/bin/black src/ tests/ && .venv/bin/isort src/ tests/
+quick-format: ## Quick code formatting
+	black src/ tests/ && isort src/ tests/
 
 # Quality Checks (local development)
-quality-check: install-dev ## Run comprehensive code quality checks
+quality-check: ## Run comprehensive code quality checks
 	@echo "🔍 Running code quality checks..."
-	.venv/bin/python -m ai_rulesets quality check --project-root . --fail-on-error
+	python -m ai_rulesets quality check --project-root . --fail-on-error
 
-quality-readmes: install-dev ## Check README files for accuracy
+quality-readmes: ## Check README files for accuracy
 	@echo "📚 Checking README files..."
-	.venv/bin/python -m ai_rulesets quality readmes --project-root .
+	python -m ai_rulesets quality readmes --project-root .
 
-quality-workflows: install-dev ## Check GitHub workflow files
+quality-workflows: ## Check GitHub workflow files
 	@echo "⚙️ Checking workflow files..."
-	.venv/bin/python -m ai_rulesets quality workflows --project-root .
+	python -m ai_rulesets quality workflows --project-root .
 
-quality-tests: install-dev ## Check test execution and reporting
+quality-tests: ## Check test execution and reporting
 	@echo "🧪 Checking test execution..."
-	.venv/bin/python -m ai_rulesets quality tests --project-root .
+	python -m ai_rulesets quality tests --project-root .

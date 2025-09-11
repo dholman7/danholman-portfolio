@@ -1,0 +1,131 @@
+# Makefile Best Practices
+
+## Virtual Environment Assumptions
+
+### ✅ CORRECT - Assume User is in Virtual Environment
+Makefiles should assume the user has already activated their virtual environment. This is the standard practice.
+
+```makefile
+# GOOD - User activates venv first, then runs make commands
+test: ## Run all tests
+	pytest
+
+lint: ## Run linting
+	black --check src/ tests/
+	ruff check src/ tests/
+
+coverage: ## Run tests with coverage
+	pytest --cov=src --cov-report=html
+```
+
+### ❌ WRONG - Don't Manage Virtual Environment in Makefile
+```makefile
+# BAD - Don't repeat .venv/bin/activate in every command
+test:
+	. .venv/bin/activate && pytest
+
+lint:
+	. .venv/bin/activate && black --check src/ tests/
+```
+
+### ❌ WRONG - Don't Use Full Paths to Virtual Environment
+```makefile
+# BAD - Don't use .venv/bin/pytest in every command
+test:
+	.venv/bin/pytest
+
+lint:
+	.venv/bin/black --check src/ tests/
+```
+
+## Standard Workflow
+
+### User Workflow
+```bash
+# 1. Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+
+# 2. Install dependencies
+pip install -e ".[dev]"
+
+# 3. Run make commands (assumes venv is active)
+make test
+make lint
+make coverage
+```
+
+### Makefile Structure
+```makefile
+# Virtual environment setup (optional, for convenience)
+venv:
+	python -m venv .venv
+	.venv/bin/pip install -U pip
+
+# Installation (assumes venv is active)
+install: ## Install dependencies
+	pip install -e ".[dev]"
+
+# Testing (assumes venv is active)
+test: ## Run all tests
+	pytest
+
+test-unit: ## Run unit tests
+	pytest tests/unit/ -v
+
+# Linting (assumes venv is active)
+lint: ## Run linting
+	black --check src/ tests/
+	ruff check src/ tests/
+
+# CI/CD targets (use system Python directly)
+test-ci: ## Run tests for CI/CD
+	pytest --alluredir=reports/allure-results -v
+```
+
+## CI/CD Integration
+
+### GitHub Actions
+```yaml
+- name: Install dependencies
+  run: |
+    pip install -e ".[dev]"
+    pip install allure-pytest
+
+- name: Run tests
+  run: make test-ci  # Uses system Python directly
+```
+
+### Local Development
+```bash
+# User activates virtual environment
+source .venv/bin/activate
+
+# Then runs make commands
+make test
+make lint
+make coverage
+```
+
+## Key Principles
+
+1. **User Responsibility**: User activates virtual environment before running make commands
+2. **Simple Commands**: Use `pytest` not `.venv/bin/pytest`
+3. **No Repetition**: Don't repeat virtual environment activation in every command
+4. **CI/CD Exception**: Provide separate targets for CI/CD that use system Python
+5. **Clear Documentation**: Document the expected workflow in README
+
+## Benefits
+
+- **Cleaner Makefiles**: No repetitive virtual environment management
+- **Standard Practice**: Follows industry conventions
+- **Flexible**: Works with any virtual environment tool (venv, conda, etc.)
+- **CI/CD Ready**: Separate targets for automated environments
+- **User Friendly**: Clear separation of concerns
+
+## Tags
+- makefile
+- virtual-environment
+- best-practices
+- python
+- development-workflow
