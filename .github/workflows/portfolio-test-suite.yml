@@ -14,6 +14,7 @@ on:
           - automation-framework
           - ai-rulesets
           - cloud-native-app
+          - react-playwright-demo
         required: true
         default: all
         description: Module to test (or 'all' for complete test suite)
@@ -548,13 +549,87 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
+  react-playwright-demo:
+    name: React Playwright Demo (TypeScript)
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'react-playwright-demo' || github.event_name != 'workflow_dispatch' }}
+    defaults:
+      run:
+        working-directory: react-playwright-demo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Cursor CLI
+        if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
+      - run: |
+          if [ -f package.json ]; then yarn install; fi
+          # Create reports directory
+          mkdir -p reports/allure-results reports/coverage
+      - run: |
+          if command -v yarn >/dev/null 2>&1; then yarn lint || true; fi
+      - name: Run Tests with Coverage
+        if: always()
+        run: |
+          # Create reports directory
+          mkdir -p reports/allure-results reports/coverage
+          
+          # Run Jest tests with coverage
+          if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            echo "Running Jest tests with coverage..."
+            yarn test --coverage --watchAll=false || true
+          fi
+          
+          # Run Playwright tests
+          if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            echo "Running Playwright tests..."
+            yarn test:e2e || true
+          fi
+          
+          # List generated files for debugging
+          echo "Coverage reports directory contents:"
+          ls -la reports/coverage/ || echo "No coverage reports generated"
+      - name: Fix Test Failures with Cursor
+        id: cursor-fixes
+        if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the test failures in this CI run and fix the test files in the react-playwright-demo module. 
+          This module uses TypeScript/Node.js with Jest and Playwright for testing.
+          Focus on fixing TypeScript errors, Jest configuration issues, Playwright test issues, import errors, and test logic problems. 
+          Ensure all tests can be collected and executed successfully."
+      - name: Re-run Tests After Cursor Fixes
+        if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        run: |
+          echo "🔄 Re-running tests after Cursor fixes..."
+          if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            yarn test --coverage --watchAll=false || true
+            yarn test:e2e || true
+          fi
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-playwright-demo-coverage-report
+          path: reports/coverage/
+          retention-days: 30
+          if-no-files-found: warn
+
   process-allure-reports:
     name: Process Allure Reports
     if: always()
     uses: ./.github/workflows/deploy-allure-reports.yml
     with:
       module: all
-    needs: [automation-framework, ai-rulesets, cloud-native-app]
+    needs: [automation-framework, ai-rulesets, cloud-native-app, react-playwright-demo]
 
   deploy-reports:
     name: Deploy to GitHub Pages

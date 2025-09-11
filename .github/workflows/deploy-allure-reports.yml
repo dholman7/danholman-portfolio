@@ -57,6 +57,18 @@ jobs:
             echo "No allure-reports directory found"
           fi
           
+          echo "=== Available Artifacts Debug ==="
+          echo "Checking for specific artifact patterns..."
+          for pattern in "automation-framework-allure-report" "ai-rulesets-allure-report" "cloud-native-app-allure-report" "react-playwright-demo-allure-report"; do
+            echo "Looking for pattern: $pattern"
+            if [ -d "allure-reports/$pattern" ]; then
+              echo "Found: $pattern"
+              ls -la "allure-reports/$pattern/"
+            else
+              echo "Not found: $pattern"
+            fi
+          done
+          
       - name: Setup Python for Allure processing
         uses: actions/setup-python@v4
         with:
@@ -111,7 +123,7 @@ jobs:
           mkdir -p static-reports/allure-reports
           
           # Copy processed reports to static location
-          if [ -d "processed-allure-reports" ]; then
+          if [ -d "processed-allure-reports" ] && [ "$(ls -A processed-allure-reports)" ]; then
             echo "Copying processed reports to static location..."
             cp -r processed-allure-reports/* static-reports/allure-reports/
             
@@ -150,7 +162,36 @@ jobs:
             echo "Static reports deployed successfully"
             ls -la static-reports/allure-reports/
           else
-            echo "No processed reports found"
+            echo "No processed reports found - creating placeholder"
+            # Create a placeholder index file
+            cat > static-reports/allure-reports/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Allure Reports - No Reports Available</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  h1 { color: #333; }
+                  .warning { margin: 20px 0; padding: 15px; border: 1px solid #ffcc00; border-radius: 5px; background-color: #fff9e6; }
+              </style>
+          </head>
+          <body>
+              <h1>Allure Reports - No Reports Available</h1>
+              <div class="warning">
+                  <h2>⚠️ No Allure Reports Found</h2>
+                  <p>No Allure reports were generated in the current workflow run. This could be due to:</p>
+                  <ul>
+                      <li>Test failures preventing report generation</li>
+                      <li>Allure report generation issues</li>
+                      <li>Artifact upload/download problems</li>
+                  </ul>
+                  <p>Please check the individual module jobs for more details.</p>
+              </div>
+          </body>
+          </html>
+          EOF
           fi
 
       - name: Upload Static Allure Reports
