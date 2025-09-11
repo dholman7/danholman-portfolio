@@ -134,6 +134,38 @@ This portfolio demonstrates production-ready CI/CD practices across all modules:
 - **Environment Management**: Proper secret and configuration management
 - **Monitoring Integration**: Test result aggregation and reporting
 
+### **Artifact Path Structure**
+
+The CI/CD pipeline uses a specific artifact pathing structure for reliable report deployment:
+
+#### **Portfolio Test Suite Workflow** (`.github/workflows/portfolio-test-suite.yml`)
+- **Working Directories**: Each module runs in its own working directory
+- **Artifact Upload Paths**: 
+  - Allure Reports: `{module}/reports/allure-report/`
+  - Coverage Reports: `{module}/reports/coverage/`
+  - Allure Results: `{module}/reports/allure-results/`
+- **Artifact Names**: `{module}-allure-report`, `{module}-coverage-report`, `{module}-allure-results`
+
+#### **Deploy Allure Reports Workflow** (`.github/workflows/deploy-allure-reports.yml`)
+- **Artifact Download**: Downloads artifacts with pattern `*-allure-report`, `*-coverage-report`
+- **Path Mapping**: Handles nested directory structure from working directories
+- **GitHub Pages Deployment**: Maps artifacts to `https://dholman7.github.io/danholman-portfolio/{module}/`
+
+#### **Path Resolution Logic**
+```bash
+# Artifact structure after download:
+allure-reports/
+├── automation-framework-allure-report/
+│   └── automation-framework/reports/allure-report/  # Nested path from working directory
+├── ai-rulesets-allure-report/
+│   └── ai-rulesets/reports/allure-report/
+└── ...
+
+# Deploy workflow handles both possible paths:
+# 1. {artifact-name}/{module}/reports/allure-report/
+# 2. {artifact-name}/reports/allure-report/
+```
+
 📖 **[Detailed CI/CD Documentation](./docs/cicd-overview.md)** -
   Comprehensive overview of all CI/CD practices and patterns
 
@@ -293,6 +325,49 @@ Tests run automatically on:
 make install-dev          # Install dependencies
 make test-allure-local    # Run tests with Allure
 make allure-serve-local   # View reports with history
+```
+
+## 🔧 Troubleshooting CI/CD Issues
+
+### **Artifact Path Issues**
+
+If you see "Reports will be available after test execution" on GitHub Pages, check these common issues:
+
+#### **Issue 1: Artifact Path Mismatch**
+- **Problem**: Deploy workflow can't find artifacts due to nested directory structure
+- **Cause**: Working directories create nested paths in artifacts
+- **Solution**: Deploy workflow handles both possible paths automatically
+
+#### **Issue 2: Missing Allure Reports**
+- **Problem**: No Allure reports generated during test execution
+- **Cause**: Tests may have failed or Allure generation step failed
+- **Solution**: Check GitHub Actions logs for test execution and Allure generation steps
+
+#### **Issue 3: Coverage Reports Not Found**
+- **Problem**: Coverage reports show placeholder pages
+- **Cause**: Coverage generation failed or path resolution issues
+- **Solution**: Verify pytest coverage commands and artifact upload paths
+
+#### **Debug Steps**
+1. **Check GitHub Actions**: View the "Portfolio Test Suite with Coverage" workflow run
+2. **Verify Artifacts**: Look for uploaded artifacts in the Actions tab
+3. **Check Deploy Logs**: Review the "Deploy Allure Reports to GitHub Pages" workflow logs
+4. **Path Structure**: Ensure artifacts follow the documented path structure
+
+### **Path Structure Reference**
+
+```bash
+# Expected artifact structure:
+allure-reports/
+├── automation-framework-allure-report/
+│   └── automation-framework/reports/allure-report/
+├── ai-rulesets-allure-report/
+│   └── ai-rulesets/reports/allure-report/
+└── ...
+
+# Deploy workflow handles both paths:
+# 1. {artifact-name}/{module}/reports/allure-report/
+# 2. {artifact-name}/reports/allure-report/
 ```
 
 ## 🔍 Code Quality Validation

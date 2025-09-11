@@ -85,14 +85,35 @@ strategy:
 ```
 
 ### 3. **Artifact Management**
+
+#### **Portfolio Test Suite Artifact Structure**
 ```yaml
-- name: Upload test results
+# Each module runs in its own working directory
+defaults:
+  run:
+    working-directory: automation-framework  # Module-specific working directory
+
+# Artifact upload with module-specific paths
+- name: Upload Allure Report
   uses: actions/upload-artifact@v4
   with:
-    name: test-results-${{ matrix.python-version }}
-    path: |
-      junit.xml
-      htmlcov/
+    name: automation-framework-allure-report
+    path: automation-framework/reports/allure-report/  # Full path from repo root
+    retention-days: 30
+```
+
+#### **Deploy Workflow Artifact Handling**
+```yaml
+# Download artifacts with pattern matching
+- name: Download Allure Reports
+  uses: actions/download-artifact@v4
+  with:
+    pattern: "*-allure-report"
+    path: allure-reports/
+    merge-multiple: true
+
+# Handle nested directory structure from working directories
+# Artifact structure: allure-reports/{module}-allure-report/{module}/reports/allure-report/
 ```
 
 ### 4. **Environment Management**
@@ -203,6 +224,118 @@ All modules implement comprehensive quality gates:
 - **Best Practices**: Documented CI/CD best practices
 - **Templates**: Reusable workflow templates
 - **Examples**: Real-world implementation examples
+
+## 🔧 Artifact Path Management
+
+### **Path Structure Challenges**
+
+The portfolio CI/CD pipeline handles complex artifact pathing due to module-specific working directories:
+
+#### **Issue 1: Working Directory vs Repository Root**
+- **Portfolio Test Suite**: Each module runs in its own working directory (`automation-framework/`, `ai-rulesets/`, etc.)
+- **Artifact Upload**: Paths are relative to the working directory but uploaded from repository root
+- **Path Resolution**: `{module}/reports/allure-report/` becomes the full path from repo root
+
+#### **Issue 2: Nested Directory Structure**
+- **Downloaded Artifacts**: Contain the full directory structure from working directories
+- **Expected Structure**: `allure-reports/{module}-allure-report/{module}/reports/allure-report/`
+- **Deploy Logic**: Must handle both possible nested paths
+
+#### **Issue 3: Artifact Name Patterns**
+- **Upload Pattern**: `{module}-allure-report`, `{module}-coverage-report`
+- **Download Pattern**: `*-allure-report`, `*-coverage-report`
+- **Pattern Matching**: Must match exact artifact names for reliable downloads
+
+### **Solution Implementation**
+
+#### **Portfolio Test Suite Workflow** (`.github/workflows/portfolio-test-suite.yml`)
+```yaml
+# Module-specific working directory
+defaults:
+  run:
+    working-directory: automation-framework
+
+# Generate reports in module directory
+- name: Generate Allure Report
+  run: |
+    allure generate reports/allure-results --clean -o reports/allure-report
+
+# Upload with full path from repository root
+- name: Upload Allure Report
+  uses: actions/upload-artifact@v4
+  with:
+    name: automation-framework-allure-report
+    path: automation-framework/reports/allure-report/  # Full path from repo root
+```
+
+#### **Deploy Allure Reports Workflow** (`.github/workflows/deploy-allure-reports.yml`)
+```yaml
+# Download with pattern matching
+- name: Download Allure Reports
+  uses: actions/download-artifact@v4
+  with:
+    pattern: "*-allure-report"
+    path: allure-reports/
+    merge-multiple: true
+
+# Handle nested directory structure
+- name: Prepare Allure Reports for Deployment
+  run: |
+    # Handle both possible paths in artifacts
+    if [ -d "allure-reports/${module}-allure-report/${module}/reports/allure-report" ]; then
+      cp -r allure-reports/${module}-allure-report/${module}/reports/allure-report/* gh-pages-deploy/${module}/
+    elif [ -d "allure-reports/${module}-allure-report/reports/allure-report" ]; then
+      cp -r allure-reports/${module}-allure-report/reports/allure-report/* gh-pages-deploy/${module}/
+    else
+      # Fallback: find any HTML files in the artifact
+      find allure-reports/${module}-allure-report -name "*.html" -exec cp {} gh-pages-deploy/${module}/ \;
+    fi
+```
+
+### **Path Resolution Logic**
+
+```bash
+# Artifact structure after download:
+allure-reports/
+├── automation-framework-allure-report/
+│   └── automation-framework/reports/allure-report/  # Nested from working directory
+├── ai-rulesets-allure-report/
+│   └── ai-rulesets/reports/allure-report/
+├── cloud-native-app-allure-report/
+│   └── cloud-native-app/reports/allure-report/
+└── react-playwright-demo-allure-report/
+    └── react-playwright-demo/allure-report/
+
+# Deploy workflow handles both possible paths:
+# 1. {artifact-name}/{module}/reports/allure-report/  (working directory structure)
+# 2. {artifact-name}/reports/allure-report/           (direct structure)
+```
+
+### **Debugging Artifact Issues**
+
+#### **Debug Steps in Deploy Workflow**
+```yaml
+- name: Debug downloaded artifacts
+  run: |
+    echo "=== Downloaded Allure Reports Structure ==="
+    find allure-reports/ -type f -name "*.html" | head -10 || echo "No HTML files found"
+    echo "=== Allure Reports Directory Contents ==="
+    ls -la allure-reports/ || echo "No allure-reports directory"
+    echo "=== Individual Module Directories ==="
+    for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+      echo "--- $module ---"
+      ls -la allure-reports/${module}-allure-report/ 2>/dev/null || echo "No ${module}-allure-report directory found"
+    done
+```
+
+#### **Common Issues and Solutions**
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| "Reports will be available after test execution" | Artifact not found or path mismatch | Check artifact names and nested directory structure |
+| Empty report directories | Path resolution failed | Verify both possible nested paths exist |
+| Missing HTML files | Report generation failed | Check Allure report generation step in test workflow |
+| Artifact download failed | Pattern mismatch | Verify artifact names match download patterns |
 
 ## 🔄 Continuous Improvement
 
