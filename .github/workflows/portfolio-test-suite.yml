@@ -14,7 +14,6 @@ on:
           - automation-framework
           - ai-rulesets
           - cloud-native-app
-          - react-playwright-demo
         required: true
         default: all
         description: Module to test (or 'all' for complete test suite)
@@ -558,142 +557,11 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
-  react-playwright-demo:
-    name: React Playwright Demo (TypeScript/React)
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'react-playwright-demo' || github.event_name != 'workflow_dispatch' }}
-    defaults:
-      run:
-        working-directory: react-playwright-demo
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20.19.0'
-      - run: yarn install --frozen-lockfile
-      - run: yarn playwright install --with-deps
-      - name: Install Cursor CLI
-        if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
-        run: |
-          curl https://cursor.com/install -fsS | bash
-          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
-      - name: Install Allure
-        run: yarn global add allure-commandline
-      - run: yarn type-check
-      - run: yarn lint
-      - run: yarn build
-      - name: Run Unit Tests
-        if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'unit' || github.event_name != 'workflow_dispatch' }}
-        run: yarn test:coverage || true
-      - name: Run Component Tests
-        if: ${{ github.event.inputs.test_type == 'component' }}
-        run: |
-          echo "Component tests not yet implemented for react-playwright-demo"
-          echo "Available test types: unit, integration, e2e"
-          exit 0
-      - name: Run Integration Tests
-        if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'integration' || github.event_name != 'workflow_dispatch' }}
-        run: yarn test:integration || true
-      - name: Run Playwright Tests
-        if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event_name != 'workflow_dispatch' }}
-        run: yarn test:e2e || true
-      - name: Run Performance Tests
-        if: ${{ github.event.inputs.test_type == 'performance' }}
-        run: |
-          echo "Performance tests not yet implemented for react-playwright-demo"
-          echo "Available test types: unit, integration, e2e"
-          exit 0
-      - name: Fix Test Failures with Cursor
-        id: cursor-fixes
-        if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
-        timeout-minutes: 5
-        env:
-          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-        run: |
-          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
-          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
-          Only modify files in the working directory. 
-          Analyze the test failures in this CI run and fix the test files in the react-playwright-demo module. 
-          This module uses TypeScript/React with Jest for unit tests and Playwright for E2E tests.
-          Focus on fixing TypeScript errors, Jest configuration issues, React component test problems, Playwright test issues, and test logic problems. 
-          Ensure all tests can be collected and executed successfully." || echo "Cursor CLI timeout or error - continuing workflow"
-          
-      - name: Fix CI/CD Issues with Cursor
-        id: cursor-cicd-fixes
-        if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
-        timeout-minutes: 5
-        env:
-          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-        run: |
-          echo "🔧 Cursor CLI: Analyzing and fixing CI/CD issues..."
-          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
-          Only modify files in the working directory. 
-          Analyze the CI/CD pipeline issues in this run, particularly:
-          1. Artifact upload/download problems
-          2. Allure report generation failures
-          3. Coverage report generation issues
-          4. GitHub Pages deployment problems
-          5. Path resolution issues in deploy workflows
-
-          Check the react-playwright-demo module for:
-          - Allure report generation in allure-report/
-          - Coverage report generation in coverage/
-          - Playwright report generation in playwright-report/
-          - Artifact upload paths and naming
-          - Test execution and reporting configuration
-
-          Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
-          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
-      - name: Re-run Tests After Cursor Fixes
-        if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
-        run: |
-          echo "🔄 Re-running tests after Cursor fixes..."
-          yarn test:coverage || true
-          yarn test:e2e || true
-      - name: Generate Allure Report
-        if: always()
-        run: |
-          # Ensure Playwright tests run first to generate allure-results
-          yarn test:e2e || true
-          # Generate Allure report
-          yarn test:allure:generate || true
-      - name: Upload Playwright HTML Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-playwright-demo-playwright-report
-          path: react-playwright-demo/playwright-report/
-          retention-days: 30
-          if-no-files-found: warn
-      - name: Upload Allure Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-playwright-demo-allure-results
-          path: react-playwright-demo/allure-results/
-          retention-days: 30
-          if-no-files-found: warn
-      - name: Upload Allure Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-playwright-demo-allure-report
-          path: react-playwright-demo/allure-report/
-          retention-days: 30
-          if-no-files-found: warn
-      - name: Upload Coverage Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-playwright-demo-coverage-report
-          path: react-playwright-demo/coverage/
-          retention-days: 30
-          if-no-files-found: warn
 
   deploy-test-reports:
     name: Deploy Test Reports to GitHub Pages
-    needs: [automation-framework, ai-rulesets, cloud-native-app, react-playwright-demo]
-    if: always() && (needs.automation-framework.result == 'success' || needs.ai-rulesets.result == 'success' || needs.cloud-native-app.result == 'success' || needs.react-playwright-demo.result == 'success')
+    needs: [automation-framework, ai-rulesets, cloud-native-app]
+    if: always() && (needs.automation-framework.result == 'success' || needs.ai-rulesets.result == 'success' || needs.cloud-native-app.result == 'success')
     uses: ./.github/workflows/deploy-allure-reports.yml
     with:
       module: all
