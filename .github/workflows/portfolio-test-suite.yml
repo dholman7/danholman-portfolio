@@ -643,7 +643,7 @@ jobs:
           yarn test:coverage || true
           yarn test:e2e || true
       - name: Generate Allure Report
-        if: ${{ github.event.inputs.include_allure != false }}
+        if: always()
         run: |
           # Ensure Playwright tests run first to generate allure-results
           yarn test:e2e || true
@@ -658,7 +658,7 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
       - name: Upload Allure Results
-        if: always() && ${{ github.event.inputs.include_allure != false }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: react-playwright-demo-allure-results
@@ -666,7 +666,7 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
       - name: Upload Allure Report
-        if: always() && ${{ github.event.inputs.include_allure != false }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: react-playwright-demo-allure-report
