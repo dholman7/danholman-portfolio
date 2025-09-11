@@ -26,7 +26,7 @@ jobs:
   deploy-allure-reports:
     name: Generate & Deploy Test Dashboard
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
+    if: always()
     permissions:
       contents: read
     
@@ -62,7 +62,7 @@ jobs:
 
 
       - name: Download Allure Reports (Manual/API/Call Trigger)
-        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
+        if: always()
         uses: actions/download-artifact@v4
         with:
           pattern: "*-allure-report"
@@ -108,7 +108,7 @@ jobs:
           find . -name "*.zip" -o -name "*allure*" -o -name "*coverage*" | head -20
           
       - name: Download Playwright Reports (Manual/API/Call Trigger)
-        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
+        if: always()
         uses: actions/download-artifact@v4
         with:
           pattern: "*-playwright-report"
@@ -174,7 +174,7 @@ jobs:
           done
           
       - name: Download Coverage Reports (Manual/API/Call Trigger)
-        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
+        if: always()
         uses: actions/download-artifact@v4
         with:
           pattern: "*-coverage-report"
