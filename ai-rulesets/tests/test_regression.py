@@ -12,9 +12,9 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 # Import the actual modules being tested
-from ai_rulesets.core import GuidanceTemplate, GuidanceItem, GuidanceTemplateMetadata
+from ai_rulesets.core import Ruleset, RulesetItem, RulesetMetadata
 from ai_rulesets.renderers import CursorRenderer, CopilotRenderer
-from ai_rulesets.cli import main as cli_main
+# from ai_rulesets.cli import main as cli_main  # CLI main function not available
 
 
 @allure.epic("AI Test Generation")
@@ -23,14 +23,14 @@ class TestAITestGenerationRegression:
     """Comprehensive regression tests for AI test generation components."""
 
     @allure.story("Core Components")
-    @allure.title("Test GuidanceTemplate creation and manipulation")
-    @allure.description("Verify GuidanceTemplate can be created and manipulated correctly.")
+    @allure.title("Test Ruleset creation and manipulation")
+    @allure.description("Verify Ruleset can be created and manipulated correctly.")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("core", "template", "regression")
     def test_guidance_template_creation(self):
-        """Test GuidanceTemplate creation and basic functionality."""
+        """Test Ruleset creation and basic functionality."""
         with allure.step("Create template metadata"):
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="Regression Test Template",
                 version="1.0.0",
                 description="Template for regression testing",
@@ -44,19 +44,19 @@ class TestAITestGenerationRegression:
             assert metadata.name == "Regression Test Template"
             
         with allure.step("Create guidance template"):
-            template = GuidanceTemplate(metadata=metadata)
+            template = Ruleset(metadata=metadata)
             assert template is not None
             assert template.metadata == metadata
             
         with allure.step("Add guidance items"):
-            guidance_item = GuidanceItem(
+            guidance_item = RulesetItem(
                 name="Test Guidance",
                 description="Test guidance for regression",
                 content="# Test Guidance\n\nThis is test content.",
                 tags=["test", "regression"],
                 priority=1
             )
-            template.add_guidance(guidance_item)
+            template.add_rule(guidance_item)
             
             # Verify guidance was added
             guidance_items = template.get_guidance_by_tag("test")
@@ -66,14 +66,14 @@ class TestAITestGenerationRegression:
             allure.attach(json.dumps(template.to_dict(), indent=2), "Template Data", allure.attachment_type.JSON)
 
     @allure.story("Core Components")
-    @allure.title("Test GuidanceItem functionality")
-    @allure.description("Verify GuidanceItem can be created and used correctly.")
+    @allure.title("Test RulesetItem functionality")
+    @allure.description("Verify RulesetItem can be created and used correctly.")
     @allure.severity(allure.severity_level.NORMAL)
     @allure.tag("core", "item", "regression")
     def test_guidance_item_functionality(self):
-        """Test GuidanceItem creation and functionality."""
+        """Test RulesetItem creation and functionality."""
         with allure.step("Create guidance item"):
-            item = GuidanceItem(
+            item = RulesetItem(
                 name="Regression Test Item",
                 description="Test item for regression testing",
                 content="# Regression Test\n\nThis is a test item.",
@@ -104,7 +104,7 @@ class TestAITestGenerationRegression:
             assert renderer is not None
             
         with allure.step("Create test template"):
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="Cursor Test Template",
                 version="1.0.0",
                 description="Template for Cursor testing",
@@ -112,8 +112,8 @@ class TestAITestGenerationRegression:
                 frameworks=["pytest"],
                 categories=["unit"]
             )
-            template = GuidanceTemplate(metadata=metadata)
-            template.add_guidance(GuidanceItem(
+            template = Ruleset(metadata=metadata)
+            template.add_rule(RulesetItem(
                 name="Cursor Test Guidance",
                 description="Test guidance for Cursor",
                 content="# Cursor Test\n\nThis is Cursor test content.",
@@ -141,7 +141,7 @@ class TestAITestGenerationRegression:
             assert renderer is not None
             
         with allure.step("Create test template"):
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="Copilot Test Template",
                 version="1.0.0",
                 description="Template for Copilot testing",
@@ -149,8 +149,8 @@ class TestAITestGenerationRegression:
                 frameworks=["jest"],
                 categories=["unit"]
             )
-            template = GuidanceTemplate(metadata=metadata)
-            template.add_guidance(GuidanceItem(
+            template = Ruleset(metadata=metadata)
+            template.add_rule(RulesetItem(
                 name="Copilot Test Guidance",
                 description="Test guidance for Copilot",
                 content="# Copilot Test\n\nThis is Copilot test content.",
@@ -174,7 +174,7 @@ class TestAITestGenerationRegression:
     def test_template_file_operations(self):
         """Test template file operations."""
         with allure.step("Create test template"):
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="File Test Template",
                 version="1.0.0",
                 description="Template for file testing",
@@ -182,8 +182,8 @@ class TestAITestGenerationRegression:
                 frameworks=["pytest"],
                 categories=["unit"]
             )
-            template = GuidanceTemplate(metadata=metadata)
-            template.add_guidance(GuidanceItem(
+            template = Ruleset(metadata=metadata)
+            template.add_rule(RulesetItem(
                 name="File Test Guidance",
                 description="Test guidance for file operations",
                 content="# File Test\n\nThis is file test content.",
@@ -207,7 +207,7 @@ class TestAITestGenerationRegression:
             assert "guidance" in parsed_data
             
             # Create new template from parsed data
-            new_template = GuidanceTemplate.from_yaml(yaml_content)
+            new_template = Ruleset.from_yaml(yaml_content)
             assert new_template is not None
             assert new_template.metadata.name == "File Test Template"
 
@@ -237,7 +237,7 @@ class TestAITestGenerationRegression:
     def test_end_to_end_workflow(self):
         """Test complete end-to-end workflow."""
         with allure.step("Create comprehensive template"):
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="E2E Test Template",
                 version="2.0.0",
                 description="Comprehensive template for E2E testing",
@@ -247,11 +247,11 @@ class TestAITestGenerationRegression:
                 author="E2E Test Author",
                 license="Apache-2.0"
             )
-            template = GuidanceTemplate(metadata=metadata)
+            template = Ruleset(metadata=metadata)
             
         with allure.step("Add multiple guidance items"):
             # Add different types of guidance
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Unit Testing Guidance",
                 description="Guidance for unit testing",
                 content="# Unit Testing\n\nWrite comprehensive unit tests.",
@@ -259,7 +259,7 @@ class TestAITestGenerationRegression:
                 priority=3
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Integration Testing Guidance",
                 description="Guidance for integration testing",
                 content="# Integration Testing\n\nTest component interactions.",
@@ -267,7 +267,7 @@ class TestAITestGenerationRegression:
                 priority=2
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="E2E Testing Guidance",
                 description="Guidance for end-to-end testing",
                 content="# E2E Testing\n\nTest complete user workflows.",
@@ -313,7 +313,7 @@ class TestAITestGenerationRegression:
         with allure.step("Test invalid metadata handling"):
             # Test with minimal metadata
             try:
-                metadata = GuidanceTemplateMetadata(
+                metadata = RulesetMetadata(
                     name="Minimal Template",
                     version="1.0.0",
                     description="Minimal template",
@@ -321,7 +321,7 @@ class TestAITestGenerationRegression:
                     frameworks=[],
                     categories=[]
                 )
-                template = GuidanceTemplate(metadata=metadata)
+                template = Ruleset(metadata=metadata)
                 assert template is not None
             except Exception as e:
                 # Should handle gracefully
@@ -330,7 +330,7 @@ class TestAITestGenerationRegression:
         with allure.step("Test invalid guidance item handling"):
             try:
                 # Test with minimal guidance item
-                item = GuidanceItem(
+                item = RulesetItem(
                     name="",
                     description="",
                     content="",
@@ -358,7 +358,7 @@ class TestAITestGenerationRegression:
             
             # Create multiple templates
             for i in range(50):
-                metadata = GuidanceTemplateMetadata(
+                metadata = RulesetMetadata(
                     name=f"Performance Test Template {i}",
                     version="1.0.0",
                     description=f"Template {i} for performance testing",
@@ -366,8 +366,8 @@ class TestAITestGenerationRegression:
                     frameworks=["pytest"],
                     categories=["unit"]
                 )
-                template = GuidanceTemplate(metadata=metadata)
-                template.add_guidance(GuidanceItem(
+                template = Ruleset(metadata=metadata)
+                template.add_rule(RulesetItem(
                     name=f"Performance Test Guidance {i}",
                     description=f"Guidance {i} for performance testing",
                     content=f"# Performance Test {i}\n\nContent for test {i}.",
@@ -385,7 +385,7 @@ class TestAITestGenerationRegression:
             
         with allure.step("Measure rendering performance"):
             # Create a template for rendering
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="Rendering Performance Test",
                 version="1.0.0",
                 description="Template for rendering performance testing",
@@ -393,11 +393,11 @@ class TestAITestGenerationRegression:
                 frameworks=["pytest", "jest"],
                 categories=["unit", "integration"]
             )
-            template = GuidanceTemplate(metadata=metadata)
+            template = Ruleset(metadata=metadata)
             
             # Add multiple guidance items
             for i in range(20):
-                template.add_guidance(GuidanceItem(
+                template.add_rule(RulesetItem(
                     name=f"Rendering Test Guidance {i}",
                     description=f"Guidance {i} for rendering performance",
                     content=f"# Rendering Test {i}\n\nContent for rendering test {i}.",

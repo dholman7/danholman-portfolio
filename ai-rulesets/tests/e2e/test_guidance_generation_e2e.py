@@ -11,7 +11,7 @@ import tempfile
 import subprocess
 import sys
 from pathlib import Path
-from ai_rulesets.core import GuidanceTemplate, GuidanceTemplateMetadata, GuidanceItem
+from ai_rulesets.core import Ruleset, RulesetMetadata, RulesetItem
 from ai_rulesets.renderers import CursorRenderer, CopilotRenderer
 
 
@@ -25,7 +25,7 @@ class TestGuidanceGenerationE2E:
             temp_path = Path(temp_dir)
             
             # Step 1: Create a comprehensive guidance template
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="E2E Test Template",
                 version="1.0.0",
                 description="Comprehensive template for E2E testing",
@@ -36,10 +36,10 @@ class TestGuidanceGenerationE2E:
                 license="MIT"
             )
             
-            template = GuidanceTemplate(metadata=metadata)
+            template = Ruleset(metadata=metadata)
             
             # Add multiple guidance items with different priorities
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="High Priority Testing Guidance",
                 description="Critical testing patterns",
                 content="# High Priority Testing\n\nAlways write tests for critical business logic.",
@@ -47,7 +47,7 @@ class TestGuidanceGenerationE2E:
                 priority=3
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Medium Priority API Testing",
                 description="API testing best practices",
                 content="# API Testing\n\nTest all API endpoints with proper error handling.",
@@ -55,7 +55,7 @@ class TestGuidanceGenerationE2E:
                 priority=2
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Low Priority Documentation",
                 description="Documentation guidelines",
                 content="# Documentation\n\nWrite clear, concise test documentation.",
@@ -71,7 +71,7 @@ class TestGuidanceGenerationE2E:
             assert template_path.exists()
             
             # Step 3: Load template from file
-            loaded_template = GuidanceTemplate.load_from_file(template_path)
+            loaded_template = Ruleset.load_from_file(template_path)
             
             # Verify loaded template matches original
             assert loaded_template.metadata.name == template.metadata.name
@@ -196,7 +196,7 @@ class TestGuidanceGenerationE2E:
             temp_path = Path(temp_dir)
             
             # Create multi-language template
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="Multi-Language Template",
                 version="2.0.0",
                 description="Template supporting multiple languages",
@@ -207,10 +207,10 @@ class TestGuidanceGenerationE2E:
                 license="Apache-2.0"
             )
             
-            template = GuidanceTemplate(metadata=metadata)
+            template = Ruleset(metadata=metadata)
             
             # Add language-specific guidance
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Python Testing",
                 description="Python-specific testing patterns",
                 content="# Python Testing\n\nUse pytest fixtures and parametrize tests.",
@@ -218,7 +218,7 @@ class TestGuidanceGenerationE2E:
                 priority=3
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="TypeScript Testing",
                 description="TypeScript-specific testing patterns",
                 content="# TypeScript Testing\n\nUse Jest with TypeScript and proper type checking.",
@@ -226,7 +226,7 @@ class TestGuidanceGenerationE2E:
                 priority=3
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Java Testing",
                 description="Java-specific testing patterns",
                 content="# Java Testing\n\nUse JUnit 5 and Mockito for comprehensive testing.",
@@ -234,7 +234,7 @@ class TestGuidanceGenerationE2E:
                 priority=3
             ))
             
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="Go Testing",
                 description="Go-specific testing patterns",
                 content="# Go Testing\n\nUse table-driven tests and testify for assertions.",
@@ -285,7 +285,7 @@ class TestGuidanceGenerationE2E:
             temp_path = Path(temp_dir)
             
             # Test with invalid template data
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="",  # Empty name should be handled
                 version="1.0.0",
                 description="Template with invalid data",
@@ -294,10 +294,10 @@ class TestGuidanceGenerationE2E:
                 categories=[],  # Empty categories list
             )
             
-            template = GuidanceTemplate(metadata=metadata)
+            template = Ruleset(metadata=metadata)
             
             # Add guidance with empty content
-            template.add_guidance(GuidanceItem(
+            template.add_rule(RulesetItem(
                 name="",  # Empty name
                 description="",  # Empty description
                 content="",  # Empty content

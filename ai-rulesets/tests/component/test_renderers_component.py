@@ -9,7 +9,7 @@ without requiring real external services.
 import pytest
 from unittest.mock import Mock, patch, mock_open
 from pathlib import Path
-from ai_rulesets.core import GuidanceTemplate, GuidanceTemplateMetadata, GuidanceItem
+from ai_rulesets.core import Ruleset, RulesetMetadata, RulesetItem
 from ai_rulesets.renderers import CursorRenderer, CopilotRenderer
 
 
@@ -20,17 +20,15 @@ class TestCursorRendererComponent:
     @pytest.fixture
     def sample_template(self):
         """Create a sample guidance template for testing."""
-        metadata = GuidanceTemplateMetadata(
+        metadata = RulesetMetadata(
             name="Test Template",
             version="1.0.0",
             description="A test template",
-            languages=["python"],
-            frameworks=["pytest"],
             categories=["unit", "integration"]
         )
         
-        template = GuidanceTemplate(metadata=metadata)
-        template.add_guidance(GuidanceItem(
+        template = Ruleset(metadata=metadata)
+        template.add_rule(RulesetItem(
             name="Test Guidance",
             description="Test guidance item",
             content="# Test guidance content",
@@ -92,16 +90,14 @@ class TestCursorRendererComponent:
 
     def test_render_empty_template(self, cursor_renderer):
         """Test rendering empty template."""
-        metadata = GuidanceTemplateMetadata(
+        metadata = RulesetMetadata(
             name="Empty Template",
             version="1.0.0",
             description="An empty template",
-            languages=["python"],
-            frameworks=["pytest"],
             categories=["unit"]
         )
         
-        template = GuidanceTemplate(metadata=metadata)
+        template = Ruleset(metadata=metadata)
         result = cursor_renderer.render(template)
         
         assert "Empty Template" in result
@@ -116,17 +112,15 @@ class TestCopilotRendererComponent:
     @pytest.fixture
     def sample_template(self):
         """Create a sample guidance template for testing."""
-        metadata = GuidanceTemplateMetadata(
+        metadata = RulesetMetadata(
             name="Test Template",
             version="1.0.0",
             description="A test template",
-            languages=["python"],
-            frameworks=["pytest"],
             categories=["unit", "integration"]
         )
         
-        template = GuidanceTemplate(metadata=metadata)
-        template.add_guidance(GuidanceItem(
+        template = Ruleset(metadata=metadata)
+        template.add_rule(RulesetItem(
             name="Test Guidance",
             description="Test guidance item",
             content="# Test guidance content",
@@ -188,16 +182,14 @@ class TestCopilotRendererComponent:
 
     def test_render_empty_template(self, copilot_renderer):
         """Test rendering empty template."""
-        metadata = GuidanceTemplateMetadata(
+        metadata = RulesetMetadata(
             name="Empty Template",
             version="1.0.0",
             description="An empty template",
-            languages=["python"],
-            frameworks=["pytest"],
             categories=["unit"]
         )
         
-        template = GuidanceTemplate(metadata=metadata)
+        template = Ruleset(metadata=metadata)
         result = copilot_renderer.render(template)
         
         assert "Empty Template" in result
@@ -211,7 +203,7 @@ class TestRendererIntegration:
 
     def test_renderer_compatibility(self):
         """Test that both renderers can handle the same template."""
-        metadata = GuidanceTemplateMetadata(
+        metadata = RulesetMetadata(
             name="Compatibility Test",
             version="1.0.0",
             description="Test template for compatibility",
@@ -220,15 +212,15 @@ class TestRendererIntegration:
             categories=["unit", "integration", "e2e"]
         )
         
-        template = GuidanceTemplate(metadata=metadata)
-        template.add_guidance(GuidanceItem(
+        template = Ruleset(metadata=metadata)
+        template.add_rule(RulesetItem(
             name="High Priority Guidance",
             description="High priority test guidance",
             content="# High priority content",
             tags=["high", "priority"],
             priority=3
         ))
-        template.add_guidance(GuidanceItem(
+        template.add_rule(RulesetItem(
             name="Low Priority Guidance",
             description="Low priority test guidance",
             content="# Low priority content",

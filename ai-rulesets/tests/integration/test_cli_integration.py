@@ -12,8 +12,8 @@ import sys
 from pathlib import Path
 from unittest.mock import patch
 
-from ai_rulesets.cli import main
-from ai_rulesets.core import GuidanceTemplate, GuidanceTemplateMetadata, GuidanceItem
+# from ai_rulesets.cli import main  # CLI main function not available
+from ai_rulesets.core import Ruleset, RulesetMetadata, RulesetItem
 
 
 @pytest.mark.integration
@@ -115,7 +115,7 @@ class TestFileSystemIntegration:
         """Test creating and saving templates to file system."""
         with tempfile.TemporaryDirectory() as temp_dir:
             # Create a template
-            metadata = GuidanceTemplateMetadata(
+            metadata = RulesetMetadata(
                 name="Integration Test Template",
                 version="1.0.0",
                 description="Template for integration testing",
@@ -124,8 +124,8 @@ class TestFileSystemIntegration:
                 categories=["unit", "integration"]
             )
             
-            template = GuidanceTemplate(metadata=metadata)
-            template.add_guidance(GuidanceItem(
+            template = Ruleset(metadata=metadata)
+            template.add_rule(RulesetItem(
                 name="Integration Test Guidance",
                 description="Test guidance for integration",
                 content="# Integration test guidance",
@@ -141,7 +141,7 @@ class TestFileSystemIntegration:
             assert template_path.exists()
             
             # Load template from file
-            loaded_template = GuidanceTemplate.load_from_file(template_path)
+            loaded_template = Ruleset.load_from_file(template_path)
             
             # Verify loaded template matches original
             assert loaded_template.metadata.name == template.metadata.name
@@ -154,7 +154,7 @@ class TestFileSystemIntegration:
         from ai_rulesets.renderers import CursorRenderer, CopilotRenderer
         
         # Create a template
-        metadata = GuidanceTemplateMetadata(
+        metadata = RulesetMetadata(
             name="File Output Test",
             version="1.0.0",
             description="Template for file output testing",
@@ -163,8 +163,8 @@ class TestFileSystemIntegration:
             categories=["unit"]
         )
         
-        template = GuidanceTemplate(metadata=metadata)
-        template.add_guidance(GuidanceItem(
+        template = Ruleset(metadata=metadata)
+        template.add_rule(RulesetItem(
             name="File Output Guidance",
             description="Test guidance for file output",
             content="# File output test guidance",
@@ -223,7 +223,7 @@ guidance:
             f.flush()
             
             try:
-                template = GuidanceTemplate.load_from_file(f.name)
+                template = Ruleset.load_from_file(f.name)
                 
                 assert template.metadata.name == "YAML Test Template"
                 assert template.metadata.version == "1.0.0"
@@ -238,7 +238,7 @@ guidance:
         nonexistent_path = Path("/nonexistent/path/template.yaml")
         
         with pytest.raises(FileNotFoundError):
-            GuidanceTemplate.load_from_file(nonexistent_path)
+            Ruleset.load_from_file(nonexistent_path)
 
     def test_load_invalid_yaml_file(self):
         """Test loading from invalid YAML file."""
@@ -249,6 +249,6 @@ guidance:
             
             try:
                 with pytest.raises(Exception):  # Should raise YAML parsing error
-                    GuidanceTemplate.load_from_file(f.name)
+                    Ruleset.load_from_file(f.name)
             finally:
                 Path(f.name).unlink()
