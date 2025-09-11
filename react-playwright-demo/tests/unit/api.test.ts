@@ -3,7 +3,9 @@ const mockRegister = async (data: Record<string, unknown>) => {
   await new Promise(resolve => setTimeout(resolve, 100));
   
   // Use the data parameter to avoid unused variable warning
-  const hasData = Object.keys(data).length > 0;
+  if (Object.keys(data).length === 0) {
+    throw new Error('No data provided');
+  }
   
   if (Math.random() > 0.1) {
     return { success: true, message: 'Account created successfully!' };
@@ -16,8 +18,12 @@ const mockLogin = async (email: string, password: string) => {
   await new Promise(resolve => setTimeout(resolve, 100));
   
   // Use the parameters to avoid unused variable warnings
-  const isValidEmail = email.includes('@');
-  const hasPassword = password.length > 0;
+  if (!email.includes('@')) {
+    throw new Error('Invalid email format');
+  }
+  if (password.length === 0) {
+    throw new Error('Password cannot be empty');
+  }
   
   if (Math.random() > 0.2) {
     return { success: true, message: 'Login successful!' };
