@@ -558,8 +558,8 @@ jobs:
           if-no-files-found: warn
 
 
-  deploy-test-reports:
-    name: Deploy Test Reports to GitHub Pages
+  deploy-reports:
+    name: Deploy to GitHub Pages
     needs: [automation-framework, ai-rulesets, cloud-native-app]
     if: always()
     uses: ./.github/workflows/deploy-allure-reports.yml
