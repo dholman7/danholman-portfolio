@@ -54,8 +54,9 @@ const environments: Record<string, EnvironmentConfig> = {
  * Get the current environment configuration
  */
 export function getEnvironmentConfig(): EnvironmentConfig {
-  // Use process.env for Node.js/Jest compatibility
-  const env = process.env.VITE_APP_ENV || 'development';
+  // Default to development environment
+  // In a real app, this would be determined by build process or runtime environment
+  const env = 'development';
   return environments[env] || environments.development;
 }
 
@@ -63,8 +64,9 @@ export function getEnvironmentConfig(): EnvironmentConfig {
  * Check if we're in a specific environment
  */
 export function isEnvironment(env: keyof typeof environments): boolean {
-  // Use process.env for Node.js/Jest compatibility
-  const currentEnv = process.env.VITE_APP_ENV || 'development';
+  // Default to development environment
+  // In a real app, this would be determined by build process or runtime environment
+  const currentEnv = 'development';
   return currentEnv === env;
 }
 
