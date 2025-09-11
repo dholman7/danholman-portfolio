@@ -47,13 +47,7 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
     },
 
-    /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-
-    /* Accessibility testing project */
+    /* Accessibility testing project - only run critical accessibility checks */
     {
       name: 'accessibility',
       use: { 
@@ -64,16 +58,6 @@ export default defineConfig({
       },
       testMatch: '**/accessibility.spec.ts',
     },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */

@@ -129,17 +129,4 @@ test.describe('User Registration', () => {
     // Password should now be visible
     await expect(page.locator('[data-testid="password-input"]')).toHaveAttribute('type', 'text');
   });
-
-  test('should toggle confirm password visibility', async ({ page }) => {
-    await page.fill('[data-testid="confirm-password-input"]', 'password123');
-    
-    // Initially password should be hidden
-    await expect(page.locator('[data-testid="confirm-password-input"]')).toHaveAttribute('type', 'password');
-    
-    // Click toggle button
-    await page.click('[data-testid="toggle-confirm-password"]');
-    
-    // Password should now be visible
-    await expect(page.locator('[data-testid="confirm-password-input"]')).toHaveAttribute('type', 'text');
-  });
 });

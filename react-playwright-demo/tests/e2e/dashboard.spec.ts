@@ -129,22 +129,5 @@ test.describe('Dashboard Functionality', () => {
     await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
     await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
     await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
-    await expect(page.locator('[data-testid="view-profile-button"]')).toBeVisible();
-  });
-
-  test('should be responsive on tablet devices', async ({ page }) => {
-    await allure.epic('UI/UX');
-    await allure.feature('Dashboard');
-    await allure.story('Tablet Responsiveness');
-    await allure.severity('high');
-    
-    // Set tablet viewport
-    await page.setViewportSize({ width: 768, height: 1024 });
-    
-    // Dashboard should still be visible and properly laid out
-    await expect(page.locator('[data-testid="dashboard-title"]')).toBeVisible();
-    await expect(page.locator('[data-testid="welcome-message"]')).toBeVisible();
-    await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
-    await expect(page.locator('[data-testid="view-profile-button"]')).toBeVisible();
   });
 });

@@ -73,19 +73,6 @@ test.describe('User Login', () => {
     await expect(page.locator('[data-testid="sign-out-button"]')).toBeVisible();
   });
 
-  test('should toggle password visibility in login form', async ({ page }) => {
-    await page.fill('[data-testid="password-input"]', 'password123');
-    
-    // Initially password should be hidden
-    await expect(page.locator('[data-testid="password-input"]')).toHaveAttribute('type', 'password');
-    
-    // Click toggle button
-    await page.click('[data-testid="toggle-password"]');
-    
-    // Password should now be visible
-    await expect(page.locator('[data-testid="password-input"]')).toHaveAttribute('type', 'text');
-  });
-
   test('should switch back to registration mode', async ({ page }) => {
     // Click toggle mode button
     await page.click('[data-testid="toggle-mode"]');

@@ -137,12 +137,13 @@ jobs:
           Ensure all tests can be collected and executed successfully."
           
       - name: Fix CI/CD Issues with Cursor
-        if: always() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
+        timeout-minutes: 5
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
           echo "🔧 Cursor CLI: Analyzing and fixing CI/CD issues..."
-          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
           Analyze the CI/CD pipeline issues in this run, particularly:
           1. Artifact upload/download problems
@@ -150,15 +151,15 @@ jobs:
           3. Coverage report generation issues
           4. GitHub Pages deployment problems
           5. Path resolution issues in deploy workflows
-          
+
           Check the automation-framework module for:
           - Allure report generation in reports/allure-report/
           - Coverage report generation in reports/coverage/
           - Artifact upload paths and naming
           - Test execution and reporting configuration
-          
+
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
-          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths."
+          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
         run: |
@@ -307,12 +308,13 @@ jobs:
           Ensure all tests can be collected and executed successfully."
           
       - name: Fix CI/CD Issues with Cursor
-        if: always() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
+        timeout-minutes: 5
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
           echo "🔧 Cursor CLI: Analyzing and fixing CI/CD issues..."
-          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
           Analyze the CI/CD pipeline issues in this run, particularly:
           1. Artifact upload/download problems
@@ -320,15 +322,15 @@ jobs:
           3. Coverage report generation issues
           4. GitHub Pages deployment problems
           5. Path resolution issues in deploy workflows
-          
+
           Check the ai-rulesets module for:
           - Allure report generation in reports/allure-report/
           - Coverage report generation in reports/coverage/
           - Artifact upload paths and naming
           - Test execution and reporting configuration
-          
+
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
-          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths."
+          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
         run: |
@@ -470,12 +472,13 @@ jobs:
           Ensure all tests can be collected and executed successfully."
           
       - name: Fix CI/CD Issues with Cursor
-        if: always() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
+        timeout-minutes: 5
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
           echo "🔧 Cursor CLI: Analyzing and fixing CI/CD issues..."
-          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
           Analyze the CI/CD pipeline issues in this run, particularly:
           1. Artifact upload/download problems
@@ -492,7 +495,7 @@ jobs:
           - TypeScript/Jest test configuration
           
           Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
-          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths."
+          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
         run: |
@@ -596,16 +599,43 @@ jobs:
           exit 0
       - name: Fix Test Failures with Cursor
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        timeout-minutes: 5
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
           echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
-          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
           Only modify files in the working directory. 
           Analyze the test failures in this CI run and fix the test files in the react-playwright-demo module. 
           This module uses TypeScript/React with Jest for unit tests and Playwright for E2E tests.
           Focus on fixing TypeScript errors, Jest configuration issues, React component test problems, Playwright test issues, and test logic problems. 
-          Ensure all tests can be collected and executed successfully."
+          Ensure all tests can be collected and executed successfully." || echo "Cursor CLI timeout or error - continuing workflow"
+          
+      - name: Fix CI/CD Issues with Cursor
+        if: always() && (failure() || github.event.inputs.enable_cursor_fixes == 'true')
+        timeout-minutes: 5
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing CI/CD issues..."
+          timeout 300 cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the CI/CD pipeline issues in this run, particularly:
+          1. Artifact upload/download problems
+          2. Allure report generation failures
+          3. Coverage report generation issues
+          4. GitHub Pages deployment problems
+          5. Path resolution issues in deploy workflows
+
+          Check the react-playwright-demo module for:
+          - Allure report generation in allure-report/
+          - Coverage report generation in coverage/
+          - Playwright report generation in playwright-report/
+          - Artifact upload paths and naming
+          - Test execution and reporting configuration
+
+          Fix any issues that prevent proper artifact generation and deployment to GitHub Pages.
+          Focus on ensuring reports are generated correctly and artifacts are uploaded with proper paths." || echo "Cursor CLI timeout or error - continuing workflow"
       - name: Re-run Tests After Cursor Fixes
         if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
         run: |
