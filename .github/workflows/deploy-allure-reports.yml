@@ -40,7 +40,7 @@ jobs:
         with:
           pattern: "*-allure-report"
           path: allure-reports/
-          merge-multiple: true
+          merge-multiple: false
         continue-on-error: true
           
       - name: Debug Downloaded Allure Artifacts
@@ -111,6 +111,15 @@ jobs:
               echo "No Allure report found for ${module}"
             fi
           done
+          
+          # Also check if there are any merged reports in the root allure-reports directory
+          if [ -d "allure-reports" ] && [ "$(ls -A allure-reports)" ] && [ ! -d "allure-reports/automation-framework-allure-report" ]; then
+            echo "Found merged Allure reports in root directory - processing them as automation-framework"
+            mkdir -p "processed-allure-reports/automation-framework"
+            cp -r allure-reports/* "processed-allure-reports/automation-framework/"
+            echo "Processed merged reports as automation-framework"
+            ls -la "processed-allure-reports/automation-framework/"
+          fi
           
           echo "=== Final Processed Reports ==="
           ls -la processed-allure-reports/
