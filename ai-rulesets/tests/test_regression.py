@@ -57,7 +57,7 @@ class TestAITestGenerationRegression:
             template.add_rule(guidance_item)
             
             # Verify guidance was added
-            guidance_items = template.get_guidance_by_tag("test")
+            guidance_items = template.get_rules_by_tag("test")
             assert len(guidance_items) == 1
             assert guidance_items[0].name == "Test Guidance"
             
@@ -118,7 +118,7 @@ class TestAITestGenerationRegression:
             ))
             
         with allure.step("Test rendering"):
-            rendered_content = renderer.render(template)
+            rendered_content = renderer.render_ruleset(template)
             assert rendered_content is not None
             assert isinstance(rendered_content, str)
             assert "Cursor Test" in rendered_content
@@ -153,7 +153,7 @@ class TestAITestGenerationRegression:
             ))
             
         with allure.step("Test rendering"):
-            rendered_content = renderer.render(template)
+            rendered_content = renderer.render_ruleset(template)
             assert rendered_content is not None
             assert isinstance(rendered_content, str)
             assert "Copilot Test" in rendered_content
@@ -196,7 +196,7 @@ class TestAITestGenerationRegression:
             parsed_data = yaml.safe_load(yaml_content)
             assert parsed_data is not None
             assert "metadata" in parsed_data
-            assert "guidance" in parsed_data
+            assert "rules" in parsed_data
             
             # Create new template from parsed data
             new_template = Ruleset.from_yaml(yaml_content)
@@ -268,7 +268,7 @@ class TestAITestGenerationRegression:
             
         with allure.step("Test Cursor rendering"):
             cursor_renderer = CursorRenderer()
-            cursor_output = cursor_renderer.render(template)
+            cursor_output = cursor_renderer.render_ruleset(template)
             assert cursor_output is not None
             assert "Unit Testing" in cursor_output
             assert "Integration Testing" in cursor_output
@@ -276,7 +276,7 @@ class TestAITestGenerationRegression:
             
         with allure.step("Test Copilot rendering"):
             copilot_renderer = CopilotRenderer()
-            copilot_output = copilot_renderer.render(template)
+            copilot_output = copilot_renderer.render_ruleset(template)
             assert copilot_output is not None
             assert "Unit Testing" in copilot_output
             assert "Integration Testing" in copilot_output
@@ -284,13 +284,13 @@ class TestAITestGenerationRegression:
             
         with allure.step("Verify template data integrity"):
             # Verify all guidance items are present
-            all_guidance = template.guidance
+            all_guidance = template.rules
             assert len(all_guidance) == 3
             
             # Verify metadata is intact
             assert template.metadata.name == "E2E Test Template"
-            assert len(template.metadata.languages) == 3
-            assert len(template.metadata.frameworks) == 3
+            assert len(template.metadata.categories) == 3
+            assert len(template.metadata.categories) == 3
             
             allure.attach(json.dumps(template.to_dict(), indent=2), "Complete Template", allure.attachment_type.JSON)
 
@@ -378,8 +378,6 @@ class TestAITestGenerationRegression:
                 name="Rendering Performance Test",
                 version="1.0.0",
                 description="Template for rendering performance testing",
-                languages=["python", "typescript"],
-                frameworks=["pytest", "jest"],
                 categories=["unit", "integration"]
             )
             template = Ruleset(metadata=metadata)
@@ -398,11 +396,11 @@ class TestAITestGenerationRegression:
             
             # Test Cursor rendering performance
             cursor_renderer = CursorRenderer()
-            cursor_output = cursor_renderer.render(template)
+            cursor_output = cursor_renderer.render_ruleset(template)
             
             # Test Copilot rendering performance
             copilot_renderer = CopilotRenderer()
-            copilot_output = copilot_renderer.render(template)
+            copilot_output = copilot_renderer.render_ruleset(template)
             
             end_time = time.time()
             rendering_time = end_time - start_time

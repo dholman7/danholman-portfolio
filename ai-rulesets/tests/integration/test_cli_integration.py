@@ -29,28 +29,26 @@ class TestCLIIntegration:
         )
         
         assert result.returncode == 0
-        assert "AI Test Generation CLI" in result.stdout
-        assert "generate-cursor" in result.stdout
-        assert "generate-copilot" in result.stdout
+        assert "AI Rulesets Quality Checker" in result.stdout
+        assert "readmes-only" in result.stdout
+        assert "workflows-only" in result.stdout
 
-    def test_cli_list_templates_command(self):
-        """Test that CLI list templates command works."""
+    def test_cli_quality_check_command(self):
+        """Test that CLI quality check command works."""
         result = subprocess.run(
-            [sys.executable, "-m", "ai_rulesets.cli", "list-templates"],
+            [sys.executable, "-m", "ai_rulesets.cli", "--tests-only"],
             capture_output=True,
             text=True
         )
         
-        assert result.returncode == 0
-        assert "Available guidance templates:" in result.stdout
+        # Quality check should run successfully (0 or 1 is acceptable)
+        assert result.returncode in [0, 1]
 
-    @patch('ai_rulesets.cli.CursorRenderer')
-    @patch('ai_rulesets.cli.CopilotRenderer')
-    def test_cli_generate_cursor_command(self, mock_copilot_renderer, mock_cursor_renderer):
+    # @patch('ai_rulesets.cli.CursorRenderer')
+    # @patch('ai_rulesets.cli.CopilotRenderer')
+    def test_cli_generate_cursor_command(self, mock_copilot_renderer=None, mock_cursor_renderer=None):
         """Test CLI generate cursor command."""
-        # Mock the renderer
-        mock_renderer_instance = mock_cursor_renderer.return_value
-        mock_renderer_instance.render.return_value = "# Test cursor guidance"
+        pytest.skip("CLI is a quality checker, not a template generator")
         
         with tempfile.TemporaryDirectory() as temp_dir:
             result = subprocess.run(
@@ -63,13 +61,9 @@ class TestCLIIntegration:
             assert result.returncode == 0
             assert "Generated Cursor guidance" in result.stdout
 
-    @patch('ai_rulesets.cli.CursorRenderer')
-    @patch('ai_rulesets.cli.CopilotRenderer')
-    def test_cli_generate_copilot_command(self, mock_copilot_renderer, mock_cursor_renderer):
+    def test_cli_generate_copilot_command(self):
         """Test CLI generate copilot command."""
-        # Mock the renderer
-        mock_renderer_instance = mock_copilot_renderer.return_value
-        mock_renderer_instance.render.return_value = "# Test copilot guidance"
+        pytest.skip("CLI is a quality checker, not a template generator")
         
         with tempfile.TemporaryDirectory() as temp_dir:
             result = subprocess.run(
@@ -84,16 +78,7 @@ class TestCLIIntegration:
 
     def test_cli_generate_all_command(self):
         """Test CLI generate all command."""
-        with tempfile.TemporaryDirectory() as temp_dir:
-            result = subprocess.run(
-                [sys.executable, "-m", "ai_rulesets.cli", "generate-all"],
-                cwd=temp_dir,
-                capture_output=True,
-                text=True
-            )
-            
-            assert result.returncode == 0
-            assert "Generated all guidance files" in result.stdout
+        pytest.skip("CLI is a quality checker, not a template generator")
 
     def test_cli_with_invalid_command(self):
         """Test CLI with invalid command."""
@@ -104,7 +89,7 @@ class TestCLIIntegration:
         )
         
         assert result.returncode != 0
-        assert "No such command" in result.stdout or "Usage:" in result.stdout
+        assert "unrecognized arguments" in result.stderr
 
 
 @pytest.mark.integration
@@ -133,19 +118,19 @@ class TestFileSystemIntegration:
             
             # Save template to file
             template_path = Path(temp_dir) / "test_template.yaml"
-            template.save(template_path)
+            template.save_to_file(template_path)
             
             # Verify file was created
             assert template_path.exists()
             
             # Load template from file
-            loaded_template = Ruleset.load_from_file(template_path)
+            loaded_template = Ruleset.from_file(template_path)
             
             # Verify loaded template matches original
             assert loaded_template.metadata.name == template.metadata.name
             assert loaded_template.metadata.version == template.metadata.version
-            assert len(loaded_template.guidance) == len(template.guidance)
-            assert loaded_template.guidance[0].name == template.guidance[0].name
+            assert len(loaded_template.rules) == len(template.rules)
+            assert loaded_template.rules[0].name == template.rules[0].name
 
     def test_renderer_file_output(self):
         """Test that renderers can write to file system."""
@@ -174,7 +159,7 @@ class TestFileSystemIntegration:
             # Test CursorRenderer file output
             cursor_renderer = CursorRenderer()
             cursor_output = temp_path / "cursor_output.mdc"
-            cursor_renderer.render_to_file(template, cursor_output)
+            cursor_renderer.render_file(template, cursor_output)
             
             assert cursor_output.exists()
             cursor_content = cursor_output.read_text()
@@ -184,7 +169,7 @@ class TestFileSystemIntegration:
             # Test CopilotRenderer file output
             copilot_renderer = CopilotRenderer()
             copilot_output = temp_path / "copilot_output.instructions.md"
-            copilot_renderer.render_to_file(template, copilot_output)
+            copilot_renderer.render_file(template, copilot_output)
             
             assert copilot_output.exists()
             copilot_content = copilot_output.read_text()
@@ -217,7 +202,7 @@ rules:
             f.flush()
             
             try:
-                template = Ruleset.from_file(f.name)
+                template = Ruleset.from_file(Path(f.name))
                 
                 assert template.metadata.name == "YAML Test Template"
                 assert template.metadata.version == "1.0.0"

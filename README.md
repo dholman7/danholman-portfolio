@@ -70,6 +70,41 @@ Technical writeups and lessons learned:
 
 ---
 
+## 🚧 Future Work in Progress
+
+### 🤖 TDD AI-Based Test Generation
+**Vision**: Intelligent test automation that bridges the gap between requirements and implementation.
+
+**Core Concept**: 
+- **Jira Integration**: Pull user stories and requirements directly from Jira tickets
+- **Gherkin Generation**: Automatically create Gherkin scenarios and test cases formatted for Test Management Systems
+- **Production Code Generation**: Generate production code based on requirements and test scenarios
+- **Comprehensive Test Suite**: Automatically generate unit, component, and integration tests that locate and validate developer code
+
+**Technical Approach**:
+- **Requirements Parsing**: AI-powered analysis of Jira stories to extract testable scenarios
+- **Test Management Integration**: Direct integration with tools like TestRail, Zephyr, or Xray
+- **Code Generation Pipeline**: Generate both production code and corresponding test suites
+- **Test Discovery**: Intelligent code analysis to locate existing developer implementations
+- **Multi-layer Testing**: Generate tests at unit, component, and integration levels
+- **CI/CD Integration**: Seamless integration with existing GitHub Actions workflows
+
+**Expected Benefits**:
+- **Faster Test Creation**: Reduce test creation time from hours to minutes
+- **Requirements Traceability**: Direct link between Jira stories and test cases
+- **Comprehensive Coverage**: Ensure all requirements are tested at multiple levels
+- **Consistent Quality**: Standardized test patterns across all projects
+- **Developer Productivity**: Generate both code and tests simultaneously
+
+**Implementation Phases**:
+1. **Phase 1**: Jira API integration and requirements parsing
+2. **Phase 2**: Gherkin scenario generation and Test Management System integration
+3. **Phase 3**: Production code generation based on requirements
+4. **Phase 4**: Intelligent test suite generation with code discovery
+5. **Phase 5**: CI/CD integration and quality gates
+
+---
+
 ## 🔧 Tech Stack
 
 **Languages:** Python, TypeScript, GraphQL, JavaScript
