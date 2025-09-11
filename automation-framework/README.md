@@ -466,7 +466,7 @@ For accessibility testing, please refer to the [react-playwright-demo accessibil
 - **Browsers**: Chrome, Firefox, Edge
 - **Devices**: desktop, mobile, tablet
 
-For detailed parallel testing documentation, see [docs/parallel-testing.md](docs/parallel-testing.md).
+For detailed parallel testing documentation, see [docs/api-matrix-testing.md](docs/api-matrix-testing.md).
 
 ### Utility Scripts
 
