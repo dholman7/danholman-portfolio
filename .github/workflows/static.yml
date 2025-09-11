@@ -2,11 +2,21 @@
 name: Deploy Test Results Dashboard to Pages
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
+  # Only run on pull requests and when there are changes to related files
+  pull_request:
     branches: ["main"]
+    paths:
+      - 'automation-framework/**'
+      - 'cloud-native-app/**'
+      - 'ai-rulesets/**'
+      - 'react-playwright-demo/**'
+      - '.github/workflows/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'Makefile'
+      - 'README.md'
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allow manual trigger for testing
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -28,9 +38,14 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    # Only run if this is a PR or manual dispatch
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # For PRs, checkout the PR branch; for manual dispatch, checkout the current branch
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -257,4 +272,5 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/deploy-pages@v4

@@ -46,19 +46,19 @@ jobs:
       run: |
         case "${{ github.event.inputs.check_type || 'all' }}" in
           "all")
-            quality-check
+            quality-check --fail-on-error
             ;;
           "readmes")
-            quality-check --readmes-only
+            quality-check --readmes-only --fail-on-error
             ;;
           "workflows")
-            quality-check --workflows-only
+            quality-check --workflows-only --fail-on-error
             ;;
           "tests")
-            quality-check --tests-only
+            quality-check --tests-only --fail-on-error
             ;;
           "versions")
-            quality-check --versions-only
+            quality-check --versions-only --fail-on-error
             ;;
           "fix")
             quality-check --fix
@@ -68,7 +68,7 @@ jobs:
     - name: Export results
       if: always()
       run: |
-        quality-check --export quality-results.json
+        quality-check --export quality-results.json --fail-on-error
         
     - name: Upload quality results
       if: always()
