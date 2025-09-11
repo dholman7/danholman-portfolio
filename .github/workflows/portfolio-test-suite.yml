@@ -352,6 +352,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - name: Install Cursor CLI
+        if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
           # Install Node.js dependencies
           if [ -f package.json ]; then yarn install; fi
@@ -401,6 +406,25 @@ jobs:
           fi
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
+      - name: Fix Test Failures with Cursor
+        if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the test failures in this CI run and fix the TypeScript/Python test files in the cloud-native-app module. 
+          Focus on fixing import errors, method name mismatches, API compatibility issues, and test logic problems. 
+          Ensure all tests can be collected and executed successfully."
+      - name: Re-run Tests After Cursor Fixes
+        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
+        run: |
+          echo "🔄 Re-running tests after Cursor fixes..."
+          pytest --alluredir=reports/allure-results --cov=lambda --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v --tb=short || true
+          if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            yarn test --coverage || true
+          fi
       - name: Generate Allure Report
         if: always()
         run: |
@@ -463,6 +487,11 @@ jobs:
           node-version: '20.19.0'
       - run: yarn install --frozen-lockfile
       - run: yarn playwright install --with-deps
+      - name: Install Cursor CLI
+        if: ${{ github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch' }}
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - name: Install Allure
         run: yarn global add allure-commandline
       - run: yarn type-check
@@ -489,6 +518,23 @@ jobs:
           echo "Performance tests not yet implemented for react-playwright-demo"
           echo "Available test types: unit, integration, e2e"
           exit 0
+      - name: Fix Test Failures with Cursor
+        if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          echo "🔧 Cursor CLI: Analyzing and fixing test failures..."
+          cursor-agent -p "IMPORTANT: Do NOT create branches, commit, push, or post PR comments. 
+          Only modify files in the working directory. 
+          Analyze the test failures in this CI run and fix the TypeScript/React test files in the react-playwright-demo module. 
+          Focus on fixing TypeScript errors, test logic problems, and Playwright test issues. 
+          Ensure all tests can be collected and executed successfully."
+      - name: Re-run Tests After Cursor Fixes
+        if: github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch'
+        run: |
+          echo "🔄 Re-running tests after Cursor fixes..."
+          yarn test:coverage || true
+          yarn test:e2e || true
       - name: Generate Allure Report
         if: ${{ github.event.inputs.include_allure != false }}
         run: |
