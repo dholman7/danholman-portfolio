@@ -31,13 +31,11 @@ jobs:
     name: Deploy Allure Reports to GitHub Pages
     runs-on: ubuntu-latest
     if: (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # environment:
+    #   name: github-pages
+    #   url: ${{ steps.deployment.outputs.page_url }}
     permissions:
       contents: read
-      pages: write
-      id-token: write
     
     steps:
       - name: Debug workflow run info
@@ -343,9 +341,6 @@ jobs:
             fi
             echo ""
           done
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
 
       - name: Setup Python for report combination
         uses: actions/setup-python@v4
@@ -862,11 +857,18 @@ jobs:
           echo "HTML files in deployment:"
           find gh-pages-deploy -name "*.html" | head -20
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload Deployment Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          path: gh-pages-deploy
+          name: test-reports-dashboard
+          path: gh-pages-deploy/
+          retention-days: 30
+          if-no-files-found: warn
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Summary
         id: deployment
-        uses: actions/deploy-pages@v4
+        run: |
+          echo "Deployment artifacts uploaded successfully"
+          echo "Dashboard files prepared in gh-pages-deploy/"
+          echo "Total files: $(find gh-pages-deploy -type f | wc -l)"
+          echo "Dashboard size: $(du -sh gh-pages-deploy/ | cut -f1)"

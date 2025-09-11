@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
-import { DynamoDBService } from './utils/dynamodb';
+// import { DynamoDBService } from './utils/dynamodb';
 import { ResponseBuilder } from './utils/response';
 import { ProcessingResult, CompletionMessage } from './types';
 import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
@@ -20,7 +20,7 @@ export const handler = async (
       return ResponseBuilder.error('Invalid event data format', 400);
     }
 
-    const { executionId, results, summary } = eventData;
+    const { executionId, results } = eventData;
 
     if (!executionId) {
       return ResponseBuilder.validationError(['Execution ID is required']);
@@ -36,7 +36,7 @@ export const handler = async (
       throw new Error('STUDENTS_TABLE_NAME environment variable is not set');
     }
 
-    const dynamoService = new DynamoDBService(tableName);
+    // const dynamoService = new DynamoDBService(tableName);
     const sqsClient = new SQSClient({ region: process.env.AWS_REGION || 'us-west-2' });
 
     // Process results

@@ -28,7 +28,6 @@ export class ApiConstruct extends Construct {
     const {
       stage,
       serviceName,
-      stateMachine,
       createStudentFunction,
       getStudentFunction,
       listStudentsFunction,

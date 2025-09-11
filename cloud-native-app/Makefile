@@ -127,6 +127,54 @@ deploy-stage:
 	STAGE=$(STAGE) yarn deploy
 	@echo "Deployment to $(STAGE) completed."
 
+# Deploy using CloudFormation YAML
+deploy-cf:
+	@echo "Deploying using CloudFormation YAML..."
+	./deploy-cloudformation.sh deploy
+	@echo "CloudFormation deployment completed."
+
+# Deploy specific stage using CloudFormation YAML
+deploy-cf-stage:
+	@echo "Deploying to stage using CloudFormation: $(STAGE)"
+	STAGE=$(STAGE) ./deploy-cloudformation.sh deploy
+	@echo "CloudFormation deployment to $(STAGE) completed."
+
+# Create new CloudFormation stack
+create-cf:
+	@echo "Creating new CloudFormation stack..."
+	./deploy-cloudformation.sh create
+	@echo "CloudFormation stack creation completed."
+
+# Update existing CloudFormation stack
+update-cf:
+	@echo "Updating CloudFormation stack..."
+	./deploy-cloudformation.sh update
+	@echo "CloudFormation stack update completed."
+
+# Delete CloudFormation stack
+delete-cf:
+	@echo "Deleting CloudFormation stack..."
+	./deploy-cloudformation.sh delete
+	@echo "CloudFormation stack deletion completed."
+
+# Show CloudFormation stack status
+status-cf:
+	@echo "Showing CloudFormation stack status..."
+	./deploy-cloudformation.sh status
+	@echo "CloudFormation stack status completed."
+
+# Show CloudFormation stack events
+events-cf:
+	@echo "Showing CloudFormation stack events..."
+	./deploy-cloudformation.sh events
+	@echo "CloudFormation stack events completed."
+
+# Validate CloudFormation template
+validate-cf:
+	@echo "Validating CloudFormation template..."
+	./deploy-cloudformation.sh validate
+	@echo "CloudFormation template validation completed."
+
 # Synthesize CloudFormation template
 synth:
 	@echo "Synthesizing CloudFormation template..."
@@ -167,6 +215,8 @@ prod-build: clean install lint type-check test build package
 # Help
 help:
 	@echo "Available targets:"
+	@echo ""
+	@echo "Development:"
 	@echo "  install       - Install dependencies"
 	@echo "  lint          - Lint code"
 	@echo "  fmt           - Format code"
@@ -179,13 +229,31 @@ help:
 	@echo "  test-e2e      - Run E2E tests"
 	@echo "  build         - Build the project"
 	@echo "  package       - Package Lambda functions"
-	@echo "  deploy        - Deploy to AWS"
-	@echo "  deploy-stage  - Deploy to specific stage (STAGE=dev|staging|prod)"
-	@echo "  synth         - Synthesize CloudFormation template"
-	@echo "  diff          - Show differences"
-	@echo "  destroy       - Destroy stack"
 	@echo "  clean         - Clean build artifacts"
 	@echo "  check         - Run all checks"
 	@echo "  dev-setup     - Set up development environment"
 	@echo "  prod-build    - Production build"
+	@echo ""
+	@echo "CDK Deployment:"
+	@echo "  deploy        - Deploy to AWS using CDK"
+	@echo "  deploy-stage  - Deploy to specific stage (STAGE=dev|staging|prod)"
+	@echo "  synth         - Synthesize CloudFormation template"
+	@echo "  diff          - Show differences"
+	@echo "  destroy       - Destroy CDK stack"
+	@echo ""
+	@echo "CloudFormation Deployment:"
+	@echo "  deploy-cf     - Deploy using CloudFormation YAML"
+	@echo "  deploy-cf-stage - Deploy to specific stage using CloudFormation"
+	@echo "  create-cf     - Create new CloudFormation stack"
+	@echo "  update-cf     - Update existing CloudFormation stack"
+	@echo "  delete-cf     - Delete CloudFormation stack"
+	@echo "  status-cf     - Show CloudFormation stack status"
+	@echo "  events-cf     - Show CloudFormation stack events"
+	@echo "  validate-cf   - Validate CloudFormation template"
+	@echo ""
+	@echo "Environment Files:"
+	@echo "  env.dev       - Development environment configuration"
+	@echo "  env.staging   - Staging environment configuration"
+	@echo "  env.prod      - Production environment configuration"
+	@echo ""
 	@echo "  help          - Show this help"

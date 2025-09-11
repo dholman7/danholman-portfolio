@@ -13,10 +13,12 @@ This application demonstrates production-ready CI/CD practices for cloud-native 
 - **Security Scanning**: yarn audit and Snyk vulnerability detection
 
 ### **Infrastructure as Code**
-- **CDK Synthesis**: Automated CloudFormation template generation
+- **CDK Synthesis**: Automated CloudFormation template generation with TypeScript
+- **CloudFormation YAML**: Traditional YAML-based infrastructure templates
 - **Multi-Environment Deployment**: Dev, staging, and production environments
-- **Infrastructure Validation**: CDK diff and synthesis validation
+- **Infrastructure Validation**: CDK diff and CloudFormation template validation
 - **Rollback Capabilities**: Safe deployment practices with rollback strategies
+- **Environment Management**: Stage-specific configuration with dotenv support
 
 ### **Deployment Automation**
 - **Environment Management**: Proper AWS credential and configuration handling
@@ -75,6 +77,10 @@ This application demonstrates production-ready CI/CD practices for cloud-native 
 
 ```
 cloud-native-app/
+├── env/                      # Environment Configuration
+│   ├── .env.dev             # Development environment
+│   ├── .env.staging         # Staging environment
+│   └── .env.prod            # Production environment
 ├── infra/                    # CDK Infrastructure
 │   ├── app.ts               # CDK App entry point
 │   ├── cloud-native-app-stack.ts
@@ -82,6 +88,9 @@ cloud-native-app/
 │   ├── lambda-construct.ts
 │   ├── api-construct.ts
 │   └── step-functions-construct.ts
+├── src/                      # Source Code
+│   └── config/              # Configuration utilities
+│       └── env.ts           # Environment configuration loader
 ├── lambda/                   # Lambda Functions
 │   ├── types.ts             # TypeScript type definitions
 │   ├── utils/               # Shared utilities
@@ -101,6 +110,8 @@ cloud-native-app/
 │   └── integration/         # Integration tests
 ├── .github/workflows/       # CI/CD Pipeline
 │   └── ci.yml              # GitHub Actions workflow
+├── cloudformation-template.yaml  # CloudFormation YAML template
+├── deploy-cloudformation.sh     # CloudFormation deployment script
 ├── package.json             # Dependencies and scripts
 ├── tsconfig.json           # TypeScript configuration
 ├── cdk.json                # CDK configuration
@@ -126,6 +137,26 @@ cloud-native-app/
 - **ESLint**: Code linting
 - **Prettier**: Code formatting
 - **GitHub Actions**: CI/CD pipeline
+
+## 🚀 Deployment Approaches
+
+This project supports two infrastructure deployment approaches:
+
+### 1. AWS CDK (TypeScript) - Recommended
+- **Type-safe infrastructure** with TypeScript
+- **Modular constructs** for reusable components
+- **Built-in validation** and diff capabilities
+- **Easier testing** and unit testing of infrastructure
+- **Better IDE support** with autocomplete and type checking
+
+### 2. CloudFormation YAML - Traditional
+- **Native AWS format** for maximum compatibility
+- **Direct CloudFormation** template management
+- **No additional dependencies** beyond AWS CLI
+- **Familiar syntax** for CloudFormation users
+- **Easy to understand** and modify
+
+Both approaches deploy the same infrastructure and can be used interchangeably based on your team's preferences and requirements.
 
 ## 🚀 Quick Start
 
@@ -219,6 +250,26 @@ yarn --version
    make dev-setup
    ```
 
+5. **Configure environment variables**
+   ```bash
+   # The project uses environment-specific files in the env/ directory
+   # Files are automatically loaded based on the STAGE environment variable
+   
+   # Set the stage you want to deploy to
+   export STAGE=dev        # For development
+   # or
+   export STAGE=staging    # For staging
+   # or
+   export STAGE=prod       # For production
+   
+   # Edit the appropriate environment file with your specific values
+   nano env/.env.dev       # For development
+   # or
+   nano env/.env.staging   # For staging
+   # or
+   nano env/.env.prod      # For production
+   ```
+
 ### Development
 
 1. **Run type checking**
@@ -243,6 +294,8 @@ yarn --version
 
 ### Deployment
 
+#### Option 1: CDK Deployment (Recommended)
+
 1. **Bootstrap CDK (first time only)**
    ```bash
    cdk bootstrap
@@ -250,18 +303,47 @@ yarn --version
 
 2. **Deploy to development**
    ```bash
-   make deploy:stage STAGE=dev
+   make deploy-stage STAGE=dev
    ```
 
 3. **Deploy to staging**
    ```bash
-   make deploy:stage STAGE=staging
+   make deploy-stage STAGE=staging
    ```
 
 4. **Deploy to production**
    ```bash
-   make deploy:stage STAGE=prod
+   make deploy-stage STAGE=prod
    ```
+
+#### Option 2: CloudFormation YAML Deployment
+
+1. **Deploy to development**
+   ```bash
+   make deploy-cf-stage STAGE=dev
+   ```
+
+2. **Deploy to staging**
+   ```bash
+   make deploy-cf-stage STAGE=staging
+   ```
+
+3. **Deploy to production**
+   ```bash
+   make deploy-cf-stage STAGE=prod
+   ```
+
+#### Deployment Commands
+
+| Command | Description |
+|---------|-------------|
+| `make deploy-stage STAGE=dev` | Deploy to dev using CDK |
+| `make deploy-cf-stage STAGE=dev` | Deploy to dev using CloudFormation |
+| `make status-cf` | Show CloudFormation stack status |
+| `make events-cf` | Show CloudFormation stack events |
+| `make validate-cf` | Validate CloudFormation template |
+| `make destroy` | Destroy CDK stack |
+| `make delete-cf` | Delete CloudFormation stack |
 
 ## 📚 API Documentation
 
@@ -359,17 +441,60 @@ make test:coverage
 
 ## 🔧 Configuration
 
+### Environment Management
+
+The project uses a structured approach to environment configuration:
+
+- **Environment Files**: Located in `env/` directory with stage-specific files
+- **Automatic Loading**: Environment variables are loaded based on the `STAGE` environment variable
+- **Type Safety**: Environment configuration is type-safe with validation
+- **Fallback Values**: Sensible defaults for all configuration options
+
+#### Environment File Structure
+```
+env/
+├── .env.dev       # Development environment
+├── .env.staging   # Staging environment
+└── .env.prod      # Production environment
+```
+
+#### Setting the Stage
+```bash
+# Set the deployment stage
+export STAGE=dev        # For development
+export STAGE=staging    # For staging
+export STAGE=prod       # For production
+
+# Or use inline for single commands
+STAGE=prod make deploy-cf
+```
+
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `STAGE` | Deployment stage (dev/staging/prod) | Yes |
-| `SERVICE_NAME` | Service name prefix | Yes |
-| `STUDENTS_TABLE_NAME` | DynamoDB table name | Yes |
-| `DATA_BUCKET_NAME` | S3 bucket name | Yes |
-| `PROCESSING_QUEUE_URL` | SQS processing queue URL | Yes |
-| `COMPLETION_QUEUE_URL` | SQS completion queue URL | Yes |
-| `STATE_MACHINE_ARN` | Step Functions state machine ARN | Yes |
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `STAGE` | Deployment stage (dev/staging/prod) | Yes | dev |
+| `SERVICE_NAME` | Service name prefix | Yes | student-factory |
+| `NODE_ENV` | Node.js environment | No | development |
+| `AWS_REGION` | AWS region | No | us-west-2 |
+| `AWS_ACCOUNT_ID` | AWS account ID | No | 123456789012 |
+| `STUDENTS_TABLE_NAME` | DynamoDB table name | Yes | - |
+| `DATA_BUCKET_NAME` | S3 bucket name | Yes | - |
+| `PROCESSING_QUEUE_URL` | SQS processing queue URL | Yes | - |
+| `COMPLETION_QUEUE_URL` | SQS completion queue URL | Yes | - |
+| `STATE_MACHINE_ARN` | Step Functions state machine ARN | Yes | - |
+| `API_URL` | API Gateway URL | No | - |
+| `API_KEY` | API Gateway API key | No | - |
+| `LAMBDA_TIMEOUT` | Lambda function timeout (seconds) | No | 30 |
+| `LAMBDA_MEMORY_SIZE` | Lambda function memory (MB) | No | 256 |
+| `LOG_RETENTION_DAYS` | CloudWatch log retention (days) | No | 30 |
+| `ENABLE_XRAY_TRACING` | Enable X-Ray tracing | No | true |
+| `ENABLE_DETAILED_MONITORING` | Enable detailed monitoring | No | true |
+| `ENCRYPTION_AT_REST` | Enable encryption at rest | No | true |
+| `ENCRYPTION_IN_TRANSIT` | Enable encryption in transit | No | true |
+| `MAX_BATCH_SIZE` | Maximum batch processing size | No | 100 |
+| `MAX_CONCURRENT_EXECUTIONS` | Maximum concurrent executions | No | 10 |
+| `MAX_RETRY_ATTEMPTS` | Maximum retry attempts | No | 3 |
 
 ### CDK Context
 

@@ -1,0 +1,1075 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Highly scalable AWS serverless application demonstrating cloud-native development expertise'
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, staging, prod]
+    Description: Deployment stage (dev/staging/prod)
+  
+  ServiceName:
+    Type: String
+    Default: student-factory
+    Description: Service name prefix for all resources
+  
+  AWSAccountId:
+    Type: String
+    Description: AWS Account ID
+    Default: '123456789012'
+  
+  AWSRegion:
+    Type: String
+    Description: AWS Region
+    Default: 'us-west-2'
+
+Conditions:
+  IsProd: !Equals [!Ref Stage, 'prod']
+  IsNotProd: !Not [!Equals [!Ref Stage, 'prod']]
+
+Resources:
+  # DynamoDB Table
+  StudentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${ServiceName}-students-${Stage}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: employerId
+          AttributeType: S
+        - AttributeName: programId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: createdAt
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: EmailIndex
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: EmployerIndex
+          KeySchema:
+            - AttributeName: employerId
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      LocalSecondaryIndexes:
+        - IndexName: ProgramIndex
+          KeySchema:
+            - AttributeName: id
+              KeyType: HASH
+            - AttributeName: programId
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [IsProd, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+      DeletionProtectionEnabled: !If [IsProd, true, false]
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Student Records
+
+  # S3 Bucket
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ServiceName}-data-${Stage}-${AWSAccountId}'
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteIncompleteMultipartUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+          - Id: TransitionToIA
+            Status: Enabled
+            Transitions:
+              - StorageClass: STANDARD_IA
+                TransitionInDays: 30
+              - StorageClass: GLACIER
+                TransitionInDays: 90
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Data Storage
+
+  # SQS Queues
+  ProcessingQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${ServiceName}-processing-${Stage}'
+      VisibilityTimeoutSeconds: 900
+      MessageRetentionPeriod: 1209600
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt ProcessingDLQ.Arn
+        maxReceiveCount: 3
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Processing Queue
+
+  ProcessingDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${ServiceName}-processing-dlq-${Stage}'
+      MessageRetentionPeriod: 1209600
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Dead Letter Queue
+
+  CompletionQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${ServiceName}-completion-${Stage}'
+      VisibilityTimeoutSeconds: 300
+      MessageRetentionPeriod: 604800
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Completion Queue
+
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${ServiceName}-lambda-execution-role-${Stage}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource:
+                  - !GetAtt StudentsTable.Arn
+                  - !Sub '${StudentsTable.Arn}/index/*'
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !GetAtt DataBucket.Arn
+                  - !Sub '${DataBucket.Arn}/*'
+        - PolicyName: SQSAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:SendMessage
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
+                Resource:
+                  - !GetAtt ProcessingQueue.Arn
+                  - !GetAtt CompletionQueue.Arn
+        - PolicyName: StepFunctionsAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                  - states:DescribeExecution
+                  - states:StopExecution
+                Resource: '*'
+
+  # Lambda Functions
+  CreateStudentFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-create-student-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 15
+      MemorySize: 256
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Create Student
+
+  GetStudentFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-get-student-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Get Student
+
+  ListStudentsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-list-students-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 20
+      MemorySize: 512
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: List Students
+
+  UpdateStudentFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-update-student-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 15
+      MemorySize: 256
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Update Student
+
+  DeleteStudentFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-delete-student-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Delete Student
+
+  ProcessStudentsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-process-students-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 900
+      MemorySize: 1024
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Process Students
+
+  ResultsHandlerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-results-handler-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+      MemorySize: 512
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Results Handler
+
+  StatusFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ServiceName}-status-${Stage}'
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          SERVICE_NAME: !Ref ServiceName
+          STUDENTS_TABLE_NAME: !Ref StudentsTable
+          DATA_BUCKET_NAME: !Ref DataBucket
+          PROCESSING_QUEUE_URL: !Ref ProcessingQueue
+          COMPLETION_QUEUE_URL: !Ref CompletionQueue
+          NODE_ENV: !If [IsProd, 'production', 'development']
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Status Check
+
+  # Step Functions State Machine
+  StateMachineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${ServiceName}-stepfunctions-role-${Stage}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: states.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: StepFunctionsExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - sqs:SendMessage
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource:
+                  - !GetAtt CreateStudentFunction.Arn
+                  - !GetAtt ProcessStudentsFunction.Arn
+                  - !GetAtt ResultsHandlerFunction.Arn
+                  - !GetAtt StudentsTable.Arn
+                  - !Sub '${StudentsTable.Arn}/index/*'
+                  - !GetAtt ProcessingQueue.Arn
+                  - !GetAtt CompletionQueue.Arn
+
+  StateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: !Sub '${ServiceName}-workflow-${Stage}'
+      RoleArn: !GetAtt StateMachineRole.Arn
+      DefinitionString: !Sub |
+        {
+          "Comment": "Student processing workflow",
+          "StartAt": "ParallelProcessing",
+          "States": {
+            "ParallelProcessing": {
+              "Type": "Parallel",
+              "Comment": "Process students in parallel with error handling",
+              "Branches": [
+                {
+                  "StartAt": "CreateStudentTask",
+                  "States": {
+                    "CreateStudentTask": {
+                      "Type": "Task",
+                      "Resource": "${CreateStudentFunction.Arn}",
+                      "End": true,
+                      "Retry": [
+                        {
+                          "ErrorEquals": ["States.ALL"],
+                          "IntervalSeconds": 2,
+                          "MaxAttempts": 3,
+                          "BackoffRate": 2.0
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "StartAt": "ProcessStudentsTask",
+                  "States": {
+                    "ProcessStudentsTask": {
+                      "Type": "Task",
+                      "Resource": "${ProcessStudentsFunction.Arn}",
+                      "End": true,
+                      "Retry": [
+                        {
+                          "ErrorEquals": ["States.ALL"],
+                          "IntervalSeconds": 2,
+                          "MaxAttempts": 3,
+                          "BackoffRate": 2.0
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "StartAt": "SendToQueueTask",
+                  "States": {
+                    "SendToQueueTask": {
+                      "Type": "Task",
+                      "Resource": "arn:aws:states:::sqs:sendMessage",
+                      "Parameters": {
+                        "QueueUrl": "${ProcessingQueue}",
+                        "MessageBody": {
+                          "executionId.$": "$$.Execution.Name",
+                          "timestamp.$": "$$.State.EnteredTime",
+                          "input.$": "$"
+                        }
+                      },
+                      "End": true
+                    }
+                  }
+                }
+              ],
+              "Catch": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "Next": "ErrorHandler",
+                  "ResultPath": "$.error"
+                }
+              ],
+              "Next": "WaitForProcessing"
+            },
+            "WaitForProcessing": {
+              "Type": "Wait",
+              "Seconds": 30,
+              "Next": "ResultsHandlerTask"
+            },
+            "ResultsHandlerTask": {
+              "Type": "Task",
+              "Resource": "${ResultsHandlerFunction.Arn}",
+              "Next": "SendCompletionTask",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 2.0
+                }
+              ]
+            },
+            "SendCompletionTask": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::sqs:sendMessage",
+              "Parameters": {
+                "QueueUrl": "${CompletionQueue}",
+                "MessageBody": {
+                  "executionId.$": "$$.Execution.Name",
+                  "status": "COMPLETED",
+                  "timestamp.$": "$$.State.EnteredTime",
+                  "results.$": "$"
+                }
+              },
+              "Next": "CheckForErrors"
+            },
+            "CheckForErrors": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.hasErrors",
+                  "BooleanEquals": true,
+                  "Next": "ErrorHandler"
+                }
+              ],
+              "Default": "SuccessHandler"
+            },
+            "ErrorHandler": {
+              "Type": "Pass",
+              "Result": {
+                "error": "Processing failed",
+                "status": "FAILED"
+              },
+              "End": true
+            },
+            "SuccessHandler": {
+              "Type": "Pass",
+              "Result": {
+                "status": "SUCCESS",
+                "message": "All students processed successfully"
+              },
+              "End": true
+            }
+          }
+        }
+      LoggingConfiguration:
+        Level: ALL
+        IncludeExecutionData: true
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt StateMachineLogGroup.Arn
+      TracingConfiguration:
+        Enabled: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: Student Processing Workflow
+
+  # CloudWatch Log Groups
+  StateMachineLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/stepfunctions/${ServiceName}-${Stage}'
+      RetentionInDays: !If [IsProd, 90, 30]
+
+  # API Gateway
+  ApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub '${ServiceName}-api-${Stage}'
+      Description: !Sub 'REST API for ${ServiceName} - ${Stage} environment'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Tags:
+        - Key: Environment
+          Value: !Ref Stage
+        - Key: Service
+          Value: !Ref ServiceName
+        - Key: Purpose
+          Value: API Gateway
+
+  # API Gateway Deployment
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - HealthMethod
+      - StudentsGetMethod
+      - StudentsPostMethod
+      - StudentsBatchPostMethod
+      - StudentGetMethod
+      - StudentPutMethod
+      - StudentDeleteMethod
+      - StatusMethod
+    Properties:
+      RestApiId: !Ref ApiGateway
+      StageName: !Ref Stage
+
+  # API Gateway Usage Plan
+  ApiGatewayUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: !Sub '${ServiceName}-usage-plan-${Stage}'
+      Description: !Sub 'Usage plan for ${ServiceName} ${Stage} environment'
+      Throttle:
+        RateLimit: 100
+        BurstLimit: 200
+      Quota:
+        Limit: 10000
+        Period: DAY
+      ApiStages:
+        - ApiId: !Ref ApiGateway
+          Stage: !Ref Stage
+
+  # API Gateway API Key
+  ApiGatewayApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Name: !Sub '${ServiceName}-api-key-${Stage}'
+      Description: !Sub 'API Key for ${ServiceName} ${Stage} environment'
+      Enabled: true
+
+  # API Gateway Usage Plan Key
+  ApiGatewayUsagePlanKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyId: !Ref ApiGatewayApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref ApiGatewayUsagePlan
+
+  # Health Check Resource and Method
+  HealthResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: health
+
+  HealthMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref HealthResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      ApiKeyRequired: false
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StatusFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # Students Resource
+  StudentsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: students
+
+  # GET /students
+  StudentsGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StudentsResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      ApiKeyRequired: true
+      RequestParameters:
+        method.request.querystring.limit: false
+        method.request.querystring.lastKey: false
+        method.request.querystring.status: false
+        method.request.querystring.employerId: false
+        method.request.querystring.programId: false
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ListStudentsFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 400
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # POST /students
+  StudentsPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StudentsResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      ApiKeyRequired: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateStudentFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 201
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 400
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 409
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # Students Batch Resource
+  StudentsBatchResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref StudentsResource
+      PathPart: batch
+
+  # POST /students/batch
+  StudentsBatchPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StudentsBatchResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      ApiKeyRequired: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProcessStudentsFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 202
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 400
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # Individual Student Resource
+  StudentResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref StudentsResource
+      PathPart: '{id}'
+
+  # GET /students/{id}
+  StudentGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StudentResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      ApiKeyRequired: true
+      RequestParameters:
+        method.request.path.id: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetStudentFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 404
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # PUT /students/{id}
+  StudentPutMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StudentResource
+      HttpMethod: PUT
+      AuthorizationType: NONE
+      ApiKeyRequired: true
+      RequestParameters:
+        method.request.path.id: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateStudentFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 400
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 404
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # DELETE /students/{id}
+  StudentDeleteMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StudentResource
+      HttpMethod: DELETE
+      AuthorizationType: NONE
+      ApiKeyRequired: true
+      RequestParameters:
+        method.request.path.id: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteStudentFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 204
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+        - StatusCode: 404
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # Status Resource and Method
+  StatusResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: status
+
+  StatusMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref StatusResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      ApiKeyRequired: false
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StatusFunction.Arn}/invocations'
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # Lambda Permissions for API Gateway
+  HealthLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref StatusFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StudentsGetLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ListStudentsFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StudentsPostLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CreateStudentFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StudentsBatchPostLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ProcessStudentsFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StudentGetLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GetStudentFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StudentPutLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref UpdateStudentFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StudentDeleteLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DeleteStudentFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  StatusLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref StatusFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+
+  # SSM Parameters
+  ApiUrlParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub '/${ServiceName}/${Stage}/api-url'
+      Type: String
+      Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Stage}'
+      Description: API Gateway URL
+
+  StateMachineArnParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub '/${ServiceName}/${Stage}/state-machine-arn'
+      Type: String
+      Value: !Ref StateMachine
+      Description: Step Functions State Machine ARN
+
+  StudentsTableNameParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub '/${ServiceName}/${Stage}/students-table-name'
+      Type: String
+      Value: !Ref StudentsTable
+      Description: DynamoDB Students Table Name
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway URL
+    Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Stage}'
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-api-url'
+
+  StateMachineArn:
+    Description: Step Functions State Machine ARN
+    Value: !Ref StateMachine
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-state-machine-arn'
+
+  StudentsTableName:
+    Description: DynamoDB Students Table Name
+    Value: !Ref StudentsTable
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-students-table-name'
+
+  DataBucketName:
+    Description: S3 Data Bucket Name
+    Value: !Ref DataBucket
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-data-bucket-name'
+
+  ProcessingQueueUrl:
+    Description: SQS Processing Queue URL
+    Value: !Ref ProcessingQueue
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-processing-queue-url'
+
+  CompletionQueueUrl:
+    Description: SQS Completion Queue URL
+    Value: !Ref CompletionQueue
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-completion-queue-url'
+
+  ApiKey:
+    Description: API Gateway API Key
+    Value: !Ref ApiGatewayApiKey
+    Export:
+      Name: !Sub '${ServiceName}-${Stage}-api-key'
