@@ -545,6 +545,4 @@ jobs:
   deploy-reports:
     name: Deploy to GitHub Pages
     if: always()
-    uses: ./.github/workflows/deploy-allure-reports.yml
-    with:
-      module: all
+    uses: ./.github/workflows/static.yml
