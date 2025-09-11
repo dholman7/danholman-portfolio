@@ -194,7 +194,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: automation-framework-allure-results
-          path: reports/allure-results/
+          path: automation-framework/reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -203,7 +203,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: automation-framework-allure-report
-          path: reports/allure-report/
+          path: automation-framework/reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
@@ -362,7 +362,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-rulesets-allure-results
-          path: reports/allure-results/
+          path: ai-rulesets/reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -371,7 +371,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-rulesets-allure-report
-          path: reports/allure-report/
+          path: ai-rulesets/reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
