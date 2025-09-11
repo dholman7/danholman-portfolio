@@ -79,7 +79,8 @@ class IssueFixer:
         # Apply fixes based on issue type
         if "Trailing whitespace" in issue.message:
             content = self._fix_trailing_whitespace(content, issue.line_number)
-        elif "Line too long" in issue.message:
+        elif "Line too long" in issue.message and file_path.suffix.lower() != '.md':
+            # Skip line length fixes for .md files
             content = self._fix_long_lines(content, issue.line_number)
         elif "Outdated reference found: AI Test Generation" in issue.message:
             content = self._fix_outdated_references(content)

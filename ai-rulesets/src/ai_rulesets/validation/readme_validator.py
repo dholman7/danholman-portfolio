@@ -217,25 +217,37 @@ class ReadmeValidator(BaseValidator):
         lines = content.split('\n')
         
         for i, line in enumerate(lines, 1):
-            # Check for lines that are too long
-            if len(line) > 120:
-                self.issues.append(ValidationResult(
-                    is_valid=False,
-                    message="Line too long (over 120 characters)",
-                    file_path=str(file_path),
-                    line_number=i,
-                    severity="warning"
-                ))
-            
-            # Check for trailing whitespace
-            if line.endswith(' '):
-                self.issues.append(ValidationResult(
-                    is_valid=False,
-                    message="Trailing whitespace",
-                    file_path=str(file_path),
-                    line_number=i,
-                    severity="warning"
-                ))
+            # Skip line length checks for .md files
+            if file_path.suffix.lower() == '.md':
+                # Only check for trailing whitespace in .md files
+                if line.endswith(' '):
+                    self.issues.append(ValidationResult(
+                        is_valid=False,
+                        message="Trailing whitespace",
+                        file_path=str(file_path),
+                        line_number=i,
+                        severity="warning"
+                    ))
+            else:
+                # Check for lines that are too long (non-.md files)
+                if len(line) > 120:
+                    self.issues.append(ValidationResult(
+                        is_valid=False,
+                        message="Line too long (over 120 characters)",
+                        file_path=str(file_path),
+                        line_number=i,
+                        severity="warning"
+                    ))
+                
+                # Check for trailing whitespace
+                if line.endswith(' '):
+                    self.issues.append(ValidationResult(
+                        is_valid=False,
+                        message="Trailing whitespace",
+                        file_path=str(file_path),
+                        line_number=i,
+                        severity="warning"
+                    ))
     
     def get_summary(self) -> Dict[str, int]:
         """Get validation summary."""

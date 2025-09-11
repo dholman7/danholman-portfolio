@@ -182,26 +182,26 @@ jobs:
           # Create reports directory
           mkdir -p reports/allure-results
           
-          # Run tests based on test_type input
+          # Run tests based on test_type input with Allure reporting
           echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
           if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-            echo "Running all tests..."
-            make test || true
+            echo "Running all tests with Allure reporting..."
+            make allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "unit" ]; then
-            echo "Running unit tests..."
-            make test-unit || true
+            echo "Running unit tests with Allure reporting..."
+            . .venv/bin/activate && pytest tests/unit/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "component" ]; then
-            echo "Running component tests..."
-            make test-component || true
+            echo "Running component tests with Allure reporting..."
+            . .venv/bin/activate && pytest tests/component/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "integration" ]; then
-            echo "Running integration tests..."
-            make test-integration || true
+            echo "Running integration tests with Allure reporting..."
+            . .venv/bin/activate && pytest tests/integration/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "e2e" ]; then
-            echo "Running e2e tests..."
-            make test-e2e || true
+            echo "Running e2e tests with Allure reporting..."
+            . .venv/bin/activate && pytest tests/e2e/ -v --alluredir=reports/allure-results || true
           elif [ "${{ github.event.inputs.test_type }}" = "performance" ]; then
-            echo "Running performance tests..."
-            make test-performance || true
+            echo "Running performance tests with Allure reporting..."
+            . .venv/bin/activate && pytest tests/performance/ -v --alluredir=reports/allure-results || true
           fi
           
           # List generated files for debugging
