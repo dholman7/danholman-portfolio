@@ -15,6 +15,7 @@ alwaysApply: true
 - Use proper secret management (GitHub Secrets, AWS Secrets Manager)
 - Include linting, testing, and security scanning in all pipelines
 - Use Makefiles for common development tasks
+- **Artifact downloading should use `actions/download-artifact@v4` approach** - Avoid GitHub CLI for artifact downloads, use standard GitHub Actions for reliability and compatibility
 
 ## AWS Infrastructure
 - All AWS resources must be defined as Infrastructure as Code
