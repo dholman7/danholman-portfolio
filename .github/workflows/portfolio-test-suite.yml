@@ -385,7 +385,7 @@ jobs:
           if-no-files-found: warn
 
   cloud-native-app:
-    name: Cloud Native App (TypeScript/Python)
+    name: Cloud Native App (TypeScript)
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'cloud-native-app' || github.event_name != 'workflow_dispatch' }}
     steps:
@@ -421,6 +421,8 @@ jobs:
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running TypeScript/Jest tests with Allure reporting and coverage..."
             yarn test:coverage || true
+            echo "Running Allure report generation..."
+            yarn test:allure:generate || true
           fi
           
           # List generated files for debugging
@@ -593,6 +595,18 @@ jobs:
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running Playwright tests with Allure reporting..."
             yarn test:e2e || true
+            
+            # Generate Allure report from Playwright results
+            if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
+              echo "Installing Allure commandline..."
+              npm install -g allure-commandline
+              echo "Generating Allure report from Playwright results..."
+              allure generate allure-results --clean -o reports/allure-report || true
+              # Copy allure-results to reports/allure-results for consistency
+              cp -r allure-results/* reports/allure-results/ || true
+            else
+              echo "No Playwright Allure results found"
+            fi
           fi
           
           # List generated files for debugging

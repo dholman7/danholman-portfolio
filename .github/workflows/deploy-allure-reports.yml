@@ -155,7 +155,13 @@ jobs:
           for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
             echo "Downloading ${module} Allure results..."
             # Download the artifact from the same workflow run
-            gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts --jq '.artifacts[] | select(.name == "'${module}'-allure-results") | .id' | head -1 | xargs -I {} gh api repos/${{ github.repository }}/actions/artifacts/{}/zip -o "${module}-allure-results.zip" || echo "No results found for ${module}"
+            ARTIFACT_ID=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts --jq '.artifacts[] | select(.name == "'${module}'-allure-results") | .id' | head -1)
+            if [ -n "$ARTIFACT_ID" ]; then
+              echo "Downloading artifact ID: $ARTIFACT_ID"
+              gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip --output "${module}-allure-results.zip"
+            else
+              echo "No results found for ${module}"
+            fi
             
             if [ -f "${module}-allure-results.zip" ]; then
               echo "Extracting ${module} Allure results..."
