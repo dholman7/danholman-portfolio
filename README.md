@@ -3,7 +3,7 @@
 **Senior Software Developer in Test (SDET) & Automation Architect** with 10+ years of experience
 building automation frameworks, cloud-native solutions, and quality platforms at scale.
 
-> **📝 Portfolio Status**: This portfolio was recently created and is actively being developed. While the core functionality and demonstrations are complete, some features and documentation are still being refined. I'm currently interviewing and welcome feedback on the projects and approach!
+> **📝 Portfolio Status**: This portfolio was recently created and is actively being developed. While the core functionality and demonstrations are complete, some features and documentation are still being refined. I welcome feedback on the projects and approach!
 
 ## 🧪 **[Live Test Results Dashboard](https://dholman7.github.io/danholman-portfolio/)**
 
