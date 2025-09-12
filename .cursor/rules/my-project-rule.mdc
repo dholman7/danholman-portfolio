@@ -24,6 +24,7 @@ Professional portfolio showcasing test automation, cloud-native development, and
 - Use **kebab-case** for directory and file names
 - Organize tests alongside source code
 - Follow **semantic versioning** and **conventional commits**
+- Prefer absolute paths resolved from the repository root
 
 ## MANDATORY Testing Requirements
 - **ALWAYS run tests before committing** - no exceptions
