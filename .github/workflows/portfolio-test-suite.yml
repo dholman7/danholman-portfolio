@@ -52,9 +52,6 @@ jobs:
     name: Automation Framework (Python)
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'automation-framework' || github.event_name != 'workflow_dispatch' }}
-    defaults:
-      run:
-        working-directory: automation-framework
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -66,14 +63,14 @@ jobs:
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f pyproject.toml ]; then pip install -e ".[test]"; fi
+          if [ -f automation-framework/requirements.txt ]; then pip install -r automation-framework/requirements.txt; fi
+          if [ -f automation-framework/pyproject.toml ]; then pip install -e "automation-framework[test]"; fi
           # Install Allure dependencies
           pip install allure-pytest allure-python-commons
           # Install additional test dependencies
           pip install pytest-cov pytest-html
           # Create reports directory
-          mkdir -p reports/allure-results reports/coverage
+          mkdir -p automation-framework/reports/allure-results automation-framework/reports/coverage
       - run: |
           if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
           if command -v black >/dev/null 2>&1; then black --check . || true; fi
@@ -194,7 +191,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: automation-framework-allure-results
-          path: reports/allure-results/
+          path: automation-framework/reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -203,7 +200,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: automation-framework-allure-report
-          path: reports/allure-report/
+          path: automation-framework/reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
@@ -212,7 +209,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: automation-framework-coverage-report
-          path: reports/coverage/
+          path: automation-framework/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
@@ -220,9 +217,6 @@ jobs:
     name: AI Rulesets (Python)
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'ai-rulesets' || github.event_name != 'workflow_dispatch' }}
-    defaults:
-      run:
-        working-directory: ai-rulesets
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -362,7 +356,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-rulesets-allure-results
-          path: reports/allure-results/
+          path: ai-rulesets/reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -371,7 +365,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-rulesets-allure-report
-          path: reports/allure-report/
+          path: ai-rulesets/reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
@@ -380,7 +374,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-rulesets-coverage-report
-          path: reports/coverage/
+          path: ai-rulesets/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
@@ -388,9 +382,6 @@ jobs:
     name: Cloud Native App (TypeScript/Python)
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'cloud-native-app' || github.event_name != 'workflow_dispatch' }}
-    defaults:
-      run:
-        working-directory: cloud-native-app
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -517,7 +508,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-allure-results
-          path: reports/allure-results/
+          path: cloud-native-app/reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -526,7 +517,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-allure-report
-          path: reports/allure-report/
+          path: cloud-native-app/reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
@@ -535,7 +526,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-coverage-report
-          path: reports/coverage/
+          path: cloud-native-app/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
@@ -543,9 +534,6 @@ jobs:
     name: React Playwright Demo (TypeScript)
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.module == 'all' || github.event.inputs.module == 'react-playwright-demo' || github.event_name != 'workflow_dispatch' }}
-    defaults:
-      run:
-        working-directory: react-playwright-demo
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -635,7 +623,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: react-playwright-demo-allure-results
-          path: reports/allure-results/
+          path: react-playwright-demo/reports/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -644,7 +632,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: react-playwright-demo-allure-report
-          path: reports/allure-report/
+          path: react-playwright-demo/reports/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
@@ -653,7 +641,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: react-playwright-demo-coverage-report
-          path: reports/coverage/
+          path: react-playwright-demo/reports/coverage/
           retention-days: 30
           if-no-files-found: warn
 
