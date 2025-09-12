@@ -66,7 +66,6 @@ jobs:
           # For PRs, checkout the PR branch; for push/manual dispatch, checkout the current branch
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
 
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -194,16 +193,38 @@ jobs:
             echo "<!DOCTYPE html><html><head><title>Coverage Reports</title></head><body><h1>Code Coverage Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/coverage-reports/index.html
           fi
           
-          # Copy combined Allure report from static location
-          echo "Copying combined Allure report..."
-          if [ -d "static-reports/allure-reports/combined-allure" ]; then
-            echo "Found combined Allure report in static location, copying..."
-            cp -r static-reports/allure-reports/combined-allure gh-pages-deploy/combined-allure
-            echo "Combined Allure report copied successfully"
+          # Create combined Allure report
+          echo "Creating combined Allure report..."
+          mkdir -p gh-pages-deploy/combined-allure
+          
+          # Collect all Allure results directories from static location
+          ALLURE_RESULTS_DIRS=""
+          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+            if [ -d "static-reports/allure-reports/${module}" ]; then
+              # Extract results from the static report directory
+              RESULTS_DIR="static-reports/allure-reports/${module}"
+              if [ -d "${RESULTS_DIR}/data/test-cases" ]; then
+                ALLURE_RESULTS_DIRS="${ALLURE_RESULTS_DIRS} ${RESULTS_DIR}/data/test-cases"
+              fi
+            fi
+          done
+          
+          # If we have Allure results, combine them
+          if [ -n "$ALLURE_RESULTS_DIRS" ]; then
+            echo "Combining Allure results from: $ALLURE_RESULTS_DIRS"
+            python3 scripts/combine-allure-reports.py --sources $ALLURE_RESULTS_DIRS --output gh-pages-deploy/combined-allure-results --summary gh-pages-deploy/combined-summary.json
+            
+            # Generate combined Allure report if Allure is available
+            if command -v allure >/dev/null 2>&1; then
+              allure generate gh-pages-deploy/combined-allure-results --clean -o gh-pages-deploy/combined-allure
+              echo "Combined Allure report generated"
+            else
+              echo "Allure not available, creating placeholder for combined report"
+              echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Combined test results from all modules. Allure commandline required to generate full report.</p><p>Run: allure generate combined-allure-results --clean -o combined-allure</p></body></html>" > gh-pages-deploy/combined-allure/index.html
+            fi
           else
-            echo "Combined Allure report not found in static location, creating placeholder..."
-            mkdir -p gh-pages-deploy/combined-allure
-            echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Reports will be available after test execution.</p><p>Debug: No combined-allure directory found in static-reports/allure-reports/</p></body></html>" > gh-pages-deploy/combined-allure/index.html
+            echo "No Allure results found, creating placeholder"
+            echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/combined-allure/index.html
           fi
           
           # Create combined coverage report placeholder
