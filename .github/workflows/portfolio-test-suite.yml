@@ -72,13 +72,14 @@ jobs:
           # Create reports directory
           mkdir -p automation-framework/reports/allure-results automation-framework/reports/coverage
       - run: |
-          if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
-          if command -v black >/dev/null 2>&1; then black --check . || true; fi
+          if command -v ruff >/dev/null 2>&1; then ruff check automation-framework/ || true; fi
+          if command -v black >/dev/null 2>&1; then black --check automation-framework/ || true; fi
       - name: Run Tests with Allure Results and Coverage
         if: always()
         run: |
           # Run tests based on test_type input with Allure reporting and coverage
           echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
+          cd automation-framework
           if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
             echo "Running all tests with Allure reporting and coverage..."
             pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
@@ -228,22 +229,23 @@ jobs:
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
+          if [ -f ai-rulesets/requirements.txt ]; then pip install -r ai-rulesets/requirements.txt; fi
+          if [ -f ai-rulesets/pyproject.toml ]; then pip install -e "ai-rulesets[dev]"; fi
           # Install Allure dependencies
           pip install allure-pytest allure-python-commons
           # Install additional test dependencies
           pip install pytest-cov pytest-html
           # Create reports directory
-          mkdir -p reports/allure-results reports/coverage
+          mkdir -p ai-rulesets/reports/allure-results ai-rulesets/reports/coverage
       - run: |
-          if command -v ruff >/dev/null 2>&1; then ruff check . || true; fi
-          if command -v black >/dev/null 2>&1; then black --check . || true; fi
+          if command -v ruff >/dev/null 2>&1; then ruff check ai-rulesets/ || true; fi
+          if command -v black >/dev/null 2>&1; then black --check ai-rulesets/ || true; fi
       - name: Run Tests with Allure Results and Coverage
         if: always()
         run: |
           # Run tests based on test_type input with Allure reporting and coverage
           echo "Running tests for type: ${{ github.event.inputs.test_type || 'all' }}"
+          cd ai-rulesets
           if [ "${{ github.event.inputs.test_type || 'all' }}" = "all" ] || [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
             echo "Running all tests with Allure reporting and coverage..."
             pytest --alluredir=reports/allure-results --cov=src --cov-report=html:reports/coverage --cov-report=xml:reports/coverage.xml -v || true
@@ -408,7 +410,7 @@ jobs:
           # Run TypeScript/Jest tests with Allure reporting and coverage
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running TypeScript/Jest tests with Allure reporting and coverage..."
-            yarn test:coverage || true
+            cd cloud-native-app && yarn test:coverage || true
           fi
           
           # List generated files for debugging
@@ -559,7 +561,7 @@ jobs:
           # Run Jest tests with coverage
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running Jest tests with coverage..."
-            yarn test:coverage || true
+            cd react-playwright-demo && yarn test:coverage || true
           fi
           
           # Run Playwright tests with Allure reporting
