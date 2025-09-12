@@ -33,7 +33,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
+      - name: Setup GitHub CLI
+        run: |
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt update
+          sudo apt install gh -y
+          
+      - name: Authenticate with GitHub
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Download Allure Reports
         uses: actions/download-artifact@v4
@@ -73,6 +83,14 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.13'
+          
+      - name: Setup Node.js for Allure commandline
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
+          
+      - name: Install Allure commandline
+        run: npm install -g allure-commandline
 
       - name: Process Allure Reports
         run: |
@@ -127,6 +145,75 @@ jobs:
           
           echo "=== Final Processed Reports ==="
           ls -la processed-allure-reports/
+          
+          # Create combined Allure report
+          echo "=== Creating Combined Allure Report ==="
+          mkdir -p processed-allure-reports/combined-allure
+          
+          # Download all Allure results artifacts for combining
+          echo "Downloading Allure results for combining..."
+          mkdir -p allure-results-combined
+          
+          # Download all Allure results artifacts
+          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+            echo "Downloading ${module} Allure results..."
+            gh api repos/dholman7/danholman-portfolio/actions/artifacts --jq '.artifacts[] | select(.name == "'${module}'-allure-results") | .id' | head -1 | xargs -I {} gh api repos/dholman7/danholman-portfolio/actions/artifacts/{}/zip -o "${module}-allure-results.zip" || echo "No results found for ${module}"
+            
+            if [ -f "${module}-allure-results.zip" ]; then
+              echo "Extracting ${module} Allure results..."
+              unzip -q "${module}-allure-results.zip" -d "allure-results-combined/${module}" || true
+              rm "${module}-allure-results.zip" || true
+            fi
+          done
+          
+          # Collect all Allure results directories
+          ALLURE_RESULTS_DIRS=""
+          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+            if [ -d "allure-results-combined/${module}" ]; then
+              # Find the actual allure-results directory
+              if [ -d "allure-results-combined/${module}/reports/allure-results" ]; then
+                ALLURE_RESULTS_DIRS="${ALLURE_RESULTS_DIRS} allure-results-combined/${module}/reports/allure-results"
+              elif [ -d "allure-results-combined/${module}/allure-results" ]; then
+                ALLURE_RESULTS_DIRS="${ALLURE_RESULTS_DIRS} allure-results-combined/${module}/allure-results"
+              elif [ -d "allure-results-combined/${module}" ]; then
+                ALLURE_RESULTS_DIRS="${ALLURE_RESULTS_DIRS} allure-results-combined/${module}"
+              fi
+            fi
+          done
+          
+          # If we have Allure results, combine them
+          if [ -n "$ALLURE_RESULTS_DIRS" ]; then
+            echo "Combining Allure results from: $ALLURE_RESULTS_DIRS"
+            
+            # Create combined results directory
+            mkdir -p processed-allure-reports/combined-allure-results
+            
+            # Copy all result files to combined directory
+            for results_dir in $ALLURE_RESULTS_DIRS; do
+              if [ -d "$results_dir" ]; then
+                echo "Copying results from $results_dir"
+                find "$results_dir" -name "*-result.json" -exec cp {} processed-allure-reports/combined-allure-results/ \;
+                find "$results_dir" -name "*-container.json" -exec cp {} processed-allure-reports/combined-allure-results/ \;
+                find "$results_dir" -name "*-attachment.*" -exec cp {} processed-allure-reports/combined-allure-results/ \;
+              fi
+            done
+            
+            # Generate combined Allure report
+            echo "Generating combined Allure report..."
+            allure generate processed-allure-reports/combined-allure-results --clean -o processed-allure-reports/combined-allure
+            echo "Combined Allure report generated successfully"
+            
+            # Verify the report was created
+            if [ -d "processed-allure-reports/combined-allure" ] && [ "$(ls -A processed-allure-reports/combined-allure)" ]; then
+              echo "Combined Allure report created successfully"
+              ls -la processed-allure-reports/combined-allure/
+            else
+              echo "ERROR: Combined Allure report was not created"
+            fi
+          else
+            echo "No Allure results found for combining, creating placeholder"
+            echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Reports will be available after test execution.</p></body></html>" > processed-allure-reports/combined-allure/index.html
+          fi
 
       - name: Deploy Processed Allure Reports to Static Location
         run: |
@@ -162,6 +249,7 @@ jobs:
               <div class="module">
                   <h2>Available Reports:</h2>
                   <ul>
+                      <li><a href="combined-allure/">Combined Allure Report</a></li>
                       <li><a href="automation-framework/">Automation Framework</a></li>
                       <li><a href="ai-rulesets/">AI Rulesets</a></li>
                       <li><a href="cloud-native-app/">Cloud Native App</a></li>
