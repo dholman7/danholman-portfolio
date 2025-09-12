@@ -34,24 +34,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup GitHub CLI
-        run: |
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-          sudo apt update
-          sudo apt install gh -y
-          
-      - name: Authenticate with GitHub
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-
       - name: Download Allure Reports
         uses: actions/download-artifact@v4
         with:
           pattern: "*-allure-report"
           path: allure-reports/
           merge-multiple: false
+        continue-on-error: true
+          
+      - name: Download Allure Results for Combining
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-allure-results"
+          path: allure-results/
+          merge-multiple: true
         continue-on-error: true
           
       - name: Debug Downloaded Allure Artifacts
@@ -142,61 +138,15 @@ jobs:
           # Create combined Allure report using simple-elf/allure-report-action approach
           echo "=== Creating Combined Allure Report ==="
           
-          # Download all Allure results artifacts for combining
-          echo "Downloading Allure results for combining..."
-          mkdir -p combined-allure-results
-          
-          # Download all Allure results artifacts from the same workflow run
-          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
-            echo "Downloading ${module} Allure results..."
-            # Download the artifact from the same workflow run
-            ARTIFACT_ID=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts --jq '.artifacts[] | select(.name == "'${module}'-allure-results") | .id' | head -1)
-            if [ -n "$ARTIFACT_ID" ]; then
-              echo "Downloading artifact ID: $ARTIFACT_ID"
-              gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > "${module}-allure-results.zip"
-            else
-              echo "No results found for ${module}"
-            fi
-            
-            if [ -f "${module}-allure-results.zip" ]; then
-              echo "Extracting ${module} Allure results..."
-              unzip -q "${module}-allure-results.zip" -d "temp-${module}" || true
-              rm "${module}-allure-results.zip" || true
-              
-              # Find and copy the actual allure-results directory
-              if [ -d "temp-${module}/reports/allure-results" ]; then
-                echo "Found allure-results in temp-${module}/reports/allure-results"
-                find "temp-${module}/reports/allure-results" -name "*-result.json" -exec cp {} combined-allure-results/ \;
-                find "temp-${module}/reports/allure-results" -name "*-container.json" -exec cp {} combined-allure-results/ \;
-                find "temp-${module}/reports/allure-results" -name "*-attachment.*" -exec cp {} combined-allure-results/ \;
-              elif [ -d "temp-${module}/allure-results" ]; then
-                echo "Found allure-results in temp-${module}/allure-results"
-                find "temp-${module}/allure-results" -name "*-result.json" -exec cp {} combined-allure-results/ \;
-                find "temp-${module}/allure-results" -name "*-container.json" -exec cp {} combined-allure-results/ \;
-                find "temp-${module}/allure-results" -name "*-attachment.*" -exec cp {} combined-allure-results/ \;
-              fi
-              
-              # Clean up temp directory
-              rm -rf "temp-${module}"
-            fi
-          done
-          
-          # List combined results
-          echo "Combined Allure results contents:"
-          ls -la combined-allure-results/ || echo "No combined results found"
+          # List downloaded Allure results
+          echo "Downloaded Allure results contents:"
+          ls -la allure-results/ || echo "No Allure results found"
 
-      - name: Upload combined allure results
-        uses: actions/upload-artifact@v4
-        with:
-          name: combined-allure-results
-          path: combined-allure-results
-          retention-days: 30
-          
       - name: Generate combined Allure report
         uses: simple-elf/allure-report-action@master
         if: always()
         with:
-          allure_results: combined-allure-results
+          allure_results: allure-results
           gh_pages: gh-pages
           allure_report: combined-allure
           allure_history: combined-allure-history
