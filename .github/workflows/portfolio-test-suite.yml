@@ -399,29 +399,35 @@ jobs:
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
-          # Install Node.js dependencies
-          if [ -f package.json ]; then yarn install; fi
-          # Create reports directory
+          # Install Node.js dependencies for cloud-native-app
+          cd cloud-native-app
+          if [ -f package.json ]; then 
+            echo "Installing cloud-native-app dependencies..."
+            yarn install
+          fi
+          # Create reports directory in cloud-native-app
           mkdir -p reports/allure-results reports/coverage
       - run: |
+          cd cloud-native-app
           if command -v yarn >/dev/null 2>&1; then yarn lint || true; fi
       - name: Run Tests with Allure Results and Coverage
         if: always()
         run: |
+          cd cloud-native-app
           # Create reports directory
           mkdir -p reports/allure-results reports/coverage
           
           # Run TypeScript/Jest tests with Allure reporting and coverage
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running TypeScript/Jest tests with Allure reporting and coverage..."
-            cd cloud-native-app && yarn test:coverage || true
+            yarn test:coverage || true
           fi
           
           # List generated files for debugging
           echo "Allure results directory contents:"
           ls -la reports/allure-results/ || echo "No Allure results generated"
           echo "Coverage reports directory contents:"
-          ls -la reports/coverage/ || echo "No coverage reports generated"
+          ls -la coverage/ || echo "No coverage reports generated"
           echo "Reports directory structure:"
           find reports/ -type f -name "*.json" | head -10 || echo "No JSON files found"
           echo "Allure results file count:"
@@ -434,14 +440,20 @@ jobs:
           echo "Ensuring coverage report is generated for cloud-native-app..."
           cd cloud-native-app
           # If coverage directory doesn't exist or is empty, generate it from Jest tests
-          if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
+          if [ ! -d "coverage" ] || [ ! "$(ls -A coverage)" ]; then
             echo "Coverage directory missing or empty, generating from Jest tests..."
             if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
               yarn test:coverage || echo "Jest test coverage generation failed"
             fi
           fi
           echo "Final coverage directory contents:"
-          ls -la reports/coverage/ || echo "No coverage directory found"
+          ls -la coverage/ || echo "No coverage directory found"
+          # Copy coverage to reports/coverage for consistency with other modules
+          if [ -d "coverage" ] && [ "$(ls -A coverage)" ]; then
+            echo "Copying coverage to reports/coverage for consistency..."
+            mkdir -p reports/coverage
+            cp -r coverage/* reports/coverage/
+          fi
       - name: Fix Test Failures with Cursor
         id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
@@ -553,21 +565,28 @@ jobs:
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
       - run: |
-          if [ -f package.json ]; then yarn install; fi
-          # Create reports directory
+          # Install Node.js dependencies for react-playwright-demo
+          cd react-playwright-demo
+          if [ -f package.json ]; then 
+            echo "Installing react-playwright-demo dependencies..."
+            yarn install
+          fi
+          # Create reports directory in react-playwright-demo
           mkdir -p reports/allure-results reports/coverage
       - run: |
+          cd react-playwright-demo
           if command -v yarn >/dev/null 2>&1; then yarn lint || true; fi
       - name: Run Tests with Allure Results and Coverage
         if: always()
         run: |
+          cd react-playwright-demo
           # Create reports directory
           mkdir -p reports/allure-results reports/coverage
           
           # Run Jest tests with coverage
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running Jest tests with coverage..."
-            cd react-playwright-demo && yarn test:coverage || true
+            yarn test:coverage || true
           fi
           
           # Run Playwright tests with Allure reporting
@@ -602,6 +621,7 @@ jobs:
         if: always() && (steps.cursor-fixes.outcome == 'success' || steps.cursor-fixes.outcome == 'failure') && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
         run: |
           echo "🔄 Re-running tests after Cursor fixes..."
+          cd react-playwright-demo
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             yarn test:coverage || true
             yarn test:e2e || true
