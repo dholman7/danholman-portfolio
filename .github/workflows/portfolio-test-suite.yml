@@ -421,8 +421,8 @@ jobs:
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running TypeScript/Jest tests with Allure reporting and coverage..."
             yarn test:coverage || true
-            echo "Running Allure report generation..."
-            yarn test:allure:generate || true
+            echo "Running Jest tests with Allure results generation..."
+            yarn test || true
           fi
           
           # List generated files for debugging
@@ -607,6 +607,13 @@ jobs:
             else
               echo "No Playwright Allure results found"
             fi
+          fi
+          
+          # Copy coverage to reports/coverage for consistency with other modules
+          if [ -d "coverage" ] && [ "$(ls -A coverage)" ]; then
+            echo "Copying coverage to reports/coverage for consistency..."
+            mkdir -p reports/coverage
+            cp -r coverage/* reports/coverage/
           fi
           
           # List generated files for debugging
