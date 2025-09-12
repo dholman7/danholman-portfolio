@@ -193,7 +193,7 @@ jobs:
             echo "<!DOCTYPE html><html><head><title>Coverage Reports</title></head><body><h1>Code Coverage Reports</h1><p>Reports will be available after test execution.</p></body></html>" > gh-pages-deploy/coverage-reports/index.html
           fi
           
-          # Copy combined Allure report from static location
+          # Copy combined reports from static location
           echo "Copying combined Allure report..."
           if [ -d "static-reports/allure-reports/combined-allure" ]; then
             echo "Found combined Allure report in static location, copying..."
@@ -205,10 +205,16 @@ jobs:
             echo "<!DOCTYPE html><html><head><title>Combined Allure Report</title></head><body><h1>Combined Allure Test Report</h1><p>Reports will be available after test execution.</p><p>Debug: No combined-allure directory found in static-reports/allure-reports/</p></body></html>" > gh-pages-deploy/combined-allure/index.html
           fi
           
-          # Create combined coverage report placeholder
-          echo "Creating combined coverage report..."
-          mkdir -p gh-pages-deploy/combined-coverage
-          echo "<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p></body></html>" > gh-pages-deploy/combined-coverage/index.html
+          echo "Copying combined coverage report..."
+          if [ -d "static-reports/allure-reports/combined-coverage" ]; then
+            echo "Found combined coverage report in static location, copying..."
+            cp -r static-reports/allure-reports/combined-coverage gh-pages-deploy/combined-coverage
+            echo "Combined coverage report copied successfully"
+          else
+            echo "Combined coverage report not found in static location, creating placeholder..."
+            mkdir -p gh-pages-deploy/combined-coverage
+            echo "<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p><p>Debug: No combined-coverage directory found in static-reports/allure-reports/</p></body></html>" > gh-pages-deploy/combined-coverage/index.html
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
