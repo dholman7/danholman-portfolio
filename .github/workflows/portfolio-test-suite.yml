@@ -115,6 +115,7 @@ jobs:
         if: always()
         run: |
           echo "Ensuring coverage report is generated..."
+          cd automation-framework
           # If coverage directory doesn't exist or is empty, generate it from unit tests
           if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
             echo "Coverage directory missing or empty, generating from unit tests..."
@@ -169,6 +170,7 @@ jobs:
       - name: Generate Allure Report
         if: always()
         run: |
+          cd automation-framework
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
             # Install Allure using npm (more reliable than yarn global)
@@ -281,6 +283,7 @@ jobs:
         if: always()
         run: |
           echo "Ensuring coverage report is generated..."
+          cd automation-framework
           # If coverage directory doesn't exist or is empty, generate it from unit tests
           if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
             echo "Coverage directory missing or empty, generating from unit tests..."
@@ -335,6 +338,7 @@ jobs:
       - name: Generate Allure Report
         if: always()
         run: |
+          cd ai-rulesets
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
             # Install Allure using npm (more reliable than yarn global)
@@ -428,6 +432,7 @@ jobs:
         if: always()
         run: |
           echo "Ensuring coverage report is generated for cloud-native-app..."
+          cd cloud-native-app
           # If coverage directory doesn't exist or is empty, generate it from Jest tests
           if [ ! -d "reports/coverage" ] || [ ! "$(ls -A reports/coverage)" ]; then
             echo "Coverage directory missing or empty, generating from Jest tests..."
@@ -487,6 +492,7 @@ jobs:
       - name: Generate Allure Report
         if: always()
         run: |
+          cd cloud-native-app
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
             # Install Allure using npm (more reliable than yarn global)
@@ -603,6 +609,7 @@ jobs:
       - name: Generate Allure Report
         if: always()
         run: |
+          cd react-playwright-demo
           if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
             echo "Installing Allure commandline..."
             # Install Allure using npm (more reliable than yarn global)
