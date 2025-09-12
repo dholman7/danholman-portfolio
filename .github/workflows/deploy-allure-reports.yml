@@ -80,11 +80,6 @@ jobs:
             fi
           done
           
-      - name: Setup Python for Allure processing
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-          
       - name: Setup Node.js for Allure
         uses: actions/setup-node@v4
         with:
