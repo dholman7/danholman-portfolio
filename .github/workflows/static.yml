@@ -2,20 +2,21 @@
 name: Deploy Test Results Dashboard to Pages
 
 on:
-  # Run on pushes to main (when test suite generates artifacts)
-  push:
-    branches: ["main"]
-    paths:
-      - 'automation-framework/**'
-      - 'cloud-native-app/**'
-      - 'ai-rulesets/**'
-      - 'react-playwright-demo/**'
-      - '.github/workflows/**'
-      - 'dashboard/**'
-      - 'docs/**'
-      - 'scripts/**'
-      - 'Makefile'
-      - 'README.md'
+  # Only run when called from other workflows to ensure access to artifacts
+  # Disabled independent triggers to prevent artifact access issues
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - 'automation-framework/**'
+  #     - 'cloud-native-app/**'
+  #     - 'ai-rulesets/**'
+  #     - 'react-playwright-demo/**'
+  #     - '.github/workflows/**'
+  #     - 'dashboard/**'
+  #     - 'docs/**'
+  #     - 'scripts/**'
+  #     - 'Makefile'
+  #     - 'README.md'
 
   # Also run on pull requests for previews
   pull_request:
@@ -107,20 +108,34 @@ jobs:
       - name: Debug Coverage Reports
         run: |
           echo "=== Coverage Reports Debug ==="
+          echo "Current working directory: $(pwd)"
+          echo "GitHub event name: ${{ github.event_name }}"
+          echo "GitHub ref: ${{ github.ref }}"
+          echo "GitHub head ref: ${{ github.head_ref }}"
+          
           if [ -d "coverage-reports" ]; then
             echo "coverage-reports directory exists"
             ls -la coverage-reports/
+            echo "All files in coverage-reports:"
+            find coverage-reports/ -type f -name "*" | head -20
             echo "Individual module coverage reports:"
             for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
               if [ -d "coverage-reports/${module}-coverage-report" ]; then
                 echo "Found ${module}-coverage-report:"
                 ls -la coverage-reports/${module}-coverage-report/
+                echo "Files in ${module}-coverage-report:"
+                find coverage-reports/${module}-coverage-report/ -type f | head -10
               else
                 echo "No ${module}-coverage-report found"
+                # Check if there are any files with similar names
+                echo "Files containing '${module}':"
+                find coverage-reports/ -name "*${module}*" 2>/dev/null || echo "No files found"
               fi
             done
           else
             echo "coverage-reports directory does not exist"
+            echo "Contents of current directory:"
+            ls -la
           fi
 
       - name: Setup Python for report combination
