@@ -507,17 +507,17 @@ jobs:
         if: always()
         run: |
           cd cloud-native-app
-          if [ -d "reports/allure-results" ] && [ "$(ls -A reports/allure-results)" ]; then
+          if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
             echo "Installing Allure commandline..."
             # Install Allure using npm (more reliable than yarn global)
             npm install -g allure-commandline
             echo "Generating Allure report for cloud-native-app..."
-            allure generate reports/allure-results --clean -o reports/allure-report
+            allure generate allure-results --clean -o allure-report
             echo "Allure report generated successfully"
             # Verify the report was created
-            if [ -d "reports/allure-report" ]; then
+            if [ -d "allure-report" ]; then
               echo "Allure report directory created successfully"
-              ls -la reports/allure-report/
+              ls -la allure-report/
             else
               echo "ERROR: Allure report directory was not created"
             fi
@@ -530,7 +530,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-allure-results
-          path: cloud-native-app/reports/allure-results/
+          path: cloud-native-app/allure-results/
           retention-days: 30
           if-no-files-found: warn
 
@@ -539,7 +539,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloud-native-app-allure-report
-          path: cloud-native-app/reports/allure-report/
+          path: cloud-native-app/allure-report/
           retention-days: 30
           if-no-files-found: warn
 
