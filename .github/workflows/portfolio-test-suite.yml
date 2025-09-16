@@ -291,6 +291,12 @@ jobs:
           fi
           echo "Final coverage directory contents:"
           ls -la reports/coverage/ || echo "No coverage directory found"
+          # Copy coverage to reports/coverage for consistency with other modules
+          if [ -d "coverage" ] && [ "$(ls -A coverage)" ]; then
+            echo "Copying coverage to reports/coverage for consistency..."
+            mkdir -p reports/coverage
+            cp -r coverage/* reports/coverage/
+          fi
       - name: Fix Test Failures with Cursor
         id: cursor-fixes
         if: failure() && (github.event.inputs.enable_cursor_fixes != false || github.event_name != 'workflow_dispatch')
@@ -602,6 +608,40 @@ jobs:
             echo "Running Playwright tests with Allure reporting..."
             yarn test:e2e || true
             
+            # Debug Playwright test results
+            echo "Checking for Playwright test results..."
+            if [ -d "test-results" ]; then
+              echo "test-results directory exists:"
+              ls -la test-results/
+            else
+              echo "No test-results directory found"
+            fi
+            
+            if [ -d "playwright-report" ]; then
+              echo "playwright-report directory exists:"
+              ls -la playwright-report/
+            else
+              echo "No playwright-report directory found"
+            fi
+            
+            # Generate Playwright HTML report if it doesn't exist
+            if [ ! -d "playwright-report" ] || [ ! "$(ls -A playwright-report)" ]; then
+              echo "Generating Playwright HTML report..."
+              # Run tests again with explicit HTML reporter to ensure report is generated
+              yarn playwright test --reporter=html || true
+            fi
+            
+            # Final check of Playwright report
+            echo "Final Playwright report check:"
+            if [ -d "playwright-report" ]; then
+              echo "playwright-report directory exists:"
+              ls -la playwright-report/
+              echo "playwright-report file count:"
+              find playwright-report/ -type f | wc -l || echo "0"
+            else
+              echo "playwright-report directory still does not exist"
+            fi
+            
             # Generate Allure report from Playwright results
             if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
               echo "Installing Allure commandline..."
@@ -701,6 +741,15 @@ jobs:
         with:
           name: react-playwright-demo-coverage-report
           path: react-playwright-demo/reports/coverage/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-playwright-demo-playwright-report
+          path: react-playwright-demo/playwright-report/
           retention-days: 30
           if-no-files-found: warn
 

@@ -103,6 +103,25 @@ jobs:
           path: coverage-reports/
           merge-multiple: true
         continue-on-error: true
+          
+      - name: Debug Coverage Reports
+        run: |
+          echo "=== Coverage Reports Debug ==="
+          if [ -d "coverage-reports" ]; then
+            echo "coverage-reports directory exists"
+            ls -la coverage-reports/
+            echo "Individual module coverage reports:"
+            for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+              if [ -d "coverage-reports/${module}-coverage-report" ]; then
+                echo "Found ${module}-coverage-report:"
+                ls -la coverage-reports/${module}-coverage-report/
+              else
+                echo "No ${module}-coverage-report found"
+              fi
+            done
+          else
+            echo "coverage-reports directory does not exist"
+          fi
 
       - name: Setup Python for report combination
         uses: actions/setup-python@v4
@@ -180,11 +199,24 @@ jobs:
           if [ -d "coverage-reports" ]; then
             echo "Copying Coverage reports..."
             cp -r coverage-reports gh-pages-deploy/coverage-reports
-            # Also copy individual module coverage reports
+            # Also copy individual module coverage reports to module root level
             for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
               if [ -d "coverage-reports/${module}-coverage-report" ]; then
-                mkdir -p gh-pages-deploy/${module}/coverage
+                echo "Copying coverage for ${module}..."
+                mkdir -p gh-pages-deploy/${module}
                 cp -r coverage-reports/${module}-coverage-report/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+                echo "Coverage copied to gh-pages-deploy/${module}/coverage/"
+                ls -la gh-pages-deploy/${module}/coverage/ || echo "No coverage files found"
+                # Create index.html if it doesn't exist
+                if [ ! -f "gh-pages-deploy/${module}/coverage/index.html" ]; then
+                  echo "Creating index.html for ${module} coverage..."
+                  echo "<!DOCTYPE html><html><head><title>Coverage Report - ${module}</title></head><body><h1>Code Coverage Report - ${module}</h1><p>Coverage report will be available after test execution.</p></body></html>" > gh-pages-deploy/${module}/coverage/index.html
+                fi
+              else
+                echo "No coverage report found for ${module}"
+                # Create placeholder for missing coverage
+                mkdir -p gh-pages-deploy/${module}/coverage
+                echo "<!DOCTYPE html><html><head><title>Coverage Report - ${module}</title></head><body><h1>Code Coverage Report - ${module}</h1><p>Coverage report will be available after test execution.</p><p>Debug: No ${module}-coverage-report artifact found</p></body></html>" > gh-pages-deploy/${module}/coverage/index.html
               fi
             done
           else
