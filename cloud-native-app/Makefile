@@ -77,30 +77,30 @@ test-regression:
 # Allure Reporting
 allure-results: ## Generate Allure test results
 	@echo "Generating Allure results..."
-	mkdir -p reports/allure-results
+	mkdir -p allure-results
 	yarn test
-	@echo "Allure results generated in reports/allure-results/"
+	@echo "Allure results generated in allure-results/"
 
 allure-generate: allure-results ## Generate Allure HTML report
 	@if command -v allure >/dev/null 2>&1; then \
-		allure generate reports/allure-results --clean -o reports/allure-report; \
-		echo "Allure report generated in reports/allure-report/"; \
+		export PATH="/opt/homebrew/opt/java/bin:$$PATH" && allure generate allure-results --clean -o allure-report; \
+		echo "Allure report generated in allure-report/"; \
 	else \
 		echo "Allure command not found. Install with: yarn global add allure-commandline"; \
-		echo "Or use Docker: docker run -v $(PWD)/reports/allure-results:/app/allure-results -v $(PWD)/reports/allure-report:/app/allure-report frankescobar/allure-docker-service:latest allure generate /app/allure-results /app/allure-report"; \
+		echo "Or use Docker: docker run -v $(PWD)/allure-results:/app/allure-results -v $(PWD)/allure-report:/app/allure-report frankescobar/allure-docker-service:latest allure generate /app/allure-results /app/allure-report"; \
 	fi
 
 allure-serve: allure-results ## Serve Allure report locally
 	@if command -v allure >/dev/null 2>&1; then \
-		allure serve reports/allure-results --port 5051; \
+		export PATH="/opt/homebrew/opt/java/bin:$$PATH" && allure serve allure-results --port 5051; \
 	else \
 		echo "Allure command not found. Install with: yarn global add allure-commandline"; \
-		echo "Or use Docker: docker run -p 5051:5050 -v $(PWD)/reports/allure-results:/app/allure-results frankescobar/allure-docker-service:latest"; \
+		echo "Or use Docker: docker run -p 5051:5050 -v $(PWD)/allure-results:/app/allure-results frankescobar/allure-docker-service:latest"; \
 	fi
 
 allure-clean: ## Clean Allure reports and results
-	rm -rf reports/allure-results/
-	rm -rf reports/allure-report/
+	rm -rf allure-results/
+	rm -rf allure-report/
 	@echo "Allure reports cleaned"
 
 # Build the project
