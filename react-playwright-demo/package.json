@@ -20,6 +20,7 @@
     "preview": "vite preview --host",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist node_modules/.vite",
+    "postinstall": "playwright install --with-deps",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

@@ -591,6 +591,12 @@ jobs:
             yarn test:coverage || true
           fi
           
+          # Install Playwright browsers
+          if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            echo "Installing Playwright browsers..."
+            yarn playwright install --with-deps || true
+          fi
+          
           # Run Playwright tests with Allure reporting
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
             echo "Running Playwright tests with Allure reporting..."
@@ -644,6 +650,9 @@ jobs:
           echo "🔄 Re-running tests after Cursor fixes..."
           cd react-playwright-demo
           if [ -f package.json ] && command -v yarn >/dev/null 2>&1; then
+            # Install Playwright browsers before running tests
+            echo "Installing Playwright browsers..."
+            yarn playwright install --with-deps || true
             yarn test:coverage || true
             yarn test:e2e || true
           fi
