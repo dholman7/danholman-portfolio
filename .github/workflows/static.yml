@@ -54,13 +54,29 @@ concurrency:
 jobs:
   # Deploy test results dashboard
   deploy:
-    # Only run when called from test suite workflow or manually
-    if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch'
+    # Run when called from test suite workflow, manually triggered, or on push to main
+    if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Workflow Event
+        run: |
+          echo "=== Workflow Event Debug ==="
+          echo "GitHub event name: ${{ github.event_name }}"
+          echo "GitHub ref: ${{ github.ref }}"
+          echo "GitHub head ref: ${{ github.head_ref }}"
+          echo "GitHub base ref: ${{ github.base_ref }}"
+          echo "GitHub actor: ${{ github.actor }}"
+          echo "GitHub workflow: ${{ github.workflow }}"
+          echo "GitHub run id: ${{ github.run_id }}"
+          echo "GitHub run number: ${{ github.run_number }}"
+          echo "GitHub run attempt: ${{ github.run_attempt }}"
+          echo "GitHub repository: ${{ github.repository }}"
+          echo "GitHub repository owner: ${{ github.repository_owner }}"
+          echo "GitHub event: ${{ toJson(github.event) }}"
+          
       - name: Checkout
         uses: actions/checkout@v4
         with:
