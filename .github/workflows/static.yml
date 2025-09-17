@@ -308,7 +308,26 @@ jobs:
             echo "<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p><p>Debug: No combined-coverage directory found in static-reports/allure-reports/</p></body></html>" > gh-pages-deploy/combined-coverage/index.html
           fi
 
+      - name: Debug deployment directory
+        run: |
+          echo "=== Deployment Directory Debug ==="
+          echo "Current working directory: $(pwd)"
+          if [ -d "gh-pages-deploy" ]; then
+            echo "gh-pages-deploy directory exists"
+            echo "Contents of gh-pages-deploy:"
+            ls -la gh-pages-deploy/
+            echo "Total files in gh-pages-deploy:"
+            find gh-pages-deploy/ -type f | wc -l || echo "0"
+          else
+            echo "gh-pages-deploy directory does not exist"
+            echo "Creating gh-pages-deploy directory..."
+            mkdir -p gh-pages-deploy
+            echo "Created basic index.html"
+            echo "<!DOCTYPE html><html><head><title>Portfolio Test Results</title></head><body><h1>Portfolio Test Results</h1><p>Test results will be available after execution.</p></body></html>" > gh-pages-deploy/index.html
+          fi
+
       - name: Upload artifact
+        if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: gh-pages-deploy
