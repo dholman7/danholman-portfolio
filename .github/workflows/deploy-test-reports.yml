@@ -166,20 +166,6 @@ jobs:
             echo "No coverage reports found, creating placeholder..."
             echo '<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p></body></html>' > combined-coverage/index.html
           fi
-            echo '    <h1>Combined Code Coverage Report</h1>' >> combined-coverage/index.html
-            echo '    <div class="warning">' >> combined-coverage/index.html
-            echo '        <h2>⚠️ No Coverage Reports Found</h2>' >> combined-coverage/index.html
-            echo '        <p>No coverage reports were generated in the current workflow run. This could be due to:</p>' >> combined-coverage/index.html
-            echo '        <ul>' >> combined-coverage/index.html
-            echo '            <li>Test failures preventing coverage generation</li>' >> combined-coverage/index.html
-            echo '            <li>Coverage report generation issues</li>' >> combined-coverage/index.html
-            echo '            <li>Artifact upload/download problems</li>' >> combined-coverage/index.html
-            echo '        </ul>' >> combined-coverage/index.html
-            echo '        <p>Please check the individual module jobs for more details.</p>' >> combined-coverage/index.html
-            echo '    </div>' >> combined-coverage/index.html
-            echo '</body>' >> combined-coverage/index.html
-            echo '</html>' >> combined-coverage/index.html
-          fi
 
       - name: Generate combined Allure report
         uses: simple-elf/allure-report-action@master
