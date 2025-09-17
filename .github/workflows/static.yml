@@ -18,20 +18,20 @@ on:
   #     - 'Makefile'
   #     - 'README.md'
 
-  # Also run on pull requests for previews
-  pull_request:
-    branches: ["main"]
-    paths:
-      - 'automation-framework/**'
-      - 'cloud-native-app/**'
-      - 'ai-rulesets/**'
-      - 'react-playwright-demo/**'
-      - '.github/workflows/**'
-      - 'dashboard/**'
-      - 'docs/**'
-      - 'scripts/**'
-      - 'Makefile'
-      - 'README.md'
+  # Disabled pull request trigger to prevent artifact access issues
+  # pull_request:
+  #   branches: ["main"]
+  #   paths:
+  #     - 'automation-framework/**'
+  #     - 'cloud-native-app/**'
+  #     - 'ai-rulesets/**'
+  #     - 'react-playwright-demo/**'
+  #     - '.github/workflows/**'
+  #     - 'dashboard/**'
+  #     - 'docs/**'
+  #     - 'scripts/**'
+  #     - 'Makefile'
+  #     - 'README.md'
 
   # Allow manual trigger for testing
   workflow_dispatch:
@@ -54,12 +54,12 @@ concurrency:
 jobs:
   # Deploy test results dashboard
   deploy:
+    # Only run when called from test suite workflow or manually
+    if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    # Run on push to main, PRs, or manual dispatch
-    if: github.event_name == 'push' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -104,6 +104,7 @@ jobs:
           path: coverage-reports/
           merge-multiple: true
         continue-on-error: true
+        id: download-coverage
           
       - name: Debug Coverage Reports
         run: |
@@ -112,6 +113,7 @@ jobs:
           echo "GitHub event name: ${{ github.event_name }}"
           echo "GitHub ref: ${{ github.ref }}"
           echo "GitHub head ref: ${{ github.head_ref }}"
+          echo "Download coverage step result: ${{ steps.download-coverage.outcome }}"
           
           if [ -d "coverage-reports" ]; then
             echo "coverage-reports directory exists"
@@ -136,7 +138,37 @@ jobs:
             echo "coverage-reports directory does not exist"
             echo "Contents of current directory:"
             ls -la
+            echo "This might indicate that the workflow is running independently and cannot access artifacts from the test suite workflow."
           fi
+
+      - name: Create Fallback Coverage Reports
+        if: steps.download-coverage.outcome != 'success'
+        run: |
+          echo "Creating fallback coverage reports due to artifact download failure"
+          mkdir -p coverage-reports
+          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
+            mkdir -p "coverage-reports/${module}-coverage-report"
+            cat > "coverage-reports/${module}-coverage-report/index.html" << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Coverage Report - ${module}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Code Coverage Report - ${module}</h1>
+    <div class="error">
+        <h2>Coverage Report Not Available</h2>
+        <p>This coverage report is not available because the workflow is running independently and cannot access artifacts from the test suite workflow.</p>
+        <p>To view the coverage report, please run the full test suite workflow which will generate and deploy the reports.</p>
+    </div>
+</body>
+</html>
+EOF
+          done
 
       - name: Setup Python for report combination
         uses: actions/setup-python@v4
