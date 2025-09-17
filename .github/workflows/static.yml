@@ -39,6 +39,7 @@ jobs:
         with:
           name: static-allure-reports
           path: static-reports/
+          merge-multiple: true
         continue-on-error: true
           
       - name: Download Playwright Reports
