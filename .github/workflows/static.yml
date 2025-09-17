@@ -2,41 +2,7 @@
 name: Deploy Test Results Dashboard to Pages
 
 on:
-  # Only run when called from other workflows to ensure access to artifacts
-  # Disabled independent triggers to prevent artifact access issues
-  # push:
-  #   branches: ["main"]
-  #   paths:
-  #     - 'automation-framework/**'
-  #     - 'cloud-native-app/**'
-  #     - 'ai-rulesets/**'
-  #     - 'react-playwright-demo/**'
-  #     - '.github/workflows/**'
-  #     - 'dashboard/**'
-  #     - 'docs/**'
-  #     - 'scripts/**'
-  #     - 'Makefile'
-  #     - 'README.md'
-
-  # Disabled pull request trigger to prevent artifact access issues
-  # pull_request:
-  #   branches: ["main"]
-  #   paths:
-  #     - 'automation-framework/**'
-  #     - 'cloud-native-app/**'
-  #     - 'ai-rulesets/**'
-  #     - 'react-playwright-demo/**'
-  #     - '.github/workflows/**'
-  #     - 'dashboard/**'
-  #     - 'docs/**'
-  #     - 'scripts/**'
-  #     - 'Makefile'
-  #     - 'README.md'
-
-  # Allow manual trigger for testing
-  workflow_dispatch:
-
-  # Allow being called as a reusable workflow
+  # Only allow being called as a reusable workflow from the test suite
   workflow_call:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -54,29 +20,11 @@ concurrency:
 jobs:
   # Deploy test results dashboard
   deploy:
-    # Run when called from test suite workflow, manually triggered, or on push to main
-    if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Debug Workflow Event
-        run: |
-          echo "=== Workflow Event Debug ==="
-          echo "GitHub event name: ${{ github.event_name }}"
-          echo "GitHub ref: ${{ github.ref }}"
-          echo "GitHub head ref: ${{ github.head_ref }}"
-          echo "GitHub base ref: ${{ github.base_ref }}"
-          echo "GitHub actor: ${{ github.actor }}"
-          echo "GitHub workflow: ${{ github.workflow }}"
-          echo "GitHub run id: ${{ github.run_id }}"
-          echo "GitHub run number: ${{ github.run_number }}"
-          echo "GitHub run attempt: ${{ github.run_attempt }}"
-          echo "GitHub repository: ${{ github.repository }}"
-          echo "GitHub repository owner: ${{ github.repository_owner }}"
-          echo "GitHub event: ${{ toJson(github.event) }}"
-          
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -92,18 +40,6 @@ jobs:
           name: static-allure-reports
           path: static-reports/
         continue-on-error: true
-          
-      - name: Debug Static Reports
-        run: |
-          echo "=== Static Allure Reports ==="
-          if [ -d "static-reports" ]; then
-            echo "static-reports directory exists"
-            ls -la static-reports/
-            echo "Allure reports:"
-            ls -la static-reports/allure-reports/ || echo "No allure-reports subdirectory"
-          else
-            echo "static-reports directory does not exist"
-          fi
           
       - name: Download Playwright Reports
         uses: actions/download-artifact@v4
@@ -122,72 +58,6 @@ jobs:
         continue-on-error: true
         id: download-coverage
           
-      - name: Debug Coverage Reports
-        run: |
-          echo "=== Coverage Reports Debug ==="
-          echo "Current working directory: $(pwd)"
-          echo "GitHub event name: ${{ github.event_name }}"
-          echo "GitHub ref: ${{ github.ref }}"
-          echo "GitHub head ref: ${{ github.head_ref }}"
-          echo "Download coverage step result: ${{ steps.download-coverage.outcome }}"
-          
-          if [ -d "coverage-reports" ]; then
-            echo "coverage-reports directory exists"
-            ls -la coverage-reports/
-            echo "All files in coverage-reports:"
-            find coverage-reports/ -type f -name "*" | head -20
-            echo "Individual module coverage reports:"
-            for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
-              if [ -d "coverage-reports/${module}-coverage-report" ]; then
-                echo "Found ${module}-coverage-report:"
-                ls -la coverage-reports/${module}-coverage-report/
-                echo "Files in ${module}-coverage-report:"
-                find coverage-reports/${module}-coverage-report/ -type f | head -10
-              else
-                echo "No ${module}-coverage-report found"
-                # Check if there are any files with similar names
-                echo "Files containing '${module}':"
-                find coverage-reports/ -name "*${module}*" 2>/dev/null || echo "No files found"
-              fi
-            done
-          else
-            echo "coverage-reports directory does not exist"
-            echo "Contents of current directory:"
-            ls -la
-            echo "This might indicate that the workflow is running independently and cannot access artifacts from the test suite workflow."
-          fi
-
-      - name: Create Fallback Coverage Reports
-        if: steps.download-coverage.outcome != 'success'
-        run: |
-          echo "Creating fallback coverage reports due to artifact download failure"
-          mkdir -p coverage-reports
-          for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
-            mkdir -p "coverage-reports/${module}-coverage-report"
-            echo "<!DOCTYPE html>" > "coverage-reports/${module}-coverage-report/index.html"
-            echo "<html>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "<head>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "    <title>Code Coverage Report - ${module}</title>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "    <style>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "        body { font-family: Arial, sans-serif; margin: 40px; }" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "        .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 4px; }" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "    </style>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "</head>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "<body>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "    <h1>Code Coverage Report - ${module}</h1>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "    <div class=\"error\">" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "        <h2>Coverage Report Not Available</h2>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "        <p>This coverage report is not available because the workflow is running independently and cannot access artifacts from the test suite workflow.</p>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "        <p>To view the coverage report, please run the full test suite workflow which will generate and deploy the reports.</p>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "    </div>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "</body>" >> "coverage-reports/${module}-coverage-report/index.html"
-            echo "</html>" >> "coverage-reports/${module}-coverage-report/index.html"
-          done
-
-      - name: Setup Python for report combination
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
 
       - name: Deploy Test Results Dashboard
         run: |
