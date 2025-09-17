@@ -2,36 +2,35 @@
 name: Deploy Test Results Dashboard to Pages
 
 on:
-  # Only run when called from other workflows to ensure access to artifacts
-  # Disabled independent triggers to prevent artifact access issues
-  # push:
-  #   branches: ["main"]
-  #   paths:
-  #     - 'automation-framework/**'
-  #     - 'cloud-native-app/**'
-  #     - 'ai-rulesets/**'
-  #     - 'react-playwright-demo/**'
-  #     - '.github/workflows/**'
-  #     - 'dashboard/**'
-  #     - 'docs/**'
-  #     - 'scripts/**'
-  #     - 'Makefile'
-  #     - 'README.md'
+  # Run on pushes to main (when test suite generates artifacts)
+  push:
+    branches: ["main"]
+    paths:
+      - 'automation-framework/**'
+      - 'cloud-native-app/**'
+      - 'ai-rulesets/**'
+      - 'react-playwright-demo/**'
+      - '.github/workflows/**'
+      - 'dashboard/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'Makefile'
+      - 'README.md'
 
-  # Disabled pull request trigger to prevent artifact access issues
-  # pull_request:
-  #   branches: ["main"]
-  #   paths:
-  #     - 'automation-framework/**'
-  #     - 'cloud-native-app/**'
-  #     - 'ai-rulesets/**'
-  #     - 'react-playwright-demo/**'
-  #     - '.github/workflows/**'
-  #     - 'dashboard/**'
-  #     - 'docs/**'
-  #     - 'scripts/**'
-  #     - 'Makefile'
-  #     - 'README.md'
+  # Also run on pull requests for previews
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'automation-framework/**'
+      - 'cloud-native-app/**'
+      - 'ai-rulesets/**'
+      - 'react-playwright-demo/**'
+      - '.github/workflows/**'
+      - 'dashboard/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'Makefile'
+      - 'README.md'
 
   # Allow manual trigger for testing
   workflow_dispatch:
@@ -54,8 +53,6 @@ concurrency:
 jobs:
   # Deploy test results dashboard
   deploy:
-    # Run when called from test suite workflow, manually triggered, or on push to main
-    if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
