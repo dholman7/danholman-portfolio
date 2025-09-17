@@ -148,26 +148,24 @@ jobs:
           mkdir -p coverage-reports
           for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
             mkdir -p "coverage-reports/${module}-coverage-report"
-            cat > "coverage-reports/${module}-coverage-report/index.html" << 'EOF'
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Code Coverage Report - ${module}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 4px; }
-    </style>
-</head>
-<body>
-    <h1>Code Coverage Report - ${module}</h1>
-    <div class="error">
-        <h2>Coverage Report Not Available</h2>
-        <p>This coverage report is not available because the workflow is running independently and cannot access artifacts from the test suite workflow.</p>
-        <p>To view the coverage report, please run the full test suite workflow which will generate and deploy the reports.</p>
-    </div>
-</body>
-</html>
-EOF
+            echo "<!DOCTYPE html>" > "coverage-reports/${module}-coverage-report/index.html"
+            echo "<html>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "<head>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "    <title>Code Coverage Report - ${module}</title>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "    <style>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "        body { font-family: Arial, sans-serif; margin: 40px; }" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "        .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 4px; }" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "    </style>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "</head>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "<body>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "    <h1>Code Coverage Report - ${module}</h1>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "    <div class=\"error\">" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "        <h2>Coverage Report Not Available</h2>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "        <p>This coverage report is not available because the workflow is running independently and cannot access artifacts from the test suite workflow.</p>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "        <p>To view the coverage report, please run the full test suite workflow which will generate and deploy the reports.</p>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "    </div>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "</body>" >> "coverage-reports/${module}-coverage-report/index.html"
+            echo "</html>" >> "coverage-reports/${module}-coverage-report/index.html"
           done
 
       - name: Setup Python for report combination
