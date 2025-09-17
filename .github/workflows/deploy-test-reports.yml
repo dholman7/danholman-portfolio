@@ -1,4 +1,4 @@
-name: Process Allure Reports
+name: Process Test Reports
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
         type: string
         required: true
         default: all
-        description: Module to process Allure report for
+        description: Module to process test reports for
   workflow_dispatch:
     inputs:
       module:
@@ -158,63 +158,14 @@ jobs:
           echo "Downloaded coverage reports contents:"
           ls -la coverage-reports/ || echo "No coverage reports found"
           
-          # Copy all coverage reports to combined directory
+          # Use Python script to merge coverage data into a unified report
           if [ -d "coverage-reports" ] && [ "$(ls -A coverage-reports)" ]; then
-            echo "Copying coverage reports to combined directory..."
-            for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
-              if [ -d "coverage-reports/${module}-coverage-report" ]; then
-                echo "Found ${module} coverage report, copying..."
-                mkdir -p "combined-coverage/${module}"
-                cp -r "coverage-reports/${module}-coverage-report"/* "combined-coverage/${module}/" || true
-              fi
-            done
-            
-            # Create combined coverage index
-            echo '<!DOCTYPE html>' > combined-coverage/index.html
-            echo '<html lang="en">' >> combined-coverage/index.html
-            echo '<head>' >> combined-coverage/index.html
-            echo '    <meta charset="UTF-8">' >> combined-coverage/index.html
-            echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> combined-coverage/index.html
-            echo '    <title>Combined Code Coverage Report</title>' >> combined-coverage/index.html
-            echo '    <style>' >> combined-coverage/index.html
-            echo '        body { font-family: Arial, sans-serif; margin: 40px; }' >> combined-coverage/index.html
-            echo '        h1 { color: #333; }' >> combined-coverage/index.html
-            echo '        .module { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }' >> combined-coverage/index.html
-            echo '        .module a { color: #0066cc; text-decoration: none; }' >> combined-coverage/index.html
-            echo '        .module a:hover { text-decoration: underline; }' >> combined-coverage/index.html
-            echo '    </style>' >> combined-coverage/index.html
-            echo '</head>' >> combined-coverage/index.html
-            echo '<body>' >> combined-coverage/index.html
-            echo '    <h1>Combined Code Coverage Report</h1>' >> combined-coverage/index.html
-            echo '    <p>Combined coverage analysis from all modules.</p>' >> combined-coverage/index.html
-            echo '    <div class="module">' >> combined-coverage/index.html
-            echo '        <h2>Available Coverage Reports:</h2>' >> combined-coverage/index.html
-            echo '        <ul>' >> combined-coverage/index.html
-            echo '            <li><a href="automation-framework/">Automation Framework</a></li>' >> combined-coverage/index.html
-            echo '            <li><a href="ai-rulesets/">AI Rulesets</a></li>' >> combined-coverage/index.html
-            echo '            <li><a href="cloud-native-app/">Cloud Native App</a></li>' >> combined-coverage/index.html
-            echo '            <li><a href="react-playwright-demo/">React Playwright Demo</a></li>' >> combined-coverage/index.html
-            echo '        </ul>' >> combined-coverage/index.html
-            echo '    </div>' >> combined-coverage/index.html
-            echo '</body>' >> combined-coverage/index.html
-            echo '</html>' >> combined-coverage/index.html
-            echo "Combined coverage report created successfully"
-            ls -la combined-coverage/
+            echo "Merging coverage reports using Python script..."
+            python3 scripts/merge_coverage_reports.py --coverage-dir coverage-reports --output-dir combined-coverage --modules automation-framework ai-rulesets cloud-native-app react-playwright-demo
           else
-            echo "No coverage reports found, creating placeholder"
-            echo '<!DOCTYPE html>' > combined-coverage/index.html
-            echo '<html lang="en">' >> combined-coverage/index.html
-            echo '<head>' >> combined-coverage/index.html
-            echo '    <meta charset="UTF-8">' >> combined-coverage/index.html
-            echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> combined-coverage/index.html
-            echo '    <title>Combined Code Coverage Report</title>' >> combined-coverage/index.html
-            echo '    <style>' >> combined-coverage/index.html
-            echo '        body { font-family: Arial, sans-serif; margin: 40px; }' >> combined-coverage/index.html
-            echo '        h1 { color: #333; }' >> combined-coverage/index.html
-            echo '        .warning { margin: 20px 0; padding: 15px; border: 1px solid #ffcc00; border-radius: 5px; background-color: #fff9e6; }' >> combined-coverage/index.html
-            echo '    </style>' >> combined-coverage/index.html
-            echo '</head>' >> combined-coverage/index.html
-            echo '<body>' >> combined-coverage/index.html
+            echo "No coverage reports found, creating placeholder..."
+            echo '<!DOCTYPE html><html><head><title>Combined Coverage Report</title></head><body><h1>Combined Code Coverage Report</h1><p>Combined coverage analysis from all modules will be available after test execution.</p></body></html>' > combined-coverage/index.html
+          fi
             echo '    <h1>Combined Code Coverage Report</h1>' >> combined-coverage/index.html
             echo '    <div class="warning">' >> combined-coverage/index.html
             echo '        <h2>⚠️ No Coverage Reports Found</h2>' >> combined-coverage/index.html
