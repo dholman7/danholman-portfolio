@@ -55,7 +55,7 @@ jobs:
         with:
           pattern: "*-coverage-report"
           path: coverage-reports/
-          merge-multiple: true
+          merge-multiple: false
         continue-on-error: true
         id: download-coverage
           
@@ -154,7 +154,19 @@ jobs:
               if [ -d "coverage-reports/${module}-coverage-report" ]; then
                 echo "Found ${module} coverage report in coverage-reports/${module}-coverage-report"
                 mkdir -p gh-pages-deploy/${module}/coverage
-                cp -r coverage-reports/${module}-coverage-report/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+                
+                # Handle different possible structures within the artifact
+                if [ -d "coverage-reports/${module}-coverage-report/htmlcov" ]; then
+                  echo "Found htmlcov structure, copying..."
+                  cp -r coverage-reports/${module}-coverage-report/htmlcov/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+                elif [ -d "coverage-reports/${module}-coverage-report/coverage" ]; then
+                  echo "Found coverage structure, copying..."
+                  cp -r coverage-reports/${module}-coverage-report/coverage/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+                else
+                  echo "Found direct structure, copying all files..."
+                  cp -r coverage-reports/${module}-coverage-report/* gh-pages-deploy/${module}/coverage/ 2>/dev/null || true
+                fi
+                
                 echo "Coverage copied to gh-pages-deploy/${module}/coverage/"
                 ls -la gh-pages-deploy/${module}/coverage/ || echo "No coverage files found"
                 
