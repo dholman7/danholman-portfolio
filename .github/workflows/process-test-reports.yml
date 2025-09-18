@@ -150,85 +150,6 @@ jobs:
           echo "Downloaded Allure results contents:"
           ls -la allure-results/ || echo "No Allure results found"
           
-          # Create combined coverage report
-          echo "=== Creating Combined Coverage Report ==="
-          mkdir -p combined-coverage
-          
-          # List downloaded coverage reports
-          echo "Downloaded coverage reports contents:"
-          ls -la coverage-reports/ || echo "No coverage reports found"
-          
-          # Copy all coverage reports to combined directory
-          if [ -d "coverage-reports" ] && [ "$(ls -A coverage-reports)" ]; then
-            echo "Copying coverage reports to combined directory..."
-            for module in automation-framework ai-rulesets cloud-native-app react-playwright-demo; do
-              if [ -d "coverage-reports/${module}-coverage-report" ]; then
-                echo "Found ${module} coverage report, copying..."
-                mkdir -p "combined-coverage/${module}"
-                cp -r "coverage-reports/${module}-coverage-report"/* "combined-coverage/${module}/" || true
-              fi
-            done
-            
-            # Create combined coverage index
-            echo '<!DOCTYPE html>' > combined-coverage/index.html
-            echo '<html lang="en">' >> combined-coverage/index.html
-            echo '<head>' >> combined-coverage/index.html
-            echo '    <meta charset="UTF-8">' >> combined-coverage/index.html
-            echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> combined-coverage/index.html
-            echo '    <title>Combined Code Coverage Report</title>' >> combined-coverage/index.html
-            echo '    <style>' >> combined-coverage/index.html
-            echo '        body { font-family: Arial, sans-serif; margin: 40px; }' >> combined-coverage/index.html
-            echo '        h1 { color: #333; }' >> combined-coverage/index.html
-            echo '        .module { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }' >> combined-coverage/index.html
-            echo '        .module a { color: #0066cc; text-decoration: none; }' >> combined-coverage/index.html
-            echo '        .module a:hover { text-decoration: underline; }' >> combined-coverage/index.html
-            echo '    </style>' >> combined-coverage/index.html
-            echo '</head>' >> combined-coverage/index.html
-            echo '<body>' >> combined-coverage/index.html
-            echo '    <h1>Combined Code Coverage Report</h1>' >> combined-coverage/index.html
-            echo '    <p>Combined coverage analysis from all modules.</p>' >> combined-coverage/index.html
-            echo '    <div class="module">' >> combined-coverage/index.html
-            echo '        <h2>Available Coverage Reports:</h2>' >> combined-coverage/index.html
-            echo '        <ul>' >> combined-coverage/index.html
-            echo '            <li><a href="automation-framework/">Automation Framework</a></li>' >> combined-coverage/index.html
-            echo '            <li><a href="ai-rulesets/">AI Rulesets</a></li>' >> combined-coverage/index.html
-            echo '            <li><a href="cloud-native-app/">Cloud Native App</a></li>' >> combined-coverage/index.html
-            echo '            <li><a href="react-playwright-demo/">React Playwright Demo</a></li>' >> combined-coverage/index.html
-            echo '        </ul>' >> combined-coverage/index.html
-            echo '    </div>' >> combined-coverage/index.html
-            echo '</body>' >> combined-coverage/index.html
-            echo '</html>' >> combined-coverage/index.html
-            echo "Combined coverage report created successfully"
-            ls -la combined-coverage/
-          else
-            echo "No coverage reports found, creating placeholder"
-            echo '<!DOCTYPE html>' > combined-coverage/index.html
-            echo '<html lang="en">' >> combined-coverage/index.html
-            echo '<head>' >> combined-coverage/index.html
-            echo '    <meta charset="UTF-8">' >> combined-coverage/index.html
-            echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> combined-coverage/index.html
-            echo '    <title>Combined Code Coverage Report</title>' >> combined-coverage/index.html
-            echo '    <style>' >> combined-coverage/index.html
-            echo '        body { font-family: Arial, sans-serif; margin: 40px; }' >> combined-coverage/index.html
-            echo '        h1 { color: #333; }' >> combined-coverage/index.html
-            echo '        .warning { margin: 20px 0; padding: 15px; border: 1px solid #ffcc00; border-radius: 5px; background-color: #fff9e6; }' >> combined-coverage/index.html
-            echo '    </style>' >> combined-coverage/index.html
-            echo '</head>' >> combined-coverage/index.html
-            echo '<body>' >> combined-coverage/index.html
-            echo '    <h1>Combined Code Coverage Report</h1>' >> combined-coverage/index.html
-            echo '    <div class="warning">' >> combined-coverage/index.html
-            echo '        <h2>⚠️ No Coverage Reports Found</h2>' >> combined-coverage/index.html
-            echo '        <p>No coverage reports were generated in the current workflow run. This could be due to:</p>' >> combined-coverage/index.html
-            echo '        <ul>' >> combined-coverage/index.html
-            echo '            <li>Test failures preventing coverage generation</li>' >> combined-coverage/index.html
-            echo '            <li>Coverage report generation issues</li>' >> combined-coverage/index.html
-            echo '            <li>Artifact upload/download problems</li>' >> combined-coverage/index.html
-            echo '        </ul>' >> combined-coverage/index.html
-            echo '        <p>Please check the individual module jobs for more details.</p>' >> combined-coverage/index.html
-            echo '    </div>' >> combined-coverage/index.html
-            echo '</body>' >> combined-coverage/index.html
-            echo '</html>' >> combined-coverage/index.html
-          fi
 
       - name: Generate combined Allure report
         uses: simple-elf/allure-report-action@master
@@ -258,10 +179,6 @@ jobs:
               cp -r combined-allure static-reports/allure-reports/
             fi
             
-            if [ -d "combined-coverage" ]; then
-              echo "Copying combined coverage report to static location..."
-              cp -r combined-coverage static-reports/allure-reports/
-            fi
             
             # Create index file for easy access
             cat > static-reports/allure-reports/index.html << 'EOF'
@@ -286,7 +203,6 @@ jobs:
                   <h2>Available Reports:</h2>
                   <ul>
                       <li><a href="combined-allure/">Combined Allure Report</a></li>
-                      <li><a href="combined-coverage/">Combined Coverage Report</a></li>
                       <li><a href="automation-framework/">Automation Framework</a></li>
                       <li><a href="ai-rulesets/">AI Rulesets</a></li>
                       <li><a href="cloud-native-app/">Cloud Native App</a></li>
