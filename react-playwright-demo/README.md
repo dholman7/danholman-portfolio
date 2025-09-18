@@ -70,16 +70,33 @@ This application demonstrates production-ready CI/CD practices for frontend deve
 react-playwright-demo/
 ├── src/                        # Source Code
 │   ├── App.tsx                 # Main React component
+│   ├── App.css                 # Component styles
 │   ├── index.css               # Global styles with Tailwind
-│   └── main.tsx                # React entry point
-├── e2e/                        # E2E Test Suite
-│   ├── tests/                  # Playwright test files
+│   ├── main.tsx                # React entry point
+│   ├── setupTests.ts           # Test setup configuration
+│   ├── vite-env.d.ts           # Vite type definitions
+│   ├── assets/                 # Static assets
+│   │   ├── holmanTechScreen.png
+│   │   └── react.svg
+│   ├── config/                 # Configuration
+│   │   └── environments.ts
+│   └── utils/                  # Utility functions
+├── tests/                      # Test Suite
+│   ├── unit/                   # Unit tests
+│   │   ├── App.test.tsx
+│   │   ├── api.test.ts
+│   │   └── validation.test.ts
+│   ├── integration/            # Integration tests
+│   │   └── form-integration.test.tsx
+│   ├── e2e/                    # E2E tests
+│   │   ├── fixtures/           # Test data and utilities
+│   │   │   └── test-data.ts
 │   │   ├── registration.spec.ts
 │   │   ├── login.spec.ts
+│   │   ├── dashboard.spec.ts
 │   │   └── ui.spec.ts
-│   ├── fixtures/               # Test data and utilities
-│   │   └── test-data.ts
-│   └── utils/                  # Test helper functions
+│   └── accessibility/          # Accessibility tests
+│       └── accessibility.spec.ts
 ├── public/                     # Static Assets
 │   └── tech_logo.png           # Application logo
 ├── .github/workflows/          # CI/CD Pipeline

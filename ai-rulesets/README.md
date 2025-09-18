@@ -218,17 +218,39 @@ ai-rulesets/
 │       │   ├── python/        # Python development standards
 │       │   ├── typescript/    # TypeScript/JS standards
 │       │   ├── testing/       # Testing guidelines
-│       │   ├── cicd/          # CI/CD patterns
+│       │   ├── ci-cd/         # CI/CD patterns
+│       │   ├── documentation/ # Documentation standards
+│       │   ├── quality/       # Code quality standards
 │       │   └── security/      # Security standards
-│       ├── generators/        # Ruleset generation utilities
-│       │   ├── doc_processor.py  # Process company docs
-│       │   ├── template_engine.py # Template system
-│       │   └── validator.py   # Ruleset validation
+│       ├── sources/           # Source documentation files
+│       │   ├── python/        # Python source docs
+│       │   ├── typescript/    # TypeScript source docs
+│       │   ├── ci-cd/         # CI/CD source docs
+│       │   ├── documentation/ # Documentation source files
+│       │   ├── quality/       # Quality source docs
+│       │   └── processor.py   # Document processor
+│       ├── templates/         # Ruleset templates
+│       │   ├── python/        # Python templates
+│       │   ├── typescript/    # TypeScript templates
+│       │   ├── api/           # API templates
+│       │   └── contract/      # Contract testing templates
+│       ├── validation/        # Validation utilities
+│       │   ├── base.py        # Base validator
+│       │   ├── readme_validator.py
+│       │   ├── workflow_validator.py
+│       │   ├── test_validator.py
+│       │   └── version_validator.py
+│       ├── cli/               # CLI modules
+│       │   ├── generate.py    # Generation commands
+│       │   ├── quality.py     # Quality check commands
+│       │   └── quality_checker.py
 │       ├── renderers/         # Output format renderers
 │       │   ├── cursor.py      # Cursor .mdc format
 │       │   ├── copilot.py     # GitHub Copilot format
 │       │   └── generic.py     # Generic markdown format
-│       └── cli.py             # Command-line interface
+│       ├── core.py            # Core functionality
+│       ├── cli.py             # Main CLI interface
+│       └── main.py            # Package entry point
 ├── examples/                  # Example rulesets and usage
 ├── docs/                      # Documentation
 └── tests/                     # Package tests

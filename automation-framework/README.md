@@ -85,15 +85,38 @@ automation-framework/
 │   ├── data/                     # Test data management
 │   │   ├── __init__.py
 │   │   └── factories.py         # Test data factories
+│   ├── contract/                 # Contract testing utilities
+│   │   ├── __init__.py
+│   │   └── pact_client.py       # Pact contract testing client
+│   ├── accessibility/            # Accessibility testing utilities
+│   │   └── __init__.py
 │   └── utils/                    # Utility functions
 │       ├── __init__.py
 │       ├── logger.py            # Logging utilities
 │       └── helpers.py           # Helper functions
 ├── tests/                        # Test suites
 │   ├── __init__.py
-│   ├── test_api_examples.py     # API test examples
-│   ├── test_ui_examples.py      # UI test examples
-│   └── test_performance.py      # Performance test examples
+│   ├── test_allure_example.py   # Allure reporting examples
+│   ├── test_regression.py       # Regression test suite
+│   ├── unit/                    # Unit tests
+│   │   ├── test_expect_failure.py
+│   │   ├── test_framework_basic.py
+│   │   └── test_helpers_unit.py
+│   ├── component/               # Component tests
+│   │   ├── test_api_client_component.py
+│   │   └── test_factories_component.py
+│   ├── integration/             # Integration tests
+│   │   └── test_api_examples.py
+│   ├── e2e/                     # End-to-end tests
+│   │   └── test_user_registration_e2e.py
+│   ├── performance/             # Performance tests
+│   │   └── test_api_performance.py
+│   ├── contract/                # Contract tests
+│   │   ├── test_product_service_contract.py
+│   │   └── test_user_service_contract.py
+│   ├── api/                     # API tests
+│   │   └── test_students_courses_api.py
+│   └── accessibility/           # Accessibility tests
 ├── test_data/                    # Test data files
 ├── reports/                      # Test reports
 ├── conftest.py                  # Pytest configuration
