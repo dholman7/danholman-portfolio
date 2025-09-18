@@ -268,7 +268,7 @@ defaults:
     path: automation-framework/reports/allure-report/  # Full path from repo root
 ```
 
-#### **Deploy Allure Reports Workflow** (`.github/workflows/deploy-allure-reports.yml`)
+#### **Process and Deploy Test Reports Workflow** (`.github/workflows/process-test-reports.yml`)
 ```yaml
 # Download with pattern matching
 - name: Download Allure Reports

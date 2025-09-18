@@ -1,4 +1,4 @@
-name: Process Allure Reports
+name: Process and Deploy Test Reports
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
         type: string
         required: true
         default: all
-        description: Module to process Allure report for
+        description: Module to process test reports for
   workflow_dispatch:
     inputs:
       module:
@@ -20,11 +20,11 @@ on:
           - all
         required: true
         default: all
-        description: Module to process Allure report for
+        description: Module to process test reports for
 
 jobs:
-  process-allure-reports:
-    name: Process Allure Reports
+  process-test-reports:
+    name: Process and Deploy Test Reports
     runs-on: ubuntu-latest
     if: always()
     permissions:

@@ -148,7 +148,7 @@ The CI/CD pipeline uses a specific artifact pathing structure for reliable repor
   - Allure Results: `{module}/reports/allure-results/`
 - **Artifact Names**: `{module}-allure-report`, `{module}-coverage-report`, `{module}-allure-results`
 
-#### **Deploy Allure Reports Workflow** (`.github/workflows/deploy-allure-reports.yml`)
+#### **Process and Deploy Test Reports Workflow** (`.github/workflows/process-test-reports.yml`)
 - **Artifact Download**: Downloads artifacts with pattern `*-allure-report`, `*-coverage-report`
 - **Path Mapping**: Handles nested directory structure from working directories
 - **GitHub Pages Deployment**: Maps artifacts to `https://dholman7.github.io/danholman-portfolio/{module}/`
