@@ -1,10 +1,7 @@
 name: Portfolio Test Suite with Coverage
 
+# Push and PR triggers removed: this portfolio is archived, and the Pages site now redirects.
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       module:
