@@ -1,6 +1,6 @@
 # This portfolio has moved
 
-My current portfolio is on my GitHub profile: **[github.com/dholman7](https://github.com/dholman7)**. It maps each skill I claim to a public project that demonstrates it:
+My current portfolio is at **[dholman7.github.io](https://dholman7.github.io/)**, with the projects themselves on [github.com/dholman7](https://github.com/dholman7):
 
 | Project | What it is |
 |---|---|
